@@ -1,6 +1,6 @@
 import PageShell from '../components/PageShell.jsx';
 import StateCard from '../components/StateCard.jsx';
-import SectionTabs from '../components/financials/SectionTabs.jsx';
+import GroupTabs from '../components/GroupTabs.jsx';
 import AlertStrip from '../components/financials/AlertStrip.jsx';
 import BalanceStrip from '../components/financials/BalanceStrip.jsx';
 import CoverageBar from '../components/financials/CoverageBar.jsx';
@@ -18,7 +18,6 @@ import AidOpportunityCard from '../components/financials/AidOpportunityCard.jsx'
  */
 export default function FinancialsOverview({
   destination,
-  eyebrow,
   ledger,
   snapshot,
   year,
@@ -32,11 +31,16 @@ export default function FinancialsOverview({
   onContact,
   onRetry,
 }) {
+  const tabs = <GroupTabs group="financials" activeId={destination.id} />;
+
   if (isEmpty) {
     return (
-      <PageShell eyebrow={eyebrow} title={destination.label} lede={destination.lede}>
-        <SectionTabs activeId={destination.id} />
-        <BalanceStrip ledger={ledger} year={year} unknown onContact={onContact} />
+      <PageShell
+        destination={destination}
+        summaryLabel="Your balance"
+        summary={<BalanceStrip ledger={ledger} year={year} unknown onContact={onContact} />}
+        tabs={tabs}
+      >
         <StateCard variant="empty" icon="wallet" title="Your financial file isn’t open yet">
           Aster builds your cost and aid package once your enrollment deposit is recorded. Nothing
           is owed before then, and nothing here is missing from your record.
@@ -46,30 +50,29 @@ export default function FinancialsOverview({
   }
 
   return (
-    <PageShell eyebrow={eyebrow} title={destination.label} lede={destination.lede}>
-      <SectionTabs activeId={destination.id} />
-      <AlertStrip task={urgent} onOpen={onOpenTask} />
-      <BalanceStrip ledger={ledger} year={year} onContact={onContact} />
-
-      <div className="page-grid">
-        <div className="task-column">
-          <CostCard ledger={ledger} snapshot={snapshot} year={year}>
-            <CoverageBar ledger={ledger} />
-          </CostCard>
-
-          <DocumentList
-            documents={documents}
-            unavailable={unavailable}
-            onOpen={onOpenTask}
-            onRetry={onRetry}
-          />
-        </div>
-
-        <aside className="insight-column">
+    <PageShell
+      destination={destination}
+      summaryLabel="Your balance"
+      summary={<BalanceStrip ledger={ledger} year={year} onContact={onContact} />}
+      alert={<AlertStrip task={urgent} onOpen={onOpenTask} />}
+      tabs={tabs}
+      rail={
+        <>
           <NextPaymentCard ledger={ledger} dueInDays={depositDays} onPay={onPay} />
           <AidOpportunityCard total={ledger.additionalTotal} />
-        </aside>
-      </div>
+        </>
+      }
+    >
+      <CostCard ledger={ledger} snapshot={snapshot} year={year}>
+        <CoverageBar ledger={ledger} />
+      </CostCard>
+
+      <DocumentList
+        documents={documents}
+        unavailable={unavailable}
+        onOpen={onOpenTask}
+        onRetry={onRetry}
+      />
     </PageShell>
   );
 }

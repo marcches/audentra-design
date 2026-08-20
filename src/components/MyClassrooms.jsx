@@ -6,6 +6,7 @@ import AcademicDrawer from './AcademicDrawer.jsx';
 import CreditMatchCard from './CreditMatchCard.jsx';
 import InfoModal from './InfoModal.jsx';
 import RequirementCard from './RequirementCard.jsx';
+import PageShell from './PageShell.jsx';
 import StateCard from './StateCard.jsx';
 import {
   creditMatches,
@@ -43,7 +44,7 @@ function buildView(state) {
   return { requirements: publishedRequirements, matches: creditMatches };
 }
 
-export default function MyClassrooms({ state, onToast, onOverlay = () => {} }) {
+export default function MyClassrooms({ destination, state, onToast, onOverlay = () => {} }) {
   const { requirements, matches } = useMemo(() => buildView(state), [state]);
   const [open, setOpen] = useState(() =>
     defaultOpenRequirements(publishedRequirements, creditMatches),
@@ -87,202 +88,208 @@ export default function MyClassrooms({ state, onToast, onOverlay = () => {} }) {
     );
   }
 
+  // The catalog bar used to say this above the page title. It belongs in the
+  // eyebrow: the program is where you are, which is what the eyebrow is for.
+  // With no program assigned, naming a catalog version would claim something
+  // that is not settled, so the eyebrow states the gap instead.
+  const hero = {
+    kicker: unknownProgram
+      ? 'Academic · Program not assigned yet'
+      : `Academic · ${program.name} · ${program.classOf}`,
+  };
+
+  const summary = unknownProgram ? null : (
+    <>
+      <div className="progress-summary">
+        <div className="progress-ring" style={{ '--progress': `${percent * 3.6}deg` }}>
+          <span>{percent}%</span>
+        </div>
+        <div>
+          <span className="panel-label">Your degree progress</span>
+          <strong>
+            {totals.met} of {totals.total} requirements met
+          </strong>
+          <p>
+            {totals.approved} of {program.creditsToGraduate} credits approved
+            {totals.pending > 0 ? '*' : ''}
+          </p>
+          <p className="progress-caveat">
+            <Icon name="info" size={14} />
+            {matches === null
+              ? 'We couldn’t check your transcript for matches. Nothing approved has changed.'
+              : matches.length > 0
+                ? `${matches.length} potential ${
+                    matches.length === 1 ? 'match isn’t' : 'matches aren’t'
+                  } counted here`
+                : 'Nothing is waiting on a credit decision'}
+          </p>
+        </div>
+      </div>
+      <AdvisorBar
+        onContact={(channel) =>
+          onToast(
+            `${channel === 'email' ? 'An email' : 'A message'} to ${
+              enrollmentAdvisor.name
+            } would open here—nothing is sent yet.`,
+          )
+        }
+      />
+    </>
+  );
+
+  // Provenance, said once: whose record this is not, and which catalog it reads.
+  const note = unknownProgram ? null : (
+    <p className="record-note">
+      <Icon name="shield" size={15} />
+      <span>
+        Catalog {program.catalog} · {program.publishedOn} · read-only. This is not your official
+        academic record — the {program.officialRecord.office} holds your transcript.
+        {totals.pending > 0 && (
+          <em> *One requirement’s credits haven’t synced, so this total is incomplete.</em>
+        )}
+      </span>
+    </p>
+  );
+
   return (
     <>
-      <div className={`catalog-bar ${unknownProgram ? 'pending' : ''}`}>
-        <span className="catalog-chip">
-          <Icon name="book" size={14} />
-          {unknownProgram ? 'Program not assigned yet' : program.name} · {program.classOf}
-        </span>
-        {/* The catalog belongs to the program. With no program assigned,
-            naming a catalog version would claim something that is not settled. */}
-        {!unknownProgram && (
-          <span className="catalog-meta">
-            Catalog {program.catalog} · {program.publishedOn} · Read-only
-          </span>
-        )}
-      </div>
-
-      {!unknownProgram && (
-        <>
-          <section className="progress-panel" aria-label="Degree progress">
-            <div className="progress-summary">
-              <div className="progress-ring" style={{ '--progress': `${percent * 3.6}deg` }}>
-                <span>{percent}%</span>
-              </div>
-              <div>
-                <span className="panel-label">Your degree progress</span>
-                <strong>
-                  {totals.met} of {totals.total} requirements met
-                </strong>
-                <p>
-                  {totals.approved} of {program.creditsToGraduate} credits approved
-                  {totals.pending > 0 ? '*' : ''}
-                </p>
-                <p className="progress-caveat">
-                  <Icon name="info" size={14} />
-                  {matches === null
-                    ? 'We couldn’t check your transcript for matches. Nothing approved has changed.'
-                    : matches.length > 0
-                      ? `${matches.length} potential ${
-                          matches.length === 1 ? 'match isn’t' : 'matches aren’t'
-                        } counted here`
-                      : 'Nothing is waiting on a credit decision'}
-                </p>
-              </div>
-            </div>
-            <AdvisorBar
-              onContact={(channel) =>
-                onToast(
-                  `${channel === 'email' ? 'An email' : 'A message'} to ${
-                    enrollmentAdvisor.name
-                  } would open here—nothing is sent yet.`,
-                )
-              }
-            />
-          </section>
-
-          <p className="record-note">
-            <Icon name="shield" size={15} />
-            <span>
-              This is not your official academic record. The {program.officialRecord.office} holds
-              your transcript.
-              {totals.pending > 0 && (
-                <em> *One requirement’s credits haven’t synced, so this total is incomplete.</em>
-              )}
-            </span>
-          </p>
-        </>
-      )}
-
-      <div className="page-grid">
-        <div className="task-column">
-          {unknownProgram ? (
-            <StateCard
-              variant="empty"
-              icon="book"
-              title={unassignedProgram.heading}
-              action={{
-                label: 'Go to My Enrollment',
-                icon: 'arrow',
-                onClick: () => {
-                  window.location.hash = '#/my-enrollment';
-                },
-              }}
-            >
-              {unassignedProgram.body} {unassignedProgram.produces}.
-            </StateCard>
-          ) : (
-            <>
-              {groups.map((group) => (
-                <section className="status-section" key={group.id}>
-                  <div className="status-heading">
-                    <span className="status-icon requirement">
-                      <Icon name="book" size={18} />
-                    </span>
-                    <div>
-                      <h2>{group.name}</h2>
-                      <p>{group.summary}</p>
-                    </div>
-                    <span className="status-count">{group.requirements.length}</span>
-                  </div>
-                  <div className="requirement-list">
-                    {group.requirements.map((requirement) => (
-                      <RequirementCard
-                        key={requirement.id}
-                        requirement={requirement}
-                        matches={matchesFor(matches, requirement.id)}
-                        open={open.includes(requirement.id)}
-                        onToggle={toggle}
-                        onOpenCourse={(course, parent) =>
-                          setDrawerItem({ kind: 'course', course, requirement: parent })
-                        }
-                        onOpenMatch={(match) => setDrawerItem({ kind: 'match', match })}
-                      />
-                    ))}
-                  </div>
-                </section>
-              ))}
-
-              <section className="match-section">
+      <PageShell
+        destination={destination}
+        hero={hero}
+        summaryLabel="Degree progress"
+        summary={summary}
+        notice={note}
+        rail={
+          <AcademicColumn
+            approved={totals.approved}
+            underReview={underReview}
+            unavailable={matches === null}
+            unknownProgram={unknownProgram}
+            onOpenCredit={() => setCreditModal(true)}
+          />
+        }
+      >
+        {unknownProgram ? (
+          <StateCard
+            variant="empty"
+            icon="book"
+            title={unassignedProgram.heading}
+            action={{
+              label: 'Go to My Enrollment',
+              icon: 'arrow',
+              onClick: () => {
+                window.location.hash = '#/my-enrollment';
+              },
+            }}
+          >
+            {unassignedProgram.body} {unassignedProgram.produces}.
+          </StateCard>
+        ) : (
+          <>
+            {groups.map((group) => (
+              <section className="section-card" key={group.id}>
                 <div className="status-heading">
-                  <span className="status-icon advisory">
-                    <Icon name="alert" size={18} />
+                  <span className="status-icon requirement">
+                    <Icon name="book" size={18} />
                   </span>
                   <div>
-                    <h2>Potential credit matches</h2>
-                    <p>Nothing here has been approved. None of it counts toward your degree yet.</p>
+                    <h2>{group.name}</h2>
+                    <p>{group.summary}</p>
                   </div>
-                  <span className="advisory-badge">Advisory</span>
+                  <span className="status-count">{group.requirements.length}</span>
                 </div>
-
-                {matches === null && (
-                  <StateCard
-                    variant="warn"
-                    icon="alert"
-                    title="We can’t check your transcript right now"
-                    action={{
-                      label: 'Try again',
-                      icon: 'refresh',
-                      onClick: () => onToast('Retrying would re-check your documents for matches.'),
-                    }}
-                  >
-                    This only affects suggestions. Nothing already approved has changed, and no
-                    requirement above depends on it.
-                  </StateCard>
-                )}
-
-                {matches !== null && matches.length === 0 && (
-                  <div className="match-empty">
-                    <span className="state-icon" aria-hidden="true">
-                      <Icon name="file" size={24} />
-                    </span>
-                    <h3>No credit matches yet</h3>
-                    <p>
-                      A match appears when a document you send Aster looks like it might cover a
-                      course in your catalog. Any of these would produce one:
-                    </p>
-                    <ul>
-                      {matchSources.map((source) => (
-                        <li key={source}>
-                          <span>
-                            <Icon name="check" size={14} />
-                          </span>
-                          {source}
-                        </li>
-                      ))}
-                    </ul>
-                    <a className="secondary-button" href="#/my-documents">
-                      Send a record <Icon name="arrow" size={15} />
-                    </a>
-                  </div>
-                )}
-
-                {matches !== null && matches.length > 0 && (
-                  <div className="match-list">
-                    {matches.map((match) => (
-                      <CreditMatchCard
-                        key={match.id}
-                        match={match}
-                        onOpen={(item) => setDrawerItem({ kind: 'match', match: item })}
-                        onAsk={askAdvisor}
-                      />
-                    ))}
-                  </div>
-                )}
+                <div className="card-rows requirement-list">
+                  {group.requirements.map((requirement) => (
+                    <RequirementCard
+                      key={requirement.id}
+                      requirement={requirement}
+                      matches={matchesFor(matches, requirement.id)}
+                      open={open.includes(requirement.id)}
+                      onToggle={toggle}
+                      onOpenCourse={(course, parent) =>
+                        setDrawerItem({
+                          kind: 'course',
+                          course,
+                          requirement: parent,
+                        })
+                      }
+                      onOpenMatch={(match) => setDrawerItem({ kind: 'match', match })}
+                    />
+                  ))}
+                </div>
               </section>
-            </>
-          )}
-        </div>
+            ))}
 
-        <AcademicColumn
-          approved={totals.approved}
-          underReview={underReview}
-          unavailable={matches === null}
-          unknownProgram={unknownProgram}
-          onOpenCredit={() => setCreditModal(true)}
-        />
-      </div>
+            <section className="section-card match-section">
+              <div className="status-heading">
+                <span className="status-icon advisory">
+                  <Icon name="alert" size={18} />
+                </span>
+                <div>
+                  <h2>Potential credit matches</h2>
+                  <p>Nothing here has been approved. None of it counts toward your degree yet.</p>
+                </div>
+                <span className="advisory-badge">Advisory</span>
+              </div>
+
+              {matches === null && (
+                <StateCard
+                  variant="warn"
+                  icon="alert"
+                  title="We can’t check your transcript right now"
+                  action={{
+                    label: 'Try again',
+                    icon: 'refresh',
+                    onClick: () => onToast('Retrying would re-check your documents for matches.'),
+                  }}
+                >
+                  This only affects suggestions. Nothing already approved has changed, and no
+                  requirement above depends on it.
+                </StateCard>
+              )}
+
+              {matches !== null && matches.length === 0 && (
+                <div className="match-empty">
+                  <span className="state-icon" aria-hidden="true">
+                    <Icon name="file" size={24} />
+                  </span>
+                  <h3>No credit matches yet</h3>
+                  <p>
+                    A match appears when a document you send Aster looks like it might cover a
+                    course in your catalog. Any of these would produce one:
+                  </p>
+                  <ul>
+                    {matchSources.map((source) => (
+                      <li key={source}>
+                        <span>
+                          <Icon name="check" size={14} />
+                        </span>
+                        {source}
+                      </li>
+                    ))}
+                  </ul>
+                  <a className="secondary-button" href="#/my-documents">
+                    Send a record <Icon name="arrow" size={15} />
+                  </a>
+                </div>
+              )}
+
+              {matches !== null && matches.length > 0 && (
+                <div className="match-list">
+                  {matches.map((match) => (
+                    <CreditMatchCard
+                      key={match.id}
+                      match={match}
+                      onOpen={(item) => setDrawerItem({ kind: 'match', match: item })}
+                      onAsk={askAdvisor}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+          </>
+        )}
+      </PageShell>
 
       {drawerItem && (
         <AcademicDrawer

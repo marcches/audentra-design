@@ -1,12 +1,10 @@
-import AdvisorBar from '../components/AdvisorBar.jsx';
 import PageShell from '../components/PageShell.jsx';
 import StateCard from '../components/StateCard.jsx';
-import SectionTabs from '../components/financials/SectionTabs.jsx';
-import BalanceMini from '../components/financials/BalanceMini.jsx';
+import GroupTabs from '../components/GroupTabs.jsx';
+import BalanceStrip from '../components/financials/BalanceStrip.jsx';
 import AidSources from '../components/financials/AidSources.jsx';
 import AidOpportunityCard from '../components/financials/AidOpportunityCard.jsx';
 import ProgressPreview from '../components/financials/ProgressPreview.jsx';
-import { financialAidAdvisor } from '../data.js';
 
 /**
  * My Financials · Financial aid — where each source is itemised, where a pending
@@ -18,7 +16,6 @@ import { financialAidAdvisor } from '../data.js';
  */
 export default function FinancialsAid({
   destination,
-  eyebrow,
   ledger,
   snapshot,
   year,
@@ -30,10 +27,12 @@ export default function FinancialsAid({
   onContact,
   onRetry,
 }) {
+  const tabs = <GroupTabs group="financials" activeId={destination.id} />;
+  const summary = <BalanceStrip ledger={ledger} year={year} onContact={onContact} />;
+
   if (isEmpty) {
     return (
-      <PageShell eyebrow={eyebrow} title={destination.label} lede={destination.lede}>
-        <SectionTabs activeId={destination.id} />
+      <PageShell destination={destination} tabs={tabs}>
         <StateCard variant="empty" icon="award" title="No aid package yet">
           Student Financial Services releases your package after your deposit is recorded. When it
           lands, every source appears here with what it is and whether you repay it.
@@ -43,10 +42,7 @@ export default function FinancialsAid({
   }
 
   return (
-    <PageShell eyebrow={eyebrow} title={destination.label} lede={destination.lede}>
-      <SectionTabs activeId={destination.id} />
-      <BalanceMini ledger={ledger} year={year} />
-
+    <PageShell destination={destination} summaryLabel="Your balance" summary={summary} tabs={tabs}>
       <AidSources
         snapshot={snapshot}
         ledger={ledger}
@@ -67,8 +63,6 @@ export default function FinancialsAid({
         onExplain={onExplainProgress}
         onRetry={onRetry}
       />
-
-      <AdvisorBar advisor={financialAidAdvisor} onContact={onContact} />
     </PageShell>
   );
 }

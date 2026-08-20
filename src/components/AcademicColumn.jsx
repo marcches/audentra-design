@@ -14,8 +14,8 @@ export default function AcademicColumn({
   onOpenCredit,
 }) {
   return (
-    <aside className="insight-column">
-      <div className="counts-card">
+    <>
+      <div className="anchor-card counts-card">
         <span className="panel-label">What counts right now</span>
         {/* Credit counts toward requirements. With no program there are no
             requirements, so there is no total to state — ENR-185 AC 5. */}
@@ -81,6 +81,6 @@ export default function AcademicColumn({
           How credit is approved <Icon name="arrow" size={14} />
         </button>
       </div>
-    </aside>
+    </>
   );
 }

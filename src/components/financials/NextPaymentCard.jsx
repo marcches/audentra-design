@@ -12,7 +12,7 @@ export default function NextPaymentCard({ ledger, dueInDays, onPay }) {
   if (!next) return null;
 
   return (
-    <div className="next-payment-card">
+    <div className="anchor-card next-payment-card">
       <span className="panel-label">Next payment</span>
       <strong className="next-payment-figure">{formatMoney(next.amount)}</strong>
       <p className="next-payment-meta">

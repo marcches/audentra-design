@@ -70,7 +70,77 @@ Always cite the `mobbin_url` as a markdown link — for the file and when report
 6. **Out of scope** — copied from the card.
 7. **Done when** — the card's `Closes when`, made checkable.
 
-## 4. Build — the design system is a contract
+## 4. The page anatomy — five slots, one order
+
+Every section is the same page with different content in it. `PageShell` owns the order; a page
+passes slots, never markup sequence, so it cannot arrange them wrongly.
+
+```
+<PageShell destination={…} hero={…} summary={…} notice={…} tabs={…} rail={…}>
+  main content
+</PageShell>
+```
+
+| Slot | What belongs in it | Always? |
+| --- | --- | --- |
+| `hero` | The purple band. Eyebrow (mono — who owns this record, as of when), one sentence, the section's icon. Copy lives in `navigation.js`; a page overrides only what it must compute. | Always |
+| `summary` | **The section's one figure, and the person who owns the subject.** The progress ring, the balance, the degree count — plus the advisor. Tucks into the band. | When the section has a standing |
+| `notice` | What is on fire, or a caveat true of the whole section. The escalation strip, the required band, the provenance note. | When there is one |
+| `tabs` | `<GroupTabs>` — which leaf of the group you are reading. | Groups with 2+ built leaves |
+| `rail` | The insight column. `PageShell` renders the `<aside>`; rail components must not carry their own. | When the section has one |
+
+Two rules make the order non-negotiable:
+
+- **Everything above `tabs` is true of the whole group; everything below is what the tab switches.**
+  The balance sits above the tabs because it is the same number on all three financials leaves. A
+  required session sits above them because an obligation must not hide behind a tab nobody opened
+  (ENR-189).
+- **The tuck is adjacency, not decoration.** `.page-hero + .page-summary` is the only selector that
+  overlaps them. Written on the panel instead, it followed the panel everywhere — which is how the
+  balance ended up sitting on top of the escalation strip on My Financials (Jam, 2026-08-20).
+
+### Hierarchy
+
+The band greets; the summary informs. **The greeting must never be larger than the figure it
+introduces.** That inversion — a 45px "Let's make the year add up, Maya." above a 15px "2 of 11
+requirements met" — is what made the portal read as decorated rather than built. The scale is:
+
+| Role | Size |
+| --- | --- |
+| Band eyebrow (Geist **Mono**, tracked .13em) | 10.5px |
+| Band headline | `clamp(25px, 2.5vw, 34px)` |
+| Band lede (`text-wrap: pretty`) | 13.5px |
+| **The section's figure** | 21px, or 34px when it is money |
+
+### How a section's content is built
+
+Three planes and no more: the **canvas** a page sits on, a **card** raised off it, and the **ink**
+anchor at the top of the rail. There is deliberately no fourth — no sunken panel, no card inside a
+card. A box inside a box is what made most of the portal read as stacked rather than built.
+
+- **Every block of the main column is a card** (`.section-card`, or one of My Financials' named
+  variants). Nothing sits loose on the canvas.
+- **A list inside a card is `.card-rows`.** The rows give up their own background, border, shadow
+  and radius, and live on the card's white; a hairline and the type do the separating. Reach for a
+  tint or a second surface only when the content is genuinely one level in, as the courses inside a
+  requirement are.
+- **Rows run out to the card's own edges**, so the hairlines span the whole card and the first and
+  last rows take the corner they touch. A square row meeting a rounded card is the tell that a
+  component was built without looking at the one holding it. The card publishes `--card-pad` and
+  `--card-radius` for exactly this; a row must never hard-code either.
+- **The rail leads with one `.anchor-card`** — the section's key secondary figure, on ink — then
+  light cards. What a card looks like on ink is written once, under `.anchor-card`.
+- Markers survive flattening only when they carry meaning: the crimson edge on a required session,
+  the ribbon on the one step to do next.
+
+### Colour
+
+One purple system. The band is the only saturated surface in the product; everything else is paper.
+Green means exactly one thing — **covered, satisfied, done** — and never identifies a section. Amber
+means someone still has to act, crimson means a deadline is close or a panel failed, and an estimate
+is deliberately neither.
+
+## 5. Build — the design system is a contract
 
 This repo has **no UI library and no CSS framework**. Deviating from that is the fastest way to make
 the product look like two products.
@@ -81,7 +151,7 @@ the product look like two products.
 - **Shadows** are `--shadow-soft` / `--shadow-card`. Don't invent a third.
 - **Type** is Geist / Geist Mono via `--font-geist-sans` / `--font-geist-mono`, self-hosted through
   `@fontsource-variable`. Never add a webfont link or an external request.
-- **Classes** are flat and semantic (`.task-card`, `.insight-column`, `.drawer-tabs`) in
+- **Classes** are flat and semantic (`.task-card`, `.page-rail`, `.drawer-tabs`) in
   `src/styles/app.css`. No utility classes, no CSS-in-JS, no CSS modules. Reuse an existing class
   before adding one; if you add one, put it next to its siblings, not at the bottom of the file.
 - **Icons** are our own — add to `src/Icon.jsx`, 24×24, stroke 1.9, `currentColor`. No icon package.
@@ -94,7 +164,7 @@ the product look like two products.
   panels become bottom sheets. Match the existing breakpoints.
 - **Copy** is plain, student-facing English, using the card's vocabulary. No placeholder lorem.
 
-## 5. Verify before claiming it works
+## 6. Verify before claiming it works
 
 ```bash
 npm run build      # must pass clean
@@ -104,7 +174,7 @@ npm run dev        # then actually look at the screen
 Check, on screen: the happy path, every state listed in the spec, narrow width, keyboard-only
 navigation. "It compiles" is not verification.
 
-## 6. Jam feedback — on demand
+## 7. Jam feedback — on demand
 
 Feedback arrives when the user **pastes a Jam link**. Nothing is polled automatically.
 
@@ -121,7 +191,7 @@ Given a Jam URL:
 
 Feedback so far comes from Laura Barcellos, mostly on the `Audentra Student Onboarding` folder.
 
-## 7. Commit
+## 8. Commit
 
 - Branch: `enr-<n>-<slug>`, off `main`.
 - Commit subject: `ENR-<n>: <what changed>`.

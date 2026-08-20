@@ -125,11 +125,11 @@ function guidanceSource(topic) {
  * case: once the deposit is received, the deposit suggestion is not generated.
  */
 export function suggestionsFor(record, page) {
-  const pageGroup = PAGE_QUESTIONS[page?.id] ?? PAGE_QUESTIONS.dashboard;
+  const pageGroup = PAGE_QUESTIONS[page?.id] ?? PAGE_QUESTIONS['my-enrollment'];
   const groups = [
     {
       id: 'page',
-      label: page?.id === 'dashboard' ? 'To get started' : 'About this page',
+      label: page?.id === 'my-enrollment' ? 'To get started' : 'About this page',
       items: pageGroup.map((item, index) => ({ ...item, id: `page-${index}` })),
     },
   ];

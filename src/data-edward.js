@@ -89,16 +89,18 @@ export const GUIDANCE = {
  * a page that loses its entry loses its questions with it.
  */
 export const PAGE_QUESTIONS = {
-  dashboard: [{ text: 'What should I do next?', intent: 'outstanding' }],
   'my-enrollment': [
+    { text: 'What should I do next?', intent: 'outstanding' },
     { text: 'What is due soonest?', intent: 'next-deadline' },
     { text: 'How do momentum points work?', intent: 'points' },
   ],
   'my-documents': [{ text: 'Which documents does Aster still need from me?', intent: 'documents' }],
   appointments: [{ text: 'Who should I talk to about a blocked step?', intent: 'advisor' }],
   messages: [{ text: 'Who should I talk to about a blocked step?', intent: 'advisor' }],
-  'my-classrooms': [{ text: 'What does my degree ask of me?', intent: 'program' }],
-  'my-progress': [{ text: 'How does Aster check my academic progress?', intent: 'progress' }],
+  'my-classrooms': [
+    { text: 'What does my degree ask of me?', intent: 'program' },
+    { text: 'How does Aster check my academic progress?', intent: 'progress' },
+  ],
   'financials-overview': [
     { text: 'What will I actually owe?', intent: 'balance' },
     { text: 'What is paying for my year?', intent: 'aid-sources' },
@@ -175,7 +177,7 @@ export const seededConversations = [
         id: 'seed-roommate-q',
         role: 'student',
         text: 'Has my friend Priya accepted her offer?',
-        context: 'Dashboard',
+        context: 'My Enrollment',
       },
       {
         id: 'seed-roommate-a',

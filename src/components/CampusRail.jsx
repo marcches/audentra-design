@@ -2,8 +2,8 @@ import Icon from '../Icon.jsx';
 
 export default function CampusRail({ interests, publisher, onToast }) {
   return (
-    <aside className="insight-column">
-      <div className="interests-card">
+    <>
+      <div className="anchor-card interests-card">
         <div className="interests-header">
           <span className="points-icon large">
             <Icon name="spark" size={20} />
@@ -49,13 +49,13 @@ export default function CampusRail({ interests, publisher, onToast }) {
           className="secondary-button"
           onClick={() =>
             onToast(
-              `A message to ${publisher.coordinator.name} would open here — nothing is sent yet.`
+              `A message to ${publisher.coordinator.name} would open here — nothing is sent yet.`,
             )
           }
         >
           <Icon name="mail" size={16} /> Ask Student Life
         </button>
       </div>
-    </aside>
+    </>
   );
 }

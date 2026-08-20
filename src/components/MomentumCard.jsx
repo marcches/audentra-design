@@ -1,7 +1,7 @@
 import Icon from '../Icon.jsx';
 
 /**
- * Lives on My Enrollment and on the Dashboard. One component rather than two
+ * Lives in the insight rail on My Enrollment. One component rather than two
  * copies, so the balance can never be phrased two ways on two pages.
  */
 export default function MomentumCard({

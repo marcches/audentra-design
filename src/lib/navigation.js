@@ -1,19 +1,22 @@
 /**
  * Where the portal can go — the destination model, completed by ENR-180.
  *
- * Every destination is declared once. The navigation rows, the page head, the
- * section placeholder and the Dashboard shortcuts all read this file, so a
- * concept cannot end up with two names on two screens — ENR-174 AC4 as
- * structure rather than as discipline.
+ * Every destination is declared once. The navigation rows, the page hero and the
+ * section placeholder all read this file, so a concept cannot end up with two
+ * names on two screens — ENR-174 AC4 as structure rather than as discipline.
  *
- * Started by ENR-166, which declared the rows it builds. ENR-180 extends it
- * with the grouping ENR-174 AC1 requires, the copy each empty section needs and
- * the routing helpers. The flat `SIDEBAR_ROWS` ENR-167 shipped is gone: `NAV`
- * below is the shape of the navigation now.
+ * Started by ENR-166, which declared the rows it builds. ENR-180 extends it with
+ * the grouping ENR-174 AC1 requires, the copy each empty section needs and the
+ * routing helpers.
+ *
+ * The page shell pass adds `hero`. Every section opens with the same band — the
+ * one My Enrollment has carried since ENR-164 — and its copy lives here rather
+ * than inside the page, so a section cannot grow a title that drifts from the
+ * name the sidebar gives it. A group owns one hero for all of its leaves: the
+ * hero says where you are, the tab row below says which leaf you are reading.
  *
  * `appears` and `produces` are the two halves of the placeholder sentence: what
- * will be here, and what puts it here. The Dashboard shortcut card shows
- * `appears` alone, so the two surfaces cannot drift apart.
+ * will be here, and what puts it here.
  *
  * `built` says a card owns that screen. Whether it renders is decided by the
  * page registry in `App.jsx` — a destination whose page has not landed yet
@@ -21,23 +24,31 @@
  */
 
 export const GROUPS = {
-  academic: 'Academic',
   financials: 'My Financials',
   campus: 'My Campus Life',
 };
 
-export const DESTINATIONS = [
-  {
-    id: 'dashboard',
-    label: 'Dashboard',
-    route: '#/dashboard',
-    icon: 'home',
-    lede: 'Where everything stands today, and where to go next.',
-    appears: 'A summary of your enrollment, your advisor and your momentum appears here.',
-    produces: 'It fills in as you complete steps, so nothing here asks you to do the work twice.',
-    next: 'my-enrollment',
-    built: true,
+/**
+ * The hero a group's leaves share. Overview, Financial aid and Payments are one
+ * subject read three ways, so they get one band and one balance — the tab row
+ * under it is what changes.
+ */
+export const GROUP_HEROES = {
+  financials: {
+    kicker: 'My Financials · 2026–27 academic year',
+    title: 'Let’s make the year add up, Maya.',
+    lede: 'What the year costs, what is covering it, and what still needs you — with the person who can change it.',
+    motif: 'wallet',
   },
+  campus: {
+    kicker: 'Campus life · Published by Aster Student Life',
+    title: 'Find your people, Maya.',
+    lede: 'Events, clubs and the people who run them. One session is required; everything else is yours to choose.',
+    motif: 'users',
+  },
+};
+
+export const DESTINATIONS = [
   {
     id: 'my-enrollment',
     label: 'My Enrollment',
@@ -45,6 +56,15 @@ export const DESTINATIONS = [
     icon: 'check',
     badge: 'openSteps',
     lede: 'Everything Aster still needs from you, in the order that keeps you moving.',
+    // The one hero with a flag: the eyebrow states a fact about her standing,
+    // not the name of a section. ENR-164's Jam approved this copy as it is.
+    hero: {
+      flag: 'Offer accepted',
+      kicker: 'Class of 2031',
+      title: 'You’re in, Maya. Let’s make it official.',
+      lede: 'We’ve put your next steps in the order that will keep everything moving. Start with the first one—or choose any task you can do now.',
+      motif: 'check',
+    },
     appears: 'The steps Aster still needs from you appear here.',
     produces: 'New steps open as you finish the ones before them.',
     next: 'my-documents',
@@ -56,6 +76,11 @@ export const DESTINATIONS = [
     route: '#/my-documents',
     icon: 'file',
     lede: 'Everything you have sent Aster, and everything Aster has sent you.',
+    hero: {
+      kicker: 'My Documents',
+      title: 'Everything on the record, Maya.',
+      lede: 'Everything you have sent Aster, and everything Aster has sent you, in one place.',
+    },
     appears: 'Documents you upload and documents Aster sends you appear here.',
     produces: 'The first one arrives when you complete a step that asks for a file.',
     next: 'my-enrollment',
@@ -67,6 +92,11 @@ export const DESTINATIONS = [
     route: '#/appointments',
     icon: 'calendar',
     lede: 'Time booked with the people who can unblock a step.',
+    hero: {
+      kicker: 'Appointments',
+      title: 'Book time with the people who can help, Maya.',
+      lede: 'Time with the offices that own a step — booked, confirmed and in one calendar.',
+    },
     appears: 'Appointments you book with Aster staff appear here.',
     produces: 'Booking opens as each team publishes its availability.',
     next: 'help',
@@ -79,6 +109,11 @@ export const DESTINATIONS = [
     icon: 'message',
     badge: 'unread',
     lede: 'Everything your enrollment team has written to you.',
+    hero: {
+      kicker: 'Messages',
+      title: 'Everything Aster has written to you, Maya.',
+      lede: 'One thread per subject, with the office that opened it named on every message.',
+    },
     appears: 'Messages from your enrollment team appear here.',
     produces: 'You will see one when someone at Aster writes to you.',
     next: 'help',
@@ -90,25 +125,17 @@ export const DESTINATIONS = [
     label: 'My Classrooms',
     route: '#/my-classrooms',
     icon: 'book',
-    group: 'academic',
     lede: 'What your degree asks of you, and the courses that satisfy each requirement.',
+    hero: {
+      kicker: 'Academic · BA Computer Science',
+      title: 'Here’s what your degree asks of you, Maya.',
+      lede: 'Every requirement your program sets, and the courses that satisfy each one. Aster’s reading of your record, not the record itself.',
+      motif: 'book',
+    },
     appears: 'Your degree requirements appear here, with the courses that satisfy each one.',
     produces: 'They arrive when Aster assigns your academic program.',
     next: 'my-enrollment',
     built: true,
-  },
-  {
-    id: 'my-progress',
-    label: 'My Progress',
-    route: '#/my-progress',
-    icon: 'progress',
-    group: 'academic',
-    lede: 'How far your degree has come, and what is still ahead.',
-    appears:
-      'Your degree progress — credits earned, requirements met, and what is left — appears here.',
-    produces: 'It starts once your program is assigned and your first credits are recorded.',
-    next: 'my-classrooms',
-    built: false,
   },
 
   {
@@ -185,6 +212,11 @@ export const DESTINATIONS = [
     // and where a request reaches a named office — a different promise, so it
     // stops being written in the assistant's words. ENR-182 designs the page.
     lede: 'Aster’s guides, and a way to reach the office that owns a step.',
+    hero: {
+      kicker: 'Help',
+      title: 'Let’s get you unstuck, Maya.',
+      lede: 'Aster’s own guides, and a way to put a named office on a step that is blocked.',
+    },
     appears: 'Aster’s guides, and any request you raise with an office, appear here.',
     produces: 'Raise one when a step is blocked and you need a person on it.',
     next: 'appointments',
@@ -197,6 +229,11 @@ export const DESTINATIONS = [
     icon: 'profile',
     kind: 'profile',
     lede: 'The record Aster keeps about you.',
+    hero: {
+      kicker: 'Profile',
+      title: 'This is what Aster knows about you, Maya.',
+      lede: 'Some of it is yours to change. The rest belongs to an office, and this page says which one.',
+    },
     appears: 'The details Aster holds about you appear here.',
     produces: 'Some you control; the rest an office changes for you.',
     next: 'my-enrollment',
@@ -204,22 +241,30 @@ export const DESTINATIONS = [
   },
 ];
 
-/** The home ENR-180 adds, because thirteen destinations need a place that explains them. */
-export const DEFAULT_ROUTE = '#/dashboard';
+/**
+ * The home. The Dashboard that used to hold this slot summarised sections the
+ * student then had to open anyway; the Jam of 2026-08-20 removed it. My
+ * Enrollment is the page that already answers "what now", so it is the landing.
+ */
+export const DEFAULT_ROUTE = '#/my-enrollment';
 
 /**
  * The sidebar, in order: what I must do, what I sent and who I talk to, then the
  * rest of my life at Aster. Groups are labels, never destinations — the page a
  * student wanted is always a leaf, which is why My Financials holds an Overview
  * rather than being clickable itself (ENR-174 AC1).
+ *
+ * Academic is gone with My Progress: a heading holding one leaf costs a click
+ * and buys nothing, so My Classrooms is a destination in its own right. This
+ * diverges from ENR-174 AC1, which names both leaves — the divergence is the
+ * Jam's, and it is recorded on the card.
  */
 export const NAV = [
-  { kind: 'link', id: 'dashboard' },
   { kind: 'link', id: 'my-enrollment' },
   { kind: 'link', id: 'my-documents' },
   { kind: 'link', id: 'appointments' },
   { kind: 'link', id: 'messages' },
-  { kind: 'group', id: 'academic', label: GROUPS.academic, items: ['my-classrooms', 'my-progress'] },
+  { kind: 'link', id: 'my-classrooms' },
   {
     kind: 'group',
     id: 'financials',
@@ -234,9 +279,6 @@ export const UTILITY_ID = 'help';
 
 /** Reachable from the profile chip only, so the concept is never listed twice. */
 export const PROFILE_ID = 'profile';
-
-/** The Dashboard's shortcut grid: everything except the home it sits on. */
-export const SHORTCUTS = DESTINATIONS.filter((item) => item.id !== 'dashboard');
 
 export function destinationById(id) {
   return DESTINATIONS.find((item) => item.id === id) ?? null;
@@ -258,9 +300,30 @@ export function destinationByRoute(hash) {
   return DESTINATIONS.find((item) => item.route === route) ?? null;
 }
 
-/** The label a page shows above its title: the group it belongs to. */
-export function groupLabel(item) {
-  return item?.group ? GROUPS[item.group] : 'Aster';
+/**
+ * The band a destination opens with. A leaf inside a group inherits the group's
+ * hero, so all three financials pages say the same thing about where you are;
+ * a destination's own `hero` wins over it. Anything a section still has to say
+ * dynamically — how many sessions are required today — is passed as an override
+ * by the page and merged on top of this.
+ *
+ * The fallback is built from the fields every destination already carries, so a
+ * new destination renders a correct hero before anyone writes copy for it.
+ */
+export function heroFor(item) {
+  if (!item) return { kicker: 'Aster', title: 'That page doesn’t exist', motif: 'help' };
+
+  const group = item.group ? GROUP_HEROES[item.group] : null;
+  const own = item.hero ?? null;
+
+  return {
+    kicker: item.label,
+    title: item.label,
+    lede: item.lede,
+    motif: item.icon,
+    ...group,
+    ...own,
+  };
 }
 
 /** The leaves of a group that have a page behind them. */

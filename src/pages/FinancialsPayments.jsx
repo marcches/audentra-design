@@ -1,12 +1,10 @@
 import Icon from '../Icon.jsx';
-import AdvisorBar from '../components/AdvisorBar.jsx';
 import PageShell from '../components/PageShell.jsx';
 import StateCard from '../components/StateCard.jsx';
-import SectionTabs from '../components/financials/SectionTabs.jsx';
-import BalanceMini from '../components/financials/BalanceMini.jsx';
+import GroupTabs from '../components/GroupTabs.jsx';
+import BalanceStrip from '../components/financials/BalanceStrip.jsx';
 import ScheduleList from '../components/financials/ScheduleList.jsx';
 import TermTip from '../components/financials/TermTip.jsx';
-import { financialAidAdvisor } from '../data.js';
 import { formatMoney } from '../lib/money.js';
 
 /**
@@ -18,7 +16,6 @@ import { formatMoney } from '../lib/money.js';
  */
 export default function FinancialsPayments({
   destination,
-  eyebrow,
   ledger,
   snapshot,
   year,
@@ -29,10 +26,12 @@ export default function FinancialsPayments({
   onContact,
   onRetry,
 }) {
+  const tabs = <GroupTabs group="financials" activeId={destination.id} />;
+  const summary = <BalanceStrip ledger={ledger} year={year} onContact={onContact} />;
+
   if (isEmpty) {
     return (
-      <PageShell eyebrow={eyebrow} title={destination.label} lede={destination.lede}>
-        <SectionTabs activeId={destination.id} />
+      <PageShell destination={destination} tabs={tabs}>
         <StateCard variant="empty" icon="card" title="Nothing has been billed yet">
           Your first charge is posted once your place is confirmed. Until then there is no schedule
           to show and nothing is late.
@@ -42,10 +41,7 @@ export default function FinancialsPayments({
   }
 
   return (
-    <PageShell eyebrow={eyebrow} title={destination.label} lede={destination.lede}>
-      <SectionTabs activeId={destination.id} />
-      <BalanceMini ledger={ledger} year={year} />
-
+    <PageShell destination={destination} summaryLabel="Your balance" summary={summary} tabs={tabs}>
       <section className="billed-split" aria-labelledby="billed-title">
         <div className="card-heading">
           <span className="card-icon">
@@ -100,8 +96,6 @@ export default function FinancialsPayments({
           Make a payment <Icon name="external" size={16} />
         </button>
       </div>
-
-      <AdvisorBar advisor={financialAidAdvisor} onContact={onContact} />
     </PageShell>
   );
 }

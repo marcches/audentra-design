@@ -11,7 +11,7 @@ import { kindIcon } from '../../lib/task-helpers.js';
  */
 export default function DocumentList({ documents, unavailable, onOpen, onRetry }) {
   return (
-    <section className="status-section doc-section" aria-labelledby="docs-title">
+    <section className="section-card doc-section" aria-labelledby="docs-title">
       <div className="status-heading">
         <span className="status-icon docs">
           <Icon name="file" size={18} />
@@ -38,7 +38,7 @@ export default function DocumentList({ documents, unavailable, onOpen, onRetry }
           appears here and on your enrollment checklist at the same time.
         </StateCard>
       ) : (
-        <div className="doc-list">
+        <div className="card-rows doc-list">
           {documents.map((task) => {
             const level = escalation(task.daysLeft);
             return (

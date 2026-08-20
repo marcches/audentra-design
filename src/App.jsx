@@ -4,7 +4,6 @@ import Sidebar from './components/Sidebar.jsx';
 import Topbar from './components/Topbar.jsx';
 import TaskDrawer from './components/TaskDrawer.jsx';
 import InfoModal from './components/InfoModal.jsx';
-import Dashboard from './components/Dashboard.jsx';
 import EnrollmentPage from './components/EnrollmentPage.jsx';
 import MyCampusLife, { CAMPUS_PREVIEW_STATES } from './components/MyCampusLife.jsx';
 import { requiredEventCount } from './campus-data.js';
@@ -20,12 +19,7 @@ import Edward from './components/edward/Edward.jsx';
 import { buildRecord } from './lib/edward.js';
 import { sortTasks } from './lib/task-helpers.js';
 import { buildLedger } from './lib/money.js';
-import {
-  DEFAULT_ROUTE,
-  destinationByRoute,
-  groupLabel,
-  isRouteHash,
-} from './lib/navigation.js';
+import { DEFAULT_ROUTE, destinationByRoute, isRouteHash } from './lib/navigation.js';
 import {
   FINANCIALS_STATES,
   PREVIEW_STATES,
@@ -205,7 +199,7 @@ export default function App() {
     setFileReady(false);
   }
 
-  /** From the Dashboard: go to the section that owns the work, then open it. */
+  /** From anywhere that names a step: go to the section that owns it, then open it. */
   function openTaskFromSummary(task) {
     if (current?.id === 'my-enrollment') {
       openTask(task);
@@ -288,17 +282,13 @@ export default function App() {
 
     if (!current) {
       return (
-        <PageShell
-          eyebrow="Aster"
-          title="That page doesn’t exist"
-          lede="The link you followed points at a section this portal doesn’t have."
-        >
+        <PageShell>
           <p className="inline-empty wide">
-            Nothing is wrong with your account. Start again from your Dashboard, or use the
+            Nothing is wrong with your account. Start again from My Enrollment, or use the
             navigation to pick a section.
           </p>
           <a className="placeholder-route standalone" href={DEFAULT_ROUTE}>
-            Go to Dashboard
+            Go to My Enrollment
             <Icon name="arrow" size={16} />
           </a>
         </PageShell>
@@ -307,33 +297,16 @@ export default function App() {
 
     if (state === 'error') {
       return (
-        <PageShell eyebrow={groupLabel(current)} title={current.label} lede={current.lede}>
+        <PageShell destination={current}>
           <PageError label={current.label} onRetry={() => choosePreview('ready')} />
         </PageShell>
-      );
-    }
-
-    if (current.id === 'dashboard') {
-      return (
-        <Dashboard
-          progress={progress}
-          totalSteps={TOTAL_STEPS}
-          completedCount={viewCompleted.length}
-          nextSteps={viewTasks.slice(0, 3)}
-          earnedPoints={earnedPoints}
-          availableToday={availableToday}
-          unavailable={unavailable}
-          isEmpty={isEmpty}
-          onOpenTask={openTaskFromSummary}
-          onOpenPoints={() => setPointsModal(true)}
-          onContact={contactAdvisor}
-        />
       );
     }
 
     if (current.id === 'my-enrollment') {
       return (
         <EnrollmentPage
+          destination={current}
           tasks={viewTasks}
           reviewing={viewReviewing}
           locked={viewLocked}
@@ -363,9 +336,12 @@ export default function App() {
     // `no-matches` means something here and nothing to the frame.
     if (current.id === 'my-classrooms') {
       return (
-        <PageShell eyebrow={groupLabel(current)} title={current.label} lede={current.lede}>
-          <MyClassrooms state={preview} onToast={setToast} onOverlay={setSectionOverlay} />
-        </PageShell>
+        <MyClassrooms
+          destination={current}
+          state={preview}
+          onToast={setToast}
+          onOverlay={setSectionOverlay}
+        />
       );
     }
 
@@ -374,6 +350,7 @@ export default function App() {
     if (current.group === 'campus') {
       return (
         <MyCampusLife
+          destination={current}
           previewState={preview}
           tab={current.id}
           onToast={setToast}
@@ -388,7 +365,6 @@ export default function App() {
     if (inFinancials) {
       const shared = {
         destination: current,
-        eyebrow: groupLabel(current),
         ledger,
         snapshot,
         year: academicYear,
@@ -432,7 +408,7 @@ export default function App() {
     }
 
     return (
-      <PageShell eyebrow={groupLabel(current)} title={current.label} lede={current.lede}>
+      <PageShell destination={current}>
         <SectionPlaceholder section={current} />
       </PageShell>
     );

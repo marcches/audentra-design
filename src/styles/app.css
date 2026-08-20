@@ -13,6 +13,13 @@
   --green-soft: #e8f7f0;
   --amber: #a65d19;
   --amber-soft: #fff4df;
+  /* Depth, named — the page-shell pass. Three planes and no more:
+       canvas   the ground a page sits on
+       surface  a card raised off it
+       ink      the rail's anchor card
+     There is deliberately no fourth. A list inside a card sits on that card's
+     own white; it never gets a surface of its own. A box inside a box is what
+     made the portal read as stacked rather than built (Jam, 2026-08-20). */
   --shadow-soft: 0 12px 36px #1f253a12;
   --shadow-card: 0 7px 22px #1f253a0e, 0 1px 2px #1f253a0d;
   /* A floating window rather than a card on the page. ENR-181 named it so the
@@ -37,6 +44,18 @@
   --z-toast: 120;
   /* The lower-right corner Edward owns on every page — ENR-175 AC 7. No page
      may put a primary action inside it, and the page foot reserves it. */
+  /* How the hero band meets what comes after it — the page shell pass. The gap
+     is what every section gets; the tuck is the extra the summary panel eats
+     into the band, which only ever happens when it directly follows it. */
+  --hero-gap: 22px;
+  --hero-tuck: 20px;
+  /* The band is the frame; everything else shares one column. `--band-outdent`
+     is how far the band reaches past that column on each side, and it is what
+     makes the summary panel line up with the tabs and the cards below it
+     instead of standing 22px in from them. It must stay under `.content-wrap`'s
+     side padding, so it shrinks with it. */
+  --band-outdent: 22px;
+  --panel-pad: 23px;
   --safe-bottom: 76px;
   --toast-bottom: 25px;
   --font-geist-sans: 'Geist Variable', 'Geist', sans-serif;
@@ -365,21 +384,22 @@ button {
   padding: 34px 38px 46px;
 }
 
-.welcome-panel {
+.page-hero {
   color: #fff;
   isolation: isolate;
   background: linear-gradient(118deg,#171d36 0%,#22284d 56%,#4d3d90 100%);
   border-radius: 25px;
   align-items: center;
-  min-height: 204px;
-  padding: 36px 40px;
+  min-height: 172px;
+  padding: 32px calc(var(--panel-pad) + var(--band-outdent));
   display: flex;
   position: relative;
   overflow: hidden;
   box-shadow: 0 18px 44px #1e20432b;
+  margin: 0 calc(-1 * var(--band-outdent)) var(--hero-gap);
 }
 
-.welcome-panel:before {
+.page-hero:before {
   content: "";
   z-index: -1;
   background: radial-gradient(circle,#9f8bff61,#0000 65%);
@@ -390,8 +410,8 @@ button {
   inset: auto -7% -105% auto;
 }
 
-.welcome-copy {
-  max-width: 690px;
+.hero-copy {
+  max-width: 660px;
 }
 
 .eyebrow {
@@ -403,6 +423,13 @@ button {
   font-weight: 700;
 }
 
+.page-hero .eyebrow {
+  font-family: var(--font-geist-mono);
+  letter-spacing: .13em;
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
 .eyebrow span {
   color: #b9f1d7;
 }
@@ -412,28 +439,33 @@ button {
   margin-bottom: 6px;
 }
 
-.welcome-panel h1 {
-  letter-spacing: -.045em;
+.page-hero h1 {
+  letter-spacing: -.035em;
+  text-wrap: balance;
   margin: 0;
-  font-size: clamp(29px,3.25vw,45px);
+  font-size: clamp(25px,2.5vw,34px);
   font-weight: 720;
-  line-height: 1.08;
+  line-height: 1.14;
 }
 
-.welcome-panel p:last-child {
+/* `pretty` keeps the last line from orphaning a word — "…can change / it." */
+.page-hero p:last-child {
   color: #d8dced;
-  max-width: 650px;
-  margin: 16px 0 0;
-  font-size: 14px;
-  line-height: 1.65;
+  text-wrap: pretty;
+  max-width: 620px;
+  margin: 13px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
 }
 
-.celebration-orbit {
-  width: 170px;
-  height: 170px;
+/* The section's own icon, held in the band's right edge. It is the section's
+   mark, not decoration: My Financials shows a wallet, My Documents a file. */
+.hero-motif {
+  width: 148px;
+  height: 148px;
   position: absolute;
-  top: 18px;
-  right: 38px;
+  top: 12px;
+  right: 40px;
 }
 
 .orbit-ring {
@@ -488,21 +520,92 @@ button {
   left: 2px;
 }
 
-.progress-panel {
+/* The section's one figure, and beside it the person who owns the subject. It
+   sits flush with everything else on the page by default; the tuck below is the
+   only place the inset and the overlap are correct. */
+.page-summary {
   z-index: 2;
-  flex-wrap: wrap;
-  min-height: 102px;
   box-shadow: var(--shadow-soft);
   background: #fffffff7;
   border: 1px solid #e2e2ebe6;
   border-radius: 19px;
+  flex-direction: column;
+  margin: 0 0 30px;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-main {
+  flex-wrap: wrap;
+  min-height: 102px;
   justify-content: space-between;
   align-items: center;
   gap: 25px;
-  margin: -20px 22px 30px;
-  padding: 20px 23px;
+  padding: 20px var(--panel-pad);
   display: flex;
-  position: relative;
+}
+
+/* An escalation is a footnote to the figure above it, not another band in the
+   stack: the balance says "estimate — this will go down", and this is the one
+   thing that would settle it. Attached, it cannot be scrolled past separately
+   from the number it qualifies — ENR-160 AC 6. */
+.summary-alert {
+  border-top: 1px solid var(--line);
+}
+
+.summary-alert .alert-strip {
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  padding: 11px var(--panel-pad);
+}
+
+/* The tuck is a fact about these two being adjacent, not a property of the
+   panel. Written on the panel it followed it everywhere: on My Financials the
+   panel tucked under the escalation strip and sat on top of it — the defect the
+   Jam of 2026-08-20 circled. `PageShell` renders the summary directly after the
+   hero, so this selector matches exactly when the overlap is meant. */
+.page-hero + .page-summary {
+  margin: calc(-1 * (var(--hero-gap) + var(--hero-tuck))) 0 30px;
+}
+
+/* Which leaf of a group you are reading. It sits directly above what it
+   switches, and never above something true of the whole group — see
+   `PageShell`. My Financials and My Campus Life each had their own row, in
+   their own colour; this is the one row both use now. */
+.group-tabs {
+  gap: 6px;
+  margin: 0 0 18px;
+  display: flex;
+  overflow-x: auto;
+}
+
+.group-tabs a {
+  color: var(--muted);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 99px;
+  flex: none;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  font-size: 11.5px;
+  font-weight: 650;
+  text-decoration: none;
+  transition: color .15s, border-color .15s;
+  display: flex;
+}
+
+.group-tabs a:hover {
+  color: var(--ink);
+  border-color: #d6d8e4;
+}
+
+.group-tabs a.active {
+  color: var(--purple-dark);
+  border-color: color-mix(in srgb, var(--purple) 35%, var(--surface));
+  background: var(--purple-soft);
 }
 
 .progress-summary {
@@ -554,8 +657,11 @@ button {
 }
 
 .progress-summary strong {
-  margin-top: 3px;
-  font-size: 15px;
+  letter-spacing: -.02em;
+  margin-top: 2px;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .progress-summary p {
@@ -671,7 +777,7 @@ button {
   height: 42px;
 }
 
-.page-grid {
+.page-body {
   grid-template-columns: minmax(0,1fr) 292px;
   align-items: start;
   gap: 27px;
@@ -731,9 +837,6 @@ button {
 }
 
 .task-list {
-  flex-direction: column;
-  gap: 12px;
-  display: flex;
 }
 
 .task-card {
@@ -1260,7 +1363,7 @@ button {
   display: flex;
 }
 
-.insight-column {
+.page-rail {
   flex-direction: column;
   gap: 15px;
   display: flex;
@@ -1334,6 +1437,57 @@ button {
   font-size: 10px;
   font-weight: 750;
   display: flex;
+}
+
+/* Every rail leads with one of these: the section's key secondary figure, on
+   ink, so the eye lands somewhere before it reads the light cards under it.
+   My Financials had it and looked built; the sections without one looked flat. */
+.anchor-card {
+  color: #fff;
+  background: linear-gradient(145deg,#1b203a,#312960);
+  border: 0;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 14px 28px #201e452e;
+}
+
+/* What any card looks like when it sits on ink. Written once here rather than
+   per section, so a rail card can be promoted to the anchor by adding the class
+   and nothing else. */
+.anchor-card .panel-label {
+  color: #b9b4dd;
+}
+
+.anchor-card strong,
+.anchor-card .counts-figure {
+  color: #fff;
+}
+
+.anchor-card p,
+.anchor-card .counts-figure small {
+  color: #c4c0dd;
+}
+
+.anchor-card .counts-divider {
+  background: #ffffff24;
+}
+
+.anchor-card .interests-header > span:first-child,
+.anchor-card .interest-chips span {
+  color: #ddd8ff;
+  background: #ffffff1f;
+}
+
+.anchor-card .interests-header > div > span {
+  color: #b9b4dd;
+}
+
+.anchor-card .counts-review {
+  color: #f2c68d;
+}
+
+.anchor-card .learn-link {
+  color: #cfc9f7;
 }
 
 .momentum-card {
@@ -2203,19 +2357,19 @@ footer a {
 }
 
 @media (width<=1060px) {
-  .page-grid {
+  .page-body {
     grid-template-columns: minmax(0,1fr);
   }
-  .insight-column {
+  .page-rail {
     grid-template-columns: 1fr 1fr;
     display: grid;
     position: static;
   }
-  .celebration-orbit {
+  .hero-motif {
     opacity: .8;
     right: 15px;
   }
-  .welcome-copy {
+  .hero-copy {
     max-width: calc(100% - 145px);
   }
 }
@@ -2267,12 +2421,13 @@ footer a {
   .content-wrap {
     padding: 23px 20px 40px;
   }
-  .welcome-panel {
-    padding: 31px 28px;
+  :root {
+    --band-outdent: 12px;
+    --panel-pad: 20px;
   }
-  .progress-panel {
-    margin-left: 10px;
-    margin-right: 10px;
+  .page-hero {
+    padding-top: 31px;
+    padding-bottom: 31px;
   }
   .task-card-body {
     grid-template-columns: 39px minmax(0,1fr);
@@ -2300,23 +2455,28 @@ footer a {
   .content-wrap {
     padding: 15px 13px 35px;
   }
-  .welcome-panel {
+  :root {
+    --band-outdent: 8px;
+    --panel-pad: 16px;
+  }
+  .page-hero {
     border-radius: 20px;
     min-height: 220px;
-    padding: 28px 22px;
+    padding-top: 28px;
+    padding-bottom: 28px;
   }
-  .welcome-copy {
+  .hero-copy {
     max-width: 100%;
   }
-  .welcome-panel h1 {
+  .page-hero h1 {
     max-width: 315px;
     font-size: 31px;
   }
-  .welcome-panel p:last-child {
+  .page-hero p:last-child {
     max-width: 315px;
     font-size: 12px;
   }
-  .celebration-orbit {
+  .hero-motif {
     opacity: .38;
     width: 110px;
     height: 110px;
@@ -2329,12 +2489,19 @@ footer a {
   .orbit-ring {
     inset: 12px;
   }
-  .progress-panel {
+  .page-summary {
+    margin: 0 0 25px;
+  }
+
+  .summary-main {
     flex-direction: column;
     align-items: stretch;
     gap: 14px;
-    margin: -14px 8px 25px;
     padding: 16px;
+  }
+
+  .page-hero + .page-summary {
+    margin: calc(-1 * (var(--hero-gap) + 14px)) 0 25px;
   }
   .progress-summary p {
     line-height: 1.35;
@@ -2417,7 +2584,7 @@ footer a {
   .status-heading p {
     line-height: 1.35;
   }
-  .insight-column {
+  .page-rail {
     grid-template-columns: 1fr;
   }
   footer {
@@ -2531,12 +2698,6 @@ footer a {
   flex-direction: column;
   gap: 2px;
   display: flex;
-}
-
-/* The progress panel tucks under the welcome hero. With the standard page head
-   above it instead, it has to sit below rather than overlap. */
-.page-head+.progress-panel {
-  margin-top: 16px;
 }
 
 .status-icon.guide {
@@ -2829,27 +2990,9 @@ footer a {
   text-decoration: none;
 }
 
-/* --- the standard page head --- */
-
-.page-head {
-  padding: 2px 2px 4px;
-}
-
-.page-head h1 {
-  letter-spacing: -.035em;
-  margin: 0;
-  font-size: clamp(26px,2.4vw,35px);
-  font-weight: 720;
-  line-height: 1.1;
-}
-
-.page-lede {
-  color: var(--muted);
-  max-width: 640px;
-  margin: 11px 0 0;
-  font-size: 13px;
-  line-height: 1.5;
-}
+/* The plain page head this file used to carry is gone. Half the portal opened
+   with it and half opened with the gradient band, which is what the Jam of
+   2026-08-20 read as two products. `.page-hero` is the only page head now. */
 
 .section-route {
   color: var(--purple-dark);
@@ -3116,51 +3259,6 @@ footer a {
   display: grid;
 }
 
-.shortcut-grid {
-  grid-template-columns: repeat(auto-fill,minmax(212px,1fr));
-  gap: 12px;
-  display: grid;
-}
-
-.shortcut-card {
-  background: var(--surface);
-  color: inherit;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  gap: 9px;
-  padding: 16px 17px;
-  text-decoration: none;
-  transition: transform .16s, box-shadow .16s, border-color .16s;
-  display: grid;
-}
-
-.shortcut-card:hover {
-  border-color: #ded9f7;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-card);
-}
-
-.shortcut-icon {
-  color: var(--purple);
-  background: var(--purple-soft);
-  border-radius: 11px;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  display: grid;
-}
-
-.shortcut-card strong {
-  font-size: 12.5px;
-}
-
-.shortcut-card p {
-  color: var(--muted);
-  margin: 0;
-  font-size: 10.5px;
-  line-height: 1.5;
-}
-
 .momentum-unavailable {
   color: #c8c4e0;
   margin: 15px 0 0;
@@ -3195,14 +3293,6 @@ footer a {
     display: inline;
   }
 
-  .page-head h1 {
-    font-size: 26px;
-  }
-
-  .page-lede {
-    font-size: 12px;
-  }
-
   .section-placeholder {
     gap: 10px;
     padding: 22px 20px;
@@ -3210,10 +3300,6 @@ footer a {
 
   .page-error {
     padding: 22px 20px;
-  }
-
-  .shortcut-grid {
-    grid-template-columns: 1fr;
   }
 
   .skeleton-head .skeleton-line.title {
@@ -3226,7 +3312,7 @@ footer a {
     animation: none;
   }
 
-  .group-chevron, .skip-to-content, .shortcut-card, .summary-task {
+  .group-chevron, .skip-to-content, .summary-task {
     transition: none;
   }
 }
@@ -3234,46 +3320,20 @@ footer a {
 /* ─────────────────────────────────────────────────────────────
    My Campus Life — ENR-189
    The one section that is not an obligation. Same shell, same
-   type, same card geometry as My Enrollment; a green accent
-   instead of purple, and no points anywhere on the screen.
+   type, same card geometry and the same purple as every other
+   section. Points appear nowhere on this screen.
+
+   The green identity this section used to carry is gone — the Jam
+   of 2026-08-20 asked for one colour across the portal. Green is
+   back to meaning one thing only: covered, satisfied, done.
    ───────────────────────────────────────────────────────────── */
-
-.campus-panel {
-  margin-bottom: 22px;
-  background: linear-gradient(
-    118deg,
-    var(--ink) 0%,
-    color-mix(in srgb, var(--green) 30%, var(--ink)) 54%,
-    color-mix(in srgb, var(--green) 88%, var(--ink)) 100%
-  );
-}
-
-.campus-panel:before {
-  background: radial-gradient(circle, color-mix(in srgb, var(--green) 45%, transparent), #0000 65%);
-}
-
-/* Nothing published yet: the hero stops celebrating and states the fact. */
-.campus-panel.quiet {
-  background: linear-gradient(118deg, var(--ink) 0%, color-mix(in srgb, var(--green) 16%, var(--ink)) 100%);
-}
-
-.campus-motif {
-  width: 170px;
-  height: 170px;
-  position: absolute;
-  top: 18px;
-  right: 38px;
-}
-
-.campus-motif .orbit-core {
-  color: color-mix(in srgb, var(--green) 55%, var(--ink));
-  background: linear-gradient(145deg, var(--green-soft), color-mix(in srgb, var(--green) 42%, var(--surface)));
-}
 
 /* ── The obligations, above everything and above the tabs ── */
 
+/* The obligation is a section of the page, not a note beside it — it gets the
+   same card the rest of the main column has. */
 .required-band {
-  margin-bottom: 26px;
+  margin-bottom: 18px;
 }
 
 .status-icon.required, .status-count.required {
@@ -3282,7 +3342,6 @@ footer a {
 }
 
 .required-list {
-  gap: 12px;
   display: grid;
 }
 
@@ -3359,30 +3418,6 @@ footer a {
 
 /* ── Events / Clubs: two routes, one screen ── */
 
-.campus-tabs {
-  width: max-content;
-  max-width: 100%;
-  margin: 0 0 18px;
-}
-
-.campus-tabs a {
-  color: #7b8090;
-  border-radius: 8px;
-  align-items: center;
-  gap: 6px;
-  height: 32px;
-  padding: 0 13px;
-  font-size: 10px;
-  font-weight: 700;
-  text-decoration: none;
-  display: flex;
-}
-
-.campus-tabs a.selected {
-  color: var(--green);
-  background: var(--green-soft);
-}
-
 .filter-row {
   flex-wrap: wrap;
   justify-content: space-between;
@@ -3412,13 +3447,13 @@ footer a {
 }
 
 .filter-chips button:hover {
-  border-color: color-mix(in srgb, var(--green) 40%, var(--line));
+  border-color: color-mix(in srgb, var(--purple) 40%, var(--line));
 }
 
 .filter-chips button.selected {
-  color: var(--green);
-  border-color: color-mix(in srgb, var(--green) 45%, var(--line));
-  background: var(--green-soft);
+  color: var(--purple);
+  border-color: color-mix(in srgb, var(--purple) 45%, var(--line));
+  background: var(--purple-soft);
 }
 
 .result-count {
@@ -3458,8 +3493,8 @@ footer a {
 }
 
 .group-heading span {
-  color: var(--green);
-  background: var(--green-soft);
+  color: var(--purple);
+  background: var(--purple-soft);
   border-radius: 99px;
   padding: 2px 7px;
   font-size: 9px;
@@ -3503,7 +3538,7 @@ footer a {
 }
 
 .campus-row:hover {
-  border-color: color-mix(in srgb, var(--green) 35%, var(--line));
+  border-color: color-mix(in srgb, var(--purple) 35%, var(--line));
   transform: translateY(-1px);
 }
 
@@ -3513,8 +3548,8 @@ footer a {
 }
 
 .date-tile {
-  color: var(--green);
-  background: var(--green-soft);
+  color: var(--purple);
+  background: var(--purple-soft);
   border-radius: 12px;
   flex-direction: column;
   place-items: center;
@@ -3598,8 +3633,8 @@ footer a {
 }
 
 .match-chip {
-  color: var(--green);
-  background: var(--green-soft);
+  color: var(--purple);
+  background: var(--purple-soft);
   border-radius: 99px;
   align-items: center;
   gap: 4px;
@@ -3680,7 +3715,7 @@ footer a {
 }
 
 .org-update b {
-  color: var(--green);
+  color: var(--purple);
   margin-right: 5px;
   font-weight: 750;
 }
@@ -3709,8 +3744,8 @@ footer a {
 }
 
 .show-more:hover {
-  border-color: color-mix(in srgb, var(--green) 40%, var(--line));
-  background: var(--green-soft);
+  border-color: color-mix(in srgb, var(--purple) 40%, var(--line));
+  background: var(--purple-soft);
 }
 
 .show-more span {
@@ -3771,7 +3806,7 @@ footer a {
 
 /* ── The rail: what shapes the order, and where it all comes from ── */
 
-.interests-card, .provenance-card {
+.provenance-card {
   border: 1px solid var(--line);
   background: var(--surface);
   box-shadow: var(--shadow-card);
@@ -3787,8 +3822,8 @@ footer a {
 }
 
 .interests-header > span:first-child {
-  color: var(--green);
-  background: var(--green-soft);
+  color: var(--purple);
+  background: var(--purple-soft);
 }
 
 .interests-header > div {
@@ -3806,7 +3841,6 @@ footer a {
 }
 
 .interests-header strong {
-  color: var(--ink);
   letter-spacing: -.02em;
   font-size: 15px;
 }
@@ -3819,16 +3853,22 @@ footer a {
 }
 
 .interest-chips span {
-  color: var(--green);
-  background: var(--green-soft);
+  color: var(--purple);
+  background: var(--purple-soft);
   border-radius: 99px;
   padding: 5px 10px;
   font-size: 9px;
   font-weight: 700;
 }
 
-.interests-card p, .provenance-card p {
+.provenance-card p {
   color: var(--muted);
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.interests-card p {
   margin: 0;
   font-size: 11px;
   line-height: 1.6;
@@ -3869,8 +3909,8 @@ footer a {
 /* ── The drawer: the task drawer without the points ── */
 
 .drawer-icon.campus {
-  color: var(--green);
-  background: var(--green-soft);
+  color: var(--purple);
+  background: var(--purple-soft);
 }
 
 .drawer-icon.campus.required {
@@ -4004,47 +4044,13 @@ footer a {
 
 /* ── Responsive: the row is designed at 380px first ── */
 
-@media (width<=1060px) {
-  .campus-motif {
-    opacity: .8;
-    right: 15px;
-  }
-}
-
 @media (width<=820px) {
-  .campus-panel {
-    padding: 31px 28px;
-  }
-
   .required-band {
     margin-bottom: 22px;
   }
 }
 
 @media (width<=620px) {
-  .campus-panel {
-    border-radius: 20px;
-    padding: 28px 22px;
-  }
-
-  .campus-motif {
-    opacity: .55;
-    width: 120px;
-    height: 120px;
-    top: auto;
-    bottom: -18px;
-    right: -14px;
-  }
-
-  .campus-tabs {
-    width: 100%;
-  }
-
-  .campus-tabs a {
-    flex: 1;
-    justify-content: center;
-  }
-
   /* The date moves inline above the title so the copy keeps its width. */
   .campus-row {
     grid-template-columns: minmax(0, 1fr);
@@ -4154,7 +4160,7 @@ footer a {
   color: var(--muted);
   align-items: flex-start;
   gap: 8px;
-  margin: -12px 8px 24px;
+  margin: -12px 0 24px;
   font-size: 11.5px;
   line-height: 1.5;
   display: flex;
@@ -4196,16 +4202,12 @@ footer a {
 /* --- the requirement --- */
 
 .requirement-list {
-  flex-direction: column;
-  gap: 9px;
-  display: flex;
 }
 
 .requirement-card {
   border: 1px solid var(--line);
   background: var(--surface);
-  box-shadow: var(--shadow-card);
-  border-radius: 16px;
+  border-radius: 12px;
   transition: border-color .2s;
   overflow: hidden;
 }
@@ -4351,10 +4353,25 @@ footer a {
 
 /* --- the courses inside it --- */
 
+/* One level in from the requirement row, and flat there too: the tint is what
+   says "inside", not a border around every course. */
 .requirement-courses {
   border-top: 1px solid var(--line);
   background: #fbfbfe;
-  padding: 12px;
+  padding: 6px 12px 10px;
+}
+
+.requirement-courses .course-row {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.requirement-courses .course-row + .course-row {
+  border-top: 1px solid var(--line);
 }
 
 .requirement-courses-label {
@@ -4643,7 +4660,7 @@ footer a {
 
 /* --- the academic rail --- */
 
-.counts-card, .program-card, .record-card {
+.program-card, .record-card {
   background: var(--surface);
   border: 1px solid var(--line);
   box-shadow: var(--shadow-card);
@@ -4967,40 +4984,6 @@ footer a {
    An estimate is deliberately not amber.
    ────────────────────────────────────────────────────────────────────────── */
 
-.section-tabs {
-  gap: 6px;
-  margin: 0 0 18px;
-  display: flex;
-  overflow-x: auto;
-}
-
-.section-tab {
-  color: var(--muted);
-  border: 1px solid var(--line);
-  background: var(--surface);
-  border-radius: 99px;
-  flex: none;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 14px;
-  font-size: 11.5px;
-  font-weight: 650;
-  text-decoration: none;
-  transition: color .15s, border-color .15s;
-  display: flex;
-}
-
-.section-tab:hover {
-  color: var(--ink);
-  border-color: #d6d8e4;
-}
-
-.section-tab.active {
-  color: var(--purple-dark);
-  border-color: color-mix(in srgb, var(--purple) 35%, var(--surface));
-  background: var(--purple-soft);
-}
-
 /* The escalation strip — ENR-160 AC 6, at the top and again on the row. */
 .alert-strip {
   border: 1px solid var(--line);
@@ -5072,7 +5055,7 @@ footer a {
   letter-spacing: -.03em;
   align-items: center;
   gap: 10px;
-  font-size: 30px;
+  font-size: 34px;
   font-weight: 700;
   line-height: 1.1;
   display: flex;
@@ -5177,13 +5160,75 @@ footer a {
   font-size: 10.5px;
 }
 
+/* Depth 1 — a card raised off the canvas. Every block of a section's main
+   column is one of these; nothing sits loose on the canvas any more. The two
+   numbers are published as variables because the rows inside have to meet them
+   exactly — see `.card-rows`. */
+.section-card,
 .ledger-card, .schedule-card, .progress-preview, .billed-split {
+  --card-pad: 20px;
+  --card-radius: 18px;
   border: 1px solid var(--line);
   background: var(--surface);
   box-shadow: var(--shadow-card);
-  border-radius: 18px;
+  border-radius: var(--card-radius);
   margin-bottom: 18px;
-  padding: 20px;
+  padding: var(--card-pad);
+}
+
+/* Rows inside a card. They give up their own surface and live on the card's
+   white; a hairline and the type do the separating. `.doc-task` in My
+   Financials already worked this way and was the only block that read as built
+   — this is that rule, named once and applied to every list in the portal.
+ *
+ * The rows run out to the card's own edges rather than sitting inside its
+ * padding: the hairlines then span the whole card, and the first and last rows
+ * take the corner they touch instead of meeting a rounded card with a square
+ * edge. `--card-pad` and `--card-radius` are the card's, so a row never has to
+ * know a number the card decided. */
+.card-rows {
+  border-radius: 0 0 calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px);
+  margin: 0 calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad));
+  display: block;
+  overflow: hidden;
+}
+
+.card-rows > * {
+  padding-left: var(--card-pad);
+  padding-right: var(--card-pad);
+}
+
+.card-rows > *,
+.card-rows .campus-row,
+.card-rows .requirement-card {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  width: 100%;
+}
+
+.card-rows > * + *,
+.card-rows .campus-row + .campus-row,
+.card-rows .requirement-card + .requirement-card {
+  border-top: 1px solid var(--line);
+}
+
+/* The two markers that survive flattening, because they carry meaning rather
+   than decoration: an obligation, and the one step to do next. */
+.card-rows .required-card {
+  border-left: 3px solid var(--crimson);
+}
+
+.card-rows .task-card.recommended {
+  background: color-mix(in srgb, var(--purple) 4%, var(--surface));
+}
+
+/* The ribbon runs the full width of the card like the row it heads. Left inside
+   the row's padding it was a square bar floating in a rounded card. */
+.card-rows .recommended-banner {
+  margin-left: calc(-1 * var(--card-pad));
+  margin-right: calc(-1 * var(--card-pad));
 }
 
 /* Coverage as a stacked bar: a ring cannot draw a segment of unknown size. */
@@ -5797,18 +5842,6 @@ footer a {
 }
 
 /* Rail — the dark number on top, the offer below, as on My Enrollment. */
-.next-payment-card {
-  color: #fff;
-  background: linear-gradient(145deg, #1b203a, #312960);
-  border-radius: 18px;
-  padding: 18px;
-  box-shadow: 0 14px 28px #201e452e;
-}
-
-.next-payment-card .panel-label {
-  color: #b9b4dd;
-}
-
 .next-payment-figure {
   letter-spacing: -.03em;
   margin: 6px 0 2px;
@@ -6126,7 +6159,7 @@ footer a {
 }
 
 @media (width<=620px) {
-  .section-tabs {
+  .group-tabs {
     margin-inline: -13px;
     padding-inline: 13px;
   }

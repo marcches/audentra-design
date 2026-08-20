@@ -10,7 +10,7 @@ export default function InsightColumn({
   onOpenPoints,
 }) {
   return (
-    <aside className="insight-column">
+    <>
       <MomentumCard
         earnedPoints={earnedPoints}
         availableToday={availableToday}
@@ -33,6 +33,6 @@ export default function InsightColumn({
           Continue where I left off <Icon name="arrow" size={16} />
         </button>
       </div>
-    </aside>
+    </>
   );
 }

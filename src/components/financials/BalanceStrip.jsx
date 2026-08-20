@@ -13,7 +13,7 @@ import { formatMoney } from '../../lib/money.js';
  */
 export default function BalanceStrip({ ledger, year, unknown, onContact }) {
   return (
-    <section className="progress-panel balance-panel" aria-label="Your balance">
+    <>
       <div className="balance-summary">
         <span className="panel-label">
           Estimated remaining balance
@@ -39,6 +39,6 @@ export default function BalanceStrip({ ledger, year, unknown, onContact }) {
       </div>
 
       <AdvisorBar advisor={financialAidAdvisor} onContact={onContact} />
-    </section>
+    </>
   );
 }
