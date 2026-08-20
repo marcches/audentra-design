@@ -17,7 +17,7 @@ export const PREVIEW_STATES = [
   ['partial', 'Partial data', 'The catalog loaded; your transcript could not be checked.'],
   ['error', 'Error', 'The published catalog could not be loaded at all.'],
   ['aid-final', 'Aid finalized', 'My Financials with the federal loan approved and nothing outstanding.'],
-  ['empty', 'No programme yet', 'Before Aster assigns your academic programme.'],
+  ['empty', 'No program yet', 'Before Aster assigns your academic program.'],
 ];
 
 /**

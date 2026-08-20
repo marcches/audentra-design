@@ -158,6 +158,8 @@ export const DESTINATIONS = [
     appears: 'Events Aster publishes for your class appear here.',
     produces: 'Nothing is scheduled yet.',
     next: 'clubs',
+    // Obligations only — ENR-189. Campus life is optional; the count is not.
+    badge: 'required',
     built: true,
   },
   {

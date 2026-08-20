@@ -46,6 +46,12 @@ function NavRow({ id, activeId, badges, leaf, onNavigate }) {
         {item.label}
         {item.badge === 'openSteps' && <NavBadge count={badges.openSteps} noun="steps still open" />}
         {item.badge === 'unread' && <NavBadge count={badges.unread} noun="unread messages" />}
+        {item.badge === 'required' && (
+          <NavBadge
+            count={badges.required}
+            noun={badges.required === 1 ? 'required event' : 'required events'}
+          />
+        )}
       </a>
     </li>
   );

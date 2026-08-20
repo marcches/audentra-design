@@ -119,16 +119,25 @@ export default function MyCampusLife({ previewState = 'ready', tab, onToast = ()
       : board.clubs.filter((item) => item.category === clubCategory);
   const shownClubs = filteredClubs.slice(0, clubLimit);
 
+  const nothingPublished = board.events.length === 0 && board.clubs.length === 0;
+
   const hero = (
-    <section className={`welcome-panel campus-panel ${board.events.length === 0 ? 'quiet' : ''}`}>
+    <section className={`welcome-panel campus-panel ${nothingPublished ? 'quiet' : ''}`}>
       <div className="welcome-copy">
         <p className="eyebrow">
           <span>Campus life</span> · Published by {campusPublisher.office}
         </p>
         <h1>Find your people, Maya.</h1>
         <p>
-          Events, clubs and the people who run them — published by {campusPublisher.office}. One
-          session is required; everything else is yours to choose.
+          {nothingPublished
+            ? `Events, clubs and the people who run them are published here by ${campusPublisher.office}. Nothing is up yet — this page fills itself in as they publish.`
+            : `Events, clubs and the people who run them — published by ${campusPublisher.office}. ${
+                required.length === 0
+                  ? 'Nothing here is required; it is all yours to choose.'
+                  : `${
+                      required.length === 1 ? 'One session is' : `${required.length} sessions are`
+                    } required; everything else is yours to choose.`
+              }`}
         </p>
       </div>
       <div className="campus-motif" aria-hidden="true">

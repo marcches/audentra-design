@@ -86,9 +86,13 @@ export default function MyClassrooms({ state, onToast }) {
           <Icon name="book" size={14} />
           {unknownProgram ? 'Program not assigned yet' : program.name} · {program.classOf}
         </span>
-        <span className="catalog-meta">
-          Catalog {program.catalog} · {program.publishedOn} · Read-only
-        </span>
+        {/* The catalog belongs to the program. With no program assigned,
+            naming a catalog version would claim something that is not settled. */}
+        {!unknownProgram && (
+          <span className="catalog-meta">
+            Catalog {program.catalog} · {program.publishedOn} · Read-only
+          </span>
+        )}
       </div>
 
       {!unknownProgram && (
@@ -266,6 +270,7 @@ export default function MyClassrooms({ state, onToast }) {
         <AcademicColumn
           approved={totals.approved}
           underReview={underReview}
+          unavailable={matches === null}
           unknownProgram={unknownProgram}
           onOpenCredit={() => setCreditModal(true)}
         />
@@ -274,6 +279,7 @@ export default function MyClassrooms({ state, onToast }) {
       {drawerItem && (
         <AcademicDrawer
           item={drawerItem}
+          suspended={creditModal}
           onClose={() => setDrawerItem(null)}
           onAsk={askAdvisor}
           onOpenCredit={() => setCreditModal(true)}

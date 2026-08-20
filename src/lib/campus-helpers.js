@@ -68,6 +68,13 @@ function byDateDescending(a, b) {
 export function groupLabel(iso, today) {
   const date = toDate(iso);
   const now = toDate(today);
+  // A past event is grouped by the month it happened in. `This week` would be
+  // true of last Tuesday and read as an invitation to something already over.
+  if (iso < today) {
+    return `${MONTHS[date.getMonth()]}${
+      date.getFullYear() === now.getFullYear() ? '' : ` ${date.getFullYear()}`
+    }`;
+  }
   const endOfWeek = new Date(now.getTime() + ((7 - now.getDay()) % 7) * DAY_MS);
   if (date <= endOfWeek) return 'This week';
   if (date <= new Date(endOfWeek.getTime() + 7 * DAY_MS)) return 'Next week';

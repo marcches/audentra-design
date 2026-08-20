@@ -7,12 +7,17 @@ import InfoModal from './components/InfoModal.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import EnrollmentPage from './components/EnrollmentPage.jsx';
 import MyCampusLife, { CAMPUS_PREVIEW_STATES } from './components/MyCampusLife.jsx';
+import { requiredEventCount } from './campus-data.js';
 import PageShell from './components/PageShell.jsx';
 import PageSkeleton from './components/PageSkeleton.jsx';
 import PageError from './components/PageError.jsx';
 import SectionPlaceholder from './components/SectionPlaceholder.jsx';
+import FinancialsOverview from './pages/FinancialsOverview.jsx';
+import FinancialsAid from './pages/FinancialsAid.jsx';
+import FinancialsPayments from './pages/FinancialsPayments.jsx';
 import MyClassrooms from './components/MyClassrooms.jsx';
 import { sortTasks } from './lib/task-helpers.js';
+import { buildLedger } from './lib/money.js';
 import {
   DEFAULT_ROUTE,
   destinationByRoute,
@@ -20,6 +25,7 @@ import {
   isRouteHash,
 } from './lib/navigation.js';
 import {
+  FINANCIALS_STATES,
   PREVIEW_STATES,
   frameState,
   readPreviewState,
@@ -27,7 +33,10 @@ import {
 } from './lib/preview-state.js';
 import {
   TOTAL_STEPS,
+  academicYear,
   enrollmentAdvisor,
+  financialAidAdvisor,
+  financialStates,
   initialCompleted,
   initialReviewing,
   initialTasks,
@@ -45,6 +54,7 @@ export default function App() {
   const [completedOpen, setCompletedOpen] = useState(false);
   const [smartModal, setSmartModal] = useState(false);
   const [pointsModal, setPointsModal] = useState(false);
+  const [progressModal, setProgressModal] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [fileReady, setFileReady] = useState(false);
   const [housing, setHousing] = useState('on-campus');
@@ -73,9 +83,24 @@ export default function App() {
   const availableToday = viewTasks.reduce((total, task) => total + task.points, 0);
   const progress = Math.round((viewCompleted.length / TOTAL_STEPS) * 100);
 
+  // My Financials opens on a package that is still pending — the state the
+  // card's guardrail is about. `aid-final` is the same page once it settles.
+  const inFinancials = current?.group === 'financials';
+  const snapshot = financialStates[preview === 'aid-final' ? 'final' : 'pending'];
+  const ledger = useMemo(() => buildLedger(snapshot), [snapshot]);
+
+  // The same task objects the checklist renders, filtered — never a copy.
+  // ENR-160 AC 5 holds because there is only one list.
+  const financialDocs =
+    isEmpty || preview === 'aid-final' ? [] : viewTasks.filter((task) => task.financial);
+  const urgentDoc = [...financialDocs].sort((a, b) => a.daysLeft - b.daysLeft)[0] ?? null;
+  const byId = useMemo(() => Object.fromEntries(tasks.map((t) => [t.id, t])), [tasks]);
+
   // Partial data shows no count at all rather than a zero that reads as final.
   const unread = unavailable ? null : isEmpty ? 0 : unreadMessages;
-  const badges = unavailable ? {} : { openSteps: viewTasks.length, unread };
+  const badges = unavailable
+    ? {}
+    : { openSteps: viewTasks.length, unread, required: requiredEventCount(preview) };
 
   useEffect(() => {
     const onHashChange = () => {
@@ -97,6 +122,7 @@ export default function App() {
     setNavOpen(false);
     setSmartModal(false);
     setPointsModal(false);
+    setProgressModal(false);
     setActiveTask(null);
 
     if (pendingTask.current) {
@@ -137,6 +163,7 @@ export default function App() {
         setActiveTask(null);
         setSmartModal(false);
         setPointsModal(false);
+        setProgressModal(false);
         setNavOpen(false);
       }
     };
@@ -190,6 +217,22 @@ export default function App() {
     }
 
     setActiveTask(null);
+  }
+
+  function contactAid(channel) {
+    setToast(
+      `${channel === 'email' ? 'An email' : 'A message'} to ${
+        financialAidAdvisor.name
+      } would open here—nothing is sent yet.`,
+    );
+  }
+
+  function payHandoff() {
+    setToast('Aster’s secure payment page would open here — nothing is sent yet.');
+  }
+
+  function changePlan() {
+    setToast('Payment plans are changed in Aster’s billing portal — nothing is changed here.');
   }
 
   function contactAdvisor(channel) {
@@ -295,6 +338,52 @@ export default function App() {
     // Every other destination states what will appear there and what produces
     // it — ENR-174 AC8. As each section's own card lands (ENR-165, ENR-166,
     // ENR-182, ENR-183, ENR-184, ENR-188) its page takes this slot.
+    if (inFinancials) {
+      const shared = {
+        destination: current,
+        eyebrow: groupLabel(current),
+        ledger,
+        snapshot,
+        year: academicYear,
+        unavailable,
+        isEmpty,
+        onContact: contactAid,
+        onRetry: () => choosePreview('ready'),
+      };
+
+      if (current.id === 'financials-overview') {
+        return (
+          <FinancialsOverview
+            {...shared}
+            documents={financialDocs}
+            urgent={urgentDoc}
+            depositDays={byId.deposit?.daysLeft}
+            onOpenTask={openTaskFromSummary}
+            onPay={payHandoff}
+          />
+        );
+      }
+
+      if (current.id === 'financials-aid') {
+        return (
+          <FinancialsAid
+            {...shared}
+            blockers={byId}
+            onOpenTask={openTaskFromSummary}
+            onExplainProgress={() => setProgressModal(true)}
+          />
+        );
+      }
+
+      return (
+        <FinancialsPayments
+          {...shared}
+          onPay={payHandoff}
+          onChangePlan={changePlan}
+        />
+      );
+    }
+
     return (
       <PageShell eyebrow={groupLabel(current)} title={current.label} lede={current.lede}>
         <SectionPlaceholder section={current} />
@@ -332,11 +421,13 @@ export default function App() {
           unread={unread}
           previewState={preview}
           previewStates={
-            current?.group === 'campus'
-              ? CAMPUS_PREVIEW_STATES
-              : current?.id === 'my-classrooms'
-                ? PREVIEW_STATES
-                : undefined
+            inFinancials
+              ? FINANCIALS_STATES
+              : current?.group === 'campus'
+                ? CAMPUS_PREVIEW_STATES
+                : current?.id === 'my-classrooms'
+                  ? PREVIEW_STATES
+                  : undefined
           }
           onPreviewState={choosePreview}
         />
@@ -362,12 +453,13 @@ export default function App() {
         />
       )}
 
-      {(smartModal || pointsModal) && (
+      {(smartModal || pointsModal || progressModal) && (
         <InfoModal
-          variant={smartModal ? 'smart' : 'points'}
+          variant={smartModal ? 'smart' : progressModal ? 'progress' : 'points'}
           onClose={() => {
             setSmartModal(false);
             setPointsModal(false);
+            setProgressModal(false);
           }}
         />
       )}

@@ -7,3 +7,6 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# Browser automation artifacts
+.playwright-mcp

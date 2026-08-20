@@ -2,8 +2,10 @@ import Icon from '../Icon.jsx';
 import { requirementStatus, statusIcon, statusLabel } from '../lib/academic-helpers.js';
 
 function creditsLabel(requirement) {
-  if (requirement.creditsApproved == null) return 'Credits pending sync';
-  return `${requirement.creditsApproved} of ${requirement.creditsRequired} credits`;
+  // A figure that did not arrive renders as an em dash rather than a zero that
+  // would read as final — the frame's partial-data convention (ENR-180).
+  const approved = requirement.creditsApproved == null ? '—' : requirement.creditsApproved;
+  return `${approved} of ${requirement.creditsRequired} credits`;
 }
 
 function courseIcon(state) {

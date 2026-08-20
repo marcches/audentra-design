@@ -14,6 +14,13 @@ const CREDIT_STEPS = [
   ['04', 'A decision is recorded', 'Approved, partly approved, or not approved. Only at this point does a requirement change.'],
 ];
 
+const PROGRESS_STEPS = [
+  ['01', 'What is measured', 'Your grade average, the share of credits you finish, and how many you have attempted in total.'],
+  ['02', 'When it is measured', 'At the end of every term, once grades are final. Never mid-term, and never from this page.'],
+  ['03', 'Who decides', 'Student Financial Services reviews each record on its own, including anything that happened to you that a number cannot show.'],
+  ['04', 'What you hear', 'A decision comes to you from Aster directly, with what to do next if you are under a minimum. Nothing changes before that.'],
+];
+
 const POINT_RULES = [
   'Each task starts with a maximum reward set by Aster.',
   'The reward typically decreases by one point per day.',
@@ -77,8 +84,33 @@ export default function InfoModal({ variant, onClose }) {
               Plan your courses as if a match does not exist.
             </div>
           </>
-        ) : (
-          <>
+        ) : variant === 'progress' ? (
+          <>
+            <span className="modal-kicker progress">
+              <Icon name="chart" size={16} /> Academic progress
+            </span>
+            <h2 id="info-title">A check Aster runs. Never a decision this page makes.</h2>
+            <p>
+              Federal rules ask Aster to confirm you are moving through your degree before it
+              releases aid for another term. Audentra can show you what your record says today. It
+              cannot decide anything, and neither can the panel you came from.
+            </p>
+            <div className="signal-grid">
+              {PROGRESS_STEPS.map(([number, title, copy]) => (
+                <div key={number}>
+                  <span>{number}</span>
+                  <strong>{title}</strong>
+                  <p>{copy}</p>
+                </div>
+              ))}
+            </div>
+            <div className="modal-note safe">
+              <Icon name="shield" size={18} /> Being under a minimum is not the end of your aid.
+              There is an appeal, and your advisor starts it with you.
+            </div>
+          </>
+        ) : (
+          <>
             <span className="modal-kicker points">
               <Icon name="spark" size={16} /> Momentum points
             </span>

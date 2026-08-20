@@ -16,15 +16,26 @@ const NEXT_STEPS = [
  * while it is open and returns to whatever opened it — the pattern this repo
  * owes every overlay.
  */
-export default function AcademicDrawer({ item, onClose, onAsk, onOpenCredit }) {
+export default function AcademicDrawer({ item, onClose, onAsk, onOpenCredit, suspended }) {
   const panel = useRef(null);
   const opener = useRef(null);
   const [tab, setTab] = useState('evidence');
 
+  // Mount only: remember what opened this, and hand focus back on the way out.
+  // Kept apart from the key handler below so that suspending the drawer for a
+  // modal does not run this cleanup and steal focus out of the modal.
   useEffect(() => {
     opener.current = document.activeElement;
+    panel.current?.querySelector(FOCUSABLE)?.focus();
+    const returnTo = opener.current;
+    return () => returnTo?.focus?.();
+  }, []);
+
+  useEffect(() => {
+    // A modal opened from inside the drawer sits on top of it. While it is
+    // there, Esc and the tab trap belong to the modal, not to us.
+    if (suspended) return undefined;
     const node = panel.current;
-    node?.querySelector(FOCUSABLE)?.focus();
 
     function onKeyDown(event) {
       if (event.key === 'Escape') {
@@ -47,11 +58,8 @@ export default function AcademicDrawer({ item, onClose, onAsk, onOpenCredit }) {
     }
 
     document.addEventListener('keydown', onKeyDown, true);
-    return () => {
-      document.removeEventListener('keydown', onKeyDown, true);
-      opener.current?.focus?.();
-    };
-  }, [onClose]);
+    return () => document.removeEventListener('keydown', onKeyDown, true);
+  }, [onClose, suspended]);
 
   const isMatch = item.kind === 'match';
 

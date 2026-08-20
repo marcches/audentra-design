@@ -25,7 +25,7 @@ export const requirementGroups = [
   {
     id: 'major',
     name: 'Computer Science major',
-    summary: 'The sequence your programme is built on.',
+    summary: 'The sequence your program is built on.',
   },
   { id: 'electives', name: 'Electives', summary: 'The part of the degree you choose.' },
 ];
@@ -68,7 +68,7 @@ export const requirements = [
         credits: 3,
         terms: 'Fall',
         state: 'open',
-        note: 'Counts in place of WRIT 102 for science programmes.',
+        note: 'Counts in place of WRIT 102 for science programs.',
       },
     ],
   },
@@ -251,7 +251,7 @@ export const requirements = [
     id: 'systems',
     group: 'major',
     name: 'Systems',
-    summary: 'How a machine actually runs the programmes you write.',
+    summary: 'How a machine actually runs the programs you write.',
     creditsRequired: 12,
     creditsApproved: 0,
     courses: [
@@ -412,9 +412,9 @@ export const matchSources = [
   'An Aster placement exam result',
 ];
 
-/** Shown while the programme itself has not been assigned. */
+/** Shown while the program itself has not been assigned. */
 export const unassignedProgram = {
-  heading: 'Your programme hasn’t been assigned yet',
-  body: 'Aster assigns your academic programme after your enrollment deposit clears. When it does, your degree requirements appear here — every requirement, what satisfies it, and any credit you already have.',
+  heading: 'Your program hasn’t been assigned yet',
+  body: 'Aster assigns your academic program after your enrollment deposit clears. When it does, your degree requirements appear here — every requirement, what satisfies it, and any credit you already have.',
   produces: 'Complete ‘Lock in your place’ on My Enrollment',
 };

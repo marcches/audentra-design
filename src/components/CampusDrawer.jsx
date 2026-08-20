@@ -199,14 +199,17 @@ export default function CampusDrawer({ item, kind, past, onClose, onToast }) {
             </div>
           )}
 
-          <div className="about-panel">
-            <h3>{isEvent ? 'About this event' : `About ${item.name}`}</h3>
-            <p>{isEvent ? item.about : item.description}</p>
-            <p className="published-note">
-              Published by Aster staff. Nothing on this page changes your enrollment progress or your
-              points.
-            </p>
-          </div>
+          {item.about && (
+            <div className="about-panel">
+              <h3>{isEvent ? 'About this event' : `About ${item.name}`}</h3>
+              <p>{item.about}</p>
+            </div>
+          )}
+
+          <p className="published-note">
+            Published by Aster staff. Nothing on this page changes your enrollment progress or your
+            points.
+          </p>
         </div>
       </aside>
     </>

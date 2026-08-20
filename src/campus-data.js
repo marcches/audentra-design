@@ -297,6 +297,8 @@ export const campusOrganisations = [
     interests: ['Music'],
     description:
       'Forty voices, two concerts a term, and a reputation for taking beginners seriously. No audition experience needed.',
+    about:
+      'The choir sings two concert programmes a term and rehearses once a week. Roughly a third of the singers arrive having never read sheet music, so rehearsals start with the part-learning rather than assuming it.',
     meets: 'Tuesdays, 7:30 PM · Ferrand Music Building',
     contact: { name: 'Dana Whitfield', role: 'Faculty adviser', email: 'd.whitfield@aster.edu' },
     latestUpdate: {
@@ -312,6 +314,8 @@ export const campusOrganisations = [
     interests: ['Volunteering'],
     description:
       'Student-run since 2019. Packs and delivers weekly boxes to households in the three neighbourhoods around campus.',
+    about:
+      'Run entirely by students since 2019, with a staff link in the chaplaincy. Volunteers pack boxes on Saturday mornings and a smaller team drives the deliveries; you can do either, or both, or one Saturday a term.',
     meets: 'Saturdays, 10:00 AM · Student Union, lower level',
     contact: { name: 'Miguel Santos', role: 'Student coordinator', email: 'm.santos@aster.edu' },
     latestUpdate: {
@@ -327,6 +331,8 @@ export const campusOrganisations = [
     interests: ['Community'],
     description:
       'For students who are the first in their family to go to university, and the staff who were too.',
+    about:
+      'The network runs a monthly meetup, a mentoring pairing with second and third years, and a private channel for the questions that are easier to ask in writing.',
     meets: 'Second Tuesday of the month, 5:00 PM · Alcott House',
     contact: { name: 'Rae Okonjo', role: 'Network chair', email: 'r.okonjo@aster.edu' },
     latestUpdate: null,
@@ -339,6 +345,8 @@ export const campusOrganisations = [
     interests: ['Academic'],
     description:
       'Builds two competition robots a year and runs an open lab night every Thursday. Every discipline welcome.',
+    about:
+      'Two competition robots a year, an open lab night every Thursday, and a workshop with more tools than most students have used. Historians and biologists are as welcome as engineers.',
     meets: 'Thursdays, 6:00 PM · Kessler Lab',
     contact: { name: 'Lena Duarte', role: 'Faculty adviser', email: 'l.duarte@aster.edu' },
     latestUpdate: {
@@ -354,6 +362,8 @@ export const campusOrganisations = [
     interests: ['Sports'],
     description:
       'Weekend hikes, two climbing walls and kit you can borrow instead of buy. Trips are subsidised for first-years.',
+    about:
+      'Weekend hikes at three difficulty levels, two indoor climbing walls, and a kit room where boots, packs and waterproofs are borrowed rather than bought. Trips are subsidised for first-year students.',
     meets: 'Wednesdays, 5:30 PM · Sports Center foyer',
     contact: { name: 'Sam Iyer', role: 'Trips secretary', email: 's.iyer@aster.edu' },
     latestUpdate: {
@@ -369,6 +379,8 @@ export const campusOrganisations = [
     interests: ['Music'],
     description:
       'Broadcasts eighteen hours a day during term. Runs the open mic night and trains anyone who wants a show.',
+    about:
+      'The station broadcasts eighteen hours a day in term and trains anyone who wants a show, from scratch. It also runs the open mic night and records the poetry evenings.',
     meets: 'Mondays, 7:00 PM · Student Union, studio 3',
     contact: { name: 'Noor Haddad', role: 'Station manager', email: 'n.haddad@aster.edu' },
     latestUpdate: {
@@ -535,3 +547,13 @@ export const fullBoardOrganisations = [
   ...campusOrganisations,
   ...denseOrganisations.map(expandOrganisation),
 ];
+
+/**
+ * The sidebar count on `Events` — obligations only, never a count of things to
+ * browse. A number in this portal always means something is waiting for you.
+ */
+export function requiredEventCount(previewState = 'ready') {
+  if (previewState === 'empty' || previewState === 'error') return 0;
+  const events = previewState === 'full-board' ? fullBoardEvents : campusEvents;
+  return events.filter((event) => event.required && event.date >= CAMPUS_TODAY).length;
+}
