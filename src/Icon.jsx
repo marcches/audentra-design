@@ -37,6 +37,13 @@ const paths = {
       <path d="M5 14v5h14v-5" />
     </>
   ),
+  download: (
+    <>
+      <path d="M12 4v12" />
+      <path d="m7 11 5 5 5-5" />
+      <path d="M5 14v5h14v-5" />
+    </>
+  ),
   external: (
     <>
       <path d="M14 5h5v5" />

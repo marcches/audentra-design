@@ -75,6 +75,10 @@ export const DESTINATIONS = [
     label: 'My Documents',
     route: '#/my-documents',
     icon: 'file',
+    // ENR-158 AC 5, the half a portal with no mail server can honour: a
+    // decision she has not opened is counted here, so it reaches her somewhere
+    // other than the page it happened on.
+    badge: 'decisions',
     lede: 'Everything you have sent Aster, and everything Aster has sent you.',
     hero: {
       kicker: 'My Documents',
@@ -84,7 +88,7 @@ export const DESTINATIONS = [
     appears: 'Documents you upload and documents Aster sends you appear here.',
     produces: 'The first one arrives when you complete a step that asks for a file.',
     next: 'my-enrollment',
-    built: false,
+    built: true,
   },
   {
     id: 'appointments',

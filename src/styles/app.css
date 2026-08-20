@@ -9523,3 +9523,791 @@ footer a {
     grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * My Documents — ENR-165
+ *
+ * The vocabulary here is about a wait and a decision, so almost nothing in this
+ * block is a new shape: the rows are `.card-rows` children on the card's own
+ * white, the drawer is the task drawer, the strips are `.alert-strip`. What is
+ * genuinely new is three things the portal had no expression for:
+ *
+ *   - a **state as the line under a title** rather than a chip on the right, so
+ *     `In review` has room to name who holds it and how long that takes;
+ *   - a **reason panel**, the one tinted block in a drawer, carrying why
+ *     something came back and what would fix it;
+ *   - an **extraction review**, where every value is an editable field that has
+ *     to be decided before anything can be sent.
+ *
+ * Nothing paints an edge. The two states where the student owes a move mark the
+ * square tile, which is the shape that can take a mark.
+ * ------------------------------------------------------------------ */
+
+/* --- the row --- */
+
+.document-row {
+  cursor: pointer;
+  text-align: left;
+  background: none;
+  border: 0;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 13px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  display: grid;
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.document-row:hover {
+  background: #fafaff;
+}
+
+.document-row:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: -3px;
+}
+
+/* The mark lives on the tile because the tile is square. A 3px bar down the
+   left of a row with rounded corners is a rule wearing a card's shape. */
+.document-tile {
+  color: var(--muted);
+  background: var(--canvas);
+  border-radius: 11px;
+  flex: none;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  display: grid;
+}
+
+.document-tile.act {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.document-tile.stop {
+  color: var(--crimson);
+  background: var(--crimson-soft);
+}
+
+.document-tile.done {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.document-tile.progress {
+  color: var(--purple);
+  background: var(--purple-soft);
+}
+
+.document-tile.issued {
+  color: var(--muted);
+  background: var(--canvas);
+}
+
+.document-body {
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+  display: flex;
+}
+
+.document-body strong {
+  color: var(--ink);
+  align-items: center;
+  gap: 7px;
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-semi);
+  display: flex;
+}
+
+/* The unread mark for a decision she has not opened — ENR-158 AC 5. */
+.document-new {
+  background: var(--purple);
+  border-radius: 50%;
+  flex: none;
+  width: 6px;
+  height: 6px;
+}
+
+/* The anchor of the row is this line, not a chip: it is the only place that can
+   say who holds the next step and how long that usually takes. */
+.document-state {
+  color: var(--muted);
+  align-items: center;
+  gap: 7px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.document-row.done .document-state {
+  color: var(--green);
+}
+
+.document-row.stop .document-state {
+  color: var(--crimson);
+}
+
+.document-row.act .document-state {
+  color: var(--amber);
+}
+
+/* A helper line only where it changes what she does — never on every row. */
+.document-consequence {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 3px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.document-consequence svg {
+  color: var(--crimson);
+  flex: none;
+  margin-top: 3px;
+}
+
+.document-trail {
+  align-items: center;
+  gap: 11px;
+  display: flex;
+}
+
+.document-open {
+  color: #b3b7c6;
+  flex: none;
+  display: grid;
+}
+
+.document-row:hover .document-open {
+  color: var(--purple);
+}
+
+.document-row.issued .document-body strong {
+  font-weight: var(--fw-medium);
+}
+
+/* The caption that labels a run of rows, so the boundary between the runs does
+   the work a tag on every row would otherwise be asked to do. */
+.rows-caption {
+  color: var(--muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: var(--card-zone);
+  border-bottom: 1px solid var(--line);
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-family: var(--font-geist-mono);
+  font-size: var(--fs-micro);
+}
+
+.card-rows > .rows-caption + * {
+  border-top: 0;
+}
+
+/* --- the strip that gives permission to leave --- */
+
+.alert-strip.checking {
+  color: var(--ink);
+  background: var(--purple-soft);
+  border-color: #d6d0ff;
+}
+
+.alert-strip.checking .alert-strip-icon {
+  color: var(--purple);
+  background: #e2ddff;
+}
+
+.alert-strip.checking .pulse {
+  background: var(--purple);
+}
+
+/* --- the drawer --- */
+
+.document-drawer .document-lede {
+  color: var(--muted);
+  margin: 0 0 18px;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* The one tinted block in the drawer: spend colour once, on the thing that is
+   asking. Everything below it sits on the drawer's own white. */
+.reject-panel {
+  background: var(--crimson-soft);
+  border: 1px solid #eed3d8;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  padding: 17px;
+}
+
+.reject-panel h3 {
+  color: var(--crimson);
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 9px;
+  font-size: var(--fs-h4);
+  display: flex;
+}
+
+.reject-reason {
+  color: var(--ink);
+  margin: 0 0 14px;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.reject-lead {
+  color: var(--crimson);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+  font-family: var(--font-geist-mono);
+  font-size: var(--fs-micro);
+}
+
+.reject-remedies {
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.reject-remedies li {
+  color: var(--ink);
+  align-items: flex-start;
+  gap: 8px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.reject-remedies svg {
+  color: var(--crimson);
+  flex: none;
+  margin-top: 3px;
+}
+
+.reject-by {
+  color: var(--muted);
+  border-top: 1px solid #eed3d8;
+  margin: 14px 0 0;
+  padding-top: 11px;
+  font-size: var(--fs-meta);
+}
+
+/* --- what the requirement wants, stated before any file field --- */
+
+.document-brief h3,
+.document-upload h3,
+.document-history h3 {
+  color: var(--ink);
+  margin: 0 0 9px;
+  font-size: var(--fs-h4);
+}
+
+.document-brief p {
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.document-why,
+.document-unblocks {
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 10px;
+  font-size: var(--fs-copy);
+  display: flex;
+}
+
+.document-why svg,
+.document-unblocks svg {
+  flex: none;
+  margin-top: 3px;
+}
+
+.document-brief .document-unblocks {
+  color: var(--green);
+}
+
+/* The formats, stated before the attempt — never only inside an error. */
+.document-brief .document-accepts {
+  letter-spacing: .06em;
+  margin-top: 10px;
+  font-family: var(--font-geist-mono);
+  font-size: var(--fs-meta);
+}
+
+.document-route {
+  background: var(--card-zone);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  margin-top: 20px;
+  padding: 17px;
+}
+
+.document-route p {
+  color: var(--muted);
+  margin: 0 0 13px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+/* --- the file field --- */
+
+.document-upload {
+  border-top: 1px solid var(--line);
+  margin-top: 22px;
+  padding-top: 20px;
+}
+
+/* The base zone is a tall column for a first upload. Here the file is one line
+   in a row of controls, so it is overridden rather than duplicated. */
+.document-upload .upload-zone {
+  cursor: default;
+  flex-direction: row;
+  align-items: center;
+  gap: 13px;
+  min-height: 0;
+  padding: 15px;
+}
+
+.document-upload .upload-mark {
+  color: #624ec0;
+  background: #ece8ff;
+  border-radius: 12px;
+  flex: none;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  display: grid;
+}
+
+.upload-chosen {
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  display: flex;
+}
+
+.upload-chosen strong {
+  overflow-wrap: anywhere;
+  font-size: var(--fs-copy);
+}
+
+.upload-chosen span {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+.document-upload .upload-zone.has-file .upload-mark {
+  color: #267659;
+  background: #dff3ea;
+}
+
+/* Refused in the field, against the rule it broke — never in a modal. */
+.document-upload .upload-zone.refused {
+  background: var(--crimson-soft);
+  border-style: solid;
+  border-color: #eec6cd;
+}
+
+.document-upload .upload-zone.refused .upload-mark {
+  color: var(--crimson);
+  background: #f6dde1;
+}
+
+.upload-refusal {
+  color: var(--crimson);
+  align-items: flex-start;
+  gap: 7px;
+  margin: 10px 0 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.upload-refusal svg {
+  flex: none;
+  margin-top: 3px;
+}
+
+.upload-privacy {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 7px;
+  margin: 11px 0 0;
+  font-size: var(--fs-micro);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.upload-privacy svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.document-upload > .primary-button {
+  justify-content: center;
+  width: 100%;
+  margin-top: 17px;
+}
+
+.upload-blocked {
+  color: var(--amber);
+  text-align: center;
+  margin: 9px 0 0;
+  font-size: var(--fs-copy);
+}
+
+/* A send that never arrived created nothing, so this is a panel about a file
+   still in her hands — not a record of a submission. */
+.upload-failed {
+  background: var(--crimson-soft);
+  border: 1px solid #eed3d8;
+  border-radius: 15px;
+  margin-top: 17px;
+  padding: 16px;
+}
+
+.upload-failed p {
+  color: var(--ink);
+  margin: 0 0 13px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.upload-failed-actions {
+  flex-wrap: wrap;
+  gap: 9px;
+  display: flex;
+}
+
+/* --- the extraction review --- */
+
+.extract-review {
+  background: var(--card-zone);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  margin-top: 17px;
+  padding: 17px;
+}
+
+.extract-head h3 {
+  margin: 0 0 6px;
+  font-size: var(--fs-h4);
+}
+
+.extract-note {
+  color: var(--muted);
+  margin: 0 0 15px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.extract-fields {
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.extract-field label {
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+  display: block;
+}
+
+.extract-control {
+  align-items: center;
+  gap: 9px;
+  display: flex;
+}
+
+.extract-field input {
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  min-width: 0;
+  flex: 1;
+  padding: 9px 11px;
+  font-family: inherit;
+  font-size: var(--fs-copy);
+}
+
+.extract-field input:focus-visible {
+  border-color: var(--purple);
+  outline: 2px solid #6854d933;
+  outline-offset: 1px;
+}
+
+/* Undecided is the loud state, because silence is what must not pass. */
+.extract-field.open input {
+  background: var(--amber-soft);
+  border-color: #e8cfa6;
+}
+
+.extract-agree {
+  cursor: pointer;
+  color: var(--ink);
+  white-space: nowrap;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  flex: none;
+  padding: 8px 13px;
+  font-family: inherit;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+}
+
+.extract-agree:hover {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+
+.extract-verdict {
+  white-space: nowrap;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+  display: flex;
+}
+
+.extract-verdict.right {
+  color: var(--green);
+}
+
+.extract-verdict.fixed {
+  color: var(--purple);
+}
+
+/* The machine's answer, marked as the machine's. */
+.extract-read {
+  color: var(--muted);
+  margin-top: 6px;
+  font-family: var(--font-geist-mono);
+  font-size: var(--fs-micro);
+  display: block;
+}
+
+.extract-left {
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  margin: 15px 0 0;
+  padding-top: 12px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+/* --- the history --- */
+
+.document-history {
+  border-top: 1px solid var(--line);
+  margin-top: 22px;
+  padding-top: 20px;
+}
+
+.history-list {
+  flex-direction: column;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+/* A left rule is correct here and nowhere else on this screen: these items are
+   square on that side, and the rule is a timeline rather than an accent. */
+.history-list li {
+  border-left: 2px solid var(--line);
+  padding-left: 14px;
+}
+
+.history-head {
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 9px;
+  display: flex;
+}
+
+.history-head strong {
+  overflow-wrap: anywhere;
+  font-size: var(--fs-copy);
+}
+
+.history-head span {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+.history-outcome {
+  margin: 5px 0 7px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.history-outcome.wait {
+  color: var(--muted);
+}
+
+.history-outcome.done {
+  color: var(--green);
+}
+
+.history-outcome.stop {
+  color: var(--crimson);
+}
+
+.history-rule {
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  margin: 17px 0 0;
+  padding-top: 13px;
+  font-size: var(--fs-micro);
+  line-height: var(--lh-body);
+}
+
+.link-button {
+  cursor: pointer;
+  color: var(--purple);
+  background: none;
+  border: 0;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  font-family: inherit;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+  display: inline-flex;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+/* --- the rail --- */
+
+.waiting-card strong {
+  letter-spacing: var(--ls-tight);
+  margin: 3px 0 10px;
+  font-size: var(--fs-display);
+  display: block;
+}
+
+.waiting-card p {
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.waiting-list {
+  flex-direction: column;
+  gap: 11px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.waiting-list li {
+  flex-direction: column;
+  gap: 2px;
+  display: flex;
+}
+
+.waiting-list strong {
+  font-size: var(--fs-copy);
+}
+
+.waiting-list span {
+  opacity: .75;
+  font-size: var(--fs-meta);
+}
+
+.keeping-card em {
+  font-style: normal;
+  font-weight: var(--fw-semi);
+}
+
+.provenance-card .keeping-note {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 12px;
+  font-size: var(--fs-micro);
+  display: flex;
+}
+
+.keeping-note svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  overflow: hidden;
+}
+
+/* ── Responsive: designed at 380px first ── */
+
+@media (width<=620px) {
+  /* The deadline chip stops competing with the title for the row width. */
+  .document-row {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: 10px;
+  }
+  .document-trail {
+    grid-column: 2;
+    justify-content: space-between;
+  }
+  /* The whole row is the button at this width, so the chevron is decoration —
+     and on a settled row it is the *only* thing in the trail, which put an
+     empty line under every accepted document. */
+  .document-open {
+    display: none;
+  }
+  .document-row:has(.document-trail:empty) {
+    row-gap: 0;
+  }
+  /* Stacked, the control needs the field on its own line or the input is 90px
+     wide with a pill beside it. */
+  .extract-control {
+    flex-wrap: wrap;
+  }
+  .extract-field input {
+    flex: 1 0 100%;
+  }
+  .document-upload .upload-zone {
+    flex-wrap: wrap;
+  }
+  .upload-chosen {
+    flex: 1 0 60%;
+  }
+  .upload-failed-actions .primary-button,
+  .upload-failed-actions .secondary-button {
+    flex: 1 0 100%;
+    justify-content: center;
+  }
+}

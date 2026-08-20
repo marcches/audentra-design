@@ -18,7 +18,7 @@ updated it.
 
 | Card | Screen | Serves | Jira status | In repo |
 | --- | --- | --- | --- | --- |
-| [ENR-165](https://audentra.atlassian.net/browse/ENR-165) | My Documents (Both) | ENR-157, ENR-158 | Prioritized | `built: false` |
+| [ENR-165](https://audentra.atlassian.net/browse/ENR-165) | My Documents (Both) | ENR-157, ENR-158 | Prioritized | **landed** |
 | [ENR-182](https://audentra.atlassian.net/browse/ENR-182) | Help | ENR-177 | Development | **landed** |
 | [ENR-183](https://audentra.atlassian.net/browse/ENR-183) | Appointments | ENR-178 | Development | `built: false` |
 | [ENR-184](https://audentra.atlassian.net/browse/ENR-184) | Profile | ENR-179 | Development | `built: false` |
@@ -46,15 +46,25 @@ control sits in the topbar, not in the lower-right corner. It also carried a sta
 named layers, a bottom safe area, motion tokens and one shared overlay primitive in
 `src/lib/overlay.js`, which the four unmounting overlays now use.
 
-### 1. ENR-165 — My Documents
+### ~~1. ENR-165 — My Documents~~ — landed
 
-The largest new screen, and the one that unblocks the most:
+The largest new screen, and the one that unblocked the most:
 
 - ENR-160 AC3 requires the financial document checklist to link to where the file is submitted.
   `src/components/financials/DocumentList.jsx` has no destination today.
 - ENR-190 states that Profile must **route** to the documents section rather than duplicate it, so
   Documents has to exist before Profile.
 - The `in review` group in My Enrollment (ENR-164) is already built and waiting for the other half.
+
+Built to `.scratch/ENR-165-my-documents/spec.md`. Two things it settled that outlive it: `CONTEXT.md`
+now exists at the repo root, because *requirement* and *request* were each one screen away from
+meaning two things; and `src/lib/documents.js` fixes how far a prototype may advance a wait —
+**checking advances on a clock, in review never does** — so no timer in this repo ever fakes a
+decision a person is supposed to make.
+
+The `DocumentList` link ENR-160 AC3 asked for is still open: the financial checklist rows open the
+task drawer, which is correct, and a route from there to the record is a small follow-up rather than
+something this card silently absorbed.
 
 ### ~~2 and 3. ENR-182 (Help) and ENR-183 (Appointments) — one pass~~ — Help landed
 

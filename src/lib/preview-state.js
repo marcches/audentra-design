@@ -25,6 +25,10 @@ export const PREVIEW_STATES = [
   // to be reachable to be looked at rather than only described in a spec.
   ['needs-you', 'A request needs you', 'Help with an office waiting on the student.'],
   ['send-fails', 'Sending fails', 'Help where the next thing sent does not reach Aster.'],
+  // ENR-165: the one state My Documents is actually about — a submission an
+  // office sent back with a reason. It shares `send-fails` with Help, because a
+  // send that never arrived is the same failure whatever it was carrying.
+  ['changes-requested', 'One came back', 'A document an office sent back, with its reason.'],
   ['partial', 'Partial data', 'The catalog loaded; your transcript could not be checked.'],
   ['error', 'Error', 'The published catalog could not be loaded at all.'],
   ['aid-final', 'Aid finalized', 'My Financials with the federal loan approved and nothing outstanding.'],

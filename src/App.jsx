@@ -16,11 +16,14 @@ import FinancialsAid from './pages/FinancialsAid.jsx';
 import FinancialsPayments from './pages/FinancialsPayments.jsx';
 import MyClassrooms from './components/MyClassrooms.jsx';
 import MyProfile from './components/MyProfile.jsx';
+import MyDocuments, { DOCUMENT_PREVIEW_STATES } from './components/MyDocuments.jsx';
 import Appointments, { APPOINTMENT_PREVIEW_STATES } from './components/Appointments.jsx';
 import HelpPage, { HELP_PREVIEW_STATES } from './components/HelpPage.jsx';
 import Edward from './components/edward/Edward.jsx';
 import { buildRecord } from './lib/edward.js';
 import { identityFor } from './lib/profile-helpers.js';
+import { unreadDecisions } from './lib/documents.js';
+import { documentsFor } from './documents-data.js';
 import { sortTasks } from './lib/task-helpers.js';
 import { buildLedger } from './lib/money.js';
 import { DEFAULT_ROUTE, destinationByRoute, isRouteHash } from './lib/navigation.js';
@@ -106,9 +109,12 @@ export default function App() {
 
   // Partial data shows no count at all rather than a zero that reads as final.
   const unread = unavailable ? null : isEmpty ? 0 : unreadMessages;
+  // A decision the student has not opened is counted on the sidebar, so it
+  // reaches her somewhere other than the page it happened on — ENR-158 AC 5.
+  const decisions = unavailable ? null : unreadDecisions(documentsFor(preview).requirements);
   const badges = unavailable
     ? {}
-    : { openSteps: viewTasks.length, unread, required: requiredEventCount(preview) };
+    : { openSteps: viewTasks.length, unread, decisions, required: requiredEventCount(preview) };
 
   // Edward reads the same objects the pages render — never a copy of them, so a
   // figure it says out loud cannot drift from the figure on screen. ENR-181.
@@ -389,6 +395,23 @@ export default function App() {
       );
     }
 
+    // ENR-165. `changes-requested` is this page's own, and `empty` here is a
+    // record Aster has asked things of and received none of them, so this page
+    // reads the raw preview value too.
+    if (current.id === 'my-documents') {
+      return (
+        <MyDocuments
+          destination={current}
+          previewState={preview}
+          tasks={viewTasks}
+          onToast={setToast}
+          onOverlay={setSectionOverlay}
+          onOpenTask={openTaskFromSummary}
+          onRetry={() => choosePreview('ready')}
+        />
+      );
+    }
+
     // My Campus Life is a group of two destinations and one screen — ENR-189.
     // The route chooses the tab; the required band sits above both.
     if (current.group === 'campus') {
@@ -505,7 +528,9 @@ export default function App() {
                       ? APPOINTMENT_PREVIEW_STATES
                       : current?.id === 'help'
                         ? HELP_PREVIEW_STATES
-                        : undefined
+                        : current?.id === 'my-documents'
+                          ? DOCUMENT_PREVIEW_STATES
+                          : undefined
           }
           onPreviewState={choosePreview}
         />
