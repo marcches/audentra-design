@@ -19,7 +19,7 @@ function readCollapsed() {
 function NavBadge({ count, noun }) {
   if (count == null || count <= 0) return null;
   return (
-    <span className={noun === 'unread messages' ? 'unread-dot' : 'nav-count'}>
+    <span className="nav-count">
       <span aria-hidden="true">{count}</span>
       <span className="sr-only">
         {count} {noun}
@@ -46,7 +46,6 @@ function NavRow({ id, activeId, badges, leaf, onNavigate }) {
         </span>
         {item.label}
         {item.badge === 'openSteps' && <NavBadge count={badges.openSteps} noun="steps still open" />}
-        {item.badge === 'unread' && <NavBadge count={badges.unread} noun="unread messages" />}
         {item.badge === 'decisions' && (
           <NavBadge
             count={badges.decisions}

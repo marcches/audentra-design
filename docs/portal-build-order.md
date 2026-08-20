@@ -103,17 +103,27 @@ Last, because it consumes the other three: it routes to Documents instead of dup
 each institution-owned field to the office that can change it, and carries the family-permission
 block with the seven record categories. Built last, every route it needs already resolves.
 
-## Two open gaps
+## Both gaps are closed — neither earned a card
 
-`src/lib/navigation.js` declares thirteen destinations. **Messages** and **My Progress** are
-`built: false` and have **no design card on the board**:
+`src/lib/navigation.js` used to declare two destinations with `built: false` and no design card
+behind them. Both are now out of the navigation, and neither was a card the board was missing.
 
-- Messages appears only as `screen-messages` on the staff side (ENR-25). The student-facing behaviour
-  closest to it is ENR-161, labelled `screen-dashboard`.
-- My Progress is named once, in ENR-174 AC1, as a leaf of the Academic group.
+- **My Progress** was named once, in ENR-174 AC1, as the second leaf of an Academic group. The Jam of
+  2026-08-20 dissolved that group — a heading holding one leaf costs a click and buys nothing — and
+  My Progress went with it. The divergence from AC1 is recorded on ENR-174.
+- **Messages** was never a card at all. It arrived in the product base commit as a decorative sidebar
+  row with an unread dot, and ENR-180 promoted it to a destination on a circular premise: *"Messages
+  stays, because the topbar bell has to have a destination."* Its copy — *"Everything your enrollment
+  team has written to you"* — promised an inbound institution→student channel that the product has
+  decided not to have. ENR-161 AC5 and ENR-177 AC6 both hold "while no inbound channel exists";
+  ENR-177 AC4 names the portal as the durable channel and ENR-182 (Help) is the screen that carries
+  that thread; on the staff side ENR-44 AC1 records a channel choice as intent and *performs no send*.
+  Its `unread` badge also double-counted: the two things that actually reach the student are already
+  counted as `decisions` on My Documents (ENR-158 AC5) and as request state on Help.
 
-After the five cards above, both stay placeholders permanently unless a card is written. Worth
-deciding now whether they earn a card or leave the navigation.
+The topbar bell went with Messages, since pointing it anywhere else would have counted the same event
+twice. What changed since I was last here belongs to **ENR-161**, served by ENR-167; until that
+lands, the sidebar counts are the honest version of it.
 
 ## Not in this repo
 

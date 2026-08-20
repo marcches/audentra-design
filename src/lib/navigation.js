@@ -109,24 +109,6 @@ export const DESTINATIONS = [
     built: true,
   },
   {
-    id: 'messages',
-    label: 'Messages',
-    route: '#/messages',
-    icon: 'message',
-    badge: 'unread',
-    lede: 'Everything your enrollment team has written to you.',
-    hero: {
-      kicker: 'Messages',
-      title: 'Everything Aster has written to you, Maya.',
-      lede: 'One thread per subject, with the office that opened it named on every message.',
-    },
-    appears: 'Messages from your enrollment team appear here.',
-    produces: 'You will see one when someone at Aster writes to you.',
-    next: 'help',
-    built: false,
-  },
-
-  {
     id: 'my-classrooms',
     label: 'My Classrooms',
     route: '#/my-classrooms',
@@ -312,7 +294,15 @@ export const DEFAULT_ROUTE = '#/my-enrollment';
 
 /**
  * The sidebar, in order: what I must do, what I sent and who I talk to, then the
- * rest of my life at Aster. Groups are labels, never destinations — the page a
+ * rest of my life at Aster.
+ *
+ * Messages is gone. It was never a card: it arrived in the product base as a
+ * decorative row and ENR-180 kept it because the topbar bell needed somewhere to
+ * point. Its copy promised a channel the product decided not to have — ENR-161
+ * AC5 and ENR-177 AC6 both hold "while no inbound channel exists" — and the
+ * thread it would have shown is the one Help already owns (ENR-177 AC4). The
+ * bell went with it: what changed since I was last here belongs to ENR-161, and
+ * until that lands the sidebar counts are the honest version of it. Groups are labels, never destinations — the page a
  * student wanted is always a leaf, which is why My Financials holds an Overview
  * rather than being clickable itself (ENR-174 AC1).
  *
@@ -325,7 +315,6 @@ export const NAV = [
   { kind: 'link', id: 'my-enrollment' },
   { kind: 'link', id: 'my-documents' },
   { kind: 'link', id: 'appointments' },
-  { kind: 'link', id: 'messages' },
   { kind: 'link', id: 'my-classrooms' },
   { kind: 'link', id: 'health' },
   {

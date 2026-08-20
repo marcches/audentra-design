@@ -6,7 +6,6 @@ export default function Topbar({
   onOpenNav,
   menuRef,
   identity,
-  unread,
   previewState,
   previewStates = FRAME_STATES,
   onPreviewState,
@@ -30,14 +29,6 @@ export default function Topbar({
           states={previewStates}
           onChange={onPreviewState}
         />
-        <a
-          className="notification-button"
-          href="#/messages"
-          aria-label={unread ? `Messages, ${unread} unread` : 'Messages'}
-        >
-          {unread ? <span aria-hidden="true">{unread}</span> : null}
-          <Icon name="message" size={19} />
-        </a>
         <a className="mobile-avatar" href="#/profile" aria-label="Profile">
           {identity.initials}
         </a>

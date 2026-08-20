@@ -227,9 +227,6 @@ export const initialReviewing = [
   },
 ];
 
-/** Read by the Messages row in the navigation and by the topbar bell. ENR-180. */
-export const unreadMessages = 2;
-
 export const enrollmentAdvisor = {
   name: 'Tomás Okafor',
   initials: 'TO',

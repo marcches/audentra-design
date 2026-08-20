@@ -56,7 +56,6 @@ import {
   initialReviewing,
   initialTasks,
   lockedTasks,
-  unreadMessages,
 } from './data.js';
 
 /** The machine's part of the wait. Long enough to be seen, short enough not to be a wait. */
@@ -139,14 +138,12 @@ export default function App() {
   const urgentDoc = [...financialDocs].sort((a, b) => a.daysLeft - b.daysLeft)[0] ?? null;
   const byId = useMemo(() => Object.fromEntries(tasks.map((t) => [t.id, t])), [tasks]);
 
-  // Partial data shows no count at all rather than a zero that reads as final.
-  const unread = unavailable ? null : isEmpty ? 0 : unreadMessages;
   // A decision the student has not opened is counted on the sidebar, so it
   // reaches her somewhere other than the page it happened on — ENR-158 AC 5.
   const decisions = unavailable ? null : unreadDecisions(record.requirements);
   const badges = unavailable
     ? {}
-    : { openSteps: viewTasks.length, unread, decisions, required: requiredEventCount(preview) };
+    : { openSteps: viewTasks.length, decisions, required: requiredEventCount(preview) };
 
   // Edward reads the same objects the pages render — never a copy of them, so a
   // figure it says out loud cannot drift from the figure on screen. ENR-181.
@@ -699,7 +696,6 @@ export default function App() {
           onOpenNav={() => setNavOpen(true)}
           menuRef={menuButton}
           identity={identity}
-          unread={unread}
           previewState={preview}
           previewStates={
             inFinancials

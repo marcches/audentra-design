@@ -249,7 +249,7 @@ button {
   display: grid;
 }
 
-.nav-count, .unread-dot {
+.nav-count {
   border-radius: 99px;
   place-items: center;
   min-width: 22px;
@@ -257,18 +257,10 @@ button {
   margin-left: auto;
   padding: 0 6px;
   font-size: var(--fs-copy);
-  display: grid;
-}
-
-.nav-count {
   color: var(--purple);
   background: #fff;
   box-shadow: 0 2px 8px #43368e1f;
-}
-
-.unread-dot {
-  color: var(--crimson);
-  background: #f6e8ea;
+  display: grid;
 }
 
 .sidebar-bottom {
@@ -377,35 +369,6 @@ button {
   align-items: center;
   gap: 12px;
   display: flex;
-}
-
-.notification-button {
-  border: 1px solid var(--line);
-  cursor: pointer;
-  background: #fff;
-  border-radius: 11px;
-  place-items: center;
-  width: 37px;
-  height: 37px;
-  display: grid;
-  position: relative;
-}
-
-.notification-button span {
-  background: var(--crimson);
-  color: #fff;
-  border: 2px solid #fff;
-  border-radius: 99px;
-  place-items: center;
-  min-width: 17px;
-  height: 17px;
-  padding: 0 4px;
-  font-size: var(--fs-small);
-  font-weight: var(--fw-bold);
-  display: grid;
-  position: absolute;
-  top: -6px;
-  right: -5px;
 }
 
 .mobile-menu, .mobile-school {
@@ -3156,7 +3119,7 @@ footer a {
   line-height: var(--lh-body);
 }
 
-.notification-button, .mobile-avatar {
+.mobile-avatar {
   text-decoration: none;
 }
 
