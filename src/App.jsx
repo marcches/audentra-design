@@ -6,6 +6,7 @@ import TaskCard from './components/TaskCard.jsx';
 import TaskDrawer from './components/TaskDrawer.jsx';
 import InfoModal from './components/InfoModal.jsx';
 import InsightColumn from './components/InsightColumn.jsx';
+import AdvisorBar from './components/AdvisorBar.jsx';
 import { sortTasks } from './lib/task-helpers.js';
 import {
   TOTAL_STEPS,
@@ -139,17 +140,15 @@ export default function App() {
                 <p>You’re right on track. Your next task takes about 4 minutes.</p>
               </div>
             </div>
-            <button className="points-summary" onClick={() => setPointsModal(true)}>
-              <span className="points-icon">
-                <Icon name="spark" size={19} />
-              </span>
-              <span>
-                <small>Momentum points</small>
-                <strong>{earnedPoints.toLocaleString()}</strong>
-              </span>
-              <span className="points-today">+{availableToday} available today</span>
-              <Icon name="chevron" size={17} />
-            </button>
+            <AdvisorBar
+              onContact={(channel) =>
+                setToast(
+                  `${channel === 'email' ? 'An email' : 'A message'} to ${
+                    enrollmentAdvisor.name
+                  } would open here—nothing is sent yet.`
+                )
+              }
+            />
           </section>
 
           <div className="page-grid">
@@ -315,13 +314,6 @@ export default function App() {
                 if (task) openTask(task);
               }}
               onOpenPoints={() => setPointsModal(true)}
-              onContactAdvisor={(channel) =>
-                setToast(
-                  `${channel === 'email' ? 'An email' : 'A message'} to ${
-                    enrollmentAdvisor.name
-                  } would open here—nothing is sent yet.`
-                )
-              }
             />
           </div>
 

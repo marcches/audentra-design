@@ -1,5 +1,4 @@
 import Icon from '../Icon.jsx';
-import { enrollmentAdvisor } from '../data.js';
 
 export default function InsightColumn({
   earnedPoints,
@@ -7,63 +6,9 @@ export default function InsightColumn({
   completedCount,
   onResume,
   onOpenPoints,
-  onContactAdvisor,
 }) {
-  const advisor = enrollmentAdvisor;
-
   return (
     <aside className="insight-column">
-      <div className="skipped-card">
-        <div className="skipped-top">
-          <span className="tiny-avatar">MJ</span>
-          <span className="resume-badge">Saved from welcome</span>
-        </div>
-        <h3>No rush—you can finish these now.</h3>
-        <p>
-          You skipped two details while accepting your offer. We saved your place, so nothing was
-          lost.
-        </p>
-        <button onClick={onResume}>
-          Continue where I left off <Icon name="arrow" size={16} />
-        </button>
-      </div>
-
-      <div className="advisor-card">
-        <span className="panel-label">Your enrollment advisor</span>
-        <div className="advisor-identity">
-          <span className="advisor-avatar" aria-hidden="true">
-            {advisor.initials}
-          </span>
-          <div>
-            <strong>{advisor.name}</strong>
-            <span>{advisor.office}</span>
-          </div>
-        </div>
-        <p>{advisor.intro}</p>
-        <div className="advisor-availability">
-          <div>
-            <span aria-hidden="true">
-              <Icon name="pin" size={15} />
-            </span>
-            <p>
-              <strong>{advisor.location.building}</strong>, {advisor.location.where}
-            </p>
-          </div>
-          <div>
-            <span aria-hidden="true">
-              <Icon name="clock" size={15} />
-            </span>
-            <p>
-              Open <strong>{advisor.hours.window}</strong>, {advisor.hours.days}
-            </p>
-          </div>
-        </div>
-        <div className="advisor-actions">
-          <button onClick={() => onContactAdvisor('email')}>Email</button>
-          <button onClick={() => onContactAdvisor('message')}>Message</button>
-        </div>
-      </div>
-
       <div className="momentum-card">
         <div className="momentum-header">
           <span className="points-icon large">
@@ -92,6 +37,21 @@ export default function InsightColumn({
         </div>
         <button className="learn-link" onClick={onOpenPoints}>
           How points work <Icon name="arrow" size={14} />
+        </button>
+      </div>
+
+      <div className="skipped-card">
+        <div className="skipped-top">
+          <span className="tiny-avatar">MJ</span>
+          <span className="resume-badge">Saved from welcome</span>
+        </div>
+        <h3>No rush—you can finish these now.</h3>
+        <p>
+          You skipped two details while accepting your offer. We saved your place, so nothing was
+          lost.
+        </p>
+        <button onClick={onResume}>
+          Continue where I left off <Icon name="arrow" size={16} />
         </button>
       </div>
     </aside>
