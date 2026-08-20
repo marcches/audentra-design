@@ -160,14 +160,79 @@ export function markDecisionRead(requirements, id) {
 /**
  * ENR-157 AC 5. Refused before the upload, against the rule it broke, so the
  * student learns the rule from the requirement rather than from a failure.
+ *
+ * ENR-209 Scenario 5 adds the size and the count, and adds a rule about how a
+ * refusal behaves: it names **which** file broke which limit, and the files that
+ * are within the limits are kept. A refusal that clears the whole selection
+ * would be the silent discard the scenario is written against.
  */
-export function refuse(requirement, fileName) {
+export function refuse(requirement, file) {
   const accepts = requirement.accepts;
   if (!accepts) return null;
-  const dot = fileName.lastIndexOf('.');
-  const ext = dot === -1 ? '' : fileName.slice(dot + 1).toUpperCase();
-  if (accepts.formats.includes(ext === 'JPEG' ? 'JPG' : ext)) return null;
-  return `${fileName} is a ${ext || 'file with no'} file. This one takes ${listFormats(accepts.formats)}.`;
+  const name = typeof file === 'string' ? file : file.name;
+  const bytes = typeof file === 'string' ? 0 : (file.bytes ?? 0);
+
+  const dot = name.lastIndexOf('.');
+  const ext = dot === -1 ? '' : name.slice(dot + 1).toUpperCase();
+  if (!accepts.formats.includes(ext === 'JPEG' ? 'JPG' : ext)) {
+    return `${name} is a ${ext || 'file with no'} file. This one takes ${listFormats(accepts.formats)}.`;
+  }
+
+  if (bytes && bytes > accepts.maxMb * 1024 * 1024) {
+    return `${name} is over the ${accepts.maxMb} MB this one takes. Everything else you chose is still here.`;
+  }
+
+  return null;
+}
+
+/** Stated when the selection is already full, before the picker is opened again. */
+export function refuseCount(requirement, chosen, incoming) {
+  const max = requirement.accepts?.maxFiles ?? 1;
+  if (chosen + incoming <= max) return null;
+  if (max === 1) return 'This one takes a single file. Remove the one you chose to send a different one.';
+
+  const room = Math.max(0, max - chosen);
+  if (room === 0) return `${max} files is the limit for this one, and you have ${chosen}. Remove one to add another.`;
+
+  // Says what happened, not what would fit: she has already chosen, and the
+  // screen has to tell her which of her files are on it.
+  const dropped = chosen + incoming - max;
+  return `This one takes ${max} files. ${room === 1 ? 'One was' : `${room} were`} added; ${
+    dropped === 1 ? 'the last one was' : `the last ${dropped} were`
+  } not.`;
+}
+
+/**
+ * Where a requirement's **first** submission is made. ENR-165 established that a
+ * requirement has exactly one door, so a duplicate submission has nowhere to
+ * come from; ENR-206 only moves the immunization record's door from the
+ * checklist step to the Health section. Both screens read this, so neither can
+ * point somewhere the other does not.
+ */
+const DOORS = {
+  task: {
+    id: 'task',
+    line: 'This one is a step on your checklist, and that is where it is sent from — so there is only ever one place it can be submitted.',
+    label: 'Open the step',
+  },
+  health: {
+    id: 'health',
+    route: '#/health',
+    line: 'This one lives in your Health section, with the question Accessibility Services asked — so there is only ever one place it can be sent from.',
+    label: 'Open Health',
+  },
+};
+
+export function doorOf(requirement) {
+  return DOORS[requirement.door ?? 'task'] ?? DOORS.task;
+}
+
+/** What a submission carried, as one line. The count leads once there is more than one. */
+export function filesLabel(submission) {
+  const files = submission?.files ?? [];
+  if (files.length === 0) return '';
+  if (files.length === 1) return files[0].name;
+  return `${files.length} files`;
 }
 
 export function listFormats(formats) {
@@ -180,12 +245,18 @@ export function listFormats(formats) {
  * ENR-157 AC 7 and ENR-158 Scenario 4 are the same rule seen from two sides. It
  * lands in `checking`, which is the only state this prototype advances by itself.
  */
-export function addSubmission(requirements, id, file) {
-  return requirements.map((item) =>
-    item.id === id
-      ? { ...item, submissions: [...(item.submissions ?? []), { ...file, checking: true }] }
-      : item,
-  );
+export function addSubmission(requirements, id, files) {
+  return requirements.map((item) => {
+    if (item.id !== id) return item;
+    const list = item.submissions ?? [];
+    return {
+      ...item,
+      submissions: [
+        ...list,
+        { id: `${id}-${list.length + 1}`, files, sent: 'just now', checking: true },
+      ],
+    };
+  });
 }
 
 /** The clock's one move: the machine finished, a person now has it. Nothing further. */

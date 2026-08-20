@@ -19,11 +19,22 @@ import MyProfile from './components/MyProfile.jsx';
 import MyDocuments, { DOCUMENT_PREVIEW_STATES } from './components/MyDocuments.jsx';
 import Appointments, { APPOINTMENT_PREVIEW_STATES } from './components/Appointments.jsx';
 import HelpPage, { HELP_PREVIEW_STATES } from './components/HelpPage.jsx';
+import HousingPage, { HOUSING_PREVIEW_STATES } from './components/HousingPage.jsx';
+import Health, { HEALTH_PREVIEW_STATES, answerToast } from './components/Health.jsx';
+import { documentsFor } from './documents-data.js';
+import { healthAnswerFor } from './health-data.js';
+import { offices } from './help-data.js';
+import {
+  addSubmission,
+  checkingOne,
+  finishChecking,
+  markDecisionRead,
+  officeOf,
+  unreadDecisions,
+} from './lib/documents.js';
 import Edward from './components/edward/Edward.jsx';
 import { buildRecord } from './lib/edward.js';
 import { identityFor } from './lib/profile-helpers.js';
-import { unreadDecisions } from './lib/documents.js';
-import { documentsFor } from './documents-data.js';
 import { sortTasks } from './lib/task-helpers.js';
 import { buildLedger } from './lib/money.js';
 import { DEFAULT_ROUTE, destinationByRoute, isRouteHash } from './lib/navigation.js';
@@ -48,6 +59,10 @@ import {
   unreadMessages,
 } from './data.js';
 
+/** The machine's part of the wait. Long enough to be seen, short enough not to be a wait. */
+const CHECK_MS = 4200;
+const SEND_MS = 700;
+
 export default function App() {
   const [tasks, setTasks] = useState(initialTasks);
   const [completed, setCompleted] = useState(initialCompleted);
@@ -61,7 +76,6 @@ export default function App() {
   const [progressModal, setProgressModal] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [fileReady, setFileReady] = useState(false);
-  const [housing, setHousing] = useState('on-campus');
   const [toast, setToast] = useState(null);
   const [hash, setHash] = useState(() => window.location.hash || DEFAULT_ROUTE);
   const [preview, setPreview] = useState(readPreviewState);
@@ -69,11 +83,24 @@ export default function App() {
   // the screen at a time" survives an overlay App does not hold — ENR-181.
   const [sectionOverlay, setSectionOverlay] = useState(false);
 
+  // ENR-206. One record, read by My Documents and by Health; one answer, which
+  // never leaves Health. Both are here because both have to survive a route
+  // change — see `submitDocument` and `answerAccommodation` below.
+  const [record, setRecord] = useState(() => documentsFor(readPreviewState()));
+  const [sendingId, setSendingId] = useState(null);
+  const [failedId, setFailedId] = useState(null);
+  const [answer, setAnswer] = useState(() => healthAnswerFor(readPreviewState()));
+  const [savingAnswer, setSavingAnswer] = useState(false);
+  const [answerFailed, setAnswerFailed] = useState(null);
+
   const main = useRef(null);
   const menuButton = useRef(null);
   const pendingTask = useRef(null);
   const lastHash = useRef(hash);
   const navWasOpen = useRef(false);
+  const sendTimer = useRef(null);
+  const checkTimer = useRef(null);
+  const answerTimer = useRef(null);
 
   const current = destinationByRoute(hash);
   const state = frameState(preview);
@@ -83,6 +110,11 @@ export default function App() {
   const identity = identityFor(preview);
   const isEmpty = state === 'empty';
   const unavailable = state === 'partial';
+
+  // The one requirement Health owns the door to, taken from the same list My
+  // Documents renders — never a copy of it.
+  const immunization = record.requirements.find((item) => item.id === 'immunization-record') ?? null;
+  const checking = checkingOne(record.requirements);
 
   const sortedTasks = useMemo(() => sortTasks(tasks, sort), [tasks, sort]);
   const viewTasks = isEmpty ? [] : sortedTasks;
@@ -111,7 +143,7 @@ export default function App() {
   const unread = unavailable ? null : isEmpty ? 0 : unreadMessages;
   // A decision the student has not opened is counted on the sidebar, so it
   // reaches her somewhere other than the page it happened on — ENR-158 AC 5.
-  const decisions = unavailable ? null : unreadDecisions(documentsFor(preview).requirements);
+  const decisions = unavailable ? null : unreadDecisions(record.requirements);
   const badges = unavailable
     ? {}
     : { openSteps: viewTasks.length, unread, decisions, required: requiredEventCount(preview) };
@@ -192,6 +224,26 @@ export default function App() {
     return () => window.clearTimeout(timer);
   }, [toast]);
 
+  // A preview state is a different student, so the record and the answer are
+  // re-read rather than carried across.
+  useEffect(() => {
+    setRecord(documentsFor(preview));
+    setAnswer(healthAnswerFor(preview));
+    setSendingId(null);
+    setFailedId(null);
+    setSavingAnswer(false);
+    setAnswerFailed(null);
+  }, [preview]);
+
+  useEffect(
+    () => () => {
+      window.clearTimeout(sendTimer.current);
+      window.clearTimeout(checkTimer.current);
+      window.clearTimeout(answerTimer.current);
+    },
+    [],
+  );
+
   // Every overlay reads `Esc` for itself through `useOverlay`, and stops there,
   // so a stack unwinds one layer at a time. The navigation drawer is the one
   // overlay that never unmounts, so its key stays here — ENR-181.
@@ -206,6 +258,96 @@ export default function App() {
   function choosePreview(next) {
     setPreview(next);
     writePreviewState(next);
+  }
+
+  /**
+   * ENR-206. The record, the send and the clock live here rather than inside a
+   * page, because two sections now read one record: My Documents lists it with
+   * five others, Health owns its door. Two pages holding two copies is the one
+   * way a record can lie about itself.
+   *
+   * It also buys what neither page could do alone. `checking` is the only wait
+   * this prototype may advance on its own, and it now advances while the student
+   * is somewhere else — which is what ENR-157 AC 3 and ENR-209 AC 2 promise in
+   * words and what the checking strip tells her she can do.
+   */
+  useEffect(() => {
+    if (!checking) return undefined;
+    const id = checking.id;
+    checkTimer.current = window.setTimeout(() => {
+      setRecord((current) => ({
+        ...current,
+        requirements: finishChecking(current.requirements, id),
+      }));
+    }, CHECK_MS);
+    return () => window.clearTimeout(checkTimer.current);
+  }, [checking]);
+
+  function submitDocument(requirement, files, onSent = () => {}) {
+    setSendingId(requirement.id);
+    setFailedId(null);
+    window.clearTimeout(sendTimer.current);
+
+    sendTimer.current = window.setTimeout(() => {
+      setSendingId(null);
+
+      // A send that did not arrive creates nothing — no submission, no row, no
+      // "not sent" record. Retrying resends the same files, so there was never a
+      // first submission to duplicate.
+      if (preview === 'send-fails') {
+        setFailedId(requirement.id);
+        return;
+      }
+
+      setRecord((current) => ({
+        ...current,
+        requirements: addSubmission(current.requirements, requirement.id, files),
+      }));
+      onSent();
+      setToast(
+        `Sent to ${officeOf(requirement).name}. You can close this page — the check keeps going.`,
+      );
+    }, SEND_MS);
+  }
+
+  function markDocumentRead(id) {
+    setFailedId(null);
+    setRecord((current) => ({
+      ...current,
+      requirements: markDecisionRead(current.requirements, id),
+    }));
+  }
+
+  /**
+   * The accommodation answer — ENR-208, and ADR-0001.
+   *
+   * It is held here for the same reason the record is: an answer that forgets
+   * itself when she visits another section is indistinguishable from an answer
+   * that never reached anyone. What it deliberately does **not** do is create
+   * anything — no request, no appointment, no notification, no badge — and
+   * nothing about it enters the record Edward speaks from.
+   *
+   * A failure follows Help's grammar: nothing is saved, the question stays open,
+   * and the card says so. The attempted answer is remembered only so that
+   * "Try again" does not ask her to choose a second time.
+   */
+  function answerAccommodation(value) {
+    if (!value) return;
+    setSavingAnswer(true);
+    setAnswerFailed(null);
+    window.clearTimeout(answerTimer.current);
+
+    answerTimer.current = window.setTimeout(() => {
+      setSavingAnswer(false);
+
+      if (preview === 'send-fails') {
+        setAnswerFailed(value);
+        return;
+      }
+
+      setAnswer({ value, on: 'just now', where: null });
+      setToast(answerToast(value, offices.accessibility.name));
+    }, SEND_MS);
   }
 
   function openTask(task, tab = 'action') {
@@ -403,11 +545,55 @@ export default function App() {
         <MyDocuments
           destination={current}
           previewState={preview}
+          record={record}
+          sendingId={sendingId}
+          failedId={failedId}
           tasks={viewTasks}
+          onSubmit={submitDocument}
+          onMarkRead={markDocumentRead}
           onToast={setToast}
           onOverlay={setSectionOverlay}
           onOpenTask={openTaskFromSummary}
           onRetry={() => choosePreview('ready')}
+        />
+      );
+    }
+
+    // ENR-206. Health reads the immunization record out of the same list My
+    // Documents renders, and holds the accommodation answer, which reaches no
+    // other module — ADR-0001.
+    if (current.id === 'health') {
+      return (
+        <Health
+          destination={current}
+          previewState={preview}
+          requirement={immunization}
+          task={byId.health ?? null}
+          answer={answer}
+          savingAnswer={savingAnswer}
+          answerFailed={answerFailed}
+          sendingId={sendingId}
+          failedId={failedId}
+          onAnswer={answerAccommodation}
+          onSubmit={submitDocument}
+          onToast={setToast}
+          onOverlay={setSectionOverlay}
+          onRetry={() => choosePreview('ready')}
+        />
+      );
+    }
+
+    // ENR-207. Three of this page's states are its own — a shortlist that arrived
+    // from onboarding, and the two worlds either side of the response deadline —
+    // and `empty` here is an institution that has published no residence rather
+    // than a student with nothing, so this page reads the raw preview value too.
+    if (current.id === 'housing') {
+      return (
+        <HousingPage
+          destination={current}
+          previewState={preview}
+          onToast={setToast}
+          onOverlay={setSectionOverlay}
         />
       );
     }
@@ -530,7 +716,11 @@ export default function App() {
                         ? HELP_PREVIEW_STATES
                         : current?.id === 'my-documents'
                           ? DOCUMENT_PREVIEW_STATES
-                          : undefined
+                          : current?.id === 'housing'
+                            ? HOUSING_PREVIEW_STATES
+                            : current?.id === 'health'
+                              ? HEALTH_PREVIEW_STATES
+                              : undefined
           }
           onPreviewState={choosePreview}
         />
@@ -552,8 +742,6 @@ export default function App() {
           onToast={setToast}
           fileReady={fileReady}
           onPickFile={() => setFileReady(true)}
-          housing={housing}
-          onHousing={setHousing}
         />
       )}
 

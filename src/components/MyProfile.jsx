@@ -274,7 +274,7 @@ export default function MyProfile({ destination, state, onToast }) {
 
         {/* ENR-144's guardrail, said where it can be acted on: the two are
             different things and are never merged into one control. */}
-        <p className="grant-aside">
+        <p className="card-foot grant-aside">
           <Icon name="info" size={14} />
           <span>
             An emergency contact is a different thing. They are who Aster calls if something

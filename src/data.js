@@ -1,3 +1,5 @@
+import { responseDeadline } from './housing-data.js';
+
 export const TOTAL_STEPS = 14;
 
 /** Every date in the portal is read against this day. Matches `CAMPUS_TODAY` in campus-data.js. */
@@ -135,22 +137,26 @@ export const initialTasks = [
     points: 83,
     tomorrow: 82,
     minutes: 5,
-    action: 'Upload record',
+    action: 'Open Health',
     kind: 'upload',
+    // ENR-206 AC 4 of ENR-205. The record used to be uploaded inside this
+    // drawer, which made three doors for one file once My Documents and Health
+    // both existed. The step now routes to the section that owns the door, and
+    // the `upload` panel it used to carry is gone rather than left disabled — a
+    // second field for the same record is a second place a send can fail.
+    section: '#/health',
+    sectionLine:
+      'This one is sent from your Health section, where the record’s review state and the question Accessibility Services asked both live.',
+    // ENR-207 moved this sentence out of the drawer too, so a second step can
+    // route to a second section without the foot still talking about Health.
+    sectionFoot: 'Sending it there ticks this step off and opens class registration.',
     priority: 'soon',
-    office: 'Health Services',
-    why: 'Submitting early leaves time to resolve a missing dose or incomplete record before move-in.',
-    upload: {
-      prompt: 'Choose a record to upload',
-      hint: 'PDF, JPG, or PNG · Up to 10 MB',
-      fileName: 'immunization_record.pdf',
-      fileSize: '1.8 MB',
-      privacy: 'Encrypted and shared only with authorized Health Services staff.',
-    },
+    office: 'Aster University Health Services',
+    why: 'Submitting early leaves time to resolve a missing dose or incomplete record before you register for classes.',
     steps: [
       'Ask your doctor for a current immunization record.',
-      'Upload a clear PDF, JPG, or PNG.',
-      'Health Services will review it in 2–3 business days.',
+      'Send it from your Health section — up to eight photos or scans.',
+      'Health Services decides within 5 business days.',
     ],
   },
   {
@@ -159,16 +165,26 @@ export const initialTasks = [
     title: 'Tell us where you’ll live',
     description:
       'Let Aster know whether you plan to live on campus, commute, or need help deciding.',
-    due: 'Dec 15',
-    daysLeft: 117,
+    // ENR-207 — one date, owned by the section that is about it. This used to be
+    // a literal here that happened to agree with the move-in step below.
+    due: responseDeadline.label,
+    daysLeft: responseDeadline.daysLeft,
     points: 68,
     tomorrow: 67,
     minutes: 3,
     action: 'Choose housing plan',
     kind: 'form',
+    // ENR-207. The plan used to be answered inside the drawer — this was the
+    // file's only `kind: 'form'`, three radios and a save. The question now has
+    // a section of its own, so the step routes there and the radios are gone
+    // rather than left in place: two doors to one answer is two records of it.
+    section: '#/housing',
+    sectionLine:
+      'This one is answered in your Housing section, where you can also read the residences Housing Services publishes and rank the ones you would like.',
+    sectionFoot: 'Answering there ticks this step off and unlocks your move-in time.',
     priority: 'normal',
     unlocks: 1,
-    office: 'Housing & Residential Life',
+    office: 'Housing Services',
     why: 'Your answer opens the right housing or commuter next steps.',
     steps: [
       'Choose the option that best matches your current plan.',
@@ -209,12 +225,6 @@ export const initialReviewing = [
     eta: 'Usually 2–3 business days',
     points: 60,
   },
-];
-
-export const housingOptions = [
-  ['on-campus', 'I plan to live on campus', 'Show me Aster housing options'],
-  ['commute', 'I plan to commute', 'Share commuter resources with me'],
-  ['unsure', 'I’m not sure yet', 'Help me compare my options'],
 ];
 
 /** Read by the Messages row in the navigation and by the topbar bell. ENR-180. */

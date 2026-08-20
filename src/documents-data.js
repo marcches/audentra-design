@@ -30,7 +30,25 @@
  * in an error — ENR-157 AC 2. The limits differ by requirement, so they are
  * printed from the requirement rather than from one global sentence.
  */
-const PDF_IMAGE = { formats: ['PDF', 'JPG', 'PNG'], extensions: '.pdf, .jpg, .png', maxMb: 10 };
+const PDF_IMAGE = {
+  formats: ['PDF', 'JPG', 'PNG'],
+  extensions: '.pdf, .jpg, .png',
+  maxMb: 10,
+  maxFiles: 1,
+};
+
+/**
+ * The immunization record is the one requirement that is physically several
+ * pages — a vaccination booklet gets photographed, not scanned — so ENR-209 AC 1
+ * gives it eight files and 30 MB. The limits live on the requirement, which is
+ * why they can differ without anything else in the portal having to know.
+ */
+const IMMUNIZATION = {
+  formats: ['PDF', 'JPG', 'PNG'],
+  extensions: '.pdf, .jpg, .png',
+  maxMb: 30,
+  maxFiles: 8,
+};
 
 export const documentRequirements = [
   {
@@ -61,8 +79,7 @@ export const documentRequirements = [
     submissions: [
       {
         id: 'income-1',
-        fileName: 'household_income_2025.pdf',
-        fileSize: '2.4 MB',
+        files: [{ name: 'household_income_2025.pdf', size: '2.4 MB' }],
         sent: 'Aug 12',
         decision: {
           outcome: 'changes-requested',
@@ -87,11 +104,17 @@ export const documentRequirements = [
     title: 'Immunization record',
     office: 'health',
     taskId: 'health',
+    // ENR-206. The door this requirement is sent from is the Health section, not
+    // the checklist step and not My Documents. The rule ENR-165 wrote — a first
+    // submission has exactly one place it can be made — is unchanged; this card
+    // only moves where that place is, and `doorOf` in `lib/documents.js` is what
+    // both screens read so neither can disagree about it.
+    door: 'health',
     needs: 'A current immunization record from your doctor or your previous school, showing each required vaccine and the date it was given.',
-    why: 'Health Services has to clear the required vaccines before you can move in.',
-    accepts: PDF_IMAGE,
+    why: 'Health Services has to clear the required vaccines before you can register for classes.',
+    accepts: IMMUNIZATION,
     privacy: 'Encrypted, and read only by authorized Health Services staff.',
-    unblocks: 'Move-in booking opens once your record clears.',
+    unblocks: 'Class registration opens once your record clears.',
     submissions: [],
   },
   {
@@ -105,7 +128,9 @@ export const documentRequirements = [
     why: 'Your offer is conditional on the final record matching what you applied with.',
     accepts: PDF_IMAGE,
     privacy: 'Encrypted, and read only by the Registrar’s office.',
-    submissions: [{ id: 'transcript-1', fileName: 'final_transcript.pdf', fileSize: '840 KB', sent: 'Aug 6' }],
+    submissions: [
+      { id: 'transcript-1', files: [{ name: 'final_transcript.pdf', size: '840 KB' }], sent: 'Aug 6' },
+    ],
   },
   {
     id: 'photo-id',
@@ -118,8 +143,7 @@ export const documentRequirements = [
     submissions: [
       {
         id: 'id-1',
-        fileName: 'passport.jpg',
-        fileSize: '1.2 MB',
+        files: [{ name: 'passport.jpg', size: '1.2 MB' }],
         sent: 'Jul 21',
         decision: { outcome: 'accepted', on: 'Jul 23' },
       },
@@ -136,8 +160,7 @@ export const documentRequirements = [
     submissions: [
       {
         id: 'address-1',
-        fileName: 'utility_bill_june.pdf',
-        fileSize: '310 KB',
+        files: [{ name: 'utility_bill_june.pdf', size: '310 KB' }],
         sent: 'Jul 28',
         decision: { outcome: 'accepted', on: 'Jul 30' },
       },
@@ -154,8 +177,7 @@ export const documentRequirements = [
     submissions: [
       {
         id: 'english-1',
-        fileName: 'toefl_result.pdf',
-        fileSize: '190 KB',
+        files: [{ name: 'toefl_result.pdf', size: '190 KB' }],
         sent: 'Jun 14',
         decision: { outcome: 'accepted', on: 'Jun 17' },
       },
@@ -220,14 +242,59 @@ export function documentsFor(state) {
               submissions: [
                 {
                   id: 'immunization-1',
-                  fileName: 'immunization_record.pdf',
-                  fileSize: '1.8 MB',
+                  files: [{ name: 'immunization_record.pdf', size: '1.8 MB' }],
                   sent: 'Aug 11',
                   decision: { outcome: 'accepted', on: 'Aug 14' },
                 },
               ],
             }
           : item,
+      ),
+      issued: issuedDocuments,
+    };
+  }
+
+  // ENR-206. Health's own two. They live here rather than in `health-data.js`
+  // because the immunization record is one of these six requirements and not a
+  // second copy of one — Health is a window onto this list, not an owner of it.
+  if (state === 'health-returned' || state === 'health-settled') {
+    const submission =
+      state === 'health-settled'
+        ? {
+            id: 'immunization-1',
+            files: [
+              { name: 'immunization_page_1.jpg', size: '2.1 MB' },
+              { name: 'immunization_page_2.jpg', size: '1.9 MB' },
+            ],
+            sent: 'Aug 11',
+            decision: { outcome: 'accepted', on: 'Aug 16' },
+          }
+        : {
+            id: 'immunization-1',
+            files: [
+              { name: 'immunization_page_1.jpg', size: '2.1 MB' },
+              { name: 'immunization_page_2.jpg', size: '1.9 MB' },
+            ],
+            sent: 'Aug 11',
+            decision: {
+              outcome: 'changes-requested',
+              on: 'Aug 16',
+              // Specific, and about this record: the guardrail of the épico is
+              // that a student is never told only that something is wrong.
+              reason:
+                'The second photograph cuts off the dates beside the MMR and Tdap lines, so neither dose could be read. The first page is fine and is already on your record.',
+              remedies: [
+                'Photograph the page flat, with all four edges of the sheet visible.',
+                'Make sure the date beside every vaccine is legible — that is the part Health Services reads.',
+                'Send only the page that came back; the one that was accepted stays where it is.',
+              ],
+              unread: true,
+            },
+          };
+
+    return {
+      requirements: documentRequirements.map((item) =>
+        item.id === 'immunization-record' ? { ...item, submissions: [submission] } : item,
       ),
       issued: issuedDocuments,
     };

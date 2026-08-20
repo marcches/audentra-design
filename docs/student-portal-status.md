@@ -12,7 +12,7 @@ A **História** is the acceptance story behind it, and it moves on its own clock
 
 ## 1. Built and in QA
 
-Thirteen screens exist, all reachable, all on the shared page shell.
+Fourteen screens exist, all reachable, all on the shared page shell.
 
 | Card | Screen | Status | Landed in |
 |---|---|---|---|
@@ -28,6 +28,7 @@ Thirteen screens exist, all reachable, all on the shared page shell.
 | ENR-183 | Appointments | QA | `d5612fb` |
 | ENR-184 | Profile | QA | uncommitted work in the tree |
 | ENR-165 | My Documents | Prioritized | this pass |
+| ENR-206 | Health | Development | this pass |
 
 Plus two Jam passes on top: `5ddab1d` (one page shell for every section) and `4b48031` (one summary
 panel, advisor sized by the figure beside it).
@@ -80,18 +81,68 @@ destination from the nav so the portal stops advertising a page nobody owns. The
 **ENR-177 · Student · See that my question reached someone** (`Prioritized`, under ENR-190), which
 Help partly answers today.
 
-### 2.3 Health — specced, not started
+### 2.3 ~~Health — specced, not started~~ — landed
 
-- **ENR-206 · Student · Health** — `Backlog`
-- **ENR-205 · Student · Health section: finish what onboarding left open** — `Backlog`
+**ENR-206 · Student · Health** — built in this pass, to
+`.scratch/ENR-206-health/spec.md`, from ENR-205, ENR-208 and ENR-209. `navigation.js` declares
+`health` as a destination between My Classrooms and the two groups, deliberately **without a badge**.
 
-Not in the destination model at all yet. Under ENR-190 (Support services).
+Three things it settled that outlive it:
 
-### 2.4 Housing — a card with no story
+- **One record, two windows.** The immunization record was already a document requirement in
+  `documents-data.js`; Health reads that object rather than copying it, and the record, the send and
+  the `checking` clock moved up to `App.jsx`. That fixed an existing gap in ENR-165 as a side
+  effect — an upload now survives leaving the page, which is what ENR-157 AC 3 promises in words.
+- **One door per requirement, and it can move.** `doorOf` in `lib/documents.js` says where a first
+  submission is made. The checklist step and My Documents now both route to Health for this record
+  and offer no field of their own.
+- **The accommodation answer never leaves the section** — `docs/adr/0001`. No help request, no
+  appointment, no badge, and nothing in the record Edward speaks from.
 
-- **ENR-207 · Student · Housing** — `Backlog`, no story under it, no spec.
+`CONTEXT.md` gained **Accommodation answer**, widened **Office** (a team can receive what a section
+routes to it and decide nothing) and widened **Submission** to carry one *or more* files — ENR-209
+AC 1 asks for eight, and a vaccination record is physically several photographed pages.
 
-Needs refinement before it can be built. Under ENR-173.
+Its three stories, ENR-205, ENR-208 and ENR-209, stay `Prioritized`: they are acceptance, not build
+work. **ENR-208 AC 6** is the one this repo cannot honour — concealment enforced below the interface
+needs a backend — so it is declared as a property of the shape and said plainly in the spec instead
+of being simulated. **ENR-212** is the staff side, and a different surface.
+
+### 2.4 ~~Housing — a card with no story~~ — landed
+
+The earlier reading of this card was wrong on all three counts: it is `Development`, not `Backlog`;
+it has three stories under it, not none; and it now has a spec.
+
+**ENR-207 · Student · Housing** — built in this pass. `navigation.js` declares `housing` as a
+top-level destination, last in the sidebar, with no badge. Spec:
+`.scratch/ENR-207-housing/spec.md`; references: `references.md` in the same directory.
+
+Its stories: **ENR-210** (choose my housing plan) and **ENR-211** (rank my residence preferences),
+both `Prioritized` — acceptance, not build work. **ENR-213** is the staff side and is out of scope
+here; only its AC 6, the assignment the student sees, is rendered, from published data.
+
+Two divergences are recorded on the spec rather than smoothed over: a fourth plan option
+(*arranging my own housing*), which ENR-210 AC 1 does not name but ENR-213 AC 2 requires the
+assignment population to distinguish; and the interface never saying *request*, because `CONTEXT.md`
+had already given that word to Help, pointing the other way.
+
+What it leaves behind:
+
+- `src/housing-data.js` — the eight published residences, the four plan options, and the response
+  deadline, which `data.js` now reads rather than repeating as a literal.
+- `src/lib/housing.js` — the rules that keep a **plan** (an answer) apart from a **preference** (a
+  request for something somebody else decides), and the reconciliation each residence states
+  against My Financials.
+- `docs/adr/0002-housing-is-not-a-campus-life-leaf.md` — why this is not a third leaf of My Campus
+  Life, which is the first thing a reader of ENR-173 will ask.
+- `CONTEXT.md` — `Housing plan`, `Residence`, `Preference`, `Shortlist`, `Response deadline` and
+  `Room assignment`, the last as a sibling of `Decision` rather than a case of it.
+
+It also removed the last `kind: 'form'` from `TaskDrawer`: the plan used to be answered inside the
+drawer. Housing now routes there through the same `task.section` signpost ENR-206 built for Health,
+generalised so both steps carry their own two sentences.
+
+Still open on the staff side of ENR-173: **ENR-213** (`Backlog`).
 
 ---
 
@@ -126,7 +177,7 @@ Onboarding stories **ENR-150 to ENR-154** are in QA, one step further along than
 1. ~~**ENR-165 · My Documents**~~ — landed. The nav has no broken promise left.
 2. **Messages** — decide: open a card, or remove the destination. Now the only one.
 3. **ENR-161 / ENR-162** — verify against the shell; small if the surfaces exist, a card if not.
-4. **ENR-206 · Health** — has a story, ready to spec.
-5. **ENR-207 · Housing** — refine first, it has nothing under it.
+4. ~~**ENR-206 · Health**~~ — landed, with the record shared with My Documents rather than copied.
+5. ~~**ENR-207 · Housing**~~ — landed. It did not need refining; the stories were already there.
 
 After that the student portal is feature-complete against the board as it stands today.

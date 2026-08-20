@@ -14,6 +14,18 @@ import { formatCredit, formatMoney } from '../../lib/money.js';
  * amount. [Squarespace](https://mobbin.com/screens/8e645c6b-ec1f-4103-9dfc-ad72587f48b5)
  * for the ruled ledger foot.
  */
+/**
+ * ENR-207 / ENR-211 AC 8 — these two lines are the only place My Financials and Housing can
+ * contradict each other. Residences carry their own rates, so this figure is true of one room type
+ * and not of the catalogue; saying which one it assumes is what turns a difference into a
+ * comparison. The figures do not move here — they move when Housing Services assigns a room, which
+ * is what the balance strip has always said.
+ */
+const HOUSING_BASIS = {
+  housing: 'Assumes a standard double room',
+  meals: 'Assumes the full meal plan',
+};
+
 export default function CostCard({ ledger, snapshot, year, children }) {
   return (
     <section className="ledger-card" aria-labelledby="cost-title">
@@ -46,13 +58,21 @@ export default function CostCard({ ledger, snapshot, year, children }) {
           </tr>
           {costOfAttendance.map((item) => (
             <tr className="ledger-sub" key={item.id}>
-              <th scope="row">{item.label}</th>
+              <th scope="row">
+                {item.label}
+                {HOUSING_BASIS[item.id] && <small>{HOUSING_BASIS[item.id]}</small>}
+              </th>
               <td>
                 {item.estimate && (
                   <span className="estimate-chip small">
                     Estimate
                     <TermTip term="estimate" label={item.label} />
                   </span>
+                )}
+                {HOUSING_BASIS[item.id] && (
+                  <a className="ledger-link" href="#/housing">
+                    Compare residences <Icon name="arrow" size={13} />
+                  </a>
                 )}
               </td>
               <td className="ledger-amount">{formatMoney(item.amount)}</td>

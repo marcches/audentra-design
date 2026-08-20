@@ -162,9 +162,9 @@ export const seededConversations = [
         id: 'seed-housing-a',
         role: 'edward',
         body: [
-          'Yes. Your housing answer can be changed any time before the housing deadline — Housing & Residential Life only uses it to open the right next steps for you.',
+          'Yes. Your housing answer can be changed any time before the housing deadline — Housing Services only uses it to open the right next steps for you.',
         ],
-        source: { basis: 'guidance', label: 'Housing & Residential Life', destination: null },
+        source: { basis: 'guidance', label: 'Housing Services', destination: null },
       },
     ],
   },

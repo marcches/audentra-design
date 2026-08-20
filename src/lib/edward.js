@@ -14,6 +14,14 @@
  *     and Edward ever disagree, one of them stopped reading this.
  *   - **Edward never acts.** An answer can carry a `route`, which is a place the
  *     student goes to do the thing themselves — AC 5.
+ *   - **The accommodation answer is not in this record and must never be added.**
+ *     ENR-206 and ADR-0001: whether the student asked to talk to Accessibility
+ *     Services is the one thing in the portal she may have chosen to tell nobody,
+ *     and an assistant that repeats it out loud — on a shared screen, in a
+ *     screenshot, read aloud — undoes that without the answer ever being
+ *     displayed. The immunization record is different and is fair game: it is a
+ *     document requirement like the other five, and the office that asked for it
+ *     already knows it asked.
  */
 
 import {

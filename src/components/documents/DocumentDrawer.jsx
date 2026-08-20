@@ -3,10 +3,13 @@ import Icon from '../../Icon.jsx';
 import ExtractReview from './ExtractReview.jsx';
 import { useOverlay } from '../../lib/overlay.js';
 import {
+  doorOf,
+  filesLabel,
   latestDecision,
   listFormats,
   officeOf,
   refuse,
+  refuseCount,
   stateInfo,
   stateOf,
 } from '../../lib/documents.js';
@@ -35,6 +38,7 @@ export default function DocumentDrawer({
   task,
   sending,
   failed,
+  atDoor = false,
   onClose,
   onSubmit,
   onOpenStep,
@@ -45,7 +49,7 @@ export default function DocumentDrawer({
   const picker = useRef(null);
   useOverlay(panel, { onClose });
 
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
   const [refusal, setRefusal] = useState(null);
   const [values, setValues] = useState(() => initialValues(requirement));
   const [decisions, setDecisions] = useState({});
@@ -55,39 +59,51 @@ export default function DocumentDrawer({
   const info = stateInfo(requirement);
   const decision = latestDecision(requirement);
   const accepts = requirement.accepts;
+  const maxFiles = accepts?.maxFiles ?? 1;
 
   const history = [...(requirement.submissions ?? [])].reverse();
 
-  // Send it the first time from the step that asks for it; send it *again* from
-  // here. The two paths are disjoint, so a duplicate submission has nowhere to
-  // come from — see the interactions table in the spec.
-  const routeToStep = state === 'needed' && Boolean(task);
-  const canUpload = info.holder === 'you' && !routeToStep;
+  // Send it the first time from the one place that owns the door — the checklist
+  // step, or since ENR-206 the Health section — and send it *again* from here.
+  // The two paths are disjoint, so a duplicate submission has nowhere to come
+  // from. `atDoor` is how the section that *is* the door says so.
+  const door = doorOf(requirement);
+  const routeAway = state === 'needed' && !atDoor && (door.id === 'task' ? Boolean(task) : true);
+  const canUpload = info.holder === 'you' && !routeAway;
 
   const extract = state === 'changes-requested' ? requirement.extract : null;
   const undecided = extract ? extract.fields.filter((f) => !decisions[f.id]).length : 0;
-  const ready = Boolean(file) && undecided === 0 && !sending;
+  const ready = files.length > 0 && undecided === 0 && !sending;
 
   function pick(event) {
-    const chosen = event.target.files?.[0];
+    const chosen = [...(event.target.files ?? [])];
     event.target.value = '';
-    if (!chosen) return;
+    if (chosen.length === 0) return;
 
-    // Refused before the upload, against the rule it broke — never after it,
-    // and never in a modal over the top of everything else.
-    const problem = refuse(requirement, chosen.name);
-    if (problem) {
-      setRefusal(problem);
-      setFile({ fileName: chosen.name, rejected: true });
-      return;
+    // Refused before the upload, against the rule it broke — never after it, and
+    // never in a modal over the top of everything else. ENR-209 Scenario 5: what
+    // is within the limits is kept, so a refusal never clears the selection.
+    const full = refuseCount(requirement, files.length, chosen.length);
+    const room = Math.max(0, maxFiles - files.length);
+    const taking = full ? chosen.slice(0, room) : chosen;
+
+    const kept = [];
+    let problem = full;
+    for (const item of taking) {
+      const said = refuse(requirement, { name: item.name, bytes: item.size });
+      if (said) {
+        problem = problem ?? said;
+        continue;
+      }
+      kept.push({ name: item.name, size: sizeLabel(item.size) });
     }
 
-    setRefusal(null);
-    setFile({ fileName: chosen.name, fileSize: sizeLabel(chosen.size) });
+    setRefusal(problem);
+    if (kept.length > 0) setFiles((current) => [...current, ...kept]);
   }
 
-  function clearFile() {
-    setFile(null);
+  function removeFile(name) {
+    setFiles((current) => current.filter((item) => item.name !== name));
     setRefusal(null);
   }
 
@@ -153,6 +169,7 @@ export default function DocumentDrawer({
             {accepts && (
               <p className="document-accepts">
                 {listFormats(accepts.formats)} · up to {accepts.maxMb} MB
+                {maxFiles > 1 ? ` · up to ${maxFiles} files` : ''}
               </p>
             )}
             {requirement.unblocks && (
@@ -163,15 +180,18 @@ export default function DocumentDrawer({
           </section>
 
           {/* 3 — the field, only when she is the one who owes a move. */}
-          {routeToStep && (
+          {routeAway && (
             <div className="document-route">
-              <p>
-                This one is a step on your checklist, and that is where it is sent from — so there is
-                only ever one place it can be submitted.
-              </p>
-              <button className="primary-button" onClick={() => onOpenStep(task)}>
-                Open the step <Icon name="arrow" size={17} />
-              </button>
+              <p>{door.line}</p>
+              {door.route ? (
+                <a className="primary-button" href={door.route} onClick={onClose}>
+                  {door.label} <Icon name="arrow" size={17} />
+                </a>
+              ) : (
+                <button className="primary-button" onClick={() => onOpenStep(task)}>
+                  {door.label} <Icon name="arrow" size={17} />
+                </button>
+              )}
             </div>
           )}
 
@@ -186,33 +206,67 @@ export default function DocumentDrawer({
                 ref={picker}
                 className="visually-hidden"
                 accept={accepts?.extensions}
+                multiple={maxFiles > 1}
                 onChange={pick}
               />
 
-              <div className={`upload-zone ${refusal ? 'refused' : file ? 'has-file' : ''}`}>
+              <div className={`upload-zone ${refusal ? 'refused' : files.length > 0 ? 'has-file' : ''}`}>
                 <span className="upload-mark" aria-hidden="true">
-                  <Icon name={refusal ? 'alert' : file ? 'check' : 'upload'} size={22} />
+                  <Icon name={refusal ? 'alert' : files.length > 0 ? 'check' : 'upload'} size={22} />
                 </span>
-                {file ? (
-                  <div className="upload-chosen">
-                    <strong>{file.fileName}</strong>
-                    <span>{file.rejected ? 'Not sent' : file.fileSize}</span>
-                  </div>
-                ) : (
-                  <div className="upload-chosen">
-                    <strong>Choose a file</strong>
-                    <span>{accepts ? `${listFormats(accepts.formats)} · up to ${accepts.maxMb} MB` : ''}</span>
-                  </div>
-                )}
+                <div className="upload-chosen">
+                  <strong>
+                    {files.length === 0
+                      ? maxFiles > 1
+                        ? 'Choose your files'
+                        : 'Choose a file'
+                      : files.length === 1
+                        ? files[0].name
+                        : `${files.length} files ready to send`}
+                  </strong>
+                  <span>
+                    {files.length === 1
+                      ? files[0].size
+                      : accepts
+                        ? `${listFormats(accepts.formats)} · up to ${accepts.maxMb} MB${maxFiles > 1 ? ` · ${maxFiles} files` : ''}`
+                        : ''}
+                  </span>
+                </div>
                 <button className="secondary-button" onClick={() => picker.current?.click()}>
-                  {file ? 'Choose another' : 'Browse'}
+                  {files.length === 0 ? 'Browse' : maxFiles > 1 ? 'Add more' : 'Choose another'}
                 </button>
-                {file && (
-                  <button className="icon-button" aria-label="Remove this file" onClick={clearFile}>
+                {files.length === 1 && (
+                  <button
+                    className="icon-button"
+                    aria-label={`Remove ${files[0].name}`}
+                    onClick={() => removeFile(files[0].name)}
+                  >
                     <Icon name="close" size={18} />
                   </button>
                 )}
               </div>
+
+              {/* Every page she chose, named. A record that is eight photographs
+                  has to be countable before it is sent, or "did they all go?" is
+                  a question the screen cannot answer — ENR-209 Scenario 5. */}
+              {files.length > 1 && (
+                <ul className="upload-files">
+                  {files.map((item) => (
+                    <li key={item.name}>
+                      <Icon name="file" size={15} />
+                      <span className="upload-file-name">{item.name}</span>
+                      <span className="upload-file-size">{item.size}</span>
+                      <button
+                        className="icon-button"
+                        aria-label={`Remove ${item.name}`}
+                        onClick={() => removeFile(item.name)}
+                      >
+                        <Icon name="close" size={16} />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
 
               {/* The refusal sits under the same line that stated the rule, so
                   the rule is learned from the requirement and not from the error. */}
@@ -229,7 +283,7 @@ export default function DocumentDrawer({
               )}
 
               {/* 4 — the extraction, once there is a file to have read. */}
-              {extract && file && !file.rejected && (
+              {extract && files.length > 0 && (
                 <ExtractReview
                   extract={extract}
                   values={values}
@@ -255,14 +309,14 @@ export default function DocumentDrawer({
                 <div className="upload-failed" role="alert">
                   <p>
                     <strong>This did not reach Aster.</strong> Nothing was recorded, and{' '}
-                    {office.name} has not seen it. Your file is still here.
+                    {office.name} has not seen it. {files.length > 1 ? 'Your files are' : 'Your file is'} still here.
                   </p>
                   <div className="upload-failed-actions">
-                    <button className="primary-button" onClick={() => onRetry(requirement, file)}>
+                    <button className="primary-button" onClick={() => onRetry(requirement, files)}>
                       <Icon name="refresh" size={16} /> Try again
                     </button>
                     <button className="secondary-button" onClick={() => picker.current?.click()}>
-                      Choose another file
+                      Choose {files.length > 1 ? 'other files' : 'another file'}
                     </button>
                   </div>
                 </div>
@@ -270,13 +324,13 @@ export default function DocumentDrawer({
                 <button
                   className="primary-button"
                   disabled={!ready}
-                  onClick={() => onSubmit(requirement, file)}
+                  onClick={() => onSubmit(requirement, files)}
                 >
                   {sending ? 'Sending…' : 'Send to Aster'} <Icon name="arrow" size={17} />
                 </button>
               )}
 
-              {extract && file && !file.rejected && undecided > 0 && (
+              {extract && files.length > 0 && undecided > 0 && (
                 <p className="upload-blocked">
                   {undecided === 1
                     ? 'One field above still needs your answer'
@@ -300,9 +354,9 @@ export default function DocumentDrawer({
                 {history.map((submission) => (
                   <li key={submission.id}>
                     <div className="history-head">
-                      <strong>{submission.fileName}</strong>
+                      <strong>{filesLabel(submission)}</strong>
                       <span>
-                        {submission.fileSize} · sent {submission.sent}
+                        {submissionSize(submission)} · sent {submission.sent}
                       </span>
                     </div>
                     <p className={`history-outcome ${outcomeTone(submission)}`}>
@@ -340,6 +394,13 @@ function initialValues(requirement) {
 function outcomeTone(submission) {
   if (submission.checking || !submission.decision) return 'wait';
   return submission.decision.outcome === 'accepted' ? 'done' : 'stop';
+}
+
+/** Every page of one submission, on one line. */
+function submissionSize(submission) {
+  const files = submission.files ?? [];
+  if (files.length <= 1) return files[0]?.size ?? '';
+  return files.map((item) => item.size).join(' + ');
 }
 
 function sizeLabel(bytes) {

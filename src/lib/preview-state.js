@@ -29,6 +29,26 @@ export const PREVIEW_STATES = [
   // office sent back with a reason. It shares `send-fails` with Help, because a
   // send that never arrived is the same failure whatever it was carrying.
   ['changes-requested', 'One came back', 'A document an office sent back, with its reason.'],
+  // ENR-206: Health needs its own two, and `changes-requested` cannot be either
+  // of them — that fixture is about the financial document, and it deliberately
+  // shows the immunization record as accepted so the rejection has nowhere to
+  // hide. `health-returned` is the immunization record itself coming back;
+  // `health-settled` is both halves resolved, which the section still has to
+  // show rather than turning into a congratulatory page (ENR-205 Scenario 4).
+  ['health-returned', 'Record came back', 'The immunization record sent back with a reason.'],
+  ['health-settled', 'Health resolved', 'Both halves of Health settled, and the section still shows both.'],
+  // ENR-207: the three worlds Housing cannot be clicked into. The four plans are
+  // reachable by answering the question, so they need no id; these are not.
+  // `onboarding-answered` is a shortlist that arrived already written, which is
+  // the only way to see ENR-210 AC 6 without answering it yourself. The other two
+  // are the far side of the response deadline — the card's "effectively two
+  // screens" — and they are states rather than a clock, because Housing Services
+  // assigning is institutional action and this repo does not simulate that on a
+  // timer. Same rule `lib/documents.js` follows: checking advances on a clock, a
+  // person's decision never does.
+  ['onboarding-answered', 'Answered at onboarding', 'Living on campus, three residences already ranked.'],
+  ['deadline-passed', 'After the housing deadline', 'The submitted shortlist, and Housing Services assigning.'],
+  ['room-assigned', 'Room assigned', 'A room that is not the first preference — and is still valid.'],
   ['partial', 'Partial data', 'The catalog loaded; your transcript could not be checked.'],
   ['error', 'Error', 'The published catalog could not be loaded at all.'],
   ['aid-final', 'Aid finalized', 'My Financials with the federal loan approved and nothing outstanding.'],

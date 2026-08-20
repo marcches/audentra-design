@@ -145,6 +145,33 @@ export const DESTINATIONS = [
   },
 
   {
+    id: 'health',
+    label: 'Health',
+    route: '#/health',
+    // Not a heart and not a cross: this section is not a medical record, and the
+    // first thing a student reads must not suggest it is.
+    icon: 'shield',
+    // No badge, deliberately. The record's unread decision is already counted on
+    // My Documents — the same event twice in one sidebar is a lie about how much
+    // is outstanding — and any counter that could one day include the
+    // accommodation question would turn a complete "not right now" into a
+    // pending item, which is the one thing this section exists to avoid.
+    lede: 'One record Health Services needs, and one question Accessibility Services asked.',
+    // The eyebrow names both owners, because the whole screen turns on the two
+    // halves belonging to different teams.
+    hero: {
+      kicker: 'Health · Accessibility Services and Aster University Health Services',
+      title: 'Only two things here, Maya.',
+      lede: 'One record Health Services needs before you register, and one question that is yours to answer — or not.',
+      motif: 'shield',
+    },
+    appears: 'The health step from onboarding is finished here, whatever is left of it.',
+    produces: 'Both parts are open to you from the day your offer is accepted.',
+    next: 'my-documents',
+    built: true,
+  },
+
+  {
     id: 'financials-overview',
     label: 'Overview',
     route: '#/financials/overview',
@@ -205,6 +232,34 @@ export const DESTINATIONS = [
     appears: 'Clubs you can join appear here.',
     produces: 'Student Life publishes this year’s list before term starts.',
     next: 'events',
+    built: true,
+  },
+
+  {
+    id: 'housing',
+    label: 'Housing',
+    route: '#/housing',
+    icon: 'home',
+    // A destination of its own rather than a third leaf of My Campus Life. The
+    // reasoning is in docs/adr/0002-housing-is-not-a-campus-life-leaf.md: a
+    // group's hero, summary and notice are true of every leaf, and a housing
+    // deadline is true of neither Events nor Clubs.
+    //
+    // No badge, for the reason Health gives above: the housing step is already
+    // counted in `openSteps` on My Enrollment, and the same obligation counted
+    // twice in one sidebar is a discrepancy the student cannot resolve.
+    lede: 'Where you plan to live, and the residences you would like if that is on campus.',
+    // The eyebrow names who publishes the catalogue, because the eight
+    // residences on this page are the institution's list and not the portal's.
+    hero: {
+      kicker: 'Housing · Catalogue published by Housing Services',
+      title: 'Let’s settle where you’ll live, Maya.',
+      lede: 'Two questions: where you plan to live, and which residences you would like. Housing Services assigns the rooms.',
+      motif: 'home',
+    },
+    appears: 'Your housing plan appears here, with the residences Housing Services publishes.',
+    produces: 'Both are open to you from the day your offer is accepted.',
+    next: 'my-enrollment',
     built: true,
   },
 
@@ -272,6 +327,7 @@ export const NAV = [
   { kind: 'link', id: 'appointments' },
   { kind: 'link', id: 'messages' },
   { kind: 'link', id: 'my-classrooms' },
+  { kind: 'link', id: 'health' },
   {
     kind: 'group',
     id: 'financials',
@@ -279,6 +335,10 @@ export const NAV = [
     items: ['financials-overview', 'financials-aid', 'financials-payments'],
   },
   { kind: 'group', id: 'campus', label: GROUPS.campus, items: ['events', 'clubs'] },
+  // Last, because Housing belongs to the block about a life at Aster rather than
+  // to the academic or the money block — and it is a link, not a leaf of the
+  // group above it. ADR 0002.
+  { kind: 'link', id: 'housing' },
 ];
 
 /** Reachable from the foot of the sidebar, not from the section list. */

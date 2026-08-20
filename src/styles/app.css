@@ -7686,20 +7686,26 @@ footer a {
 
 /* --- the rail --- */
 
-.reply-card strong {
+/* Housing's anchor card is the same shape — a label, a figure, a line of copy
+   and facts under a hairline — so it takes the same four rules rather than a
+   second set of its own. ENR-207. */
+.reply-card strong,
+.deadline-card strong {
   letter-spacing: var(--ls-tight);
   margin: 3px 0 10px;
   font-size: var(--fs-display);
   display: block;
 }
 
-.reply-card p {
+.reply-card p,
+.deadline-card p {
   margin: 0;
   font-size: var(--fs-copy);
   line-height: var(--lh-body);
 }
 
-.reply-card .reply-note {
+.reply-card .reply-note,
+.deadline-card .reply-note {
   border-top: 1px solid color-mix(in srgb, var(--surface) 14%, transparent);
   align-items: flex-start;
   gap: 7px;
@@ -7709,9 +7715,17 @@ footer a {
   display: flex;
 }
 
-.reply-card .reply-note svg {
+.reply-card .reply-note svg,
+.deadline-card .reply-note svg {
   flex: none;
   margin-top: 2px;
+}
+
+/* Two facts under one hairline, not two divided rows. */
+.deadline-card .reply-note + .reply-note {
+  border-top: 0;
+  margin-top: 6px;
+  padding-top: 0;
 }
 
 .office-list {
@@ -10260,6 +10274,462 @@ footer a {
   margin-top: 2px;
 }
 
+/* ── Health — ENR-206 ──
+   Two cards that must not read as one thing. The record above is a card in the
+   ordinary construction: banded head, state chip, rows. Everything below is the
+   other silhouette — a question with no band at all, opening in prose and
+   closing on a foot. Nothing here paints an edge, and nothing here is washed:
+   the one colour this page spends is on the record while it is the one asking. */
+
+.record-card .status-chip {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  align-self: center;
+  padding: 5px 11px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semi);
+  white-space: nowrap;
+}
+.record-card .status-chip.stop {
+  border-color: color-mix(in srgb, var(--crimson) 30%, transparent);
+  background: color-mix(in srgb, var(--crimson) 9%, #fff);
+  color: var(--crimson);
+}
+.record-card .status-chip.act,
+.record-card .status-chip.wait,
+.record-card .status-chip.progress {
+  border-color: color-mix(in srgb, var(--amber) 34%, transparent);
+  background: var(--amber-soft);
+  color: color-mix(in srgb, var(--amber) 72%, var(--ink));
+}
+.record-card .status-chip.done {
+  border-color: color-mix(in srgb, var(--green) 30%, transparent);
+  background: var(--green-soft);
+  color: color-mix(in srgb, var(--green) 68%, var(--ink));
+}
+
+.status-icon.act {
+  color: color-mix(in srgb, var(--amber) 74%, var(--ink));
+  background: var(--amber-soft);
+}
+
+.status-icon.stop {
+  color: var(--crimson);
+  background: color-mix(in srgb, var(--crimson) 10%, #fff);
+}
+
+.record-state {
+  padding: 0;
+}
+.record-line {
+  color: var(--ink);
+  align-items: baseline;
+  gap: 8px;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  display: flex;
+  text-wrap: pretty;
+}
+.record-line .pulse {
+  flex: none;
+  transform: translateY(-2px);
+}
+/* The date, only on the card that is still asking, and never in crimson at 102
+   days out — a distant deadline drawn as an emergency is the threat the brief
+   rules out. */
+.record-due {
+  color: var(--muted);
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  font-size: var(--fs-meta);
+  display: flex;
+}
+.record-due svg {
+  flex: none;
+}
+
+/* Stripe's order: what would fix it, then what went wrong. The one tinted block
+   on the page, and it sits with the control that acts on it. */
+.record-returned {
+  border: 1px solid color-mix(in srgb, var(--crimson) 18%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--crimson) 5%, #fff);
+  margin-top: 16px;
+  padding: 16px;
+}
+.returned-lead {
+  color: var(--ink);
+  margin-bottom: 10px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+}
+.record-returned .reject-remedies {
+  margin: 0;
+}
+.returned-reason {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--crimson) 14%, transparent);
+  font-size: var(--fs-meta);
+  line-height: 1.55;
+  display: flex;
+  text-wrap: pretty;
+}
+.returned-reason svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--crimson);
+}
+.returned-by {
+  color: var(--muted);
+  margin-top: 8px;
+  font-size: var(--fs-micro);
+}
+
+.record-rows {
+  margin-top: 18px;
+}
+.record-row {
+  align-items: flex-start;
+  gap: 12px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  display: flex;
+}
+.record-row-mark {
+  color: var(--muted);
+  flex: none;
+  margin-top: 1px;
+}
+.record-row-body {
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+  display: flex;
+}
+.record-row-body strong {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semi);
+}
+.record-row-body > span {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+/* Every page she sent, named — so "did they all go?" is answerable. */
+.record-files {
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 6px;
+  display: flex;
+}
+.record-files span {
+  color: var(--muted);
+  font-size: var(--fs-micro);
+}
+.record-files i {
+  font-style: normal;
+  opacity: .7;
+}
+
+.record-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+.record-foot > span {
+  color: var(--muted);
+  align-items: center;
+  gap: 7px;
+  font-size: var(--fs-micro);
+  display: flex;
+}
+.record-foot svg {
+  flex: none;
+}
+
+/* ── The question ── */
+
+.question-head {
+  padding: 0;
+}
+.question-owner {
+  color: var(--muted);
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  font-family: var(--font-geist-mono);
+  font-size: var(--fs-micro);
+}
+.question-head h2 {
+  margin-top: 8px;
+  font-size: 19px;
+  font-weight: var(--fw-semi);
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+.question-lede {
+  color: var(--muted);
+  margin-top: 8px;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+/* The absence, said out loud. It is the sentence that stops the card reading as
+   the first field of a medical form. */
+.question-collects {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 12px;
+  font-size: var(--fs-meta);
+  display: flex;
+}
+.question-collects svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.question-ask {
+  padding: 18px 0 0;
+}
+.question-open-label {
+  color: var(--muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-size: var(--fs-micro);
+}
+.answer-options {
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  display: flex;
+}
+.answer-option {
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  transition:
+    border-color var(--motion-fast) ease,
+    background var(--motion-fast) ease;
+  display: flex;
+}
+.answer-option:hover {
+  border-color: color-mix(in srgb, var(--purple) 38%, var(--line));
+  background: color-mix(in srgb, var(--purple) 3%, var(--surface));
+}
+.answer-option:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}
+.answer-option[disabled] {
+  opacity: .6;
+  cursor: default;
+}
+.answer-dot {
+  border: 1.9px solid var(--line);
+  border-radius: 50%;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+}
+.answer-option:hover .answer-dot {
+  border-color: var(--purple);
+}
+.answer-copy {
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  display: flex;
+}
+.answer-copy strong {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semi);
+}
+.answer-copy span {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* Answered: a sentence, not a control — and never a congratulation. */
+.question-answered {
+  padding: 18px 0 0;
+}
+.answered-said {
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  display: flex;
+}
+.answered-said strong {
+  font-size: 17px;
+  font-weight: var(--fw-semi);
+}
+.answered-said > span {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+.answer-mark {
+  border-radius: 50%;
+  flex: none;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  display: grid;
+}
+.answer-mark.done {
+  background: var(--green-soft);
+  color: color-mix(in srgb, var(--green) 70%, var(--ink));
+}
+.answered-next {
+  color: var(--muted);
+  margin-top: 10px;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.answered-change {
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+}
+.answered-change > span {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+.question-failed,
+.question-unreadable {
+  border: 1px solid color-mix(in srgb, var(--crimson) 20%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--crimson) 5%, #fff);
+  margin-top: 16px;
+  padding: 16px;
+}
+.question-failed p,
+.question-unreadable p {
+  font-size: var(--fs-meta);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.question-failed .secondary-button,
+.question-unreadable .secondary-button {
+  margin-top: 12px;
+}
+
+.question-foot {
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  display: flex;
+}
+.question-foot svg {
+  flex: none;
+}
+
+/* ── The rail ── */
+
+.teams-list {
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
+  display: flex;
+}
+.teams-list li {
+  flex-direction: column;
+  gap: 3px;
+  display: flex;
+}
+.teams-list strong {
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+}
+.teams-list span {
+  color: var(--muted);
+  font-size: var(--fs-micro);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.team-where {
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+  display: flex;
+  opacity: .8;
+}
+.team-where svg {
+  flex: none;
+}
+.published-card .link-button {
+  margin-top: 12px;
+}
+
+/* Several files in one attempt, listed under the zone that chose them. */
+.upload-files {
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 10px;
+  display: flex;
+}
+.upload-files li {
+  border-radius: 10px;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px 7px 10px;
+  display: flex;
+}
+.upload-files li:nth-child(odd) {
+  background: var(--card-zone);
+}
+.upload-files svg {
+  color: var(--muted);
+  flex: none;
+}
+.upload-file-name {
+  min-width: 0;
+  flex: 1;
+  font-size: var(--fs-micro);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.upload-file-size {
+  color: var(--muted);
+  flex: none;
+  font-size: var(--fs-micro);
+}
+
+@media (width<=620px) {
+  .record-foot,
+  .answered-change {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .record-foot .primary-button,
+  .answered-change .secondary-button {
+    justify-content: center;
+  }
+}
+
 .visually-hidden {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
@@ -10310,4 +10780,678 @@ footer a {
     flex: 1 0 100%;
     justify-content: center;
   }
+}
+
+/* ------------------------------------------------------------------ *
+ * Housing — ENR-207
+ *
+ * Two questions of different weight, so the page spends its emphasis twice and
+ * no more: once on the ordinal that ranks a preference, once on the stage the
+ * process is at. Everything else is the flat construction the rest of the
+ * portal uses. No accented edge on any rounded row — a painted border-left is
+ * a tell this design system does not have.
+ * ------------------------------------------------------------------ */
+
+.panel-lede {
+  color: var(--muted);
+  margin: 0 0 14px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+/* What the plan just did — ENR-210 AC 7, under the four options. */
+.choice-consequence {
+  color: var(--ink);
+  background: var(--purple-soft);
+  border-radius: 12px;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 13px 0 0;
+  padding: 11px 13px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+.choice-consequence svg {
+  color: var(--purple-dark);
+  flex: none;
+  margin-top: 1px;
+}
+
+/* The plan after the deadline: an answer, not a control. */
+.settled-answer {
+  align-items: center;
+  gap: 11px;
+  margin: 0;
+  display: flex;
+}
+.settled-answer > svg {
+  color: var(--green);
+  flex: none;
+}
+.settled-answer strong {
+  font-size: var(--fs-h3);
+  letter-spacing: var(--ls-snug);
+  display: block;
+}
+.settled-answer small {
+  color: var(--muted);
+  margin-top: 3px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: block;
+}
+
+/* What sits below the plan when there is no second question. Not a state card:
+   nothing here is missing, so nothing may look like it is. */
+.outcome-card h2 {
+  margin: 12px 0 9px;
+  font-size: var(--fs-h2);
+  letter-spacing: var(--ls-snug);
+}
+.outcome-card p {
+  color: var(--muted);
+  margin: 0 0 9px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+.outcome-icon {
+  color: var(--green);
+  background: var(--green-soft);
+  border-radius: 13px;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  display: grid;
+}
+.outcome-card.awaiting .outcome-icon {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+}
+.outcome-card.undecided .outcome-icon {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+.outcome-card .outcome-meta {
+  color: var(--muted);
+  align-items: center;
+  gap: 6px;
+  margin: 13px 0 0;
+  font-size: var(--fs-micro);
+  display: flex;
+}
+.outcome-actions {
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+  display: flex;
+}
+.outcome-actions .primary-button,
+.outcome-actions .secondary-button {
+  flex: 1 1 190px;
+  justify-content: center;
+}
+
+/* The hardest sentence on this card. Paired on purpose: what the ranking is
+   not, then what it is worth. Only the first half is honest and useless. */
+.influence-note {
+  background: var(--card-zone);
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding: 13px;
+  display: flex;
+}
+.influence-note > span {
+  color: var(--purple-dark);
+  flex: none;
+  margin-top: 1px;
+}
+.influence-note strong {
+  font-size: var(--fs-h4);
+  letter-spacing: var(--ls-snug);
+  display: block;
+}
+.influence-note p {
+  color: var(--muted);
+  margin: 5px 0 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+/* The shortlist. The ordinal is where this page spends its colour. */
+.shortlist {
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+.shortlist-row {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 11px;
+  display: flex;
+}
+.rank-label {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+  border-radius: 999px;
+  flex: none;
+  padding: 5px 10px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-heavy);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+.shortlist-main {
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 0;
+  display: flex;
+}
+.shortlist-copy {
+  flex-direction: column;
+  min-width: 0;
+  display: flex;
+}
+.shortlist-copy strong {
+  font-size: var(--fs-h3);
+  letter-spacing: var(--ls-snug);
+}
+.shortlist-copy small {
+  color: var(--muted);
+  margin-top: 3px;
+  font-size: var(--fs-copy);
+}
+.rank-controls {
+  flex: none;
+  gap: 2px;
+  display: flex;
+}
+.rank-controls .icon-button:disabled {
+  opacity: .3;
+  cursor: not-allowed;
+}
+.rank-controls .icon-button.up svg {
+  transform: rotate(180deg);
+}
+.shortlist-empty {
+  color: var(--muted);
+  background: var(--card-zone);
+  border-radius: 13px;
+  margin: 0;
+  padding: 15px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+.shortlist-foot {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 7px;
+  margin: 13px 0 0;
+  font-size: var(--fs-micro);
+  line-height: var(--lh-body);
+  display: flex;
+}
+.shortlist-foot svg {
+  color: var(--green);
+  flex: none;
+  margin-top: 1px;
+}
+.shortlist-foot.partial svg {
+  color: var(--amber);
+}
+
+/* The catalogue. Same fields, same order, every row — that is the comparison. */
+.residence-list {
+  gap: 9px;
+}
+.residence-row {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+}
+.residence-row.ranked {
+  background: var(--purple-soft);
+  border-color: color-mix(in srgb, var(--purple) 26%, var(--line));
+}
+.residence-main {
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  align-items: flex-start;
+  gap: 11px;
+  width: 100%;
+  padding: 0;
+  display: flex;
+}
+.residence-copy {
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+.residence-title {
+  align-items: center;
+  gap: 7px;
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--ls-snug);
+  display: flex;
+}
+.rank-chip {
+  color: var(--purple-dark);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-heavy);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+.residence-summary {
+  color: var(--muted);
+  margin-top: 4px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+.residence-meta {
+  color: var(--muted);
+  flex-wrap: wrap;
+  gap: 4px 13px;
+  margin-top: 7px;
+  font-size: var(--fs-micro);
+  display: flex;
+}
+.residence-meta span {
+  align-items: center;
+  gap: 4px;
+  display: flex;
+}
+.residence-rate {
+  text-align: left;
+  flex-direction: column;
+  flex: none;
+  display: flex;
+}
+.residence-rate strong {
+  font-size: var(--fs-h4);
+  letter-spacing: var(--ls-snug);
+  white-space: nowrap;
+}
+.residence-rate small {
+  color: var(--muted);
+  margin-top: 3px;
+  font-size: var(--fs-micro);
+}
+.residence-action {
+  border-top: 1px solid var(--line);
+  justify-content: flex-end;
+  margin-top: 11px;
+  padding-top: 10px;
+  display: flex;
+}
+.residence-row.ranked .residence-action {
+  border-top-color: color-mix(in srgb, var(--purple) 20%, var(--line));
+}
+.ranked-mark {
+  color: var(--green);
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semi);
+  display: flex;
+}
+.action-reason {
+  color: var(--muted);
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-micro);
+  line-height: var(--lh-body);
+  display: flex;
+}
+.action-reason.block {
+  background: var(--card-zone);
+  border-radius: 11px;
+  align-items: flex-start;
+  margin: 0;
+  padding: 11px 12px;
+}
+.action-reason svg {
+  flex: none;
+}
+
+/* Wide enough, and the action stops being a band under the row and becomes the
+   last column of it — which is what Navan and Zillow do, and what stops eight
+   rows spending eight bands of furniture on one button each. */
+@media (width>=560px) {
+  .residence-row {
+    align-items: center;
+    gap: 14px;
+    display: flex;
+  }
+  .residence-main {
+    flex: 1;
+    align-items: center;
+    min-width: 0;
+  }
+  .residence-rate {
+    text-align: right;
+    width: 132px;
+  }
+  .residence-action {
+    border-top: 0;
+    flex: none;
+    width: 152px;
+    margin: 0;
+    padding: 0;
+  }
+  .residence-action .secondary-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* The residence detail. */
+.drawer-icon.housing {
+  background: none;
+  width: auto;
+  height: auto;
+}
+.org-tile.large {
+  border-radius: 16px;
+  width: 56px;
+  height: 56px;
+  font-size: var(--fs-h2);
+}
+.drawer-subheading {
+  margin: 22px 0 10px;
+  font-size: var(--fs-h4);
+  letter-spacing: var(--ls-snug);
+}
+.ranked-banner {
+  color: var(--green);
+  background: var(--green-soft);
+  border-radius: 11px;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  padding: 10px 12px;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
+  display: flex;
+}
+.rate-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.rate-table th {
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  padding: 10px 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+}
+.rate-table th small {
+  color: var(--muted);
+  margin-top: 2px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-regular);
+  display: block;
+}
+.rate-table td {
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+  padding: 10px 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semi);
+  font-variant-numeric: tabular-nums;
+}
+.rate-table tr.optional th,
+.rate-table tr.optional td {
+  color: var(--muted);
+}
+
+/* ENR-211 AC 8 lives here: a figure that differs and explains itself does not
+   contradict My Financials. One that differs silently does. */
+.reconcile-note {
+  color: var(--ink);
+  background: var(--card-zone);
+  border-radius: 12px;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 13px 0 0;
+  padding: 12px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+.reconcile-note svg {
+  color: var(--purple-dark);
+  flex: none;
+  margin-top: 1px;
+}
+.feature-list {
+  flex-direction: column;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+.feature-list li {
+  color: var(--muted);
+  align-items: center;
+  gap: 7px;
+  font-size: var(--fs-copy);
+  display: flex;
+}
+.feature-list svg {
+  color: var(--green);
+  flex: none;
+}
+.residence-drawer .drawer-actions {
+  margin-top: 22px;
+}
+.drawer-foot {
+  color: var(--muted);
+  margin: 10px 0 0;
+  font-size: var(--fs-micro);
+  line-height: var(--lh-body);
+}
+
+/* The stage tracker — how a read-only page reads as a process that moved on
+   rather than as one that broke. It sits in the rail's dark anchor card, so
+   its colours are that card's, not the page's. */
+.stage-track {
+  flex-direction: column;
+  gap: 0;
+  margin: 11px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+.stage-track li {
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 15px;
+  display: flex;
+  position: relative;
+}
+.stage-track li:last-child {
+  padding-bottom: 0;
+}
+.stage-track li:not(:last-child):after {
+  content: '';
+  background: #ffffff2e;
+  width: 1px;
+  position: absolute;
+  top: 17px;
+  bottom: 3px;
+  left: 7px;
+}
+.stage-track li.done:not(:last-child):after {
+  background: #ffffff6b;
+}
+.stage-dot {
+  color: #1b203a;
+  background: #ffffff2e;
+  border-radius: 999px;
+  flex: none;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  margin-top: 2px;
+  display: grid;
+}
+.stage-track li.done .stage-dot,
+.stage-track li.current .stage-dot {
+  background: #fff;
+}
+.stage-track li.current .stage-dot {
+  box-shadow: 0 0 0 4px #ffffff26;
+}
+.stage-label {
+  color: #c4c0dd;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-heading);
+}
+.stage-track li.current .stage-label {
+  color: #fff;
+  font-weight: var(--fw-semi);
+}
+.stage-label small {
+  color: #b9b4dd;
+  margin-top: 3px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-body);
+  display: block;
+}
+
+/* Aster's own guide, quoted rather than paraphrased. */
+.guide-quote {
+  border-top: 1px solid var(--line);
+  margin-top: 13px;
+  padding-top: 13px;
+}
+.guide-quote strong {
+  margin-bottom: 6px;
+  font-size: var(--fs-h4);
+  letter-spacing: var(--ls-snug);
+  display: block;
+}
+.guide-meta {
+  color: var(--muted);
+  margin-top: 8px;
+  font-size: var(--fs-micro);
+  display: block;
+}
+
+/* The assignment. */
+.assignment-figure {
+  align-items: center;
+  gap: 13px;
+  display: flex;
+}
+.assignment-figure strong {
+  font-size: var(--fs-display);
+  letter-spacing: var(--ls-tight);
+  display: block;
+}
+.assignment-figure > div > span {
+  color: var(--muted);
+  margin-top: 3px;
+  font-size: var(--fs-copy);
+  display: block;
+}
+.assignment-figure .assignment-meta {
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+  font-size: var(--fs-micro);
+  display: flex;
+}
+.assignment-facts {
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+  gap: 13px 26px;
+  margin: 15px 0 0;
+  padding-top: 14px;
+  display: flex;
+}
+.assignment-facts dt {
+  color: var(--muted);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-heavy);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+.assignment-facts dd {
+  margin: 4px 0 0;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
+}
+.assignment-note {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 9px;
+  margin: 15px 0 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+.assignment-note svg {
+  color: var(--purple-dark);
+  flex: none;
+  margin-top: 1px;
+}
+
+/* The consequence of an answered plan, standing where it can be checked
+   against the checklist rather than only promised at the moment of choosing. */
+.unlock-note {
+  color: var(--muted);
+  background: var(--card-zone);
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0 0 18px;
+  padding: 13px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+.unlock-note svg {
+  color: var(--green);
+  flex: none;
+  margin-top: 1px;
+}
+.unlock-note strong {
+  color: var(--ink);
+}
+.page-notice .state-card {
+  margin-bottom: 18px;
+}
+
+/* My Financials names the room its estimate assumes — ENR-211 AC 8. */
+.ledger-sub th small {
+  color: var(--muted);
+  margin-top: 2px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-regular);
+  display: block;
 }

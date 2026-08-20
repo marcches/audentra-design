@@ -95,6 +95,25 @@ Selectable from the `Concept preview` pill as `PROFILE_STATES`, so a Jam can lin
   unknown verification as confirmed; grant a category the student did not tick; merge the emergency
   contact into the authorization control.
 
+### The three zones of a card — a design-system change this card made
+
+Second round of Marco's review: *"ainda assim parece tudo branco, não sei diferenciar o que é header,
+o que é content, o que é footer."* True of every card in the product, not only this screen, so the fix
+is in the system rather than on the page:
+
+- `--card-zone` (`#f6f6fb`) is the card's own paper one shade down. The **head** — all three heading
+  idioms, `.status-heading`, `.card-heading` and `.section-heading` — is now a band in that tint,
+  edge to edge, closed with a hairline, taking the card's top corners. It also publishes one gap
+  below itself, which retires three different heading margins (12 / 14 / 16px).
+- `.card-foot` is the same band at the other end, for a note or a control that closes a card. The
+  profile's emergency-contact note is the first user of it.
+- It is not a fourth plane: nothing floats, nothing has its own radius, and the card stays one
+  surface. Written up in `docs/agents/design-workflow.md` §4.
+
+Every section inherits it — My Enrollment, My Classrooms, My Financials, My Campus Life, and the Help
+and Appointments screens two other sessions are building right now. All fourteen routes were checked
+after the change.
+
 ## 5. Two things this card touched outside the page
 
 - **`.state-card.warn`** had no styling: `StateCard` has always accepted the variant and rendered it

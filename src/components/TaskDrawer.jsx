@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 import Icon from '../Icon.jsx';
-import { housingOptions } from '../data.js';
 import { useOverlay } from '../lib/overlay.js';
 import { kindIcon } from '../lib/task-helpers.js';
 
@@ -15,8 +14,6 @@ export default function TaskDrawer({
   onToast,
   fileReady,
   onPickFile,
-  housing,
-  onHousing,
 }) {
   const panel = useRef(null);
   // Focus, `Esc` and the tab trap, the same way every other overlay gets them.
@@ -138,7 +135,20 @@ export default function TaskDrawer({
                 </div>
               )}
 
-              {task.kind === 'upload' && (
+              {/* ENR-206. A step whose subject has a section of its own routes
+                  there rather than asking for the same file a second time. The
+                  section owns the door; this is a signpost to it. */}
+              {task.section && (
+                <div className="external-panel">
+                  <p>{task.sectionLine}</p>
+                  <a className="primary-button full" href={task.section} onClick={onClose}>
+                    {task.action} <Icon name="arrow" size={17} />
+                  </a>
+                  <small className="prototype-note">{task.sectionFoot}</small>
+                </div>
+              )}
+
+              {task.kind === 'upload' && !task.section && (
                 <div className="upload-panel">
                   <button
                     className={`upload-zone ${fileReady ? 'has-file' : ''}`}
@@ -147,21 +157,24 @@ export default function TaskDrawer({
                     <span>
                       <Icon name={fileReady ? 'check' : 'upload'} size={24} />
                     </span>
+                    {/* The requirement's own words. These were hard-coded to the
+                        immunization record while Health shared this branch; the
+                        record left with ENR-206 and the copy would have been
+                        about the wrong document. */}
                     {fileReady ? (
                       <>
-                        <strong>immunization_record.pdf</strong>
-                        <small>1.8 MB · Ready to submit</small>
+                        <strong>{task.upload.fileName}</strong>
+                        <small>{task.upload.fileSize} · Ready to submit</small>
                       </>
                     ) : (
                       <>
-                        <strong>Choose a record to upload</strong>
-                        <small>PDF, JPG, or PNG · Up to 10 MB</small>
+                        <strong>{task.upload.prompt}</strong>
+                        <small>{task.upload.hint}</small>
                       </>
                     )}
                   </button>
                   <div className="privacy-line">
-                    <Icon name="shield" size={16} /> Encrypted and shared only with authorized
-                    Health Services staff.
+                    <Icon name="shield" size={16} /> {task.upload.privacy}
                   </div>
                   <button
                     className="primary-button full"
@@ -208,31 +221,6 @@ export default function TaskDrawer({
                 </div>
               )}
 
-              {task.kind === 'form' && (
-                <div className="choice-panel">
-                  {housingOptions.map(([value, label, hint]) => (
-                    <label key={value} className={housing === value ? 'chosen' : ''}>
-                      <input
-                        type="radio"
-                        name="housing"
-                        value={value}
-                        checked={housing === value}
-                        onChange={() => onHousing(value)}
-                      />
-                      <span>
-                        <strong>{label}</strong>
-                        <small>{hint}</small>
-                      </span>
-                      <span className="radio-mark">
-                        <Icon name="check" size={14} />
-                      </span>
-                    </label>
-                  ))}
-                  <button className="primary-button full" onClick={() => onComplete(task)}>
-                    Save my plan <Icon name="arrow" size={17} />
-                  </button>
-                </div>
-              )}
             </div>
           )}
         </div>

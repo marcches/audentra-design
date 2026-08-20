@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from '../Icon.jsx';
 import PageShell from './PageShell.jsx';
 import SummaryFigure from './SummaryFigure.jsx';
@@ -7,13 +7,9 @@ import StateCard from './StateCard.jsx';
 import DocumentRow, { IssuedRow } from './documents/DocumentRow.jsx';
 import DocumentDrawer from './documents/DocumentDrawer.jsx';
 import DocumentsRail from './documents/DocumentsRail.jsx';
-import { documentsFor } from '../documents-data.js';
 import {
-  addSubmission,
   checkingOne,
-  dropSubmission,
-  finishChecking,
-  markDecisionRead,
+  filesLabel,
   needsYou,
   officeOf,
   onRecord,
@@ -54,34 +50,26 @@ export const DOCUMENT_PREVIEW_STATES = [
   ['error', 'Error', 'Your record could not be loaded.'],
 ];
 
-/** The machine's part of the wait. Long enough to be seen, short enough not to be a wait. */
-const CHECK_MS = 4200;
-const SEND_MS = 700;
-
 export default function MyDocuments({
   destination,
   previewState = 'ready',
+  record,
+  sendingId = null,
+  failedId = null,
   tasks = [],
+  onSubmit = () => {},
+  onMarkRead = () => {},
   onToast = () => {},
   onOverlay = () => {},
   onOpenTask = () => {},
   onRetry = () => {},
 }) {
-  const [record, setRecord] = useState(() => documentsFor(previewState));
   const [openId, setOpenId] = useState(null);
-  const [sending, setSending] = useState(false);
-  const [failed, setFailed] = useState(false);
-
-  const sendTimer = useRef(null);
-  const checkTimer = useRef(null);
 
   const unavailable = previewState === 'partial';
 
   useEffect(() => {
-    setRecord(documentsFor(previewState));
     setOpenId(null);
-    setSending(false);
-    setFailed(false);
   }, [previewState]);
 
   // "One overlay owns the screen at a time" needs App to hear about an overlay
@@ -91,14 +79,6 @@ export default function MyDocuments({
   }, [onOverlay, openId]);
 
   useEffect(() => () => onOverlay(false), [onOverlay]);
-
-  useEffect(
-    () => () => {
-      window.clearTimeout(sendTimer.current);
-      window.clearTimeout(checkTimer.current);
-    },
-    [],
-  );
 
   const requirements = record.requirements;
   const byTaskId = Object.fromEntries(tasks.map((task) => [task.id, task]));
@@ -117,72 +97,17 @@ export default function MyDocuments({
   const open = requirements.find((item) => item.id === openId) ?? null;
 
   /**
-   * The clock's one move, and its only one: the machine finished and a person
-   * now has it. It never advances to a decision — that would be putting words in
-   * a reviewer's mouth, and ENR-146 puts the reviewer's decision out of scope.
+   * The record, the send and the clock all live in `App` since ENR-206, because
+   * Health is a second window onto the same requirement and two windows holding
+   * two copies is the one way this record can lie. It also fixes what this page
+   * could not do alone: the check now survives leaving the page, which is what
+   * ENR-157 AC 3 promises in words on the strip below.
    */
-  useEffect(() => {
-    if (!checking) return undefined;
-    const id = checking.id;
-    checkTimer.current = window.setTimeout(() => {
-      setRecord((current) => ({ ...current, requirements: finishChecking(current.requirements, id) }));
-    }, CHECK_MS);
-    return () => window.clearTimeout(checkTimer.current);
-  }, [checking]);
-
   function openDocument(requirement) {
-    setFailed(false);
     setOpenId(requirement.id);
     // ENR-158 AC 5, the half this repo can honour: a decision she has not seen
     // is marked, and opening it clears the mark.
-    setRecord((current) => ({
-      ...current,
-      requirements: markDecisionRead(current.requirements, requirement.id),
-    }));
-  }
-
-  function closeDocument() {
-    setOpenId(null);
-    setSending(false);
-    setFailed(false);
-  }
-
-  function submit(requirement, file) {
-    setSending(true);
-    setFailed(false);
-
-    sendTimer.current = window.setTimeout(() => {
-      setSending(false);
-
-      // A send that did not arrive creates nothing — no submission, no row, no
-      // "not sent" record. Retrying resends the same file, so ENR-157 AC 6 holds
-      // because there was never a first submission to duplicate.
-      if (previewState === 'send-fails') {
-        setFailed(true);
-        return;
-      }
-
-      const submission = {
-        id: `${requirement.id}-${(requirement.submissions?.length ?? 0) + 1}`,
-        fileName: file.fileName,
-        fileSize: file.fileSize,
-        sent: 'just now',
-      };
-
-      setRecord((current) => ({
-        ...current,
-        requirements: addSubmission(current.requirements, requirement.id, submission),
-      }));
-      setOpenId(null);
-      onToast(
-        `Sent to ${officeOf(requirement).name}. You can close this page — the check keeps going.`,
-      );
-    }, SEND_MS);
-  }
-
-  function retry(requirement, file) {
-    setFailed(false);
-    submit(requirement, file);
+    onMarkRead(requirement.id);
   }
 
   const hero = { lede: heroLede({ unavailable, mine, checking, figures }) };
@@ -354,17 +279,17 @@ export default function MyDocuments({
         <DocumentDrawer
           requirement={open}
           task={taskFor(open)}
-          sending={sending}
-          failed={failed}
-          onClose={closeDocument}
-          onSubmit={submit}
-          onRetry={retry}
+          sending={sendingId === open.id}
+          failed={failedId === open.id}
+          onClose={() => setOpenId(null)}
+          onSubmit={(requirement, files) => onSubmit(requirement, files, () => setOpenId(null))}
+          onRetry={(requirement, files) => onSubmit(requirement, files, () => setOpenId(null))}
           onOpenStep={(task) => {
             setOpenId(null);
             onOpenTask(task);
           }}
           onOriginal={(submission) =>
-            onToast(`${submission.fileName} would open exactly as you sent it.`)
+            onToast(`${filesLabel(submission)} would open exactly as you sent it.`)
           }
         />
       )}

@@ -238,7 +238,7 @@ export const campusEvents = [
     time: '4:00 PM – 5:00 PM',
     location: 'Online',
     format: 'online',
-    host: 'Housing Office',
+    host: 'Housing Services',
     summary: 'What arrival day looks like, hour by hour.',
     about:
       'A recorded walkthrough of arrival day: where to park, what to bring, and what the first night in halls actually looks like.',
@@ -519,17 +519,17 @@ const denseRequired = [
     category: 'Orientation',
     interests: [],
     required: true,
-    requiredBy: 'Aster Housing Office',
+    requiredBy: 'Housing Services',
     requiredNote:
       'Required for every student living in halls. Housing cannot issue your room key until you have attended.',
     date: '2026-09-13',
     time: '11:00 AM – 11:45 AM',
     location: 'Alcott House common room',
     format: 'in-person',
-    host: 'Housing Office',
+    host: 'Housing Services',
     summary: 'Forty-five minutes, held in your own building.',
     about:
-      'Run separately in each hall during the first week. Your building’s time is confirmed by the Housing Office once your room is allocated.',
+      'Run separately in each hall during the first week. Your building’s time is confirmed by Housing Services once your room is allocated.',
     registration: {
       kind: 'tba',
       label: 'Details coming',

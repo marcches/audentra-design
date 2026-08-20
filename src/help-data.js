@@ -46,7 +46,7 @@ export const offices = {
   },
   housing: {
     id: 'housing',
-    name: 'Housing & Residential Life',
+    name: 'Housing Services',
     decides: 'Where you live, your room assignment, and your meal plan.',
     hours: '10:00 AM–4:00 PM, Monday to Thursday',
     location: 'Halloway House',
@@ -54,7 +54,10 @@ export const offices = {
   },
   health: {
     id: 'health',
-    name: 'Health Services',
+    // ENR-209 AC 8 asks for the full institutional name, so it is the name
+    // everywhere rather than a longer one Health wears and a shorter one the
+    // rest of the portal wears.
+    name: 'Aster University Health Services',
     decides: 'Immunisation records, medical clearance, and health forms.',
     hours: '8:30 AM–4:30 PM, Monday to Friday',
     location: 'Building D, first floor',
@@ -66,6 +69,21 @@ export const offices = {
     decides: 'Your program, approved credit, and your official academic record.',
     hours: '9:00 AM–5:00 PM, Monday to Friday',
     location: 'Whitfield Hall',
+    reply: '3 business days',
+  },
+  // ENR-206. The sixth office, and the first that owns no document requirement
+  // and decides nothing: it *receives* what the Health section routes to it and
+  // makes contact. It is declared here rather than inside Health so a team at
+  // Aster cannot end up with two names in two modules — but it is deliberately
+  // absent from `OFFICE_ORDER` and from `helpTopics` below, so Help's rail and
+  // its list of subjects are unchanged. Widening this office's reach is a
+  // decision for a card, not a side effect of Health existing.
+  accessibility: {
+    id: 'accessibility',
+    name: 'Accessibility Services',
+    decides: 'Nothing. They arrange accommodations with you, and they decide no part of your file.',
+    hours: '9:00 AM–5:00 PM, Monday to Friday',
+    location: 'Building C, second floor',
     reply: '3 business days',
   },
 };
@@ -136,7 +154,7 @@ export const helpGuides = [
     office: 'housing',
     updated: '2026-08-08',
     body: [
-      'Your housing answer can be changed at any point before the housing deadline. Housing & Residential Life only uses it to open the right next steps for you, so changing it changes what your checklist asks of you.',
+      'Your housing answer can be changed at any point before the housing deadline. Housing Services only uses it to open the right next steps for you, so changing it changes what your checklist asks of you.',
       'After the deadline it becomes a room assignment, and a room assignment is changed by request rather than by editing an answer.',
     ],
   },
