@@ -1,23 +1,31 @@
+import Icon from '../Icon.jsx';
 import { enrollmentAdvisor } from '../data.js';
 
 /**
  * The right half of the summary panel: the person who owns the subject.
  *
- * It used to carry five facts and two actions — role, name, office, building,
- * office hours, Email, Message — and it took 340px of hard `min-width` to do
- * it. In a panel that is two cells wide that floor was unpayable: it forced the
- * wrap on every section below about 1200px, and once the panel became a grid
- * with a 380px column the bar answered by growing to 153px tall against a 63px
- * figure beside it. Five facts do not fit, so the bar stopped trying.
+ * It is sized by the cell beside it. The figure on the left is a 61px ring and
+ * three short lines; the bar has to come to the same height or the panel is a
+ * tall box with a short thing floating in it, which is the inconsistent
+ * whitespace this slot had on all five sections.
  *
- * What is left is what the panel is for: who this person is to you, and the two
- * ways to reach them, which are right here. Where they sit and when they are in
- * the building answer a different question and were the two lines doing the
- * damage; the hours are still on Edward's person card, which is where you read
- * them while deciding whether to write.
+ * 61px pays for exactly two lines of copy and one row of controls, so:
  *
- * One bar, one content, every section — a section that shows more here is the
- * drift this was built to end.
+ *   - **The controls are icons, side by side.** `Email` and `Message` as words
+ *     cost 150px of a 420px cell, which left 140px for copy that needs 320 —
+ *     that was the overflow, and it is what made the bar 153px tall against a
+ *     61px figure. Stacked they fit the width but not the height: two discs in
+ *     a column are 73px on their own. Side by side they are 34px tall and cost
+ *     the bar nothing. The word is still each button's accessible name and
+ *     comes back as a bubble on hover and on keyboard focus.
+ *   - **The building and the office hours are not here.** Two more lines is
+ *     40px the panel does not have. They are not lost: Edward's person card
+ *     prints the office and the hours, which is where they are read — while
+ *     deciding whether to write, not while reading a figure.
+ *
+ * What is left is what the panel is for: who this person is to you, their name,
+ * and the two ways to reach them, both one click away. One bar, one content,
+ * every section — a section that shows more or less here is the drift.
  */
 export default function AdvisorBar({ advisor = enrollmentAdvisor, onContact }) {
   return (
@@ -32,11 +40,21 @@ export default function AdvisorBar({ advisor = enrollmentAdvisor, onContact }) {
         </strong>
       </div>
       <div className="advisor-actions">
-        <button aria-label={`Email ${advisor.name}`} onClick={() => onContact('email')}>
-          Email
+        <button
+          className="advisor-action"
+          data-tip="Email"
+          aria-label={`Email ${advisor.name}`}
+          onClick={() => onContact('email')}
+        >
+          <Icon name="mail" size={16} />
         </button>
-        <button aria-label={`Message ${advisor.name}`} onClick={() => onContact('message')}>
-          Message
+        <button
+          className="advisor-action"
+          data-tip="Message"
+          aria-label={`Message ${advisor.name}`}
+          onClick={() => onContact('message')}
+        >
+          <Icon name="message" size={16} />
         </button>
       </div>
     </div>

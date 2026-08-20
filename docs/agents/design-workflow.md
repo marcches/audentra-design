@@ -118,6 +118,36 @@ The check, on any group: open each leaf and confirm the band, the summary, the a
 are pixel-identical, **in every preview state**, including the empty and partial ones. The rail and
 the main column are below the tabs and are what the tab switches, so those may and should differ.
 
+### The summary panel: two cells, one height
+
+`summary` is two cells and only two — **the figure, and the advisor** — and they are the same height
+by construction, not by luck. `.summary-main` is a grid, not a wrapping flex, and it is
+`align-items: stretch`: two columns while the panel is wider than 940px, one full-width column each
+below it, measured by a container query on the panel itself because the sections that carry a rail
+are narrow at a wide window.
+
+What it replaced: five sections had each invented their own left cell — `.progress-summary`,
+`.balance-summary`, `.next-appointment`, `.profile-standing` — four names, two internal structures,
+and one of them (`.balance-panel .balance-summary`) addressed a class present in no JSX file, so the
+balance cell ran with no layout rules and no `min-width: 0` at all. The panel came out 123px tall on
+three sections, 137 on one and 139 on another, and below about 1200px the two cells wrapped without
+either being told to fill the row, leaving the advisor as a 576px box with 150px of dead space
+beside it.
+
+- **The figure cell is `SummaryFigure`**: an optional mark (ring, avatar, or nothing), the label, the
+  figure, and at most **one** line under it. Never a second — see below.
+- **The advisor is `AdvisorBar`, identical on every section**: the label, the name and office on one
+  line, and two icon buttons. It is sized by the figure cell beside it, and 61px pays for two lines
+  of copy and one row of controls, which is why the controls are icons and why the building and the
+  office hours are not in it. A section that shows more or less here is drift.
+- **Anything that qualifies the figure goes to the foot**, in the `alert` slot — `AlertStrip` for an
+  escalation, `.summary-note` for a caveat. As a fourth line inside the figure cell, My Classrooms'
+  credit-match caveat made its panel 139px against everyone else's 123 and pushed the advisor
+  off-centre beside it.
+
+The check: on every section that has this slot, the two cells report the same height, and the
+advisor bar reports the same height and width on all of them.
+
 ### Hierarchy
 
 The band greets; the summary informs. **The greeting must never be larger than the figure it
@@ -147,6 +177,14 @@ card. A box inside a box is what made most of the portal read as stacked rather 
   last rows take the corner they touch. A square row meeting a rounded card is the tell that a
   component was built without looking at the one holding it. The card publishes `--card-pad` and
   `--card-radius` for exactly this; a row must never hard-code either.
+- **A card has three zones and they are visible.** The head — `.status-heading`, `.card-heading` or
+  `.section-heading`, whichever the block uses — is a band: `--card-zone`, the card's own paper one
+  shade down, run out to the card's edges and closed with a hairline, taking the top corners the way
+  `.card-rows` takes the bottom ones. Content sits on the white below it. A note or control that
+  *closes* a card is `.card-foot`, the same band at the other end. Nothing else in a card is tinted.
+  This is not a fourth plane: no zone floats, none has a radius of its own, and the card is still one
+  surface — it just stops being one white rectangle in which head, content and foot look identical
+  (Marco, 2026-08-20: *"não sei diferenciar o que é header, o que é content, o que é footer"*).
 - **The rail leads with one `.anchor-card`** — the section's key secondary figure, on ink — then
   light cards. What a card looks like on ink is written once, under `.anchor-card`.
 - Markers survive flattening only when they carry meaning: the crimson date tile and chip on a
