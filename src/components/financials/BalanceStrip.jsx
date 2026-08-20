@@ -1,4 +1,5 @@
 import AdvisorBar from '../AdvisorBar.jsx';
+import SummaryFigure from '../SummaryFigure.jsx';
 import TermTip from './TermTip.jsx';
 import { financialAidAdvisor } from '../../data.js';
 import { formatMoney } from '../../lib/money.js';
@@ -14,29 +15,31 @@ import { formatMoney } from '../../lib/money.js';
 export default function BalanceStrip({ ledger, year, unknown, onContact }) {
   return (
     <>
-      <div className="balance-summary">
-        <span className="panel-label">
-          Estimated remaining balance
-          <TermTip term="balance" label="estimated remaining balance" />
-        </span>
-
-        {unknown ? (
-          <strong className="balance-figure unknown">Not available yet</strong>
-        ) : (
-          <strong className="balance-figure">
-            {formatMoney(ledger.balance)}
-            <span className="estimate-chip">Estimate</span>
-          </strong>
-        )}
-
-        <p>
-          {unknown
-            ? 'Aster opens your financial record once your enrollment deposit is paid.'
-            : ledger.hasPending
-              ? `Before your aid package is final — this number will go down, not up. ${year.label}.`
-              : `Your package is final. This can still change if your housing or meal plan does. ${year.label}.`}
-        </p>
-      </div>
+      <SummaryFigure
+        money
+        label={
+          <>
+            Estimated remaining balance
+            <TermTip term="balance" label="estimated remaining balance" />
+          </>
+        }
+        figure={
+          unknown ? (
+            <span className="balance-figure unknown">Not available yet</span>
+          ) : (
+            <span className="balance-figure">
+              {formatMoney(ledger.balance)}
+              <span className="estimate-chip">Estimate</span>
+            </span>
+          )
+        }
+      >
+        {unknown
+          ? 'Aster opens your financial record once your enrollment deposit is paid.'
+          : ledger.hasPending
+            ? `Before your aid package is final — this number will go down, not up. ${year.label}.`
+            : `Your package is final. This can still change if your housing or meal plan does. ${year.label}.`}
+      </SummaryFigure>
 
       <AdvisorBar advisor={financialAidAdvisor} onContact={onContact} />
     </>

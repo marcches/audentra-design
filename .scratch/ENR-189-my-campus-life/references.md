@@ -75,3 +75,38 @@ organisation list, the empty state, and the detail surface.
 - [Literal — clubs](https://mobbin.com/screens/b0208dbb-b26f-4e91-ad11-951ba8472a32) — `Your clubs`
   versus `Explore clubs`. **Rejected**: "your clubs" is membership, and club membership management is
   out of scope for [ENR-173](https://audentra.atlassian.net/browse/ENR-173).
+
+---
+
+## Revision, 2026-08-20 — the required band became a strip in the second grid
+
+Direct design feedback, not a Jam: the band was "muito grande, empilhado, nada a ver". Two more
+searches, `platform: web`, `mode: deep`.
+
+### The mechanism — a required action that is not a panel
+
+- [PayPal — home with a required-action banner](https://mobbin.com/screens/14c8559c-723a-4e4e-87ec-a19ee816c28e)
+  — "To start accepting payments, add more profile info" is **one line** across the top with a
+  sub-line and a chevron at the far edge; the detail lives behind it. **Taken**: the obligation is a
+  line plus a way in, never a card that restates itself. What we had said `required` three times —
+  band heading, `REQUIRED` chip, `Required by …` — before saying anything new.
+- [Zendesk — tickets requiring your attention](https://mobbin.com/screens/21ed8fa7-7a85-4eb0-a0da-042f5b531247)
+  — the escalated set is a titled list of rows, not a stack of cards. **Taken**: a count in the
+  heading and rows underneath.
+
+### The row — date, title, place, one control
+
+- [Circle — events](https://mobbin.com/screens/bbb7b785-2793-4264-9123-5a7a24f8191b) — square date
+  tile (`11 OCT`), title, then time and location as small icon-prefixed lines, control at the
+  trailing edge. **Taken** for the wide layout, tile and all.
+- [Apple — sessions](https://mobbin.com/screens/6d6c10ec-4643-46a8-9437-b6868b474cfb) — title, small
+  time and place, a `Details` pill at the right, hairlines and nothing else. **Taken**: no box per
+  row; the card holding them is the only box.
+
+### Rejected
+
+- [Navan — group travel](https://mobbin.com/screens/213ba23d-d186-4ae8-b95a-fc3f2b16761b) — a card
+  per trip with a photo thumbnail. Heavier than what it replaced, and this section has no imagery.
+- [Luma — events](https://mobbin.com/screens/908a181b-4aa7-49bc-bbad-209781d4cd4b) — a bordered card
+  per event nested inside a date group. That is the box-in-box the feedback was about.
+

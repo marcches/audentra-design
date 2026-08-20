@@ -32,11 +32,47 @@ rows at 380px, and only the rail and the date tile change shape as the viewport 
 | # | Region | What it is | Reference |
 | --- | --- | --- | --- |
 | 1 | `.campus-panel` | Section hero. Same geometry as `.welcome-panel` (25px radius, white type) with the gradient shifted from purple to green, `.campus-motif` in place of `.celebration-orbit`. No progress ring, no points, no deadline. | [Codecademy](https://mobbin.com/screens/66bd70b2-6912-48a9-8c19-37ca0f00b8df) |
-| 2 | `.required-band` | The obligations. Own heading `Required for you`, crimson accent, one `.required-card` per mandatory event: `REQUIRED` chip, date, title, why it is required and who requires it, one button. Hidden entirely when there are none. | [Kiwi.com](https://mobbin.com/screens/c94d9419-e7f3-4a6a-98fb-d694a675e835), [Hers](https://mobbin.com/screens/c0176915-d302-4428-9ffd-a05aa2caf940) |
+| 2 | `.required-strip` | The obligations. See §2a — revised 2026-08-20. | [PayPal](https://mobbin.com/screens/14c8559c-723a-4e4e-87ec-a19ee816c28e), [Circle](https://mobbin.com/screens/bbb7b785-2793-4264-9123-5a7a24f8191b) |
 | 3 | Events `.status-section` | `.section-heading` + `.sort-group` view switch (`For you` / `Everything` / `Past`), `.filter-chips` category row, live count. Then `.campus-list` of `.campus-row`. `Show more` after 6. | [Circle](https://mobbin.com/screens/65a8ea46-2fc2-488f-852e-e020709872ad), [Luma](https://mobbin.com/screens/7dbb0d17-e56b-4ed2-8e02-74caafbde1bc) |
 | 4 | Clubs `.status-section` | Same heading grammar, own category chips and count, `.org-row` list, `Show more` after 4. | [Braintrust](https://mobbin.com/screens/54d07501-2048-4347-a358-075a1d46acde) |
 | 5 | `.insight-column` | Card 1 `.interests-card` — the interests, why the order changed, and that nothing here writes to the record. Card 2 `.provenance-card` — who publishes, when it was last updated, one route to ask. | — |
 | 6 | `footer` | Unchanged, shared by every page. | — |
+
+### 2a. The obligations — revised 2026-08-20
+
+The first build gave the obligations a band: an icon tile, an `h2`, a subtitle, a count badge, and
+inside it one bordered card per session carrying a `REQUIRED` chip, the date, the title, the whole
+requirement note, two facts and a filled button. Direct feedback killed it — *"muito grande,
+empilhado, nada a ver"*. One session cost a quarter of the viewport to say `required` three times,
+and everything it spelled out is already in `CampusDrawer`, one click away.
+
+`.required-strip` replaces it. **The strip is the pointer; the drawer is the depth.** A tinted line
+naming the obligation, then one row per session, and the row is the target.
+
+**Where it goes depends on how many grids the page has** — the one layout fact CSS cannot see from
+inside a slot, so `MyCampusLife` reads it with `useMedia(RAIL_QUERY)`:
+
+| Page | Slot | Why |
+| --- | --- | --- |
+| two grids (`≥1061px`) | first card of `rail` | The rail is sticky and shared by both leaves, so the obligation stays on screen for the whole scroll. A single session no longer spends the width of the page on one sentence. |
+| one grid (`≤1060px`) | `notice` | `.page-rail` reflows *under* the main column below 1060px. In the rail there, the obligation would sit beneath forty events — which is exactly the hiding ENR-189 forbids. |
+
+**The strip has two layouts and picks between them with a container query**, not a media query: the
+window is wide in both cases, only the column is not. `@container required-strip (width < 470px)`.
+
+| | wide container | narrow container |
+| --- | --- | --- |
+| head | `Required for you` + the sentence | `Required for you` + a count |
+| date | 46px crimson tile | in the line above the title; no tile |
+| place | on the row | dropped — the drawer holds it |
+| requirer | on the row | on the row; it is what makes the session an obligation |
+| control | labelled pill, `How to register →` | a 26px arrow disc |
+
+Both layouts obey the flattening rules: `.card-rows` inside `.section-card`, rows out to the card's
+edges, hairlines between them, no box inside a box. The obligation is marked in crimson ink — tile,
+eyebrow, chip, and a crimson-tinted ring on the card — and **never** by painting one edge of a
+rounded box. That mechanism is now banned outright in `docs/agents/design-workflow.md`; the same
+feedback removed it from `.campus-row.required`, which already carries a crimson tile and two chips.
 
 ### The event row (`.campus-row`)
 
@@ -199,8 +235,10 @@ for this card:
 
 ## 8. Done when
 
-- [ ] Required events are unmistakable: own band, crimson accent, `Required` chip, stated requirer,
-      and never rendered with the language of an optional event
+- [ ] Required events are unmistakable: own strip above the tabs or leading the rail, crimson ink,
+      stated requirer, and never rendered with the language of an optional event
+- [ ] The strip is legible at both its widths — full-page band and 292px rail card — and no row
+      restates what the drawer already holds
 - [ ] Events show date, location, category and how to register; organisations show category,
       description, a named contact and their latest update
 - [ ] `For you` orders by the two onboarding interests and says on each row why it matched

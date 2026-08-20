@@ -15,14 +15,19 @@ import FinancialsOverview from './pages/FinancialsOverview.jsx';
 import FinancialsAid from './pages/FinancialsAid.jsx';
 import FinancialsPayments from './pages/FinancialsPayments.jsx';
 import MyClassrooms from './components/MyClassrooms.jsx';
+import MyProfile from './components/MyProfile.jsx';
+import Appointments, { APPOINTMENT_PREVIEW_STATES } from './components/Appointments.jsx';
+import HelpPage, { HELP_PREVIEW_STATES } from './components/HelpPage.jsx';
 import Edward from './components/edward/Edward.jsx';
 import { buildRecord } from './lib/edward.js';
+import { identityFor } from './lib/profile-helpers.js';
 import { sortTasks } from './lib/task-helpers.js';
 import { buildLedger } from './lib/money.js';
 import { DEFAULT_ROUTE, destinationByRoute, isRouteHash } from './lib/navigation.js';
 import {
   FINANCIALS_STATES,
   PREVIEW_STATES,
+  PROFILE_STATES,
   frameState,
   readPreviewState,
   writePreviewState,
@@ -69,6 +74,10 @@ export default function App() {
 
   const current = destinationByRoute(hash);
   const state = frameState(preview);
+  // The name the portal uses, read from the record rather than typed into each
+  // component — ENR-179 AC 3. A record with no preferred name greets her by her
+  // legal first name, which is what the `New record` preview shows.
+  const identity = identityFor(preview);
   const isEmpty = state === 'empty';
   const unavailable = state === 'partial';
 
@@ -345,6 +354,41 @@ export default function App() {
       );
     }
 
+    // ENR-184. `empty` means a record opened today rather than a section with
+    // nothing in it, so this page reads the raw preview value too.
+    if (current.id === 'profile') {
+      return <MyProfile destination={current} state={preview} onToast={setToast} />;
+    }
+
+    // ENR-183. Two of this page's states are its own — a student with nothing
+    // booked and a set of teams that published nothing are different emptinesses
+    // — so it also reads the raw preview value.
+    if (current.id === 'appointments') {
+      return (
+        <Appointments
+          destination={current}
+          previewState={preview}
+          onToast={setToast}
+          onOverlay={setSectionOverlay}
+          onRetry={() => choosePreview('ready')}
+        />
+      );
+    }
+
+    // ENR-182. `needs-you` and `send-fails` are Help's own, and `empty` here is
+    // a student who has never raised a request rather than a section with
+    // nothing in it, so this page reads the raw preview value too.
+    if (current.id === 'help') {
+      return (
+        <HelpPage
+          destination={current}
+          previewState={preview}
+          onToast={setToast}
+          onOverlay={setSectionOverlay}
+        />
+      );
+    }
+
     // My Campus Life is a group of two destinations and one screen — ENR-189.
     // The route chooses the tab; the required band sits above both.
     if (current.group === 'campus') {
@@ -363,13 +407,19 @@ export default function App() {
     // it — ENR-174 AC8. As each section's own card lands (ENR-165, ENR-166,
     // ENR-182, ENR-183, ENR-184, ENR-188) its page takes this slot.
     if (inFinancials) {
+      // Everything above the tab row belongs to the group, not to the leaf —
+      // `FinancialsPage`. The escalation is the same deadline on all three
+      // tabs, so it is passed to all three; when only Overview knew about it,
+      // moving to Financial aid made a 13-day deadline disappear.
       const shared = {
         destination: current,
         ledger,
         snapshot,
         year: academicYear,
+        urgent: urgentDoc,
         unavailable,
         isEmpty,
+        onOpenTask: openTaskFromSummary,
         onContact: contactAid,
         onRetry: () => choosePreview('ready'),
       };
@@ -379,9 +429,7 @@ export default function App() {
           <FinancialsOverview
             {...shared}
             documents={financialDocs}
-            urgent={urgentDoc}
             depositDays={byId.deposit?.daysLeft}
-            onOpenTask={openTaskFromSummary}
             onPay={payHandoff}
           />
         );
@@ -392,7 +440,6 @@ export default function App() {
           <FinancialsAid
             {...shared}
             blockers={byId}
-            onOpenTask={openTaskFromSummary}
             onExplainProgress={() => setProgressModal(true)}
           />
         );
@@ -423,6 +470,7 @@ export default function App() {
       <Sidebar
         open={navOpen}
         activeId={current?.id}
+        identity={identity}
         badges={badges}
         state={state}
         onNavigate={() => setNavOpen(false)}
@@ -441,6 +489,7 @@ export default function App() {
         <Topbar
           onOpenNav={() => setNavOpen(true)}
           menuRef={menuButton}
+          identity={identity}
           unread={unread}
           previewState={preview}
           previewStates={
@@ -450,7 +499,13 @@ export default function App() {
                 ? CAMPUS_PREVIEW_STATES
                 : current?.id === 'my-classrooms'
                   ? PREVIEW_STATES
-                  : undefined
+                  : current?.id === 'profile'
+                    ? PROFILE_STATES
+                    : current?.id === 'appointments'
+                      ? APPOINTMENT_PREVIEW_STATES
+                      : current?.id === 'help'
+                        ? HELP_PREVIEW_STATES
+                        : undefined
           }
           onPreviewState={choosePreview}
         />

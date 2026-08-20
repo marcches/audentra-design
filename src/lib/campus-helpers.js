@@ -43,6 +43,14 @@ export function longDate(iso) {
   return `${DAYS[date.getDay()]}, ${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }
 
+// "Thursday 3 September" — what a required row needs to say before the student
+// can decide whether the day is free. The year is not in it: the date tile
+// beside it carries the month, and a session on the board is always this year's.
+export function weekdayDate(iso) {
+  const date = toDate(iso);
+  return `${DAYS[date.getDay()]} ${date.getDate()} ${MONTHS[date.getMonth()]}`;
+}
+
 export function shortDate(iso) {
   const date = toDate(iso);
   return `${date.getDate()} ${MONTHS[date.getMonth()].slice(0, 3)}`;

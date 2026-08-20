@@ -5,6 +5,7 @@ import { FRAME_STATES } from '../lib/preview-state.js';
 export default function Topbar({
   onOpenNav,
   menuRef,
+  identity,
   unread,
   previewState,
   previewStates = FRAME_STATES,
@@ -38,7 +39,7 @@ export default function Topbar({
           <Icon name="message" size={19} />
         </a>
         <a className="mobile-avatar" href="#/profile" aria-label="Profile">
-          MJ
+          {identity.initials}
         </a>
       </div>
     </header>

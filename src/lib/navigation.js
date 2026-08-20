@@ -92,15 +92,17 @@ export const DESTINATIONS = [
     route: '#/appointments',
     icon: 'calendar',
     lede: 'Time booked with the people who can unblock a step.',
+    // The eyebrow names who owns what is on this page: the times are the teams',
+    // not the portal's, and that is the whole premise of ENR-178.
     hero: {
-      kicker: 'Appointments',
+      kicker: 'Appointments · Times published by Aster teams',
       title: 'Book time with the people who can help, Maya.',
       lede: 'Time with the offices that own a step — booked, confirmed and in one calendar.',
     },
     appears: 'Appointments you book with Aster staff appear here.',
     produces: 'Booking opens as each team publishes its availability.',
     next: 'help',
-    built: false,
+    built: true,
   },
   {
     id: 'messages',
@@ -210,7 +212,8 @@ export const DESTINATIONS = [
     kind: 'utility',
     // ENR-181 took "ask" back for Edward. Help is where Aster's own guides live
     // and where a request reaches a named office — a different promise, so it
-    // stops being written in the assistant's words. ENR-182 designs the page.
+    // stops being written in the assistant's words. ENR-182 built the page to
+    // this sentence: guides, then a route to an office that can decide.
     lede: 'Aster’s guides, and a way to reach the office that owns a step.',
     hero: {
       kicker: 'Help',
@@ -220,7 +223,7 @@ export const DESTINATIONS = [
     appears: 'Aster’s guides, and any request you raise with an office, appear here.',
     produces: 'Raise one when a step is blocked and you need a person on it.',
     next: 'appointments',
-    built: false,
+    built: true,
   },
   {
     id: 'profile',
@@ -237,7 +240,7 @@ export const DESTINATIONS = [
     appears: 'The details Aster holds about you appear here.',
     produces: 'Some you control; the rest an office changes for you.',
     next: 'my-enrollment',
-    built: false,
+    built: true,
   },
 ];
 

@@ -195,6 +195,13 @@ const paths = {
       <path d="m6 11 6-6 6 6" />
     </>
   ),
+  signout: (
+    <>
+      <path d="M12 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h6" />
+      <path d="M13 12h8" />
+      <path d="m17 8 4 4-4 4" />
+    </>
+  ),
   back: (
     <>
       <path d="M19 12H5" />
@@ -205,6 +212,14 @@ const paths = {
     <>
       <circle cx="12" cy="12" r="8" />
       <path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor" stroke="none" />
+    </>
+  ),
+  // ENR-183. A conversation that happens over video has no room and no floor, so
+  // it cannot borrow the pin.
+  video: (
+    <>
+      <rect x="2.8" y="6.4" width="12.8" height="11.2" rx="2.6" />
+      <path d="m15.6 11.4 5.6-2.9v7l-5.6-2.9Z" />
     </>
   ),
 };

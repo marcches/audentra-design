@@ -9,14 +9,17 @@ project = ENR AND labels = persona-student AND labels = design AND statusCategor
 
 ## The set that matters
 
-Eleven student cards carry the `design` label — those are the ones that get built here. **Seven have
-landed:** ENR-167 (portal shell), ENR-164 (My Enrollment), ENR-180 (portal navigation), ENR-166 (My
-Financials), ENR-188 (My Classrooms), ENR-189 (My Campus Life), ENR-181 (Edward). **Four remain.**
+Eleven student cards carry the `design` label — those are the ones that get built here. **Seven had
+landed** when this snapshot was taken: ENR-167 (portal shell), ENR-164 (My Enrollment), ENR-180
+(portal navigation), ENR-166 (My Financials), ENR-188 (My Classrooms), ENR-189 (My Campus Life),
+ENR-181 (Edward). **ENR-182 (Help) has since landed.** ENR-183 and ENR-184 were built in parallel
+sessions and each records itself below; the table is the honest state only as far as each pass has
+updated it.
 
 | Card | Screen | Serves | Jira status | In repo |
 | --- | --- | --- | --- | --- |
 | [ENR-165](https://audentra.atlassian.net/browse/ENR-165) | My Documents (Both) | ENR-157, ENR-158 | Prioritized | `built: false` |
-| [ENR-182](https://audentra.atlassian.net/browse/ENR-182) | Help | ENR-177 | Development | `built: false` |
+| [ENR-182](https://audentra.atlassian.net/browse/ENR-182) | Help | ENR-177 | Development | **landed** |
 | [ENR-183](https://audentra.atlassian.net/browse/ENR-183) | Appointments | ENR-178 | Development | `built: false` |
 | [ENR-184](https://audentra.atlassian.net/browse/ENR-184) | Profile | ENR-179 | Development | `built: false` |
 
@@ -53,25 +56,36 @@ The largest new screen, and the one that unblocks the most:
   Documents has to exist before Profile.
 - The `in review` group in My Enrollment (ENR-164) is already built and waiting for the other half.
 
-### 2 and 3. ENR-182 (Help) and ENR-183 (Appointments) — one pass
+### ~~2 and 3. ENR-182 (Help) and ENR-183 (Appointments) — one pass~~ — Help landed
 
-This is the pair worth building together. Both are existing screens missing their second half, both
-belong to ENR-190, and both need the same new primitives:
+This document argued for building the pair together, so that the status vocabulary and the office
+module were not invented twice. They were in fact built in parallel, in two sessions, which achieved
+the same thing a different way: each card owns its own data module and neither reached into the
+other's.
 
-- a request state visible to the student that hides internal assignment — ENR-177 AC3 and ENR-178
-  AC5 are the same rule written twice;
-- the same failure grammar: a booking that never reached the team must not resemble one that
-  succeeded, and nothing may promise a reply on a channel with no inbound side;
-- the same *named accountable office* data, which does not exist in `src/data.js` yet.
+**ENR-182 landed.** Spec: `.scratch/ENR-182-help/spec.md`. What it leaves behind for anything that
+needs a person:
 
-Split across two passes, the status vocabulary and the office module get invented twice.
+- `src/help-data.js` holds the **five accountable offices** — Admissions, Student Financial Services,
+  Housing & Residential Life, Health Services and the Registrar — each with what it decides, its
+  hours, where it is and how long it takes to answer. Every name was already in `data.js` or
+  `campus-data.js`; no sixth office was invented.
+- `src/lib/help.js` holds the **state vocabulary a student may see**: `received`, `working`,
+  `needs-you`, `answered`. There is deliberately no state for a failed send, and no field anywhere on
+  a request for a person — ENR-177 AC3 is a property of the shape rather than a rule to remember.
+- The failure grammar came out the other way from what this document expected. A send that does not
+  arrive creates **nothing**: the words stay in the form, and the page says so. A `Not sent` record in
+  a list of what Aster has would be a lie about where they are. Appointments took the opposite
+  reading for its own case, where a booking occupies an intention that has to stay visible.
 
-ENR-181 has landed, so ENR-176 AC3 — no answer, so offer a named route to a person — is already
-wired to Tomás Okafor and Amara Nwosu. What these two cards add is the office behind them.
+ENR-181 had already wired ENR-176 AC3 — no answer, so offer a named route to a person — to Tomás
+Okafor and Amara Nwosu. Help adds the office behind them, and deliberately does **not** put either
+person next to a request: a named face beside a list of requests reads as the person handling them,
+which is the one thing AC3 forbids.
 
-ENR-182 also inherits a copy change: ENR-181 took "ask" back for Edward, so the Help entry in
-`src/lib/navigation.js` no longer promises "Ask Aster anything that is blocking a step". The page
-should be designed around Aster's own guides and a route to a named office.
+The copy change ENR-181 forced was inherited as written: ENR-182 is built to the Help entry already
+in `src/lib/navigation.js` — Aster's own guides, and a route to a named office — and the assistant
+keeps the word *ask* to itself.
 
 ### 4. ENR-184 — Profile
 

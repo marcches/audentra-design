@@ -14,6 +14,17 @@ export const PREVIEW_STATES = [
   // ENR-189: the density the card asks about — four items and forty — is a state
   // you can look at rather than a claim in a spec.
   ['full-board', 'Full board', 'Three required sessions, forty-three events, eighteen clubs.'],
+  // ENR-183: the two states Appointments adds. `no-times` is the second of the
+  // card's two emptinesses — nothing booked because no team has published
+  // anything — and `booking-fails` is the guardrail state, a team whose calendar
+  // cannot be reached. Both are here so a `?state=` link to one survives a reload.
+  ['no-times', 'No times published', 'Appointments before any team opens a calendar.'],
+  ['booking-fails', 'Team unreachable', 'A booking that never reaches the team it was for.'],
+  // ENR-182: the two things only Help can be in. One is a request an office has
+  // put back to the student; the other is a send that never arrived, which has
+  // to be reachable to be looked at rather than only described in a spec.
+  ['needs-you', 'A request needs you', 'Help with an office waiting on the student.'],
+  ['send-fails', 'Sending fails', 'Help where the next thing sent does not reach Aster.'],
   ['partial', 'Partial data', 'The catalog loaded; your transcript could not be checked.'],
   ['error', 'Error', 'The published catalog could not be loaded at all.'],
   ['aid-final', 'Aid finalized', 'My Financials with the federal loan approved and nothing outstanding.'],
@@ -75,4 +86,18 @@ export const FINANCIALS_STATES = [
   ['partial', 'Partial data', 'The package loaded; your schedule and progress did not.'],
   ['error', 'Error', 'Your financial information could not be loaded.'],
   ['empty', 'No financial file yet', 'Before Aster opens your financial record.'],
+];
+
+/**
+ * Profile — ENR-184. `empty` is not "nothing here": it is a record Aster opened
+ * today, which holds what the application gave it and nothing the student has
+ * chosen yet. `partial` is the one that matters most on this screen, because a
+ * verification nobody could check must never render as verified.
+ */
+export const PROFILE_STATES = [
+  ['ready', 'Ready', 'The full record: one number pending, one address unverified, one authorization.'],
+  ['empty', 'New record', 'The day Aster opened it — only what your application gave it.'],
+  ['partial', 'Partial data', 'The record loaded; verification and family permissions could not be read.'],
+  ['loading', 'Loading', 'Before the record arrives.'],
+  ['error', 'Error', 'The record could not be loaded.'],
 ];

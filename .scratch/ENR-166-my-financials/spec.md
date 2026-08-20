@@ -163,6 +163,38 @@ Changed elsewhere: `data.js` (financial data, two new requirements, `PORTAL_TODA
 `preview-state.js` (`FINANCIALS_STATES`), `InfoModal` (`progress` variant), `App.jsx` (three page
 slots), `navigation.js` (the three financials destinations), `app.css` (one appended section).
 
+## Revision, 2026-08-20 — the group owns everything above the tabs
+
+Direct design feedback: *"pq a primeira tela tem esse estado e as outras nao? aqui é uma tela pra 3
+abas, e vc ta julgando como se fossem 3 telas."*
+
+Three leaf files each held the group's standing, and they had drifted:
+
+| Above the tab row | Overview (before) | Financial aid | Payments |
+| --- | --- | --- | --- |
+| balance panel, `ready` | ✔ | ✔ | ✔ |
+| **escalation strip** | ✔ | **✘** | **✘** |
+| **balance panel, `empty`** | ✔ (`Not available yet`) | **✘** | **✘** |
+
+So `Verify your household income · due in 13 days` vanished the moment you opened Financial aid, and
+in the empty state the whole balance panel blinked in and out along the tab row.
+
+`src/components/financials/FinancialsPage.jsx` is the fix — a group shell between the leaf and
+`PageShell`. It fills `summaryLabel`, `summary`, `alert` and `tabs` once for the group; a leaf passes
+only `children` and `rail`. A leaf can no longer differ above the tab row because it is no longer
+asked. `App.jsx` moves `urgent` and `onOpenTask` into the `shared` bundle, since the escalation is
+the same deadline on all three tabs.
+
+It also closes a latent defect: `alert={<AlertStrip …/>}` is always a truthy element, so `PageShell`
+drew `.summary-alert`'s divider under the panel even when `AlertStrip` returned `null` — visible on
+`aid-final`, where nothing is close. `FinancialsPage` asks `escalation(urgent.daysLeft)` first and
+passes `null` when there is nothing to escalate.
+
+Verified across `ready`, `aid-final`, `partial` and `empty`: the band, the balance, the escalation
+and the tab row are identical on all three leaves, and the `.page-summary` block measures the same
+198px on each. The rail and the main column are below the tabs and still differ, which is what a tab
+is for. The rule is now written into `docs/agents/design-workflow.md`.
+
 ## 8. Data
 
 Reconciliation is structural, not clerical.

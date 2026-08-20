@@ -71,6 +71,7 @@ function NavSkeleton() {
 export default function Sidebar({
   open,
   activeId,
+  identity,
   badges = {},
   state = 'ready',
   onNavigate,
@@ -254,11 +255,13 @@ export default function Sidebar({
           onClick={onNavigate}
         >
           <span className="avatar" aria-hidden="true">
-            MJ
+            {identity.initials}
           </span>
           <span className="profile-name">
-            <strong>Maya Johnson</strong>
-            <span>Incoming student</span>
+            {/* The preferred name, from the record — ENR-179 AC 3. Typed here,
+                it was one of two copies and the profile could not govern it. */}
+            <strong>{identity.displayName}</strong>
+            <span>{identity.standing}</span>
           </span>
           <span className="chip-chevron" aria-hidden="true">
             <Icon name="chevron" size={16} />

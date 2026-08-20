@@ -1,5 +1,6 @@
 import Icon from '../Icon.jsx';
 import AdvisorBar from './AdvisorBar.jsx';
+import SummaryFigure from './SummaryFigure.jsx';
 import InsightColumn from './InsightColumn.jsx';
 import PageShell from './PageShell.jsx';
 import TaskCard from './TaskCard.jsx';
@@ -40,22 +41,19 @@ export default function EnrollmentPage({
       summaryLabel="Enrollment progress"
       summary={
         <>
-          <div className="progress-summary">
-            <div className="progress-ring" style={{ '--progress': `${progress * 3.6}deg` }}>
-              <span>{progress}%</span>
-            </div>
-            <div>
-              <span className="panel-label">Your enrollment progress</span>
-              <strong>
-                {completed.length} of {totalSteps} steps complete
-              </strong>
-              <p>
-                {tasks.length > 0
-                  ? 'You’re right on track. Your next task takes about 4 minutes.'
-                  : 'Nothing is waiting on you right now.'}
-              </p>
-            </div>
-          </div>
+          <SummaryFigure
+            mark={
+              <div className="progress-ring" style={{ '--progress': `${progress * 3.6}deg` }}>
+                <span>{progress}%</span>
+              </div>
+            }
+            label="Your enrollment progress"
+            figure={`${completed.length} of ${totalSteps} steps complete`}
+          >
+            {tasks.length > 0
+              ? 'You’re right on track. Your next task takes about 4 minutes.'
+              : 'Nothing is waiting on you right now.'}
+          </SummaryFigure>
           <AdvisorBar onContact={onContact} />
         </>
       }

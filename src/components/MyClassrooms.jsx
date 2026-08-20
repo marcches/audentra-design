@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '../Icon.jsx';
 import AdvisorBar from './AdvisorBar.jsx';
+import SummaryFigure from './SummaryFigure.jsx';
 import AcademicColumn from './AcademicColumn.jsx';
 import AcademicDrawer from './AcademicDrawer.jsx';
 import CreditMatchCard from './CreditMatchCard.jsx';
@@ -100,31 +101,18 @@ export default function MyClassrooms({ destination, state, onToast, onOverlay = 
 
   const summary = unknownProgram ? null : (
     <>
-      <div className="progress-summary">
-        <div className="progress-ring" style={{ '--progress': `${percent * 3.6}deg` }}>
-          <span>{percent}%</span>
-        </div>
-        <div>
-          <span className="panel-label">Your degree progress</span>
-          <strong>
-            {totals.met} of {totals.total} requirements met
-          </strong>
-          <p>
-            {totals.approved} of {program.creditsToGraduate} credits approved
-            {totals.pending > 0 ? '*' : ''}
-          </p>
-          <p className="progress-caveat">
-            <Icon name="info" size={14} />
-            {matches === null
-              ? 'We couldn’t check your transcript for matches. Nothing approved has changed.'
-              : matches.length > 0
-                ? `${matches.length} potential ${
-                    matches.length === 1 ? 'match isn’t' : 'matches aren’t'
-                  } counted here`
-                : 'Nothing is waiting on a credit decision'}
-          </p>
-        </div>
-      </div>
+      <SummaryFigure
+        mark={
+          <div className="progress-ring" style={{ '--progress': `${percent * 3.6}deg` }}>
+            <span>{percent}%</span>
+          </div>
+        }
+        label="Your degree progress"
+        figure={`${totals.met} of ${totals.total} requirements met`}
+      >
+        {totals.approved} of {program.creditsToGraduate} credits approved
+        {totals.pending > 0 ? '*' : ''}
+      </SummaryFigure>
       <AdvisorBar
         onContact={(channel) =>
           onToast(
@@ -135,6 +123,29 @@ export default function MyClassrooms({ destination, state, onToast, onOverlay = 
         }
       />
     </>
+  );
+
+  // What credit matching has to say about the figure above — a footnote to it,
+  // not a fourth line of it. As a line inside the figure cell this made the
+  // panel 139px tall against every other section's 123 and left the advisor
+  // floating off-centre beside it; on the foot it qualifies the number without
+  // changing the shape of the panel. A failed check is crimson, a match still
+  // waiting is amber, and nothing waiting asks nothing of the student.
+  const caveat = unknownProgram ? null : (
+    <p
+      className={`summary-note ${
+        matches === null ? 'failed' : matches.length > 0 ? '' : 'quiet'
+      }`}
+    >
+      <Icon name={matches === null ? 'alert' : 'info'} size={14} />
+      {matches === null
+        ? 'We couldn’t check your transcript for matches. Nothing approved has changed.'
+        : matches.length > 0
+          ? `${matches.length} potential ${
+              matches.length === 1 ? 'match isn’t' : 'matches aren’t'
+            } counted here`
+          : 'Nothing is waiting on a credit decision'}
+    </p>
   );
 
   // Provenance, said once: whose record this is not, and which catalog it reads.
@@ -158,6 +169,7 @@ export default function MyClassrooms({ destination, state, onToast, onOverlay = 
         hero={hero}
         summaryLabel="Degree progress"
         summary={summary}
+        alert={caveat}
         notice={note}
         rail={
           <AcademicColumn

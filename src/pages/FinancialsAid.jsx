@@ -1,7 +1,5 @@
-import PageShell from '../components/PageShell.jsx';
 import StateCard from '../components/StateCard.jsx';
-import GroupTabs from '../components/GroupTabs.jsx';
-import BalanceStrip from '../components/financials/BalanceStrip.jsx';
+import FinancialsPage from '../components/financials/FinancialsPage.jsx';
 import AidSources from '../components/financials/AidSources.jsx';
 import AidOpportunityCard from '../components/financials/AidOpportunityCard.jsx';
 import ProgressPreview from '../components/financials/ProgressPreview.jsx';
@@ -13,6 +11,10 @@ import ProgressPreview from '../components/financials/ProgressPreview.jsx';
  * The progress panel sits here rather than on Overview because it answers the
  * second half of the epic's question — *is anything about to affect my aid?* —
  * and because it must never be the first thing a student reads about money.
+ *
+ * The band, the balance, the escalation under it and the tab row are the
+ * group's and come from `FinancialsPage`. What is left here is what this tab
+ * switches.
  */
 export default function FinancialsAid({
   destination,
@@ -20,6 +22,7 @@ export default function FinancialsAid({
   snapshot,
   year,
   blockers,
+  urgent,
   unavailable,
   isEmpty,
   onOpenTask,
@@ -27,22 +30,21 @@ export default function FinancialsAid({
   onContact,
   onRetry,
 }) {
-  const tabs = <GroupTabs group="financials" activeId={destination.id} />;
-  const summary = <BalanceStrip ledger={ledger} year={year} onContact={onContact} />;
+  const frame = { destination, ledger, year, urgent, isEmpty, onOpenTask, onContact };
 
   if (isEmpty) {
     return (
-      <PageShell destination={destination} tabs={tabs}>
+      <FinancialsPage {...frame}>
         <StateCard variant="empty" icon="award" title="No aid package yet">
           Student Financial Services releases your package after your deposit is recorded. When it
           lands, every source appears here with what it is and whether you repay it.
         </StateCard>
-      </PageShell>
+      </FinancialsPage>
     );
   }
 
   return (
-    <PageShell destination={destination} summaryLabel="Your balance" summary={summary} tabs={tabs}>
+    <FinancialsPage {...frame}>
       <AidSources
         snapshot={snapshot}
         ledger={ledger}
@@ -63,6 +65,6 @@ export default function FinancialsAid({
         onExplain={onExplainProgress}
         onRetry={onRetry}
       />
-    </PageShell>
+    </FinancialsPage>
   );
 }

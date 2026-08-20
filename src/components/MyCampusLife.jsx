@@ -6,7 +6,7 @@ import EventRow from './EventRow.jsx';
 import OrgRow from './OrgRow.jsx';
 import GroupTabs from './GroupTabs.jsx';
 import PageShell from './PageShell.jsx';
-import RequiredCard from './RequiredCard.jsx';
+import RequiredStrip from './RequiredStrip.jsx';
 import StateCard from './StateCard.jsx';
 import {
   CAMPUS_TODAY,
@@ -18,6 +18,7 @@ import {
   studentInterests,
 } from '../campus-data.js';
 import { categoriesOf, groupEvents, matchedInterest, splitByTime } from '../lib/campus-helpers.js';
+import { RAIL_QUERY, useMedia } from '../lib/overlay.js';
 
 /**
  * My Campus Life — ENR-189, behaviour from ENR-187.
@@ -71,6 +72,10 @@ export default function MyCampusLife({
   const [eventLimit, setEventLimit] = useState(EVENT_PAGE);
   const [clubLimit, setClubLimit] = useState(CLUB_PAGE);
   const [open, setOpen] = useState(null);
+
+  // Whether the page is actually two grids right now — see the placement note
+  // on `requiredStrip` below.
+  const twoGrids = useMedia(RAIL_QUERY);
 
   // "One overlay owns the screen at a time" needs App to hear about an overlay
   // it does not itself hold, so Edward can stand down for it — ENR-181.
@@ -185,44 +190,39 @@ export default function MyCampusLife({
   }
 
   // An obligation must not be able to hide behind a tab the student did not open
-  // — ENR-189. In the shell that is a slot, not a discipline: `notice` renders
-  // above `tabs`, so the required band can only ever sit above the switch.
-  const requiredBand =
+  // — ENR-189. Where that lands depends on how many grids the page has, which
+  // is the one layout fact CSS cannot express from inside a slot:
+  //
+  //   two grids   the strip leads the rail. The rail is sticky and shared by
+  //               both leaves, so the obligation stays on screen for the whole
+  //               scroll instead of being a full-width band you pass once — and
+  //               a single session stops spending the width of the page to say
+  //               one sentence.
+  //   one grid    `.page-rail` reflows *under* the main column below 1060px, so
+  //               in the rail the obligation would end up beneath forty events.
+  //               There it goes back to `notice`, which is above the tabs.
+  //
+  // The component is the same in both; it reads its own width with a container
+  // query and stacks when it is narrow, so the rail needs no second variant.
+  const requiredStrip =
     required.length === 0 ? null : (
-      <section className="section-card required-band" aria-labelledby="required-heading">
-        <div className="status-heading">
-          <span className="status-icon required">
-            <Icon name="alert" size={18} />
-          </span>
-          <div>
-            <h2 id="required-heading">Required for you</h2>
-            <p>
-              Everything else on this page is optional.{' '}
-              {required.length === 1 ? 'This one is not.' : 'These are not.'}
-            </p>
-          </div>
-          <span className="status-count required">{required.length}</span>
-        </div>
-        <div className="card-rows required-list">
-          {required.map((item) => (
-            <RequiredCard
-              key={item.id}
-              event={item}
-              onOpen={(value, node) => openItem(value, 'event', node)}
-            />
-          ))}
-        </div>
-      </section>
+      <RequiredStrip
+        events={required}
+        onOpen={(value, node) => openItem(value, 'event', node)}
+      />
     );
 
   return (
     <PageShell
       destination={destination}
       hero={hero}
-      notice={requiredBand}
+      notice={twoGrids ? null : requiredStrip}
       tabs={<GroupTabs group="campus" activeId={active === 'clubs' ? 'clubs' : 'events'} />}
       rail={
-        <CampusRail interests={studentInterests} publisher={campusPublisher} onToast={onToast} />
+        <>
+          {twoGrids && requiredStrip}
+          <CampusRail interests={studentInterests} publisher={campusPublisher} onToast={onToast} />
+        </>
       }
     >
       {active === 'events' ? (

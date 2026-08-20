@@ -1,8 +1,6 @@
 import Icon from '../Icon.jsx';
-import PageShell from '../components/PageShell.jsx';
 import StateCard from '../components/StateCard.jsx';
-import GroupTabs from '../components/GroupTabs.jsx';
-import BalanceStrip from '../components/financials/BalanceStrip.jsx';
+import FinancialsPage from '../components/financials/FinancialsPage.jsx';
 import ScheduleList from '../components/financials/ScheduleList.jsx';
 import TermTip from '../components/financials/TermTip.jsx';
 import { formatMoney } from '../lib/money.js';
@@ -13,35 +11,40 @@ import { formatMoney } from '../lib/money.js';
  *
  * Making a payment is out of scope, so the button hands off the way the
  * enrollment deposit already does. Payment plans are named, not changed.
+ *
+ * The band, the balance, the escalation under it and the tab row are the
+ * group's and come from `FinancialsPage`. What is left here is what this tab
+ * switches.
  */
 export default function FinancialsPayments({
   destination,
   ledger,
   snapshot,
   year,
+  urgent,
   unavailable,
   isEmpty,
+  onOpenTask,
   onPay,
   onChangePlan,
   onContact,
   onRetry,
 }) {
-  const tabs = <GroupTabs group="financials" activeId={destination.id} />;
-  const summary = <BalanceStrip ledger={ledger} year={year} onContact={onContact} />;
+  const frame = { destination, ledger, year, urgent, isEmpty, onOpenTask, onContact };
 
   if (isEmpty) {
     return (
-      <PageShell destination={destination} tabs={tabs}>
+      <FinancialsPage {...frame}>
         <StateCard variant="empty" icon="card" title="Nothing has been billed yet">
           Your first charge is posted once your place is confirmed. Until then there is no schedule
           to show and nothing is late.
         </StateCard>
-      </PageShell>
+      </FinancialsPage>
     );
   }
 
   return (
-    <PageShell destination={destination} summaryLabel="Your balance" summary={summary} tabs={tabs}>
+    <FinancialsPage {...frame}>
       <section className="billed-split" aria-labelledby="billed-title">
         <div className="card-heading">
           <span className="card-icon">
@@ -96,6 +99,6 @@ export default function FinancialsPayments({
           Make a payment <Icon name="external" size={16} />
         </button>
       </div>
-    </PageShell>
+    </FinancialsPage>
   );
 }

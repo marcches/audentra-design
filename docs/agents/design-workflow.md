@@ -84,8 +84,8 @@ passes slots, never markup sequence, so it cannot arrange them wrongly.
 | Slot | What belongs in it | Always? |
 | --- | --- | --- |
 | `hero` | The purple band. Eyebrow (mono — who owns this record, as of when), one sentence, the section's icon. Copy lives in `navigation.js`; a page overrides only what it must compute. | Always |
-| `summary` | **The section's one figure, and the person who owns the subject.** The progress ring, the balance, the degree count — plus the advisor. Tucks into the band. | When the section has a standing |
-| `notice` | What is on fire, or a caveat true of the whole section. The escalation strip, the required band, the provenance note. | When there is one |
+| `summary` | **The section's one figure, and the person who owns the subject.** The progress ring, the balance, the degree count — plus the advisor. Tucks into the band. In a group it is the *group's* figure, filled by the group shell. | When the section has a standing |
+| `notice` | What is on fire, or a caveat true of the whole section. The required strip on a one-grid page, the provenance note. In a group, it is true of every leaf or it does not belong here. | When there is one |
 | `tabs` | `<GroupTabs>` — which leaf of the group you are reading. | Groups with 2+ built leaves |
 | `rail` | The insight column. `PageShell` renders the `<aside>`; rail components must not carry their own. | When the section has one |
 
@@ -98,6 +98,25 @@ Two rules make the order non-negotiable:
 - **The tuck is adjacency, not decoration.** `.page-hero + .page-summary` is the only selector that
   overlaps them. Written on the panel instead, it followed the panel everywhere — which is how the
   balance ended up sitting on top of the escalation strip on My Financials (Jam, 2026-08-20).
+
+### A group is one screen, so the group owns everything above the tabs
+
+`PageShell` owns the *order* of the slots, so a page cannot arrange them wrongly. It cannot own their
+*content* — and when a group's leaves are separate files, each one remembers the group's standing
+separately and they drift. On My Financials the escalation strip lived in `FinancialsOverview` alone,
+so opening Financial aid made a 13-day deadline disappear; in the empty state Overview showed the
+balance panel and the other two showed none, so the panel blinked in and out along the tab row. Three
+files had been treated as three screens. They are one screen read three ways.
+
+**A group whose leaves are more than one file gets a group shell** — a component between the leaf and
+`PageShell` that fills `hero`, `summary`, `alert` and `tabs` once. `FinancialsPage` is the reference:
+a leaf passes only `children` and `rail`, so it *cannot* differ above the tab row, because it is
+never asked. A group whose leaves are one component with a tab switch — My Campus Life — already has
+this property and needs no shell.
+
+The check, on any group: open each leaf and confirm the band, the summary, the alert and the tab row
+are pixel-identical, **in every preview state**, including the empty and partial ones. The rail and
+the main column are below the tabs and are what the tab switches, so those may and should differ.
 
 ### Hierarchy
 
@@ -130,8 +149,39 @@ card. A box inside a box is what made most of the portal read as stacked rather 
   `--card-radius` for exactly this; a row must never hard-code either.
 - **The rail leads with one `.anchor-card`** — the section's key secondary figure, on ink — then
   light cards. What a card looks like on ink is written once, under `.anchor-card`.
-- Markers survive flattening only when they carry meaning: the crimson edge on a required session,
-  the ribbon on the one step to do next.
+- Markers survive flattening only when they carry meaning: the crimson date tile and chip on a
+  required session, the ribbon on the one step to do next.
+- **Never mark a rounded element by painting one of its edges.** A 3px accent down the left of a card
+  or a row is a rule bar wearing a card's corners — the two shapes fight, and it is the cheapest
+  possible way to say "this one matters". Say it in the element's own ink instead: tint the tile,
+  tint the chip, tint the whole ring if it has to be the frame. A left bar is only ever correct on
+  something square on that side, the way `.rule-card` is.
+
+### Hierarchy inside a card
+
+Flattening the *construction* is not permission to flatten the *content*. A card whose rows all carry
+the same weight, the same pill and the same grey sentence is a wall of text with hairlines in it: the
+student has to read all twelve rows to find the one that matters. The three planes decide how a card
+is built; these four decide how it is read.
+
+- **One anchor per row, and it is the answer.** The label is small and muted above the value; the
+  value carries the size and the weight. Two dark elements in a row means no hierarchy in that row —
+  the eye should be able to run down the column of values and never read a label.
+- **Mark the exception, never the rule.** A tag on eight rows out of twelve is texture, not
+  information. Label the *run* once — "Yours to change", then "Aster's record" — and let the boundary
+  between the runs carry the distinction. Then a tag left on a row means something, because it is
+  rare.
+- **Rhythm comes from meaning, not from a template.** A helper line belongs on a row where it changes
+  what the student does — what a change costs, what expires tonight, what the law needs. Delete it
+  everywhere else. Rows that ask something then stand taller than rows that only state a fact, and
+  that difference in height is free hierarchy.
+- **Spend colour once per card, on the row that is asking.** A faint amber wash on the field waiting
+  for a code is worth more than any amount of tinting spread evenly. If two rows are washed, both had
+  better be waiting; if every row is washed, the card is decorated again.
+
+The same test applies to a set of cards: three identical purple heading tiles on three cards doing
+three different jobs makes the page one long list. The card that holds the section's content, the one
+that holds something sensitive and the one that is only a signpost should not look alike.
 
 ### Colour
 

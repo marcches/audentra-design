@@ -125,6 +125,15 @@ export const SHEET_QUERY = '(max-width: 620px)';
 /** The width at which the fuller form can hold two panes side by side. */
 export const TWO_PANE_QUERY = '(min-width: 821px)';
 
+/**
+ * The width at which the page is genuinely two grids — a main column and the
+ * narrower rail beside it. Below it `.page-rail` stops being a column and
+ * reflows underneath the main one, so anything that has to stay above the
+ * content it qualifies must be rendered somewhere else. Matches the
+ * `@media (width<=1060px)` rule `.page-body` uses in `app.css`.
+ */
+export const RAIL_QUERY = '(min-width: 1061px)';
+
 export function useIsSheet() {
   return useMedia(SHEET_QUERY);
 }

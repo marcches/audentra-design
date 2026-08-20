@@ -60,6 +60,55 @@
   --toast-bottom: 25px;
   --font-geist-sans: 'Geist Variable', 'Geist', sans-serif;
   --font-geist-mono: 'Geist Mono Variable', 'Geist Mono', monospace;
+
+  /* Type, named — the ramp My Enrollment was built on, published so the rest of
+     the portal stops inventing its own. A raw px in a font-size is a bug the
+     same way a raw hex is: it is a decision about the whole product taken
+     locally. Twenty-eight sizes, eleven weights, twenty trackings and fourteen
+     leadings were what "each section designed on its own" looked like.
+
+     Sizes carry a role, not a number. Pick by what the text IS:
+       hero     the page's one h1
+       figure   a rail's headline number
+       display  a panel figure, and the heading that names a page section
+       h2       the heading that names a card
+       h3       the title of a row or a task
+       h4       a strong lead-in inside a row
+       body     running copy in a drawer or a panel
+       copy     running copy in a card
+       meta     the line under a heading, and the label on a control
+       small    facts, timestamps, states
+       micro    the smallest thing that is still a word */
+  --fs-hero: clamp(25px, 2.5vw, 34px);
+  --fs-figure: 27px;
+  --fs-display: 21px;
+  --fs-h2: 17px;
+  --fs-h3: 15px;
+  --fs-h4: 13.5px;
+  --fs-body: 12.5px;
+  --fs-copy: 11.5px;
+  --fs-meta: 10.5px;
+  --fs-small: 9.5px;
+  --fs-micro: 8.5px;
+  /* Five weights. `heavy` exists because 9px uppercase needs more than bold to
+     hold its colour; it is not a sixth heading level. */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semi: 600;
+  --fw-bold: 700;
+  --fw-heavy: 750;
+  /* Tracking follows size: the bigger the type the tighter it sets, and
+     uppercase always opens up. `wide` is the mono eyebrow on the hero band and
+     nothing else. */
+  --ls-hero: -.035em;
+  --ls-tight: -.025em;
+  --ls-snug: -.015em;
+  --ls-caps: .08em;
+  --ls-wide: .13em;
+  /* Three leadings: figures, headings, everything you read. */
+  --lh-tight: 1.1;
+  --lh-heading: 1.35;
+  --lh-body: 1.55;
 }
 
 * {
@@ -123,13 +172,13 @@ button {
 }
 
 .brand-row strong {
-  letter-spacing: -.01em;
-  font-size: 15px;
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-h3);
 }
 
 .brand-row span {
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .university-mark {
@@ -141,7 +190,7 @@ button {
   height: 43px;
   font-family: Georgia,serif;
   font-size: 22px;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   display: grid;
   box-shadow: 0 7px 14px #4d3bb33d,inset 0 1px #ffffff4d;
 }
@@ -166,8 +215,8 @@ button {
   gap: 11px;
   min-height: 46px;
   padding: 7px 11px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-semi);
   text-decoration: none;
   transition: all .18s;
   display: flex;
@@ -198,7 +247,7 @@ button {
   height: 22px;
   margin-left: auto;
   padding: 0 6px;
-  font-size: 11px;
+  font-size: var(--fs-copy);
   display: grid;
 }
 
@@ -237,13 +286,13 @@ button {
 .profile-chip strong {
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: var(--fs-body);
   overflow: hidden;
 }
 
 .profile-chip span {
   color: var(--muted);
-  font-size: 10px;
+  font-size: var(--fs-meta);
 }
 
 .avatar, .mobile-avatar {
@@ -252,29 +301,29 @@ button {
   border-radius: 50%;
   flex: none;
   place-items: center;
-  font-weight: 750;
+  font-weight: var(--fw-heavy);
   display: grid;
 }
 
 .avatar {
   width: 34px;
   height: 34px;
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .mobile-avatar {
   width: 32px;
   height: 32px;
-  font-size: 10px;
+  font-size: var(--fs-meta);
   display: none;
 }
 
 .powered-by {
   color: #9a9eaa;
   text-align: center;
-  letter-spacing: .02em;
+  letter-spacing: var(--ls-caps);
   margin: 13px 0 0;
-  font-size: 9px;
+  font-size: var(--fs-small);
 }
 
 .powered-by strong {
@@ -303,15 +352,15 @@ button {
 
 .concept-pill {
   color: #777187;
-  letter-spacing: .04em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   background: #eeedf3;
   border-radius: 99px;
   align-items: center;
   height: 25px;
   padding: 0 10px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-bold);
   display: inline-flex;
 }
 
@@ -342,8 +391,8 @@ button {
   min-width: 17px;
   height: 17px;
   padding: 0 4px;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   display: grid;
   position: absolute;
   top: -6px;
@@ -416,18 +465,18 @@ button {
 
 .eyebrow {
   color: #d9d4f3;
-  letter-spacing: .09em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   margin: 0 0 12px;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
 }
 
 .page-hero .eyebrow {
   font-family: var(--font-geist-mono);
-  letter-spacing: .13em;
-  font-size: 10.5px;
-  font-weight: 500;
+  letter-spacing: var(--ls-wide);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
 }
 
 .eyebrow span {
@@ -440,12 +489,12 @@ button {
 }
 
 .page-hero h1 {
-  letter-spacing: -.035em;
+  letter-spacing: var(--ls-hero);
   text-wrap: balance;
   margin: 0;
-  font-size: clamp(25px,2.5vw,34px);
-  font-weight: 720;
-  line-height: 1.14;
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
 }
 
 /* `pretty` keeps the last line from orphaning a word — "…can change / it." */
@@ -454,8 +503,8 @@ button {
   text-wrap: pretty;
   max-width: 620px;
   margin: 13px 0 0;
-  font-size: 13.5px;
-  line-height: 1.6;
+  font-size: var(--fs-h4);
+  line-height: var(--lh-body);
 }
 
 /* The section's own icon, held in the band's right edge. It is the section's
@@ -529,6 +578,7 @@ button {
   background: #fffffff7;
   border: 1px solid #e2e2ebe6;
   border-radius: 19px;
+  container: page-summary / inline-size;
   flex-direction: column;
   margin: 0 0 30px;
   display: flex;
@@ -536,14 +586,33 @@ button {
   overflow: hidden;
 }
 
+/* Two cells, and it is a grid rather than a wrapping flex on purpose.
+ *
+ * As a flex row with `justify-content: space-between` it held together only
+ * while both cells fit. Below about 1200px they wrapped, and because neither
+ * cell was ever told to fill the row the advisor came to rest as a 576px box
+ * with 150px of dead space beside it, while on three of the five sections the
+ * figure stretched the full width above it. Two cells, two different answers
+ * to the same wrap.
+ *
+ * A grid cannot do that: two columns while there is room, one full-width
+ * column each when there is not, and `minmax(0, …)` on both so a long figure
+ * shrinks instead of pushing the panel open. */
 .summary-main {
-  flex-wrap: wrap;
-  min-height: 102px;
-  justify-content: space-between;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
   align-items: center;
-  gap: 25px;
+  gap: 16px 28px;
+  min-height: 102px;
   padding: 20px var(--panel-pad);
-  display: flex;
+  display: grid;
+}
+
+/* Measured on the panel, not the window: on the sections that carry a rail the
+   panel is already narrow at a wide window, and the window cannot tell. */
+@container page-summary (width < 880px) {
+  .summary-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* An escalation is a footnote to the figure above it, not another band in the
@@ -559,6 +628,32 @@ button {
   border-radius: 0;
   margin: 0;
   padding: 11px var(--panel-pad);
+}
+
+/* The other thing that rides the foot: one line qualifying the figure above
+   it. My Classrooms had this as a fourth line *inside* the figure cell, which
+   is what made its panel 139px tall against everyone else's 123 and pushed the
+   advisor off-centre beside it. Same job as the escalation strip, so the same
+   place. Amber means someone still has to act; a caveat that asks nothing of
+   the student is muted, and a panel that failed is crimson. */
+.summary-note {
+  color: var(--amber);
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  padding: 11px var(--panel-pad);
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
+  display: flex;
+}
+
+.summary-note.quiet {
+  color: var(--muted);
+  font-weight: var(--fw-medium);
+}
+
+.summary-note.failed {
+  color: var(--crimson);
 }
 
 /* The tuck is a fact about these two being adjacent, not a property of the
@@ -590,8 +685,8 @@ button {
   align-items: center;
   gap: 7px;
   padding: 8px 14px;
-  font-size: 11.5px;
-  font-weight: 650;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
   text-decoration: none;
   transition: color .15s, border-color .15s;
   display: flex;
@@ -608,17 +703,37 @@ button {
   background: var(--purple-soft);
 }
 
-.progress-summary {
-  flex: 1 1 auto;
+/* The left cell. Five sections fill this slot and each had invented its own
+   class for it — `.progress-summary`, `.balance-summary`, `.next-appointment`,
+   `.profile-standing` — four names and two different internal structures for
+   one thing. This is the one shape: an optional mark, then the label, the
+   figure, and at most one line under it. What changes between sections is the
+   mark and the number, never the shape.
+ *
+ * `.progress-summary` stays as its old name so My Profile keeps working while
+ * ENR-184 is still in flight; new code uses `SummaryFigure`. */
+.summary-figure, .progress-summary {
   align-items: center;
   gap: 15px;
-  min-width: 230px;
+  min-width: 0;
   display: flex;
 }
 
+.summary-figure-copy,
 .progress-summary>div:last-child {
   flex-direction: column;
+  min-width: 0;
   display: flex;
+}
+
+/* The markless form — a figure with nothing to its left. `.next-appointment`
+   is ENR-183's, still in flight, and is named here so it gets the same
+   treatment without that card having to land first. */
+.summary-figure.bare .summary-figure-copy, .next-appointment {
+  gap: 3px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .progress-ring {
@@ -643,41 +758,56 @@ button {
 
 .progress-ring span {
   z-index: 1;
-  font-size: 13px;
-  font-weight: 760;
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-heavy);
   position: relative;
 }
 
 .panel-label {
   color: var(--muted);
-  letter-spacing: .08em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-bold);
 }
 
+/* The section's figure — 21px, or 34px when it is money. The scale is in
+   `docs/agents/design-workflow.md` and this is the only place it is set. */
+.summary-figure-copy strong,
 .progress-summary strong {
-  letter-spacing: -.02em;
+  letter-spacing: var(--ls-tight);
   margin-top: 2px;
-  font-size: 21px;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: var(--fs-display);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
 }
 
+.summary-figure.money .summary-figure-copy strong {
+  letter-spacing: var(--ls-tight);
+  font-size: var(--fs-figure);
+  line-height: var(--lh-tight);
+}
+
+.summary-figure-copy p,
 .progress-summary p {
   color: var(--muted);
+  max-width: 46ch;
   margin: 4px 0 0;
-  font-size: 11px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
+/* `min-width: 340px` was a floor the panel could not honour: inside a grid
+   column narrower than that it overflows, and inside the old wrapping flex it
+   was what forced the wrap in the first place. The bar shrinks now, and its
+   meta line wraps before anything else does. */
 .advisor-bar {
   background: linear-gradient(105deg,#f8f7ff,#f1efff);
   border: 1px solid #e6e1ff;
   border-radius: 14px;
-  flex: 0 1 auto;
   align-items: center;
   gap: 12px;
-  min-width: 340px;
+  min-width: 0;
   padding: 11px 13px;
   display: flex;
 }
@@ -691,7 +821,7 @@ button {
   width: 38px;
   height: 38px;
   font-size: 11px;
-  font-weight: 750;
+  font-weight: var(--fw-heavy);
   display: grid;
 }
 
@@ -702,15 +832,15 @@ button {
 }
 
 .advisor-bar-copy strong {
-  letter-spacing: -.015em;
+  letter-spacing: var(--ls-snug);
   margin-top: 3px;
-  font-size: 14px;
+  font-size: var(--fs-h3);
 }
 
 .advisor-bar-copy strong span {
   color: var(--muted);
-  font-size: 10.5px;
-  font-weight: 500;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
 }
 
 .advisor-bar-meta {
@@ -718,8 +848,8 @@ button {
   flex-wrap: wrap;
   gap: 4px 12px;
   margin: 5px 0 0;
-  font-size: 10px;
-  font-weight: 600;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
@@ -749,8 +879,8 @@ button {
   border: 1px solid var(--line);
   border-radius: 11px;
   padding: 9px 15px;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
   transition: all .18s;
 }
 
@@ -793,9 +923,9 @@ button {
 }
 
 .section-heading h2, .status-heading h2 {
-  letter-spacing: -.025em;
+  letter-spacing: var(--ls-tight);
   margin: 0;
-  font-size: 21px;
+  font-size: var(--fs-display);
 }
 
 .sort-group {
@@ -818,8 +948,8 @@ button {
   gap: 5px;
   height: 30px;
   padding: 0 9px;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
@@ -860,14 +990,14 @@ button {
 
 .recommended-banner {
   color: #fff;
-  letter-spacing: .025em;
+  letter-spacing: var(--ls-caps);
   background: linear-gradient(90deg,#5d46c8,#7462df);
   justify-content: space-between;
   align-items: center;
   height: 31px;
   padding: 0 15px;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
@@ -879,7 +1009,7 @@ button {
 
 .recommended-banner span:last-child {
   color: #e6e2ff;
-  font-weight: 600;
+  font-weight: var(--fw-semi);
 }
 
 .task-card-body {
@@ -924,18 +1054,18 @@ button {
 
 .task-meta-row {
   color: #8a8e9d;
-  letter-spacing: .055em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   align-items: center;
   gap: 7px;
   min-height: 20px;
-  font-size: 9px;
-  font-weight: 750;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
   display: flex;
 }
 
 .priority-badge {
-  letter-spacing: .02em;
+  letter-spacing: var(--ls-caps);
   border-radius: 99px;
   padding: 3px 7px;
 }
@@ -956,17 +1086,17 @@ button {
 }
 
 .task-main h3 {
-  letter-spacing: -.02em;
+  letter-spacing: var(--ls-tight);
   margin: 4px 0 6px;
-  font-size: 16px;
+  font-size: var(--fs-h2);
 }
 
 .task-main>p {
   color: #676e80;
   max-width: 550px;
   margin: 0;
-  font-size: 11.5px;
-  line-height: 1.55;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .task-facts {
@@ -975,7 +1105,7 @@ button {
   align-items: center;
   gap: 11px;
   margin-top: 11px;
-  font-size: 9.5px;
+  font-size: var(--fs-small);
   display: flex;
 }
 
@@ -987,7 +1117,7 @@ button {
 
 .task-facts b {
   color: #4d5261;
-  font-weight: 650;
+  font-weight: var(--fw-semi);
 }
 
 .task-action {
@@ -1005,8 +1135,8 @@ button {
   align-items: center;
   column-gap: 5px;
   min-height: 26px;
-  font-size: 9.5px;
-  font-weight: 750;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
   display: flex;
 }
 
@@ -1018,8 +1148,8 @@ button {
 
 .point-reward small {
   color: #9591a3;
-  font-size: 8px;
-  font-weight: 600;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semi);
 }
 
 .primary-button, .secondary-button {
@@ -1030,8 +1160,8 @@ button {
   align-items: center;
   gap: 7px;
   min-height: 36px;
-  font-size: 10px;
-  font-weight: 750;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
   transition: all .17s;
   display: flex;
 }
@@ -1069,8 +1199,8 @@ button {
   cursor: pointer;
   background: 0 0;
   border: 0;
-  font-size: 9px;
-  font-weight: 650;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semi);
 }
 
 .all-done-card {
@@ -1099,7 +1229,7 @@ button {
 .all-done-card p {
   color: var(--muted);
   margin: 0;
-  font-size: 12px;
+  font-size: var(--fs-body);
 }
 
 .status-section {
@@ -1115,13 +1245,13 @@ button {
 }
 
 .status-heading h2 {
-  font-size: 17px;
+  font-size: var(--fs-h2);
 }
 
 .status-heading p {
   color: var(--muted);
   margin: 3px 0 0;
-  font-size: 10px;
+  font-size: var(--fs-meta);
 }
 
 .status-icon {
@@ -1149,8 +1279,8 @@ button {
   place-items: center;
   min-width: 24px;
   height: 24px;
-  font-size: 10px;
-  font-weight: 750;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
   display: grid;
 }
 
@@ -1212,21 +1342,21 @@ button {
 
 .compact-copy h3 {
   margin: 0 0 4px;
-  font-size: 12.5px;
+  font-size: var(--fs-body);
 }
 
 .compact-copy>p {
   color: var(--muted);
   margin: 0;
-  font-size: 10.5px;
-  line-height: 1.45;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 .compact-meta {
   color: #9296a2;
   gap: 13px;
   margin-top: 7px;
-  font-size: 9px;
+  font-size: var(--fs-small);
   display: flex;
 }
 
@@ -1239,8 +1369,8 @@ button {
   gap: 7px;
   min-width: 83px;
   height: 27px;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
@@ -1257,14 +1387,14 @@ button {
   align-items: center;
   gap: 5px;
   margin-top: 7px;
-  font-size: 9px;
-  font-weight: 650;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
 .locked-due {
   color: #898d98;
-  font-size: 9.5px;
+  font-size: var(--fs-small);
 }
 
 .completed-section {
@@ -1309,12 +1439,12 @@ button {
 }
 
 .completed-toggle strong {
-  font-size: 12px;
+  font-size: var(--fs-body);
 }
 
 .completed-toggle span {
   color: #6d7c74;
-  font-size: 9.5px;
+  font-size: var(--fs-small);
 }
 
 .completed-toggle>svg {
@@ -1337,7 +1467,7 @@ button {
   gap: 8px;
   min-height: 47px;
   padding: 6px 16px;
-  font-size: 10px;
+  font-size: var(--fs-meta);
   display: grid;
 }
 
@@ -1359,7 +1489,7 @@ button {
   justify-self: end;
   align-items: center;
   gap: 3px;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
@@ -1397,8 +1527,8 @@ button {
   place-items: center;
   width: 33px;
   height: 33px;
-  font-size: 10px;
-  font-weight: 750;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
   display: grid;
 }
 
@@ -1407,22 +1537,22 @@ button {
   background: #eeeaff;
   border-radius: 99px;
   padding: 5px 8px;
-  font-size: 8.5px;
-  font-weight: 700;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-bold);
 }
 
 .skipped-card h3 {
-  letter-spacing: -.015em;
+  letter-spacing: var(--ls-snug);
   margin: 15px 0 7px;
-  font-size: 15px;
-  line-height: 1.3;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
 }
 
 .skipped-card p {
   color: var(--muted);
   margin: 0;
-  font-size: 10.5px;
-  line-height: 1.55;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 .skipped-card button {
@@ -1434,8 +1564,8 @@ button {
   gap: 7px;
   margin-top: 14px;
   padding: 0;
-  font-size: 10px;
-  font-weight: 750;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
   display: flex;
 }
 
@@ -1511,12 +1641,12 @@ button {
 
 .momentum-header span {
   color: #c9c7d9;
-  font-size: 9.5px;
+  font-size: var(--fs-small);
 }
 
 .momentum-header strong {
   margin-top: 2px;
-  font-size: 17px;
+  font-size: var(--fs-h2);
 }
 
 .level-track {
@@ -1538,7 +1668,7 @@ button {
 .level-labels {
   color: #aaa9bb;
   justify-content: space-between;
-  font-size: 8.5px;
+  font-size: var(--fs-micro);
   display: flex;
 }
 
@@ -1563,15 +1693,15 @@ button {
 }
 
 .today-reward strong {
-  font-size: 10px;
-  line-height: 1.35;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-heading);
   display: block;
 }
 
 .today-reward p {
   color: #aaa9bc;
   margin: 3px 0 0;
-  font-size: 8.5px;
+  font-size: var(--fs-micro);
 }
 
 .learn-link {
@@ -1583,8 +1713,8 @@ button {
   gap: 6px;
   margin-top: 14px;
   padding: 0;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
@@ -1595,7 +1725,7 @@ footer {
   justify-content: space-between;
   margin-top: 35px;
   padding: 20px 3px var(--safe-bottom);
-  font-size: 8.5px;
+  font-size: var(--fs-micro);
   display: flex;
 }
 
@@ -1660,11 +1790,11 @@ footer a {
 .drawer-label {
   color: #747989;
   text-transform: uppercase;
-  letter-spacing: .05em;
+  letter-spacing: var(--ls-caps);
   align-items: center;
   gap: 9px;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
@@ -1684,16 +1814,16 @@ footer a {
 }
 
 .drawer-content h2 {
-  letter-spacing: -.035em;
+  letter-spacing: var(--ls-hero);
   margin: 17px 0 8px;
-  font-size: 27px;
+  font-size: var(--fs-figure);
 }
 
 .drawer-description {
   color: var(--muted);
   margin: 0;
-  font-size: 12.5px;
-  line-height: 1.6;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .drawer-reward {
@@ -1720,13 +1850,13 @@ footer a {
 }
 
 .drawer-reward strong {
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .drawer-reward small {
   color: #847d9e;
   margin-top: 2px;
-  font-size: 9px;
+  font-size: var(--fs-small);
 }
 
 .drawer-reward button {
@@ -1750,8 +1880,8 @@ footer a {
   border-bottom: 2px solid #0000;
   flex: 1;
   height: 42px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-bold);
 }
 
 .drawer-tabs button.active {
@@ -1783,15 +1913,15 @@ footer a {
 }
 
 .why-card strong {
-  font-size: 10px;
+  font-size: var(--fs-meta);
   display: block;
 }
 
 .why-card p {
   color: #6f7483;
   margin: 4px 0 0;
-  font-size: 10px;
-  line-height: 1.5;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 .external-panel {
@@ -1814,13 +1944,13 @@ footer a {
 }
 
 .external-destination strong {
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
 }
 
 .external-destination span {
   color: var(--muted);
   margin-top: 3px;
-  font-size: 9px;
+  font-size: var(--fs-small);
 }
 
 .external-destination>svg {
@@ -1830,8 +1960,8 @@ footer a {
 .external-panel>p {
   color: var(--muted);
   margin: 13px 2px;
-  font-size: 10.5px;
-  line-height: 1.55;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 .primary-button.full {
@@ -1844,7 +1974,7 @@ footer a {
   color: #999ca8;
   text-align: center;
   margin-top: 9px;
-  font-size: 8.5px;
+  font-size: var(--fs-micro);
   display: block;
 }
 
@@ -1878,12 +2008,12 @@ footer a {
 
 .upload-zone strong {
   margin-top: 3px;
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .upload-zone small {
   color: var(--muted);
-  font-size: 9px;
+  font-size: var(--fs-small);
 }
 
 .upload-zone.has-file {
@@ -1902,7 +2032,7 @@ footer a {
   align-items: center;
   gap: 6px;
   margin: 11px 0 0;
-  font-size: 8.5px;
+  font-size: var(--fs-micro);
   display: flex;
 }
 
@@ -1913,8 +2043,8 @@ footer a {
   border: 0;
   width: 100%;
   margin-top: 12px;
-  font-size: 9.5px;
-  font-weight: 650;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semi);
 }
 
 .form-panel, .choice-panel {
@@ -1926,8 +2056,8 @@ footer a {
   flex-direction: column;
   gap: 6px;
   margin-bottom: 13px;
-  font-size: 9.5px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
@@ -1938,7 +2068,7 @@ footer a {
   border-radius: 10px;
   outline: none;
   padding: 0 12px;
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .form-panel input:focus {
@@ -1949,7 +2079,7 @@ footer a {
 .form-help {
   color: var(--muted);
   margin: 0;
-  font-size: 9px;
+  font-size: var(--fs-small);
 }
 
 .choice-panel {
@@ -1988,13 +2118,13 @@ footer a {
 }
 
 .choice-panel strong {
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
 }
 
 .choice-panel small {
   color: var(--muted);
   margin-top: 3px;
-  font-size: 8.5px;
+  font-size: var(--fs-micro);
 }
 
 .radio-mark {
@@ -2013,7 +2143,7 @@ footer a {
 
 .how-panel h3 {
   margin: 0 0 17px;
-  font-size: 14px;
+  font-size: var(--fs-h3);
 }
 
 .how-panel ol {
@@ -2048,16 +2178,16 @@ footer a {
   place-items: center;
   width: 29px;
   height: 29px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-bold);
   display: grid;
 }
 
 .how-panel li p {
   color: #5e6473;
   margin: 5px 0 18px;
-  font-size: 10.5px;
-  line-height: 1.5;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 .help-note {
@@ -2076,8 +2206,8 @@ footer a {
 
 .help-note p {
   margin: 0;
-  font-size: 9.5px;
-  line-height: 1.45;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
 }
 
 .help-note strong {
@@ -2131,14 +2261,14 @@ footer a {
 .modal-kicker {
   color: #5743bd;
   text-transform: uppercase;
-  letter-spacing: .05em;
+  letter-spacing: var(--ls-caps);
   background: #efecff;
   border-radius: 99px;
   align-items: center;
   gap: 6px;
   padding: 6px 9px;
-  font-size: 9px;
-  font-weight: 750;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
   display: inline-flex;
 }
 
@@ -2148,19 +2278,19 @@ footer a {
 }
 
 .info-modal h2 {
-  letter-spacing: -.035em;
+  letter-spacing: var(--ls-hero);
   max-width: 410px;
   margin: 17px 0 9px;
-  font-size: 26px;
-  line-height: 1.14;
+  font-size: var(--fs-figure);
+  line-height: var(--lh-tight);
 }
 
 .info-modal>p {
   max-width: 450px;
   color: var(--muted);
   margin: 0;
-  font-size: 11.5px;
-  line-height: 1.6;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .signal-grid {
@@ -2181,20 +2311,20 @@ footer a {
 .signal-grid span {
   color: #8d82ce;
   font-family: var(--font-geist-mono);
-  font-size: 9px;
+  font-size: var(--fs-small);
 }
 
 .signal-grid strong {
   margin-top: 12px;
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
   display: block;
 }
 
 .signal-grid p {
   color: var(--muted);
   margin: 5px 0 0;
-  font-size: 9.5px;
-  line-height: 1.45;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
 }
 
 .modal-note {
@@ -2204,8 +2334,8 @@ footer a {
   gap: 8px;
   margin-top: 15px;
   padding: 12px;
-  font-size: 9.5px;
-  line-height: 1.45;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
   display: flex;
 }
 
@@ -2240,13 +2370,13 @@ footer a {
 
 .formula-card span {
   color: var(--muted);
-  font-size: 8.5px;
+  font-size: var(--fs-micro);
 }
 
 .formula-card strong {
   color: #5744b5;
   margin-top: 3px;
-  font-size: 16px;
+  font-size: var(--fs-h2);
 }
 
 .formula-line {
@@ -2295,7 +2425,7 @@ footer a {
   color: #5f6575;
   align-items: center;
   gap: 9px;
-  font-size: 10px;
+  font-size: var(--fs-meta);
   display: flex;
 }
 
@@ -2320,8 +2450,8 @@ footer a {
   max-width: min(430px,100vw - 30px);
   min-height: 48px;
   padding: 10px 17px 10px 11px;
-  font-size: 10.5px;
-  font-weight: 600;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
   animation: var(--dur-fast) both toastIn;
   display: flex;
   position: fixed;
@@ -2405,7 +2535,7 @@ footer a {
   }
   .mobile-school {
     font-family: Georgia,serif;
-    font-weight: 700;
+    font-weight: var(--fw-bold);
   }
   .topbar-title {
     align-items: center;
@@ -2470,11 +2600,11 @@ footer a {
   }
   .page-hero h1 {
     max-width: 315px;
-    font-size: 31px;
+    font-size: var(--fs-figure);
   }
   .page-hero p:last-child {
     max-width: 315px;
-    font-size: 12px;
+    font-size: var(--fs-body);
   }
   .hero-motif {
     opacity: .38;
@@ -2494,8 +2624,6 @@ footer a {
   }
 
   .summary-main {
-    flex-direction: column;
-    align-items: stretch;
     gap: 14px;
     padding: 16px;
   }
@@ -2504,18 +2632,16 @@ footer a {
     margin: calc(-1 * (var(--hero-gap) + 14px)) 0 25px;
   }
   .progress-summary p {
-    line-height: 1.35;
+    line-height: var(--lh-heading);
   }
   .advisor-bar {
     flex-wrap: wrap;
-    width: 100%;
-    min-width: 0;
   }
   .advisor-bar-copy {
     flex: 1 1 150px;
   }
   .advisor-bar-meta {
-    font-size: 9.5px;
+    font-size: var(--fs-small);
   }
   .advisor-actions {
     flex: 1 1 100%;
@@ -2546,10 +2672,10 @@ footer a {
     padding: 16px;
   }
   .task-main h3 {
-    font-size: 15px;
+    font-size: var(--fs-h3);
   }
   .task-main>p {
-    font-size: 11px;
+    font-size: var(--fs-copy);
   }
   .task-facts {
     gap: 8px;
@@ -2566,7 +2692,7 @@ footer a {
     padding: 0 12px;
   }
   .recommended-banner span:last-child {
-    font-size: 8px;
+    font-size: var(--fs-micro);
   }
   .compact-task {
     grid-template-columns: 30px minmax(0,1fr);
@@ -2582,7 +2708,7 @@ footer a {
     grid-template-columns: 34px minmax(0,1fr) auto;
   }
   .status-heading p {
-    line-height: 1.35;
+    line-height: var(--lh-heading);
   }
   .page-rail {
     grid-template-columns: 1fr;
@@ -2615,7 +2741,7 @@ footer a {
     padding: 22px 20px 35px;
   }
   .drawer-content h2 {
-    font-size: 24px;
+    font-size: var(--fs-display);
   }
   .info-modal {
     padding: 26px 20px 22px;
@@ -2628,7 +2754,7 @@ footer a {
   }
   .info-modal h2 {
     padding-right: 30px;
-    font-size: 23px;
+    font-size: var(--fs-display);
   }
 }
 
@@ -2664,8 +2790,8 @@ footer a {
   border: 1px solid var(--line);
   border-radius: 11px;
   padding: 10px 16px;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-bold);
   text-decoration: none;
   transition: transform .16s;
   position: fixed;
@@ -2724,7 +2850,7 @@ footer a {
 .nav-group-toggle {
   color: var(--muted);
   cursor: pointer;
-  letter-spacing: .08em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   background: 0 0;
   border: 0;
@@ -2734,8 +2860,8 @@ footer a {
   gap: 8px;
   width: 100%;
   padding: 6px 11px;
-  font-size: 10px;
-  font-weight: 750;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
   display: flex;
 }
 
@@ -2774,7 +2900,7 @@ footer a {
 
 .nav-item.nav-leaf {
   min-height: 40px;
-  font-size: 12.5px;
+  font-size: var(--fs-body);
 }
 
 .nav-close {
@@ -2789,8 +2915,8 @@ footer a {
   align-items: flex-start;
   gap: 6px;
   margin: 15px 5px 0;
-  font-size: 10px;
-  line-height: 1.45;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
   display: flex;
 }
 
@@ -2817,9 +2943,9 @@ footer a {
 
 .nav-error p {
   margin: 0;
-  font-size: 11.5px;
-  font-weight: 650;
-  line-height: 1.4;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
+  line-height: var(--lh-heading);
 }
 
 .nav-error button {
@@ -2831,8 +2957,8 @@ footer a {
   align-items: center;
   gap: 6px;
   padding: 7px 11px;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
   display: inline-flex;
 }
 
@@ -2862,7 +2988,7 @@ footer a {
 
 .profile-chip .avatar {
   color: #45358e;
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .chip-chevron {
@@ -2896,8 +3022,8 @@ footer a {
 .pill-state {
   letter-spacing: 0;
   text-transform: none;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-bold);
 }
 
 .preview-scrim {
@@ -2927,11 +3053,11 @@ footer a {
 
 .preview-menu-label {
   color: var(--muted);
-  letter-spacing: .08em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   margin: 4px 8px 6px;
-  font-size: 9.5px;
-  font-weight: 750;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
 }
 
 .preview-menu button {
@@ -2966,13 +3092,13 @@ footer a {
 }
 
 .preview-menu strong {
-  font-size: 11.5px;
+  font-size: var(--fs-copy);
 }
 
 .preview-menu small {
   color: var(--muted);
-  font-size: 10px;
-  line-height: 1.4;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-heading);
 }
 
 .preview-menu button.selected small {
@@ -2982,8 +3108,8 @@ footer a {
 .preview-menu-foot {
   color: var(--muted);
   margin: 7px 8px 2px;
-  font-size: 9.5px;
-  line-height: 1.45;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
 }
 
 .notification-button, .mobile-avatar {
@@ -2998,8 +3124,8 @@ footer a {
   color: var(--purple-dark);
   align-items: center;
   gap: 7px;
-  font-size: 11.5px;
-  font-weight: 700;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
   text-decoration: none;
   display: inline-flex;
 }
@@ -3035,15 +3161,15 @@ footer a {
 
 .section-placeholder h2 {
   margin: 0;
-  font-size: 16px;
+  font-size: var(--fs-h2);
 }
 
 .section-placeholder p {
   color: var(--muted);
   max-width: 58ch;
   margin: 0;
-  font-size: 12.5px;
-  line-height: 1.6;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .placeholder-route {
@@ -3054,8 +3180,8 @@ footer a {
   gap: 7px;
   margin-top: 4px;
   padding: 9px 13px;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-bold);
   text-decoration: none;
   display: inline-flex;
 }
@@ -3075,8 +3201,8 @@ footer a {
   border-radius: 14px;
   margin: 0;
   padding: 16px 18px;
-  font-size: 11.5px;
-  line-height: 1.55;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .inline-empty.wide {
@@ -3110,14 +3236,14 @@ footer a {
 
 .page-error h2 {
   margin: 0;
-  font-size: 16px;
+  font-size: var(--fs-h2);
 }
 
 .page-error p {
   color: #7d5a2c;
   margin: 0;
-  font-size: 12.5px;
-  line-height: 1.55;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .page-error button {
@@ -3130,8 +3256,8 @@ footer a {
   gap: 7px;
   margin-top: 4px;
   padding: 10px 15px;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-bold);
   display: inline-flex;
 }
 
@@ -3234,14 +3360,14 @@ footer a {
 
 .summary-task .compact-copy strong {
   margin: 0 0 4px;
-  font-size: 12.5px;
+  font-size: var(--fs-body);
   display: block;
 }
 
 .summary-task .compact-copy>span {
   color: var(--muted);
-  font-size: 10.5px;
-  line-height: 1.45;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
   display: block;
 }
 
@@ -3262,8 +3388,8 @@ footer a {
 .momentum-unavailable {
   color: #c8c4e0;
   margin: 15px 0 0;
-  font-size: 11px;
-  line-height: 1.55;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 @media (width<=820px) {
@@ -3330,90 +3456,252 @@ footer a {
 
 /* ── The obligations, above everything and above the tabs ── */
 
-/* The obligation is a section of the page, not a note beside it — it gets the
-   same card the rest of the main column has. */
-.required-band {
-  margin-bottom: 18px;
+/* One tinted line that names the obligation, then one row per session — the
+   Jam of 2026-08-20. What stood here before was a heading block (icon tile,
+   `Required for you`, a subtitle, a count badge) wrapping one bordered card per
+   session, and each card repeated the chip, the date, the whole requirement
+   note, the place, the requirer and a filled button. A single obligation cost a
+   quarter of the viewport to say `required` three times.
+
+   The strip is the pointer and the drawer is the depth: everything the card
+   spelled out is already written in `CampusDrawer`, one click away, so out here
+   the row says only what a student needs in order to decide to open it. */
+.section-card.required-strip {
+  border-color: color-mix(in srgb, var(--crimson) 22%, var(--line));
+  container: required-strip / inline-size;
+  padding: 0;
+  overflow: hidden;
 }
 
-.status-icon.required, .status-count.required {
+/* In the rail it is one of the column's cards, and the column owns the gap. */
+.page-rail .required-strip {
+  margin-bottom: 0;
+}
+
+/* A heading by role, a line by size. It is the section's name, so it stays an
+   `h2`; it is a caveat rather than a title, so it is set at row scale. */
+.required-strip-head {
+  color: var(--crimson);
+  background: var(--crimson-soft);
+  border-bottom: 1px solid color-mix(in srgb, var(--crimson) 16%, var(--line));
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  margin: 0;
+  padding: 9px var(--card-pad);
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
+  display: flex;
+}
+
+.required-strip-note {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+}
+
+/* The count is the note said in one character, for when there is no room for
+   the note. Only one of the two is ever displayed. */
+.required-strip-count {
+  color: var(--crimson);
+  background: color-mix(in srgb, var(--crimson) 13%, var(--surface));
+  border-radius: 99px;
+  place-items: center;
+  min-width: 19px;
+  height: 19px;
+  margin-left: auto;
+  font-size: var(--fs-meta);
+  display: none;
+}
+
+.required-strip-mark {
+  align-items: center;
+  display: inline-flex;
+}
+
+.required-strip .card-rows {
+  border-radius: 0;
+  margin: 0;
+}
+
+/* ── The wide layout: the strip is running the width of a one-grid page ── */
+
+.required-row {
+  text-align: left;
+  cursor: pointer;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 16px;
+  transition: background .17s;
+  display: grid;
+}
+
+.required-row .date-tile {
   color: var(--crimson);
   background: var(--crimson-soft);
 }
 
-.required-list {
-  display: grid;
+.required-row-copy {
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  display: flex;
 }
 
-.required-card {
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--crimson);
-  background: var(--surface);
-  box-shadow: var(--shadow-card);
-  border-radius: 18px;
-  padding: 17px 20px 18px;
+.required-row-when {
+  color: var(--crimson);
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+  display: flex;
 }
 
-.required-top {
+.required-row-when i {
+  opacity: .5;
+  font-style: normal;
+}
+
+.required-row-title {
+  color: var(--ink);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-heading);
+}
+
+.required-row-meta {
   color: var(--muted);
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 9px;
-  font-size: 10px;
+  gap: 4px 12px;
+  font-size: var(--fs-meta);
   display: flex;
+}
+
+.required-row-meta span {
+  align-items: center;
+  gap: 5px;
+  display: inline-flex;
+}
+
+/* The one control on the row, at its trailing edge. It is a label on a target
+   the whole row already is — not a second button competing with it. */
+.required-row-action {
+  color: var(--crimson);
+  background: var(--crimson-soft);
+  border-radius: 99px;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
+  white-space: nowrap;
+  transition: background .17s, color .17s;
+  display: inline-flex;
+}
+
+/* A flat row in a card answers with its surface, not with a lift: the hairline
+   between two rows moves if one of them rises off the card. */
+.required-row:hover {
+  background: color-mix(in srgb, var(--crimson) 4%, var(--surface));
+}
+
+.required-row:hover .required-row-action {
+  color: #fff;
+  background: var(--crimson);
+}
+
+.required-row:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: -2px;
+}
+
+/* ── The narrow layout: the strip is a card in the second grid ──────────────
+   Not the wide row stacked — a different row. The page has two grids and this
+   belongs in the smaller one, where 46px of date tile is 16% of the column and
+   a labelled button is most of a line. So the tile goes (the date is already
+   in the line above the title), the location goes (the drawer holds it, and
+   who requires a session is the fact that makes it an obligation), and the
+   button becomes the chevron the whole row already is.
+
+   A container query, not a media query: the window is wide in both cases. */
+@container required-strip (width < 470px) {
+  .required-strip-head {
+    padding: 9px 14px;
+  }
+
+  .required-strip-note {
+    display: none;
+  }
+
+  .required-strip-count {
+    display: grid;
+  }
+
+  .required-strip .card-rows > * {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .required-strip .required-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    padding-top: 13px;
+    padding-bottom: 14px;
+  }
+
+  .required-strip .required-row .date-tile,
+  .required-strip .required-row-where {
+    display: none;
+  }
+
+  .required-strip .required-row-when {
+    letter-spacing: var(--ls-caps);
+    flex-wrap: wrap;
+    gap: 5px;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-heavy);
+  }
+
+  .required-strip .required-row-title {
+    font-size: var(--fs-h4);
+    line-height: var(--lh-heading);
+  }
+
+  /* Label off, arrow on: a 26px disc that reads as "this opens". */
+  .required-strip .required-row-action {
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+  }
+
+  .required-strip .required-row-action span {
+    display: none;
+  }
 }
 
 .required-chip {
   color: var(--crimson);
   background: var(--crimson-soft);
-  letter-spacing: .06em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   border-radius: 99px;
   align-items: center;
   gap: 5px;
   padding: 4px 9px;
-  font-size: 9px;
-  font-weight: 750;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
   display: inline-flex;
 }
 
 .required-chip.small {
   padding: 3px 7px;
-  font-size: 8px;
-}
-
-.required-card h3 {
-  letter-spacing: -.02em;
-  margin: 0 0 7px;
-  font-size: 17px;
-}
-
-.required-card p {
-  color: var(--muted);
-  margin: 0 0 13px;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.required-facts {
-  color: var(--muted);
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  margin-bottom: 15px;
-  font-size: 10px;
-  display: flex;
-}
-
-.required-facts span {
-  align-items: center;
-  gap: 5px;
-  display: inline-flex;
-}
-
-.required-card .primary-button {
-  padding: 0 15px;
-  display: inline-flex;
+  font-size: var(--fs-micro);
 }
 
 /* ── Events / Clubs: two routes, one screen ── */
@@ -3441,8 +3729,8 @@ footer a {
   border: 1px solid var(--line);
   border-radius: 99px;
   padding: 6px 11px;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   transition: all .17s;
 }
 
@@ -3459,8 +3747,8 @@ footer a {
 .result-count {
   color: var(--muted);
   white-space: nowrap;
-  font-size: 10px;
-  font-weight: 650;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
 }
 
 /* ── The list ── */
@@ -3483,12 +3771,12 @@ footer a {
 
 .group-heading {
   color: var(--ink);
-  letter-spacing: -.01em;
+  letter-spacing: var(--ls-snug);
   align-items: center;
   gap: 8px;
   margin: 0;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
@@ -3497,8 +3785,8 @@ footer a {
   background: var(--purple-soft);
   border-radius: 99px;
   padding: 2px 7px;
-  font-size: 9px;
-  font-weight: 750;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
 }
 
 .date-group {
@@ -3513,11 +3801,11 @@ footer a {
 
 .subgroup-heading {
   color: var(--muted);
-  letter-spacing: .08em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   margin: 4px 0 0;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
 }
 
 .campus-row {
@@ -3561,24 +3849,20 @@ footer a {
 }
 
 .date-tile small {
-  letter-spacing: .08em;
-  font-size: 8px;
-  font-weight: 750;
+  letter-spacing: var(--ls-caps);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-heavy);
 }
 
 .date-tile strong {
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1;
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
 }
 
 .campus-row.required .date-tile {
   color: var(--crimson);
   background: var(--crimson-soft);
-}
-
-.campus-row.required {
-  border-left: 3px solid var(--crimson);
 }
 
 .campus-row.past {
@@ -3602,8 +3886,8 @@ footer a {
   color: var(--muted);
   align-items: center;
   gap: 6px;
-  font-size: 10px;
-  font-weight: 650;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
@@ -3617,9 +3901,9 @@ footer a {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.3;
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-heading);
   display: flex;
 }
 
@@ -3628,8 +3912,8 @@ footer a {
   background: #f0f1f4;
   border-radius: 99px;
   padding: 3px 8px;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
 }
 
 .match-chip {
@@ -3639,8 +3923,8 @@ footer a {
   align-items: center;
   gap: 4px;
   padding: 3px 8px;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   display: inline-flex;
 }
 
@@ -3649,7 +3933,7 @@ footer a {
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 12px;
-  font-size: 10px;
+  font-size: var(--fs-meta);
   display: flex;
 }
 
@@ -3665,8 +3949,8 @@ footer a {
   background: var(--canvas);
   border-radius: 99px;
   padding: 6px 11px;
-  font-size: 9px;
-  font-weight: 750;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
   white-space: nowrap;
 }
 
@@ -3689,15 +3973,15 @@ footer a {
   place-items: center;
   width: 46px;
   height: 46px;
-  font-size: 13px;
-  font-weight: 750;
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-heavy);
   display: grid;
 }
 
 .org-description {
   color: var(--muted);
-  font-size: 11px;
-  line-height: 1.55;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -3710,14 +3994,14 @@ footer a {
   border-radius: 10px;
   margin-top: 3px;
   padding: 7px 10px;
-  font-size: 10px;
-  line-height: 1.5;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 .org-update b {
   color: var(--purple);
   margin-right: 5px;
-  font-weight: 750;
+  font-weight: var(--fw-heavy);
 }
 
 .org-update.quiet {
@@ -3737,8 +4021,8 @@ footer a {
   gap: 7px;
   min-height: 40px;
   margin-top: 3px;
-  font-size: 10px;
-  font-weight: 750;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
   transition: all .17s;
   display: flex;
 }
@@ -3750,7 +4034,7 @@ footer a {
 
 .show-more span {
   color: var(--muted);
-  font-weight: 650;
+  font-weight: var(--fw-semi);
 }
 
 /* ── The state cards, shared with My Classrooms ── */
@@ -3785,17 +4069,17 @@ footer a {
 }
 
 .state-card h3 {
-  letter-spacing: -.02em;
+  letter-spacing: var(--ls-tight);
   margin: 0 0 8px;
-  font-size: 16px;
+  font-size: var(--fs-h2);
 }
 
 .state-card p {
   color: var(--muted);
   max-width: 46ch;
   margin: 0 auto;
-  font-size: 12px;
-  line-height: 1.65;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .state-card .secondary-button {
@@ -3834,15 +4118,15 @@ footer a {
 
 .interests-header > div > span {
   color: var(--muted);
-  letter-spacing: .07em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
 }
 
 .interests-header strong {
-  letter-spacing: -.02em;
-  font-size: 15px;
+  letter-spacing: var(--ls-tight);
+  font-size: var(--fs-h3);
 }
 
 .interest-chips {
@@ -3857,21 +4141,21 @@ footer a {
   background: var(--purple-soft);
   border-radius: 99px;
   padding: 5px 10px;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
 }
 
 .provenance-card p {
   color: var(--muted);
   margin: 0;
-  font-size: 11px;
-  line-height: 1.6;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .interests-card p {
   margin: 0;
-  font-size: 11px;
-  line-height: 1.6;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .interests-card .learn-link {
@@ -3892,7 +4176,7 @@ footer a {
   flex-direction: column;
   gap: 6px;
   margin: 12px 0 13px;
-  font-size: 10px;
+  font-size: var(--fs-meta);
   display: flex;
 }
 
@@ -3936,15 +4220,15 @@ footer a {
 
 .required-note strong {
   color: var(--crimson);
-  font-size: 12px;
+  font-size: var(--fs-body);
   display: block;
 }
 
 .required-note p {
   color: #7a3a46;
   margin: 4px 0 0;
-  font-size: 11px;
-  line-height: 1.6;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .past-note {
@@ -3955,8 +4239,8 @@ footer a {
   gap: 8px;
   margin-bottom: 16px;
   padding: 11px 13px;
-  font-size: 11px;
-  line-height: 1.5;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
   display: flex;
 }
 
@@ -3984,16 +4268,16 @@ footer a {
   align-items: center;
   gap: 7px;
   width: 92px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
 .campus-facts dd {
   color: var(--ink);
   margin: 0;
-  font-size: 12px;
-  line-height: 1.55;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .register-panel {
@@ -4012,8 +4296,8 @@ footer a {
 .register-panel p {
   color: var(--muted);
   margin: 0 0 13px;
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .register-panel .prototype-note {
@@ -4022,33 +4306,27 @@ footer a {
 }
 
 .about-panel h3 {
-  letter-spacing: -.02em;
+  letter-spacing: var(--ls-tight);
   margin: 0 0 8px;
-  font-size: 14px;
+  font-size: var(--fs-h3);
 }
 
 .about-panel p {
   color: var(--muted);
   margin: 0;
-  font-size: 12px;
-  line-height: 1.7;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .published-note {
   border-top: 1px solid var(--line);
   margin-top: 14px;
   padding-top: 12px;
-  font-size: 10px;
+  font-size: var(--fs-meta);
   font-style: italic;
 }
 
 /* ── Responsive: the row is designed at 380px first ── */
-
-@media (width<=820px) {
-  .required-band {
-    margin-bottom: 22px;
-  }
-}
 
 @media (width<=620px) {
   /* The date moves inline above the title so the copy keeps its width. */
@@ -4068,7 +4346,7 @@ footer a {
   }
 
   .campus-row .date-tile strong {
-    font-size: 12px;
+    font-size: var(--fs-body);
   }
 
   .org-row .org-tile {
@@ -4133,8 +4411,8 @@ footer a {
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
   display: inline-flex;
 }
 
@@ -4145,15 +4423,7 @@ footer a {
 
 .catalog-meta {
   color: var(--muted);
-  font-size: 11px;
-}
-
-.progress-summary .progress-caveat {
-  color: var(--amber);
-  align-items: center;
-  gap: 5px;
-  margin-top: 6px;
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .record-note {
@@ -4161,8 +4431,8 @@ footer a {
   align-items: flex-start;
   gap: 8px;
   margin: -12px 0 24px;
-  font-size: 11.5px;
-  line-height: 1.5;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
   display: flex;
 }
 
@@ -4192,11 +4462,11 @@ footer a {
   background: var(--amber-soft);
   border: 1px solid #f0dcb8;
   border-radius: 99px;
-  letter-spacing: .06em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   padding: 5px 10px;
-  font-size: 9px;
-  font-weight: 800;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
 }
 
 /* --- the requirement --- */
@@ -4269,14 +4539,14 @@ footer a {
 }
 
 .requirement-identity strong {
-  letter-spacing: -.01em;
-  font-size: 14.5px;
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-h3);
 }
 
 .requirement-identity>span {
   color: var(--muted);
-  font-size: 11.5px;
-  line-height: 1.45;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .requirement-meters {
@@ -4288,18 +4558,18 @@ footer a {
 
 .requirement-credits {
   white-space: nowrap;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
 }
 
 .requirement-status {
-  letter-spacing: .04em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   white-space: nowrap;
   border-radius: 99px;
   padding: 3px 8px;
-  font-size: 9px;
-  font-weight: 800;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
 }
 
 .requirement-status.satisfied {
@@ -4342,8 +4612,8 @@ footer a {
   gap: 6px;
   width: 100%;
   padding: 9px 16px;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
@@ -4376,11 +4646,11 @@ footer a {
 
 .requirement-courses-label {
   color: var(--muted);
-  letter-spacing: .07em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   margin: 2px 4px 9px;
-  font-size: 9.5px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
 }
 
 .course-row {
@@ -4438,14 +4708,14 @@ footer a {
 }
 
 .course-identity strong {
-  font-size: 12.5px;
+  font-size: var(--fs-body);
 }
 
 .course-meta {
   color: var(--muted);
   flex-wrap: wrap;
   gap: 3px 10px;
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
   display: flex;
 }
 
@@ -4460,8 +4730,8 @@ footer a {
 .course-state {
   text-align: right;
   white-space: nowrap;
-  font-size: 9.5px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
 }
 
 .course-approved {
@@ -4482,8 +4752,8 @@ footer a {
   border: 1px dashed var(--line);
   border-radius: 12px;
   padding: 13px;
-  font-size: 11.5px;
-  line-height: 1.5;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .requirement-decided {
@@ -4491,8 +4761,8 @@ footer a {
   align-items: center;
   gap: 6px;
   margin: 9px 4px 2px;
-  font-size: 10.5px;
-  font-weight: 600;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
@@ -4532,20 +4802,20 @@ footer a {
 
 .match-from small, .match-to small {
   color: var(--muted);
-  letter-spacing: .07em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
 }
 
 .match-from strong, .match-to strong {
-  font-size: 12.5px;
-  line-height: 1.35;
+  font-size: var(--fs-body);
+  line-height: var(--lh-heading);
 }
 
 .match-from>span, .match-to>span {
   color: var(--muted);
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
 }
 
 .match-arrow {
@@ -4560,17 +4830,17 @@ footer a {
   align-items: center;
   gap: 7px 12px;
   margin-top: 13px;
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
   display: flex;
 }
 
 .confidence-chip {
-  letter-spacing: .04em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   border-radius: 99px;
   padding: 4px 9px;
-  font-size: 9.5px;
-  font-weight: 800;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
 }
 
 .confidence-chip.likely {
@@ -4591,8 +4861,8 @@ footer a {
   gap: 8px;
   margin: 12px 0 0;
   padding: 11px 12px;
-  font-size: 11px;
-  line-height: 1.5;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
   display: flex;
 }
 
@@ -4618,15 +4888,15 @@ footer a {
 
 .match-empty h3 {
   margin: 12px 0 6px;
-  font-size: 15px;
+  font-size: var(--fs-h3);
 }
 
 .match-empty>p {
   color: var(--muted);
   max-width: 420px;
   margin: 0 auto 14px;
-  font-size: 12px;
-  line-height: 1.55;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .match-empty ul {
@@ -4643,7 +4913,7 @@ footer a {
 .match-empty li {
   align-items: center;
   gap: 8px;
-  font-size: 11.5px;
+  font-size: var(--fs-copy);
   display: flex;
 }
 
@@ -4669,19 +4939,19 @@ footer a {
 }
 
 .counts-figure {
-  letter-spacing: -.02em;
+  letter-spacing: var(--ls-tight);
   flex-direction: column;
   gap: 2px;
   margin-top: 8px;
-  font-size: 27px;
+  font-size: var(--fs-figure);
   display: flex;
 }
 
 .counts-figure small {
   color: var(--muted);
   letter-spacing: 0;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
 }
 
 .counts-divider {
@@ -4695,8 +4965,8 @@ footer a {
   align-items: flex-start;
   gap: 7px;
   margin: 0;
-  font-size: 11px;
-  line-height: 1.45;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
   display: flex;
 }
 
@@ -4707,7 +4977,7 @@ footer a {
 
 .program-card strong {
   margin-top: 8px;
-  font-size: 15px;
+  font-size: var(--fs-h3);
   display: block;
 }
 
@@ -4726,13 +4996,13 @@ footer a {
 
 .program-facts dt {
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .program-facts dd {
   margin: 0;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
 }
 
 .record-card {
@@ -4754,15 +5024,15 @@ footer a {
 .record-card p {
   color: var(--muted);
   margin: 8px 0 0;
-  font-size: 11.5px;
-  line-height: 1.55;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .record-card p.record-where {
   color: var(--ink);
   align-items: center;
   gap: 6px;
-  font-weight: 600;
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
@@ -4805,14 +5075,14 @@ footer a {
 
 .advisory-banner strong {
   color: var(--ink);
-  font-size: 12.5px;
+  font-size: var(--fs-body);
   display: block;
 }
 
 .advisory-banner p {
   margin: 5px 0 0;
-  font-size: 11.5px;
-  line-height: 1.5;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .evidence-panel, .match-target-panel {
@@ -4832,28 +5102,28 @@ footer a {
 
 .evidence-kicker {
   color: var(--muted);
-  letter-spacing: .06em;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   align-items: center;
   gap: 6px;
-  font-size: 9.5px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
 .evidence-panel p, .match-target-panel p {
   margin: 7px 0 0;
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .evidence-panel p strong, .match-target-panel p strong {
-  font-size: 13px;
+  font-size: var(--fs-h4);
 }
 
 .evidence-panel p.evidence-when {
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .confidence-panel {
@@ -4866,8 +5136,8 @@ footer a {
 .confidence-panel p {
   color: var(--muted);
   margin: 0;
-  font-size: 11.5px;
-  line-height: 1.5;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .rule-card {
@@ -4881,26 +5151,26 @@ footer a {
 .rule-code {
   color: var(--purple-dark);
   font-family: var(--font-geist-mono);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
 }
 
 .rule-card p {
   margin: 7px 0 8px;
-  font-size: 12px;
-  line-height: 1.55;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .rule-source {
   color: var(--muted);
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
 }
 
 .drawer-note {
   color: var(--muted);
   margin: -4px 0 13px;
-  font-size: 11.5px;
-  line-height: 1.5;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .help-note.warn {
@@ -5029,13 +5299,13 @@ footer a {
   color: var(--muted);
   flex: 1;
   margin: 0;
-  font-size: 11px;
-  line-height: 1.45;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .alert-strip strong {
   color: var(--ink);
-  font-size: 12.5px;
+  font-size: var(--fs-body);
   display: block;
 }
 
@@ -5043,35 +5313,17 @@ footer a {
   flex: none;
 }
 
-/* The balance takes the slot My Enrollment gives its progress ring. */
-.balance-panel .balance-summary {
-  flex-direction: column;
-  gap: 3px;
-  min-width: 0;
-  display: flex;
-}
-
+/* The money figure carries a chip beside it, so it is a row. Its size comes
+   from `.summary-figure.money`, with the rest of the scale. */
 .balance-figure {
-  letter-spacing: -.03em;
   align-items: center;
   gap: 10px;
-  font-size: 34px;
-  font-weight: 700;
-  line-height: 1.1;
   display: flex;
 }
 
-.balance-figure.unknown {
+.summary-figure.money .balance-figure.unknown {
   color: var(--muted);
-  font-size: 21px;
-}
-
-.balance-summary p {
-  color: var(--muted);
-  max-width: 42ch;
-  margin: 4px 0 0;
-  font-size: 10.5px;
-  line-height: 1.5;
+  font-size: var(--fs-display);
 }
 
 .estimate-chip {
@@ -5082,16 +5334,16 @@ footer a {
   align-items: center;
   gap: 3px;
   padding: 3px 8px;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: .04em;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   white-space: nowrap;
   display: inline-flex;
 }
 
 .estimate-chip.small {
-  font-size: 8px;
+  font-size: var(--fs-micro);
   padding: 2px 6px;
 }
 
@@ -5113,17 +5365,17 @@ footer a {
 }
 
 .balance-mini strong {
-  letter-spacing: -.02em;
+  letter-spacing: var(--ls-tight);
   align-items: center;
   gap: 9px;
-  font-size: 21px;
+  font-size: var(--fs-display);
   display: flex;
 }
 
 .balance-mini-year {
   color: var(--muted);
   flex: 1;
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
 }
 
 /* One heading shape for every card in the section. */
@@ -5146,18 +5398,18 @@ footer a {
 }
 
 .card-heading h2 {
-  letter-spacing: -.015em;
+  letter-spacing: var(--ls-snug);
   align-items: center;
   gap: 4px;
   margin: 0;
-  font-size: 15px;
+  font-size: var(--fs-h3);
   display: flex;
 }
 
 .card-heading p {
   color: var(--muted);
   margin: 2px 0 0;
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
 }
 
 /* Depth 1 — a card raised off the canvas. Every block of a section's main
@@ -5214,12 +5466,10 @@ footer a {
   border-top: 1px solid var(--line);
 }
 
-/* The two markers that survive flattening, because they carry meaning rather
-   than decoration: an obligation, and the one step to do next. */
-.card-rows .required-card {
-  border-left: 3px solid var(--crimson);
-}
-
+/* The marker that survives flattening, because it carries meaning rather than
+   decoration: the one step to do next. An obligation is marked in its own ink —
+   a crimson date tile and a crimson chip — never by painting one edge of a
+   rounded box, which is a bar wearing a card's corners. */
 .card-rows .task-card.recommended {
   background: color-mix(in srgb, var(--purple) 4%, var(--surface));
 }
@@ -5292,15 +5542,15 @@ footer a {
 .coverage-legend span {
   color: var(--muted);
   flex-direction: column;
-  font-size: 9.5px;
+  font-size: var(--fs-small);
   display: flex;
 }
 
 .coverage-legend strong {
   color: var(--ink);
   font-family: var(--font-geist-mono);
-  font-size: 12px;
-  font-weight: 650;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semi);
 }
 
 /* The ledger is a table so a screen reader pairs label with amount. */
@@ -5319,8 +5569,8 @@ footer a {
   align-items: center;
   gap: 4px;
   padding: 13px 0 9px;
-  font-size: 12.5px;
-  font-weight: 700;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-bold);
   display: flex;
 }
 
@@ -5330,13 +5580,13 @@ footer a {
 
 .ledger-group.soft th, .ledger-group.soft td {
   color: var(--muted);
-  font-weight: 650;
+  font-weight: var(--fw-semi);
 }
 
 .ledger-sub th {
   color: var(--muted);
   padding: 4px 0 4px 14px;
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .ledger-sub td {
@@ -5346,8 +5596,8 @@ footer a {
 .ledger-sub th small {
   color: var(--muted);
   margin-top: 2px;
-  font-size: 9.5px;
-  line-height: 1.4;
+  font-size: var(--fs-small);
+  line-height: var(--lh-heading);
   display: block;
 }
 
@@ -5366,18 +5616,18 @@ footer a {
   text-align: right;
   white-space: nowrap;
   font-family: var(--font-geist-mono);
-  font-size: 12px;
+  font-size: var(--fs-body);
   font-variant-numeric: tabular-nums;
 }
 
 .ledger-sub .ledger-amount {
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .ledger-group .ledger-amount, .ledger-total .ledger-amount {
-  font-size: 13.5px;
-  font-weight: 650;
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-semi);
 }
 
 .ledger-amount.credit {
@@ -5386,13 +5636,13 @@ footer a {
 
 .ledger-amount.soft {
   color: var(--muted);
-  font-weight: 600;
+  font-weight: var(--fw-semi);
 }
 
 /* Pending keeps a row, a reason and the word — never a zero. */
 .ledger-amount.pending, .ledger-sub .ledger-amount.pending {
   color: var(--amber);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
 }
 
 .pending-row th {
@@ -5404,15 +5654,15 @@ footer a {
 }
 
 .ledger-total th {
-  font-size: 13.5px;
+  font-size: var(--fs-h4);
 }
 
 .ledger-link {
   color: var(--purple-dark);
   align-items: center;
   gap: 4px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-bold);
   text-decoration: none;
   display: inline-flex;
 }
@@ -5423,7 +5673,7 @@ footer a {
 
 .ledger-hint {
   color: var(--muted);
-  font-size: 9.5px;
+  font-size: var(--fs-small);
 }
 
 .ledger-foot {
@@ -5434,8 +5684,8 @@ footer a {
   gap: 9px;
   margin: 18px 0 0;
   padding: 12px 14px;
-  font-size: 10.5px;
-  line-height: 1.55;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
   display: flex;
 }
 
@@ -5449,9 +5699,9 @@ footer a {
   align-items: center;
   gap: 5px;
   padding: 3px 9px;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: .03em;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   white-space: nowrap;
   display: inline-flex;
@@ -5522,10 +5772,10 @@ footer a {
   width: max-content;
   max-width: min(280px, calc(100vw - 32px));
   padding: 11px 13px;
-  font-size: 10.5px;
-  font-weight: 400;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-regular);
   letter-spacing: normal;
-  line-height: 1.55;
+  line-height: var(--lh-body);
   text-transform: none;
   position: absolute;
   top: calc(100% + 8px);
@@ -5537,7 +5787,7 @@ footer a {
 .term-tip-bubble strong {
   color: #fff;
   margin-bottom: 3px;
-  font-size: 11px;
+  font-size: var(--fs-copy);
   display: block;
 }
 
@@ -5568,7 +5818,7 @@ footer a {
 .doc-meta {
   color: var(--muted);
   margin: 3px 0 0;
-  font-size: 10px;
+  font-size: var(--fs-meta);
 }
 
 .doc-consequence {
@@ -5576,8 +5826,8 @@ footer a {
   align-items: center;
   gap: 6px;
   margin: 7px 0 0;
-  font-size: 10px;
-  font-weight: 600;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
@@ -5593,8 +5843,8 @@ footer a {
   background: var(--canvas);
   border-radius: 99px;
   padding: 4px 9px;
-  font-size: 9.5px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   white-space: nowrap;
 }
 
@@ -5624,14 +5874,14 @@ footer a {
 .plan-row strong {
   align-items: center;
   gap: 3px;
-  font-size: 12.5px;
+  font-size: var(--fs-body);
   display: flex;
 }
 
 .plan-row span {
   color: var(--muted);
   margin-top: 2px;
-  font-size: 10px;
+  font-size: var(--fs-meta);
   display: block;
 }
 
@@ -5678,19 +5928,19 @@ footer a {
 .installment-date {
   color: var(--muted);
   font-family: var(--font-geist-mono);
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
 }
 
 .installment-label {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semi);
 }
 
 .installment-status {
   color: var(--muted);
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: .03em;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
 }
 
@@ -5705,9 +5955,9 @@ footer a {
 .installment-amount {
   text-align: right;
   font-family: var(--font-geist-mono);
-  font-size: 12.5px;
+  font-size: var(--fs-body);
   font-variant-numeric: tabular-nums;
-  font-weight: 650;
+  font-weight: var(--fw-semi);
 }
 
 /* Academic progress — every row reports, none judges. */
@@ -5715,8 +5965,8 @@ footer a {
   color: var(--muted);
   max-width: 62ch;
   margin: 0 0 10px;
-  font-size: 11.5px;
-  line-height: 1.6;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
 }
 
 .preview-check {
@@ -5727,8 +5977,8 @@ footer a {
   gap: 8px;
   margin: 0 0 18px;
   padding: 9px 12px;
-  font-size: 11px;
-  font-weight: 650;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
   display: inline-flex;
 }
 
@@ -5755,17 +6005,17 @@ footer a {
 .metric-label {
   align-items: center;
   gap: 3px;
-  font-size: 12.5px;
-  font-weight: 650;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
 .metric-chip {
   border-radius: 99px;
   padding: 3px 9px;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: .03em;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -5808,14 +6058,14 @@ footer a {
   color: var(--muted);
   justify-content: space-between;
   margin-top: 6px;
-  font-size: 9.5px;
+  font-size: var(--fs-small);
   display: flex;
 }
 
 .metric-scale span:first-child {
   color: var(--ink);
   font-family: var(--font-geist-mono);
-  font-weight: 650;
+  font-weight: var(--fw-semi);
 }
 
 .preview-disclaimer {
@@ -5826,8 +6076,8 @@ footer a {
   gap: 9px;
   margin: 20px 0 0;
   padding: 12px 14px;
-  font-size: 10.5px;
-  line-height: 1.55;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
   display: flex;
 }
 
@@ -5843,18 +6093,18 @@ footer a {
 
 /* Rail — the dark number on top, the offer below, as on My Enrollment. */
 .next-payment-figure {
-  letter-spacing: -.03em;
+  letter-spacing: var(--ls-tight);
   margin: 6px 0 2px;
   font-family: var(--font-geist-mono);
-  font-size: 27px;
-  font-weight: 700;
+  font-size: var(--fs-figure);
+  font-weight: var(--fw-bold);
   display: block;
 }
 
 .next-payment-meta {
   color: #c8c4e4;
   margin: 0 0 15px;
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
 }
 
 .payment-track {
@@ -5883,8 +6133,8 @@ footer a {
 .payment-track-label {
   color: #c8c4e4;
   margin: 0 0 15px;
-  font-size: 9.5px;
-  font-weight: 650;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semi);
 }
 
 .next-payment-card .primary-button {
@@ -5899,8 +6149,8 @@ footer a {
 .next-payment-note {
   color: #b9b4dd;
   margin: 13px 0 0;
-  font-size: 9.5px;
-  line-height: 1.6;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
 }
 
 .next-payment-note .term-tip-button {
@@ -5922,17 +6172,17 @@ footer a {
 }
 
 .aid-opportunity-card h3 {
-  letter-spacing: -.015em;
+  letter-spacing: var(--ls-snug);
   margin: 15px 0 7px;
-  font-size: 15px;
-  line-height: 1.3;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
 }
 
 .aid-opportunity-card > p {
   color: var(--muted);
   margin: 0;
-  font-size: 10.5px;
-  line-height: 1.55;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 .aid-opportunity-list {
@@ -5947,14 +6197,14 @@ footer a {
 }
 
 .aid-opportunity-list strong {
-  font-size: 11px;
+  font-size: var(--fs-copy);
   display: block;
 }
 
 .aid-opportunity-list span {
   color: var(--muted);
   margin-top: 2px;
-  font-size: 9.5px;
+  font-size: var(--fs-small);
   display: block;
 }
 
@@ -5986,22 +6236,22 @@ footer a {
 .aid-row-main strong {
   align-items: center;
   gap: 3px;
-  font-size: 13px;
+  font-size: var(--fs-h4);
   display: flex;
 }
 
 .aid-source {
   color: var(--muted);
   margin-top: 3px;
-  font-size: 10px;
+  font-size: var(--fs-meta);
   display: block;
 }
 
 .aid-kind {
   color: var(--muted);
   margin-top: 2px;
-  font-size: 9.5px;
-  font-weight: 650;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semi);
   display: block;
 }
 
@@ -6010,14 +6260,14 @@ footer a {
   text-align: right;
   white-space: nowrap;
   font-family: var(--font-geist-mono);
-  font-size: 14px;
+  font-size: var(--fs-h3);
   font-variant-numeric: tabular-nums;
-  font-weight: 650;
+  font-weight: var(--fw-semi);
 }
 
 .aid-amount.pending {
   color: var(--amber);
-  font-size: 12px;
+  font-size: var(--fs-body);
 }
 
 .aid-blocked {
@@ -6030,7 +6280,7 @@ footer a {
   gap: 7px;
   margin: 2px 0 0;
   padding: 9px 12px;
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
   display: flex;
 }
 
@@ -6053,13 +6303,13 @@ footer a {
 }
 
 .aid-total span {
-  font-size: 12px;
-  font-weight: 650;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semi);
 }
 
 .aid-total strong {
   font-family: var(--font-geist-mono);
-  font-size: 15px;
+  font-size: var(--fs-h3);
   font-variant-numeric: tabular-nums;
 }
 
@@ -6086,18 +6336,18 @@ footer a {
 }
 
 .split-cell strong {
-  letter-spacing: -.02em;
+  letter-spacing: var(--ls-tight);
   margin: 6px 0 6px;
   font-family: var(--font-geist-mono);
-  font-size: 21px;
+  font-size: var(--fs-display);
   display: block;
 }
 
 .split-cell p {
   color: var(--muted);
   margin: 0;
-  font-size: 10px;
-  line-height: 1.5;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 .pay-cta {
@@ -6115,14 +6365,14 @@ footer a {
 }
 
 .pay-cta strong {
-  font-size: 13px;
+  font-size: var(--fs-h4);
   display: block;
 }
 
 .pay-cta span {
   color: var(--muted);
   margin-top: 3px;
-  font-size: 10.5px;
+  font-size: var(--fs-meta);
   display: block;
 }
 
@@ -6139,7 +6389,7 @@ footer a {
 
 @media (width<=820px) {
   .balance-figure {
-    font-size: 26px;
+    font-size: var(--fs-figure);
   }
   .doc-task {
     grid-template-columns: 30px minmax(0, 1fr);
@@ -6163,20 +6413,17 @@ footer a {
     margin-inline: -13px;
     padding-inline: 13px;
   }
-  .balance-panel .balance-summary {
-    width: 100%;
-  }
-  .balance-figure {
-    font-size: 24px;
+  .summary-figure.money .summary-figure-copy strong {
+    font-size: var(--fs-display);
   }
   .ledger-card, .schedule-card, .progress-preview, .billed-split {
     padding: 16px;
   }
   .ledger-group th, .ledger-total th {
-    font-size: 11.5px;
+    font-size: var(--fs-copy);
   }
   .ledger-group .ledger-amount, .ledger-total .ledger-amount {
-    font-size: 12.5px;
+    font-size: var(--fs-body);
   }
   .coverage-legend {
     gap: 8px 16px;
@@ -6200,7 +6447,7 @@ footer a {
     gap: 9px;
   }
   .installment-label {
-    font-size: 11px;
+    font-size: var(--fs-copy);
   }
   .alert-strip {
     flex-wrap: wrap;
@@ -6224,8 +6471,1396 @@ footer a {
 .program-card .program-pending {
   color: var(--muted);
   margin: 9px 0 0;
-  font-size: 11.5px;
-  line-height: 1.55;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+/* ───────────────────────────────────────────────────────────
+   Profile — ENR-184
+
+   The record, read for ownership. The whole screen turns on one distinction —
+   a field the student changes here, and a field an office changes for her — so
+   that distinction is drawn three times on every row: a tag beside the label,
+   the weight of the value, and the affordance at the end. One of the three
+   survives greyscale, one survives a screen reader, and one survives a glance.
+
+   Nothing here paints an edge to mark a row. A pending number is a pill on the
+   label, not a bar down the side: the state belongs to the field, and a rounded
+   row with one painted edge is two shapes arguing.
+   ───────────────────────────────────────────────────────────── */
+
+/* --- the standing: who you are, and how much of this is yours --- */
+
+.profile-avatar {
+  color: #fff;
+  background: linear-gradient(145deg, var(--purple), var(--purple-dark));
+  border-radius: 50%;
+  flex: none;
+  place-items: center;
+  width: 61px;
+  height: 61px;
+  font-size: 17px;
+  font-weight: var(--fw-heavy);
+  display: grid;
+}
+
+/* The legend for the whole page. Purple, not the provenance green: green means
+   covered, satisfied, done, and this note says none of those things. */
+.record-note.ownership svg {
+  color: var(--purple);
+}
+
+.record-note strong {
+  color: var(--ink);
+  font-weight: var(--fw-bold);
+}
+
+.status-icon.record {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+}
+
+/* Four cards, three kinds. The two record cards are purple; the card holding
+   another person's access is ink, which ties it to the anchor in the rail; the
+   signpost at the foot is grey, because it holds no content of its own. Three
+   identical purple tiles made four different jobs look like one list. */
+.status-icon.private {
+  color: #fff;
+  background: linear-gradient(145deg, #1b203a, #312960);
+}
+
+.status-icon.signpost {
+  color: #6c7180;
+  background: #eff0f4;
+}
+
+/* --- one field of the record --- */
+
+.field-row {
+  grid-template-columns: 190px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 4px 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  display: grid;
+}
+
+.field-head {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  display: flex;
+}
+
+/* Small and muted, above the value it names: the eye should run down the
+   column of answers, not down a column of headings. */
+.field-label {
+  color: var(--muted);
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+  display: flex;
+}
+
+.field-label svg {
+  color: #9096a8;
+  flex: none;
+}
+
+/* A run of rows, named once — "Yours to change", then "Aster's record". These
+   two labels are the page's whole argument, so they are the only type inside a
+   card that is tracked and coloured, and the break between them carries the
+   distinction a pill on every row could not. */
+.rows-label {
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  padding-top: 14px;
+  padding-bottom: 9px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+  display: flex;
+}
+
+.rows-label svg {
+  flex: none;
+}
+
+.rows-label.yours {
+  color: var(--purple-dark);
+}
+
+.rows-label.yours svg {
+  color: var(--purple);
+}
+
+.rows-label.office {
+  color: #6c7180;
+}
+
+.rows-label em {
+  color: var(--muted);
+  letter-spacing: var(--ls-caps);
+  text-transform: none;
+  margin-left: auto;
+  font-size: var(--fs-small);
+  font-style: normal;
+  font-weight: var(--fw-semi);
+}
+
+/* Verification is a state of the field, so it sits with the label. Green is
+   settled; amber is a code in flight that she has to act on; grey is a fact
+   about the record — and grey is also what an unreadable service gets, because
+   nobody could look and nothing may claim it was confirmed. */
+.verify-pill {
+  border-radius: 99px;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+  display: inline-flex;
+}
+
+.verify-pill.verified {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.verify-pill.pending {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.verify-pill.unverified, .verify-pill.unknown {
+  color: #6c7180;
+  background: #eff0f4;
+}
+
+.field-value {
+  letter-spacing: var(--ls-snug);
+  margin: 0;
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-heading);
+}
+
+/* A value an office owns is lighter and a size down: read-only reads as
+   read-only before the lock on the label is noticed. */
+.field-row.owned .field-value {
+  color: #5c6377;
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semi);
+}
+
+/* The one row in a card that is waiting on the student. Colour inside these
+   cards is spent here and nowhere else, so it can only mean "this one is asking
+   you for something" — never decoration, never a section identity. */
+.field-row.needs-you {
+  background: color-mix(in srgb, var(--amber) 5%, var(--surface));
+}
+
+.field-value.mono {
+  letter-spacing: var(--ls-snug);
+  font-family: var(--font-geist-mono);
+  font-size: var(--fs-body);
+}
+
+.field-value.blank {
+  color: var(--muted);
+  font-weight: var(--fw-medium);
+}
+
+.field-note {
+  color: var(--muted);
+  margin: 5px 0 0;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+}
+
+.field-note.pending {
+  color: var(--amber);
+}
+
+/* "Confirmed Aug 2, 2026" is evidence for a state already stated by the pill,
+   so it sits a step below a note that tells the student something to do. */
+.field-note.evidence {
+  color: #9096a8;
+  font-size: var(--fs-meta);
+}
+
+.field-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  display: flex;
+}
+
+.field-action {
+  color: var(--purple-dark);
+  cursor: pointer;
+  background: 0 0;
+  border: 1px solid #0000;
+  border-radius: 9px;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
+  transition: background .15s, border-color .15s;
+  display: flex;
+}
+
+.field-action:hover {
+  background: #f7f5ff;
+  border-color: #dcd6ff;
+}
+
+.field-action.office {
+  color: #5f6879;
+}
+
+.field-action.office:hover {
+  background: #f2f3f7;
+  border-color: var(--line);
+}
+
+.field-action.quiet {
+  color: var(--muted);
+}
+
+.field-choice {
+  margin-top: 12px;
+}
+
+/* --- the authorization a student granted during onboarding --- */
+
+.permission-grant {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.grant-head {
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+  display: grid;
+}
+
+.grant-avatar {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+  border-radius: 50%;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  font-size: 12px;
+  font-weight: var(--fw-heavy);
+  display: grid;
+}
+
+.grant-who strong {
+  letter-spacing: var(--ls-tight);
+  font-size: var(--fs-h3);
+  display: block;
+}
+
+.grant-who p {
+  color: var(--muted);
+  margin: 3px 0 0;
+  font-size: var(--fs-meta);
+}
+
+.grant-window {
+  color: #5f6879;
+  background: var(--canvas);
+  border-radius: 99px;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  display: flex;
+}
+
+.grant-purpose {
+  color: #4a5165;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 12px 0 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.grant-purpose svg {
+  color: var(--purple);
+  flex: none;
+  margin-top: 1px;
+}
+
+.grant-purpose em {
+  color: var(--ink);
+  font-style: normal;
+  font-weight: var(--fw-semi);
+}
+
+.permission-set {
+  border: 0;
+  margin: 15px 0 0;
+  padding: 0;
+}
+
+.permission-set legend {
+  color: var(--muted);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding: 0;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-bold);
+}
+
+.permission-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  display: grid;
+}
+
+.permission-grid label {
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  grid-template-columns: 15px minmax(0, 1fr);
+  align-items: start;
+  gap: 9px;
+  padding: 10px 11px;
+  transition: background .15s, border-color .15s;
+  display: grid;
+}
+
+.permission-grid label:hover {
+  border-color: #d6d8e4;
+}
+
+.permission-grid label.granted {
+  background: #f7f5ff;
+  border-color: #c9beff;
+}
+
+.permission-grid input {
+  accent-color: var(--purple);
+  width: 15px;
+  height: 15px;
+  margin: 1px 0 0;
+}
+
+.permission-copy strong {
+  font-size: var(--fs-copy);
+  display: block;
+}
+
+.permission-grid label.granted .permission-copy strong {
+  color: var(--purple-dark);
+}
+
+/* Not shared is the quiet half of the grid. Seven categories at one weight made
+   the three she granted impossible to count at a glance. */
+.permission-grid label:not(.granted) .permission-copy strong {
+  color: #5c6377;
+}
+
+.permission-grid label:not(.granted) .permission-copy small {
+  color: #9096a8;
+}
+
+.permission-copy small {
+  color: var(--muted);
+  margin-top: 3px;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  display: block;
+}
+
+.grant-foot {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 15px;
+  display: flex;
+}
+
+.grant-foot p {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 7px;
+  max-width: 430px;
+  margin: 0;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.grant-foot svg {
+  color: var(--purple);
+  flex: none;
+  margin-top: 1px;
+}
+
+/* Nothing stands between a student and withdrawing consent: no confirm step,
+   no second thought offered on Aster's behalf. */
+.revoke-button {
+  color: var(--crimson);
+  cursor: pointer;
+  background: var(--crimson-soft);
+  border: 1px solid color-mix(in srgb, var(--crimson) 20%, var(--surface));
+  border-radius: 9px;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
+  transition: background .15s;
+  display: flex;
+}
+
+.revoke-button:hover {
+  background: color-mix(in srgb, var(--crimson) 12%, var(--surface));
+}
+
+.grant-aside {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 8px;
+  margin: 16px 0 0;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.grant-aside svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+/* A list of rows eats the card's bottom padding so its hairlines reach the
+   edge; a footnote after one has to give that padding back. */
+.card-rows + .grant-aside {
+  margin-top: calc(var(--card-pad) + 15px);
+}
+
+/* --- what is held in another section: a route, never a copy --- */
+
+.elsewhere-row {
+  color: inherit;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  text-decoration: none;
+  transition: background .15s;
+  display: grid;
+}
+
+.elsewhere-row:hover {
+  background: #faf9ff;
+}
+
+.elsewhere-icon {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+  border-radius: 10px;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  display: grid;
+}
+
+.elsewhere-copy strong {
+  font-size: var(--fs-body);
+  display: block;
+}
+
+.elsewhere-copy small {
+  color: var(--muted);
+  margin-top: 3px;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+  display: block;
+}
+
+.elsewhere-where {
+  color: var(--purple-dark);
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
+  display: flex;
+}
+
+/* --- the profile rail --- */
+
+.access-note {
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.access-note svg {
+  color: #b9b4dd;
+  flex: none;
+  margin-top: 1px;
+}
+
+.session-card, .offices-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.session-icon {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+  border-radius: 11px;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 11px;
+  display: grid;
+}
+
+.session-card p {
+  color: var(--muted);
+  margin: 8px 0 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.session-card p.session-meta {
+  color: var(--ink);
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+  display: flex;
+}
+
+.session-card .secondary-button {
+  width: 100%;
+  min-height: 40px;
+  margin-top: 14px;
+}
+
+.office-row {
+  border-top: 1px solid var(--line);
+  margin-top: 13px;
+  padding-top: 13px;
+}
+
+.office-row:first-of-type {
+  border-top: 0;
+  margin-top: 10px;
+  padding-top: 0;
+}
+
+.office-row strong {
+  font-size: var(--fs-body);
+  display: block;
+}
+
+.office-row p {
+  color: var(--muted);
+  margin: 4px 0 0;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+}
+
+.office-row p.office-meta {
+  flex-direction: column;
+  gap: 3px;
+  display: flex;
+}
+
+.office-meta span {
+  align-items: center;
+  gap: 5px;
+  display: flex;
+}
+
+.office-meta svg {
+  flex: none;
+}
+
+.offices-card .learn-link {
+  color: var(--purple-dark);
+  margin-top: 9px;
+}
+
+/* The variant `StateCard` has always accepted and never had: a caveat is not an
+   error. My Classrooms asks for it too, for a transcript it could not read. */
+.state-card.warn {
+  background: var(--amber-soft);
+  border-color: color-mix(in srgb, var(--amber) 22%, var(--line));
+}
+
+.state-card.warn .state-icon {
+  color: var(--amber);
+  background: color-mix(in srgb, var(--amber) 12%, var(--surface));
+}
+
+@media (width<=820px) {
+  /* The label column stops being a column: it stacks over the value, and the
+     row keeps one action rail on the right. */
+  .field-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .field-head, .field-body {
+    grid-column: 1;
+  }
+  .field-body {
+    margin-top: 7px;
+  }
+  .field-actions {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-items: flex-start;
+  }
+  .permission-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (width<=620px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+  .field-actions {
+    grid-column: 1;
+    grid-row: auto;
+    justify-content: flex-start;
+    margin-top: 11px;
+  }
+  .grant-head {
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+  .grant-window {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .grant-foot .revoke-button {
+    flex: 1 0 100%;
+    justify-content: center;
+  }
+  .elsewhere-row {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+  .elsewhere-where {
+    grid-column: 2;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Help — ENR-182
+
+   Two halves that have to read as one page: what Aster has already published,
+   and a question that becomes an object with a state. Nothing here paints an
+   edge to mark a state — the chip carries it, which is the only marker that
+   survives a flattened list without fighting the card holding it.
+   ───────────────────────────────────────────────────────────── */
+
+/* The figure: how many questions are with Aster. The other side of the summary
+   is the action rather than a person — a face next to a list of requests reads
+   as the person handling them, which ENR-177 AC 3 forbids the page to imply. */
+.request-figure {
+  letter-spacing: var(--ls-tight);
+  align-items: baseline;
+  gap: 8px;
+  font-size: var(--fs-display);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  display: flex;
+}
+
+.request-figure-unit {
+  color: var(--muted);
+  letter-spacing: 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semi);
+}
+
+.request-figure.unknown {
+  color: var(--muted);
+  font-size: var(--fs-h2);
+}
+
+.request-standing p {
+  color: var(--muted);
+  max-width: 44ch;
+  margin: 5px 0 0;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+}
+
+/* --- the request row --- */
+
+.request-row {
+  cursor: pointer;
+  text-align: left;
+  grid-template-columns: 100px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  transition: background var(--dur-fast) var(--ease);
+  display: grid;
+}
+
+.request-row:hover {
+  background: var(--canvas);
+}
+
+.request-row:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: -2px;
+}
+
+/* The state, and the only place it is drawn. Neutral is the card's own white
+   with a hairline, so `Received` reads as a fact rather than as a warning. */
+.request-chip {
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-radius: 99px;
+  justify-self: start;
+  padding: 4px 10px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+}
+
+.request-chip.neutral {
+  color: var(--muted);
+  background: var(--canvas);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.request-chip.progress {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+}
+
+.request-chip.act {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.request-chip.done {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.request-body {
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  display: flex;
+}
+
+.request-body strong {
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-body);
+}
+
+.request-meta {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+.request-trail {
+  text-align: right;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  display: flex;
+}
+
+.request-when {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+.request-unread {
+  color: var(--purple-dark);
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  display: flex;
+}
+
+.request-unread i {
+  background: var(--purple);
+  border-radius: 99px;
+  width: 6px;
+  height: 6px;
+  display: block;
+}
+
+.request-open {
+  color: var(--muted);
+  display: grid;
+}
+
+/* --- asking: topic, then where it goes, then the box --- */
+
+.ask-form {
+  flex-direction: column;
+  gap: 17px;
+  display: flex;
+}
+
+/* `min-width: 0` because a fieldset's default is `min-content`, which refuses
+   to shrink and pushes the whole page into a horizontal scroll at 380px. */
+.ask-step {
+  border: 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.ask-step legend, .ask-step label {
+  letter-spacing: var(--ls-snug);
+  margin-bottom: 9px;
+  padding: 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semi);
+  display: block;
+}
+
+.ask-input, .ask-textarea {
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  width: 100%;
+  padding: 11px 13px;
+  font-family: inherit;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.ask-textarea {
+  resize: vertical;
+  min-height: 98px;
+}
+
+.ask-input:focus, .ask-textarea:focus {
+  border-color: color-mix(in srgb, var(--purple) 35%, var(--line));
+  outline: none;
+}
+
+.ask-input::placeholder, .ask-textarea::placeholder {
+  color: var(--muted);
+}
+
+/* Where it goes, before a character is typed — ENR-177 AC 7. */
+.ask-route {
+  background: var(--purple-soft);
+  border-radius: 15px;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 15px;
+  display: flex;
+}
+
+.route-icon {
+  color: var(--purple-dark);
+  background: var(--surface);
+  border-radius: 11px;
+  flex: none;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  display: grid;
+}
+
+.ask-route strong {
+  letter-spacing: var(--ls-snug);
+  margin: 3px 0 3px;
+  font-size: var(--fs-h4);
+  display: block;
+}
+
+.ask-route p {
+  color: color-mix(in srgb, var(--ink) 70%, var(--purple));
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.ask-route .route-meta {
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-top: 8px;
+  font-size: var(--fs-meta);
+  display: flex;
+}
+
+.ask-route .route-meta span {
+  align-items: center;
+  gap: 5px;
+  display: flex;
+}
+
+/* The guide, offered before the question costs anybody two business days. */
+.ask-guide {
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.guide-toggle {
+  cursor: pointer;
+  text-align: left;
+  background: none;
+  border: 0;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 14px;
+  transition: background var(--dur-fast) var(--ease);
+  display: flex;
+}
+
+.guide-toggle:hover {
+  background: var(--canvas);
+}
+
+.guide-toggle:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: -2px;
+}
+
+.guide-toggle > span:nth-child(2) {
+  flex-direction: column;
+  flex: 1;
+  gap: 2px;
+  min-width: 0;
+  display: flex;
+}
+
+.guide-toggle strong {
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-body);
+}
+
+.guide-office {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+.guide-chevron {
+  color: var(--muted);
+  flex: none;
+  transition: rotate var(--dur-fast) var(--ease);
+  display: grid;
+}
+
+.guide-chevron.open {
+  rotate: 180deg;
+}
+
+.guide-body {
+  padding: 0 14px 15px 58px;
+}
+
+.guide-body p {
+  color: var(--muted);
+  margin: 0 0 9px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.guide-body .guide-source {
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  margin: 0;
+  padding-top: 9px;
+  font-size: var(--fs-meta);
+  font-style: italic;
+}
+
+/* In the guide list the toggle bleeds back out to the card's own edges, so the
+   hover fills the row the way the hairline spans it. `--card-pad` is the card's
+   — a row never hard-codes it. */
+.guide-rows .guide-toggle {
+  width: calc(100% + var(--card-pad) * 2);
+  margin: 0 calc(-1 * var(--card-pad));
+  padding: 15px var(--card-pad);
+}
+
+.guide-rows .guide-body {
+  padding: 0 0 16px 46px;
+}
+
+.ask-send {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  display: flex;
+}
+
+/* ENR-177 AC 6, in the place a student would otherwise assume the opposite. */
+.ask-channel-note {
+  color: var(--muted);
+  flex: 1;
+  min-width: 210px;
+  margin: 0;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+}
+
+/* --- receipt: the half of the page the card says is missing --- */
+
+.ask-receipt {
+  background: var(--green-soft);
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.receipt-tick {
+  color: var(--surface);
+  background: var(--green);
+  border-radius: 14px;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 14px;
+  display: grid;
+}
+
+.ask-receipt h3 {
+  letter-spacing: var(--ls-tight);
+  margin: 0 0 5px;
+  font-size: var(--fs-h2);
+}
+
+.receipt-subject {
+  color: var(--green);
+  margin: 0 0 17px;
+  font-size: var(--fs-body);
+}
+
+.ask-receipt .panel-label {
+  color: var(--green);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.receipt-next {
+  counter-reset: step;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.receipt-next li {
+  counter-increment: step;
+  color: var(--muted);
+  padding-left: 28px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  position: relative;
+}
+
+.receipt-next li + li {
+  margin-top: 11px;
+}
+
+.receipt-next li:before {
+  content: counter(step);
+  color: var(--green);
+  background: var(--surface);
+  border-radius: 99px;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  display: grid;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.receipt-next strong {
+  color: var(--ink);
+  font-size: var(--fs-body);
+  display: block;
+}
+
+.receipt-actions {
+  flex-wrap: wrap;
+  gap: 10px;
+  display: flex;
+}
+
+/* --- the rail --- */
+
+.reply-card strong {
+  letter-spacing: var(--ls-tight);
+  margin: 3px 0 10px;
+  font-size: var(--fs-display);
+  display: block;
+}
+
+.reply-card p {
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.reply-card .reply-note {
+  border-top: 1px solid color-mix(in srgb, var(--surface) 14%, transparent);
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 13px;
+  padding-top: 13px;
+  font-size: var(--fs-meta);
+  display: flex;
+}
+
+.reply-card .reply-note svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.office-list {
+  margin: 14px 0 15px;
+  padding: 0;
+  list-style: none;
+}
+
+.office-list li {
+  border-top: 1px solid var(--line);
+  padding-top: 11px;
+}
+
+.office-list li + li {
+  margin-top: 11px;
+}
+
+.office-list strong {
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-body);
+  display: block;
+}
+
+.office-list span {
+  color: var(--muted);
+  margin-top: 3px;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+  display: block;
+}
+
+.office-list .office-meta {
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+  font-size: var(--fs-meta);
+  display: flex;
+}
+
+.office-list .office-meta svg {
+  flex: none;
+}
+
+.office-card .secondary-button {
+  width: 100%;
+  justify-content: center;
+}
+
+/* --- the request, opened --- */
+
+.request-state {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px 12px;
+  margin: 15px 0 18px;
+  display: flex;
+}
+
+.request-state p {
+  color: var(--muted);
+  flex: 1;
+  min-width: 190px;
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.reopened-note {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+  border-radius: 12px;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 17px;
+  padding: 10px 13px;
+  font-size: var(--fs-copy);
+  display: flex;
+}
+
+/* The path a request has taken. One list holds what was written and what
+   happened, so the state can never disagree with the conversation under it. */
+.request-thread {
+  margin: 0 0 20px;
+  padding: 0 0 0 21px;
+  list-style: none;
+  position: relative;
+}
+
+.request-thread:before {
+  content: "";
+  background: var(--line);
+  width: 1px;
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  left: 4px;
+}
+
+.request-thread li {
+  position: relative;
+}
+
+.request-thread li + li {
+  margin-top: 16px;
+}
+
+.thread-dot {
+  background: var(--line);
+  border: 2px solid var(--surface);
+  border-radius: 99px;
+  width: 9px;
+  height: 9px;
+  position: absolute;
+  top: 4px;
+  left: -21px;
+}
+
+.thread-message.student .thread-dot {
+  background: var(--ink);
+}
+
+.thread-message.office .thread-dot {
+  background: var(--purple);
+}
+
+.thread-from {
+  color: var(--ink);
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
+  display: flex;
+}
+
+.thread-from span {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+}
+
+.thread-message div p {
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.thread-message div p + p {
+  margin-top: 8px;
+}
+
+.thread-event p {
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--fs-meta);
+}
+
+.thread-event p span {
+  color: var(--muted);
+  opacity: .7;
+  margin-left: 4px;
+}
+
+.reply-panel {
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+
+.reply-panel .panel-label {
+  margin-bottom: 9px;
+  display: block;
+}
+
+.reply-panel .primary-button {
+  margin-top: 12px;
+}
+
+/* ── Responsive: designed at 380px first ── */
+
+@media (width<=620px) {
+  .request-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    row-gap: 9px;
+  }
+  .request-chip {
+    grid-column: 1 / -1;
+  }
+  .request-trail {
+    align-self: center;
+  }
+  /* Campus filters become a scrollable strip at this width because they are
+     optional and a hidden one costs nothing. A topic is a required step, so it
+     wraps instead: an option the student cannot see is an office they cannot
+     reach. */
+  .ask-step .filter-chips {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+  .ask-send .primary-button,
+  .receipt-actions .primary-button,
+  .receipt-actions .secondary-button {
+    flex: 1 0 100%;
+    justify-content: center;
+  }
+  .guide-body {
+    padding-left: 14px;
+  }
+  .guide-rows .guide-body {
+    padding-left: 0;
+  }
+  .ask-receipt {
+    padding: 18px;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -6249,7 +7884,7 @@ footer a {
   height: 40px;
   font-family: Georgia, serif;
   font-size: 19px;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   display: grid;
   box-shadow: 0 6px 13px #4d3bb33d, inset 0 1px #ffffff4d;
 }
@@ -6277,8 +7912,8 @@ footer a {
   gap: 8px;
   height: 44px;
   padding: 0 16px 0 6px;
-  font-size: 11px;
-  font-weight: 750;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-heavy);
   transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
   display: flex;
   position: fixed;
@@ -6348,13 +7983,13 @@ footer a {
 }
 
 .edward-title strong {
-  letter-spacing: -.01em;
-  font-size: 13px;
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-h4);
 }
 
 .edward-title span {
   color: var(--muted);
-  font-size: 9.5px;
+  font-size: var(--fs-small);
 }
 
 .edward-head .icon-button {
@@ -6402,17 +8037,17 @@ footer a {
 }
 
 .edward-greeting h3 {
-  letter-spacing: -.015em;
+  letter-spacing: var(--ls-snug);
   margin: 4px 0 0;
-  font-size: 16px;
-  line-height: 1.35;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
 }
 
 .edward-greeting p {
   color: var(--muted);
   margin: 0;
-  font-size: 10.5px;
-  line-height: 1.55;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 .edward-boundary, .edward-notice {
@@ -6423,8 +8058,8 @@ footer a {
   gap: 6px;
   margin: 2px 0 0;
   padding: 8px 10px;
-  font-size: 9.5px;
-  font-weight: 650;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
@@ -6436,8 +8071,8 @@ footer a {
   color: var(--amber);
   background: var(--amber-soft);
   align-items: flex-start;
-  font-weight: 600;
-  line-height: 1.5;
+  font-weight: var(--fw-semi);
+  line-height: var(--lh-body);
 }
 
 /* --- suggestions: rows that wrap, never chips that truncate --- */
@@ -6457,7 +8092,7 @@ footer a {
 
 .edward-suggestions .panel-label {
   margin-bottom: 2px;
-  font-size: 9px;
+  font-size: var(--fs-small);
 }
 
 .edward-suggestion {
@@ -6471,9 +8106,9 @@ footer a {
   align-items: center;
   gap: 10px;
   padding: 10px 11px;
-  font-size: 10.5px;
-  font-weight: 600;
-  line-height: 1.45;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+  line-height: var(--lh-body);
   transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
   display: flex;
 }
@@ -6507,9 +8142,9 @@ footer a {
   max-width: 86%;
   margin: 0;
   padding: 9px 12px;
-  font-size: 10.5px;
-  font-weight: 600;
-  line-height: 1.5;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+  line-height: var(--lh-body);
 }
 
 /* What the question was asked from. The chip names now; this names then. */
@@ -6518,7 +8153,7 @@ footer a {
   align-items: center;
   gap: 4px;
   margin: 0;
-  font-size: 9px;
+  font-size: var(--fs-small);
   display: flex;
 }
 
@@ -6544,14 +8179,14 @@ footer a {
 
 .edward-answer p {
   margin: 0;
-  font-size: 10.5px;
-  line-height: 1.6;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 .edward-answer.error p {
   align-items: center;
   gap: 6px;
-  font-weight: 650;
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
@@ -6568,8 +8203,8 @@ footer a {
   color: #4a5163;
   border-left: 2px solid #ddd8f7;
   padding-left: 9px;
-  font-size: 10.5px;
-  line-height: 1.5;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 /* ENR-176 AC 4: every answer says what it is based on. */
@@ -6578,8 +8213,8 @@ footer a {
   align-items: center;
   gap: 5px;
   margin: 0;
-  font-size: 9px;
-  font-weight: 650;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
@@ -6606,8 +8241,8 @@ footer a {
   gap: 6px;
   min-height: 32px;
   padding: 0 11px;
-  font-size: 10px;
-  font-weight: 750;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
   display: flex;
 }
 
@@ -6625,8 +8260,8 @@ footer a {
   gap: 6px;
   min-height: 32px;
   padding: 0 10px;
-  font-size: 10px;
-  font-weight: 650;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
@@ -6654,12 +8289,12 @@ footer a {
 }
 
 .edward-person strong {
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .edward-person span {
   color: var(--muted);
-  font-size: 9px;
+  font-size: var(--fs-small);
 }
 
 .edward-person .advisor-avatar {
@@ -6672,7 +8307,7 @@ footer a {
   flex: none;
   min-height: 30px;
   padding: 0 10px;
-  font-size: 9.5px;
+  font-size: var(--fs-small);
 }
 
 .edward-thinking {
@@ -6680,8 +8315,8 @@ footer a {
   align-items: center;
   gap: 8px;
   margin: 0;
-  font-size: 10px;
-  font-weight: 650;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
   display: flex;
 }
 
@@ -6779,8 +8414,8 @@ footer a {
   gap: 5px;
   max-width: 100%;
   padding: 4px 4px 4px 9px;
-  font-size: 9.5px;
-  font-weight: 700;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
   display: flex;
   overflow: hidden;
 }
@@ -6835,8 +8470,8 @@ footer a {
   min-width: 0;
   max-height: 96px;
   padding: 9px 0;
-  font-size: 10.5px;
-  line-height: 1.5;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
 .edward-field textarea:focus {
@@ -6886,7 +8521,7 @@ footer a {
   align-items: center;
   gap: 5px;
   margin: 0;
-  font-size: 9px;
+  font-size: var(--fs-small);
   display: flex;
 }
 
@@ -6896,8 +8531,8 @@ footer a {
   align-items: flex-start;
   gap: 6px;
   margin: 0;
-  font-size: 9px;
-  line-height: 1.45;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
   display: flex;
 }
 
@@ -6922,7 +8557,7 @@ footer a {
 
 .edward-history .panel-label {
   padding: 0 4px;
-  font-size: 9px;
+  font-size: var(--fs-small);
 }
 
 .edward-history-list {
@@ -6959,9 +8594,9 @@ footer a {
 }
 
 .edward-history-list strong {
-  font-size: 10.5px;
-  font-weight: 650;
-  line-height: 1.4;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+  line-height: var(--lh-heading);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -6970,7 +8605,7 @@ footer a {
 
 .edward-history-list span {
   color: var(--muted);
-  font-size: 9px;
+  font-size: var(--fs-small);
 }
 
 .edward-history-empty {
@@ -6989,14 +8624,14 @@ footer a {
 }
 
 .edward-history-empty strong {
-  font-size: 11px;
+  font-size: var(--fs-copy);
 }
 
 .edward-history-empty p {
   color: var(--muted);
   margin: 5px 0 0;
-  font-size: 9.5px;
-  line-height: 1.5;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
 }
 
 .edward-new-conversation {
@@ -7010,8 +8645,8 @@ footer a {
   align-items: center;
   gap: 6px;
   min-height: 34px;
-  font-size: 10px;
-  font-weight: 750;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
   display: flex;
 }
 
@@ -7107,5 +8742,718 @@ footer a {
 
   .edward-launcher, .edward-suggestion, .edward-field {
     transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Appointments — ENR-183
+ *
+ * The section is a picker over what a team published, so the vocabulary here is
+ * mostly about time: a strip of the days that exist, chips for the times inside
+ * one of them, and a chip on every booked row saying whether the conversation
+ * actually exists.
+ *
+ * The rows reuse `.campus-row` — same grid, same date tile — because the portal
+ * has exactly one shape for a dated row and it belongs to whichever list needs
+ * it. What is added here is the state, and it is added in the row's own ink: a
+ * failed booking tints its tile and its chip. Nothing paints an edge.
+ * ------------------------------------------------------------------ */
+
+/* The section's one figure: when the next conversation is. 21px — the band
+   greets, the figure informs, and money is the only thing that gets 34px. */
+.next-appointment {
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  display: flex;
+}
+
+.next-figure {
+  letter-spacing: var(--ls-tight);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--fs-display);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  display: flex;
+}
+
+.next-figure.none {
+  color: var(--muted);
+}
+
+.when-chip {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+  border-radius: 99px;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 3px 8px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+}
+
+.next-appointment p {
+  color: var(--muted);
+  max-width: 46ch;
+  margin: 4px 0 0;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+}
+
+/* What you can book. The trailing edge is the load-bearing part: a team with
+   nothing published says so there, before the picker can open on an empty
+   calendar. */
+.type-row {
+  text-align: left;
+  cursor: pointer;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  transition: background var(--dur-fast) var(--ease);
+  display: grid;
+}
+
+.type-row:hover {
+  background: color-mix(in srgb, var(--purple) 4%, var(--surface));
+}
+
+.type-row:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: -2px;
+}
+
+.type-row.static {
+  cursor: default;
+}
+
+.type-tile {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+  border-radius: 11px;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  display: grid;
+}
+
+.type-row.quiet .type-tile {
+  color: var(--muted);
+  background: #eff0f4;
+}
+
+.type-copy {
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  display: flex;
+}
+
+.type-name {
+  color: var(--ink);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+}
+
+.type-team {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+}
+
+.type-blurb {
+  color: var(--muted);
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.type-next {
+  text-align: right;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  display: flex;
+}
+
+.type-next strong {
+  color: var(--purple-dark);
+  font-size: var(--fs-copy);
+}
+
+.type-next small {
+  color: var(--muted);
+  font-size: var(--fs-small);
+}
+
+.type-next.quiet strong {
+  color: var(--muted);
+}
+
+/* A booked conversation. The state is a chip on the row and never a tab above
+   the list — a booking that failed must not be able to hide behind a filter. */
+.appointment-row.failed .date-tile {
+  color: var(--crimson);
+  background: var(--crimson-soft);
+}
+
+.appointment-subject {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.appt-state {
+  border-radius: 99px;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex: none;
+  padding: 4px 10px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+}
+
+.appt-state.confirmed {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.appt-state.failed {
+  color: var(--crimson);
+  background: var(--crimson-soft);
+}
+
+.appt-state.cancelled, .appt-state.done {
+  color: var(--muted);
+  background: #eff0f4;
+}
+
+/* The sheet: three questions in one scroll. */
+.booking-step + .booking-step {
+  margin-top: 24px;
+}
+
+.booking-step > .panel-label {
+  margin-bottom: 10px;
+  display: block;
+}
+
+.day-strip {
+  gap: 8px;
+  padding-bottom: 4px;
+  display: flex;
+  overflow-x: auto;
+}
+
+.day-chip {
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 14px;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 64px;
+  padding: 9px 6px;
+  transition: all var(--dur-fast) var(--ease);
+  display: flex;
+}
+
+.day-chip small {
+  color: var(--muted);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+}
+
+.day-chip strong {
+  color: var(--ink);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+}
+
+.day-chip span {
+  color: var(--muted);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semi);
+}
+
+.day-chip:hover {
+  border-color: color-mix(in srgb, var(--purple) 35%, var(--line));
+}
+
+.day-chip.selected {
+  border-color: var(--purple);
+  background: var(--purple-soft);
+}
+
+.day-chip.selected small, .day-chip.selected span, .day-chip.selected strong {
+  color: var(--purple-dark);
+}
+
+.day-chip:focus-visible, .slot-chip:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}
+
+.slot-parts {
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 18px;
+  display: flex;
+}
+
+.slot-part .panel-label {
+  margin-bottom: 8px;
+  display: block;
+}
+
+.slot-grid {
+  grid-template-columns: repeat(auto-fill, minmax(94px, 1fr));
+  gap: 8px;
+  display: grid;
+}
+
+.slot-chip {
+  color: var(--ink);
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 11px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 8px;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semi);
+  transition: all var(--dur-fast) var(--ease);
+  display: inline-flex;
+}
+
+.slot-chip:hover {
+  border-color: color-mix(in srgb, var(--purple) 35%, var(--line));
+}
+
+.slot-chip.selected {
+  color: #fff;
+  background: var(--purple);
+  border-color: var(--purple);
+}
+
+/* The absence, stated. A part of the day with nothing in it says so rather than
+   disappearing and leaving the student to work out which gap is which. */
+.no-slots {
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--fs-copy);
+}
+
+.picker-note {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 7px;
+  margin: 16px 0 0;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.picker-note svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+/* A team that has published nothing. Not an empty picker, and not an error. */
+.no-times {
+  text-align: center;
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 18px;
+}
+
+.no-times > span {
+  color: var(--muted);
+  background: #eff0f4;
+  border-radius: 14px;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 11px;
+  display: grid;
+}
+
+.no-times h3 {
+  letter-spacing: var(--ls-tight);
+  margin: 0 0 6px;
+  font-size: var(--fs-h3);
+}
+
+.no-times p {
+  color: var(--muted);
+  margin: 0 0 14px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.subject-field textarea {
+  color: var(--ink);
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  width: 100%;
+  padding: 12px 13px;
+  font-family: inherit;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  transition: border-color var(--dur-fast) var(--ease);
+  display: block;
+}
+
+.subject-field textarea:focus {
+  border-color: var(--purple);
+  outline: none;
+}
+
+/* What is about to be booked, under the thumb. Sticky because the picker is
+   long on a phone and the choice has to stay legible while it scrolls. */
+.booking-foot {
+  z-index: 2;
+  border-top: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  background: #fffffff5;
+  flex-direction: column;
+  gap: 11px;
+  padding: 14px 28px 20px;
+  display: flex;
+  position: sticky;
+  bottom: 0;
+}
+
+.booking-chosen {
+  flex-direction: column;
+  gap: 2px;
+  display: flex;
+}
+
+.booking-chosen strong {
+  font-size: var(--fs-h4);
+}
+
+.booking-chosen > span:last-child {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+/* The result replaces the sheet's body. A booking that failed is never a layer
+   over a form that still looks fillable. */
+.booking-result {
+  text-align: center;
+}
+
+.result-icon {
+  color: var(--green);
+  background: var(--green-soft);
+  border-radius: 17px;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 14px;
+  display: grid;
+}
+
+.booking-result.failed .result-icon {
+  color: var(--crimson);
+  background: var(--crimson-soft);
+}
+
+.booking-result h2 {
+  letter-spacing: var(--ls-tight);
+  margin: 0 0 8px;
+  font-size: var(--fs-display);
+}
+
+.booking-result > p {
+  color: var(--muted);
+  max-width: 40ch;
+  margin: 0 auto 18px;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.result-facts {
+  text-align: left;
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  margin-bottom: 18px;
+  padding: 15px 16px;
+}
+
+.booking-result.failed .result-facts {
+  background: var(--crimson-soft);
+  border-color: color-mix(in srgb, var(--crimson) 20%, var(--line));
+}
+
+.result-facts p {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.result-facts p + p {
+  border-top: 1px solid var(--line);
+  margin-top: 11px;
+  padding-top: 11px;
+}
+
+.booking-result.failed .result-facts p {
+  color: #7a3a46;
+}
+
+.result-facts p > svg {
+  color: var(--purple);
+  flex: none;
+  margin-top: 1px;
+}
+
+.booking-result.failed .result-facts p > svg {
+  color: var(--crimson);
+}
+
+.result-actions, .drawer-actions {
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 16px;
+  display: flex;
+}
+
+.result-actions .secondary-button, .drawer-actions .secondary-button {
+  justify-content: center;
+  width: 100%;
+}
+
+/* The detail sheet's first line: whether this conversation exists. */
+.drawer-icon.appointment {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+}
+
+.drawer-icon.appointment.failed {
+  color: var(--crimson);
+  background: var(--crimson-soft);
+}
+
+.drawer-icon.appointment.done, .drawer-icon.appointment.cancelled {
+  color: var(--muted);
+  background: #eff0f4;
+}
+
+.appt-note {
+  border-radius: 14px;
+  align-items: flex-start;
+  gap: 11px;
+  margin-bottom: 16px;
+  padding: 14px 15px;
+  display: flex;
+}
+
+.appt-note.ok {
+  background: var(--green-soft);
+}
+
+.appt-note.failed {
+  background: var(--crimson-soft);
+}
+
+.appt-note.quiet {
+  background: var(--canvas);
+}
+
+.appt-note > span {
+  flex: none;
+  margin-top: 1px;
+}
+
+.appt-note strong {
+  font-size: var(--fs-body);
+  display: block;
+}
+
+.appt-note p {
+  margin: 4px 0 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.appt-note.ok > span, .appt-note.ok strong {
+  color: var(--green);
+}
+
+.appt-note.ok p {
+  color: #2f6152;
+}
+
+.appt-note.failed > span, .appt-note.failed strong {
+  color: var(--crimson);
+}
+
+.appt-note.failed p {
+  color: #7a3a46;
+}
+
+.appt-note.quiet > span, .appt-note.quiet strong, .appt-note.quiet p {
+  color: var(--muted);
+}
+
+.text-button.danger {
+  color: var(--crimson);
+}
+
+/* Cancelling asks once, here, rather than through a browser dialog. */
+.cancel-confirm {
+  background: var(--crimson-soft);
+  border-radius: 14px;
+  padding: 14px 15px;
+}
+
+.cancel-confirm p {
+  color: #7a3a46;
+  margin: 0 0 10px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.cancel-confirm > div {
+  gap: 16px;
+  display: flex;
+}
+
+/* The rail. The anchor is the figure that decides whether "book a conversation"
+   is an invitation or a wall. */
+.counts-figure.unknown {
+  color: #c4c0dd;
+  font-size: var(--fs-display);
+}
+
+.team-times {
+  margin: 0 0 13px;
+  padding: 0;
+  list-style: none;
+}
+
+.team-times li {
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: var(--fs-copy);
+  display: flex;
+}
+
+.team-times li + li {
+  margin-top: 8px;
+}
+
+.team-times span {
+  color: #c4c0dd;
+  min-width: 0;
+}
+
+.team-times strong {
+  white-space: nowrap;
+  font-size: var(--fs-copy);
+}
+
+.team-times strong.none {
+  color: #b9b4dd;
+  font-weight: var(--fw-semi);
+}
+
+.availability-card p {
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.after-list {
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.after-list li {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: 9px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.after-list li + li {
+  margin-top: 10px;
+}
+
+.after-list li > span:first-child {
+  color: var(--purple);
+  flex: none;
+  margin-top: 1px;
+}
+
+.after-list strong {
+  color: var(--ink);
+}
+
+@media (width<=620px) {
+  .type-row {
+    grid-template-columns: 34px minmax(0, 1fr);
+    grid-template-areas: "tile copy" "next next";
+    gap: 10px 12px;
+  }
+  .type-tile {
+    grid-area: tile;
+    width: 34px;
+    height: 34px;
+  }
+  .type-copy {
+    grid-area: copy;
+  }
+  /* Below the copy rather than beside it: at 380px a right-aligned column steals
+     the width the team's name needs. */
+  .type-next {
+    text-align: left;
+    grid-area: next;
+    flex-flow: row wrap;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .type-next small:before {
+    content: "·";
+    margin-right: 6px;
+  }
+  /* The row stacks at this width, so the chip has to stop being a full-width
+     pill — the same correction `.campus-row-action` already makes. */
+  .appt-state {
+    justify-self: start;
+  }
+  .booking-foot {
+    padding: 12px 20px 18px;
+  }
+  .slot-grid {
+    grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
   }
 }
