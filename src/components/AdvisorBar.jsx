@@ -1,8 +1,7 @@
 import Icon from '../Icon.jsx';
 import { enrollmentAdvisor } from '../data.js';
 
-export default function AdvisorBar({ onContact }) {
-  const advisor = enrollmentAdvisor;
+export default function AdvisorBar({ advisor = enrollmentAdvisor, onContact }) {
 
   return (
     <div className="advisor-bar">
@@ -10,7 +9,7 @@ export default function AdvisorBar({ onContact }) {
         {advisor.initials}
       </span>
       <div className="advisor-bar-copy">
-        <span className="panel-label">Your enrollment advisor</span>
+        <span className="panel-label">{advisor.label}</span>
         <strong>
           {advisor.name} <span>· {advisor.office}</span>
         </strong>

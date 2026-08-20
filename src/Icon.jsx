@@ -108,6 +108,75 @@ const paths = {
       <path d="m9 12 2 2 4-4" />
     </>
   ),
+  alert: (
+    <>
+      <path d="M12 4.5 3.4 19.5h17.2z" />
+      <path d="M12 10v4M12 17h.01" />
+    </>
+  ),
+  users: (
+    <>
+      <circle cx="9.5" cy="8" r="3.4" />
+      <path d="M3.5 20a6 6 0 0 1 12 0" />
+      <path d="M16.5 5.4a3.4 3.4 0 0 1 0 6.4M17.5 14.6a6 6 0 0 1 3 5.4" />
+    </>
+  ),
+  mail: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="3" />
+      <path d="m4 8 8 5 8-5" />
+    </>
+  ),
+  refresh: (
+    <>
+      <path d="M20 12a8 8 0 1 1-2.6-5.9" />
+      <path d="M20 4v4.5h-4.5" />
+    </>
+  ),
+  progress: (
+    <>
+      <path d="M4 4v15a1 1 0 0 0 1 1h15" />
+      <path d="m7.5 15 3.5-4.2 3 2.6L19 7" />
+    </>
+  ),
+  award: (
+    <>
+      <circle cx="12" cy="9" r="5.2" />
+      <path d="m8.6 13.4-1.1 7 4.5-2.6 4.5 2.6-1.1-7" />
+    </>
+  ),
+  card: (
+    <>
+      <rect x="2.8" y="5.6" width="18.4" height="12.8" rx="3" />
+      <path d="M2.8 10.2h18.4" />
+      <path d="M6.6 14.6h3.2" />
+    </>
+  ),
+  ticket: (
+    <>
+      <path d="M3.4 9.2V7.4a2 2 0 0 1 2-2h13.2a2 2 0 0 1 2 2v1.8a2.8 2.8 0 0 0 0 5.6v1.8a2 2 0 0 1-2 2H5.4a2 2 0 0 1-2-2v-1.8a2.8 2.8 0 0 0 0-5.6Z" />
+      <path d="M14.2 5.4v2.2M14.2 10.9v2.2M14.2 16.4v2.2" />
+    </>
+  ),
+  receipt: (
+    <>
+      <path d="M5 3h14v18l-2.3-1.6-2.35 1.6L12 19.4l-2.35 1.6L7.3 19.4 5 21z" />
+      <path d="M9 8h6M9 12h6" />
+    </>
+  ),
+  chart: (
+    <>
+      <path d="M4 20h16" />
+      <path d="M7.5 20v-5.5M12 20V8M16.5 20v-8.5" />
+    </>
+  ),
+  circle: <circle cx="12" cy="12" r="8" />,
+  half: (
+    <>
+      <circle cx="12" cy="12" r="8" />
+      <path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor" stroke="none" />
+    </>
+  ),
 };
 
 export default function Icon({ name, size = 18 }) {

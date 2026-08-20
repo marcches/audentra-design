@@ -1,13 +1,30 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
 import Sidebar from './components/Sidebar.jsx';
 import Topbar from './components/Topbar.jsx';
-import TaskCard from './components/TaskCard.jsx';
 import TaskDrawer from './components/TaskDrawer.jsx';
 import InfoModal from './components/InfoModal.jsx';
-import InsightColumn from './components/InsightColumn.jsx';
-import AdvisorBar from './components/AdvisorBar.jsx';
+import Dashboard from './components/Dashboard.jsx';
+import EnrollmentPage from './components/EnrollmentPage.jsx';
+import MyCampusLife, { CAMPUS_PREVIEW_STATES } from './components/MyCampusLife.jsx';
+import PageShell from './components/PageShell.jsx';
+import PageSkeleton from './components/PageSkeleton.jsx';
+import PageError from './components/PageError.jsx';
+import SectionPlaceholder from './components/SectionPlaceholder.jsx';
+import MyClassrooms from './components/MyClassrooms.jsx';
 import { sortTasks } from './lib/task-helpers.js';
+import {
+  DEFAULT_ROUTE,
+  destinationByRoute,
+  groupLabel,
+  isRouteHash,
+} from './lib/navigation.js';
+import {
+  PREVIEW_STATES,
+  frameState,
+  readPreviewState,
+  writePreviewState,
+} from './lib/preview-state.js';
 import {
   TOTAL_STEPS,
   enrollmentAdvisor,
@@ -15,6 +32,7 @@ import {
   initialReviewing,
   initialTasks,
   lockedTasks,
+  unreadMessages,
 } from './data.js';
 
 export default function App() {
@@ -31,11 +49,81 @@ export default function App() {
   const [fileReady, setFileReady] = useState(false);
   const [housing, setHousing] = useState('on-campus');
   const [toast, setToast] = useState(null);
+  const [hash, setHash] = useState(() => window.location.hash || DEFAULT_ROUTE);
+  const [preview, setPreview] = useState(readPreviewState);
+
+  const main = useRef(null);
+  const menuButton = useRef(null);
+  const pendingTask = useRef(null);
+  const lastHash = useRef(hash);
+  const navWasOpen = useRef(false);
+
+  const current = destinationByRoute(hash);
+  const state = frameState(preview);
+  const isEmpty = state === 'empty';
+  const unavailable = state === 'partial';
 
   const sortedTasks = useMemo(() => sortTasks(tasks, sort), [tasks, sort]);
-  const earnedPoints = completed.reduce((total, item) => total + item.points, 0);
-  const availableToday = tasks.reduce((total, task) => total + task.points, 0);
-  const progress = Math.round((completed.length / TOTAL_STEPS) * 100);
+  const viewTasks = isEmpty ? [] : sortedTasks;
+  const viewCompleted = isEmpty ? [] : completed;
+  const viewReviewing = isEmpty ? [] : reviewing;
+  const viewLocked = isEmpty ? [] : lockedTasks;
+
+  const earnedPoints = viewCompleted.reduce((total, item) => total + item.points, 0);
+  const availableToday = viewTasks.reduce((total, task) => total + task.points, 0);
+  const progress = Math.round((viewCompleted.length / TOTAL_STEPS) * 100);
+
+  // Partial data shows no count at all rather than a zero that reads as final.
+  const unread = unavailable ? null : isEmpty ? 0 : unreadMessages;
+  const badges = unavailable ? {} : { openSteps: viewTasks.length, unread };
+
+  useEffect(() => {
+    const onHashChange = () => {
+      const next = window.location.hash;
+      if (!next || next === '#') {
+        setHash(DEFAULT_ROUTE);
+        return;
+      }
+      // `#privacy` in the footer is an anchor, not a page. Leave the route alone.
+      if (!isRouteHash(next)) return;
+      setHash(next);
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  // Arriving on a page: close what was open, start at the top, focus the page.
+  useEffect(() => {
+    setNavOpen(false);
+    setSmartModal(false);
+    setPointsModal(false);
+    setActiveTask(null);
+
+    if (pendingTask.current) {
+      const task = pendingTask.current;
+      pendingTask.current = null;
+      setActiveTask(task);
+      setDrawerTab('action');
+      setFileReady(false);
+    }
+
+    // Only a real route change moves focus. Comparing the route rather than a
+    // mounted flag survives the effect running twice under StrictMode, which
+    // would otherwise drop the keyboard inside the page on first load.
+    if (lastHash.current === hash) return;
+    lastHash.current = hash;
+
+    window.scrollTo({ top: 0 });
+    // preventScroll: focus is for the screen reader, not for the scroll
+    // position — without it the browser tucks the page head under the topbar.
+    main.current?.focus({ preventScroll: true });
+  }, [hash]);
+
+  // Closing the drawer hands focus back to the control that opened it.
+  useEffect(() => {
+    if (navWasOpen.current && !navOpen) menuButton.current?.focus();
+    navWasOpen.current = navOpen;
+  }, [navOpen]);
 
   useEffect(() => {
     if (!toast) return undefined;
@@ -56,17 +144,32 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
 
+  function choosePreview(next) {
+    setPreview(next);
+    writePreviewState(next);
+  }
+
   function openTask(task, tab = 'action') {
     setActiveTask(task);
     setDrawerTab(tab);
     setFileReady(false);
   }
 
+  /** From the Dashboard: go to the section that owns the work, then open it. */
+  function openTaskFromSummary(task) {
+    if (current?.id === 'my-enrollment') {
+      openTask(task);
+      return;
+    }
+    pendingTask.current = task;
+    window.location.hash = '#/my-enrollment';
+  }
+
   function completeTask(task, sendToReview = false) {
-    setTasks((current) => current.filter((item) => item.id !== task.id));
+    setTasks((currentTasks) => currentTasks.filter((item) => item.id !== task.id));
 
     if (sendToReview) {
-      setReviewing((current) => [
+      setReviewing((currentReviewing) => [
         {
           title: task.title,
           description:
@@ -75,13 +178,13 @@ export default function App() {
           eta: 'Usually 2–3 business days',
           points: task.points,
         },
-        ...current,
+        ...currentReviewing,
       ]);
       setToast('Record submitted — your points are reserved while Aster reviews it.');
     } else {
-      setCompleted((current) => [
+      setCompleted((currentCompleted) => [
         { title: task.title, date: 'Just now', points: task.points },
-        ...current,
+        ...currentCompleted,
       ]);
       setToast(`Nice work — ${task.points} Momentum points added.`);
     }
@@ -89,9 +192,131 @@ export default function App() {
     setActiveTask(null);
   }
 
+  function contactAdvisor(channel) {
+    setToast(
+      `${channel === 'email' ? 'An email' : 'A message'} to ${
+        enrollmentAdvisor.name
+      } would open here—nothing is sent yet.`,
+    );
+  }
+
+  function renderPage() {
+    if (state === 'loading') return <PageSkeleton />;
+
+    if (!current) {
+      return (
+        <PageShell
+          eyebrow="Aster"
+          title="That page doesn’t exist"
+          lede="The link you followed points at a section this portal doesn’t have."
+        >
+          <p className="inline-empty wide">
+            Nothing is wrong with your account. Start again from your Dashboard, or use the
+            navigation to pick a section.
+          </p>
+          <a className="placeholder-route standalone" href={DEFAULT_ROUTE}>
+            Go to Dashboard
+            <Icon name="arrow" size={16} />
+          </a>
+        </PageShell>
+      );
+    }
+
+    if (state === 'error') {
+      return (
+        <PageShell eyebrow={groupLabel(current)} title={current.label} lede={current.lede}>
+          <PageError label={current.label} onRetry={() => choosePreview('ready')} />
+        </PageShell>
+      );
+    }
+
+    if (current.id === 'dashboard') {
+      return (
+        <Dashboard
+          progress={progress}
+          totalSteps={TOTAL_STEPS}
+          completedCount={viewCompleted.length}
+          nextSteps={viewTasks.slice(0, 3)}
+          earnedPoints={earnedPoints}
+          availableToday={availableToday}
+          unavailable={unavailable}
+          isEmpty={isEmpty}
+          onOpenTask={openTaskFromSummary}
+          onOpenPoints={() => setPointsModal(true)}
+          onContact={contactAdvisor}
+        />
+      );
+    }
+
+    if (current.id === 'my-enrollment') {
+      return (
+        <EnrollmentPage
+          tasks={viewTasks}
+          reviewing={viewReviewing}
+          locked={viewLocked}
+          completed={viewCompleted}
+          completedOpen={completedOpen}
+          sort={sort}
+          progress={progress}
+          totalSteps={TOTAL_STEPS}
+          earnedPoints={earnedPoints}
+          availableToday={availableToday}
+          unavailable={unavailable}
+          onSort={setSort}
+          onOpenSmart={() => setSmartModal(true)}
+          onOpenTask={openTask}
+          onOpenPoints={() => setPointsModal(true)}
+          onToggleCompleted={() => setCompletedOpen((open) => !open)}
+          onResume={() => {
+            const task = viewTasks.find((item) => item.id === 'profile');
+            if (task) openTask(task);
+          }}
+          onContact={contactAdvisor}
+        />
+      );
+    }
+
+    // ENR-188. The page reads the raw preview value, not `frameState`, because
+    // `no-matches` means something here and nothing to the frame.
+    if (current.id === 'my-classrooms') {
+      return (
+        <PageShell eyebrow={groupLabel(current)} title={current.label} lede={current.lede}>
+          <MyClassrooms state={preview} onToast={setToast} />
+        </PageShell>
+      );
+    }
+
+    // My Campus Life is a group of two destinations and one screen — ENR-189.
+    // The route chooses the tab; the required band sits above both.
+    if (current.group === 'campus') {
+      return <MyCampusLife previewState={preview} tab={current.id} onToast={setToast} />;
+    }
+
+    // Every other destination states what will appear there and what produces
+    // it — ENR-174 AC8. As each section's own card lands (ENR-165, ENR-166,
+    // ENR-182, ENR-183, ENR-184, ENR-188) its page takes this slot.
+    return (
+      <PageShell eyebrow={groupLabel(current)} title={current.label} lede={current.lede}>
+        <SectionPlaceholder section={current} />
+      </PageShell>
+    );
+  }
+
   return (
-    <main className="app-shell">
-      <Sidebar open={navOpen} taskCount={tasks.length} onNavigate={() => setNavOpen(false)} />
+    <div className="app-shell">
+      <a className="skip-to-content" href="#main-content">
+        Skip to main content
+      </a>
+
+      <Sidebar
+        open={navOpen}
+        activeId={current?.id}
+        badges={badges}
+        state={state}
+        onNavigate={() => setNavOpen(false)}
+        onClose={() => setNavOpen(false)}
+        onRetry={() => choosePreview('ready')}
+      />
       {navOpen && (
         <button
           className="nav-scrim"
@@ -100,232 +325,25 @@ export default function App() {
         />
       )}
 
-      <section className="workspace" id="my-enrollment">
-        <Topbar onOpenNav={() => setNavOpen(true)} />
+      <section className="workspace">
+        <Topbar
+          onOpenNav={() => setNavOpen(true)}
+          menuRef={menuButton}
+          unread={unread}
+          previewState={preview}
+          previewStates={
+            current?.group === 'campus'
+              ? CAMPUS_PREVIEW_STATES
+              : current?.id === 'my-classrooms'
+                ? PREVIEW_STATES
+                : undefined
+          }
+          onPreviewState={choosePreview}
+        />
 
-        <div className="content-wrap">
-          <section className="welcome-panel">
-            <div className="welcome-copy">
-              <p className="eyebrow">
-                <span>Offer accepted</span> · Class of 2031
-              </p>
-              <h1>You’re in, Maya. Let’s make it official.</h1>
-              <p>
-                We’ve put your next steps in the order that will keep everything moving. Start with
-                the first one—or choose any task you can do now.
-              </p>
-            </div>
-            <div className="celebration-orbit" aria-hidden="true">
-              <div className="orbit-ring ring-one" />
-              <div className="orbit-ring ring-two" />
-              <div className="orbit-core">
-                <Icon name="check" size={30} />
-              </div>
-              <i className="spark-dot one" />
-              <i className="spark-dot two" />
-              <i className="spark-dot three" />
-            </div>
-          </section>
-
-          <section className="progress-panel" aria-label="Enrollment progress">
-            <div className="progress-summary">
-              <div className="progress-ring" style={{ '--progress': `${progress * 3.6}deg` }}>
-                <span>{progress}%</span>
-              </div>
-              <div>
-                <span className="panel-label">Your enrollment progress</span>
-                <strong>
-                  {completed.length} of {TOTAL_STEPS} steps complete
-                </strong>
-                <p>You’re right on track. Your next task takes about 4 minutes.</p>
-              </div>
-            </div>
-            <AdvisorBar
-              onContact={(channel) =>
-                setToast(
-                  `${channel === 'email' ? 'An email' : 'A message'} to ${
-                    enrollmentAdvisor.name
-                  } would open here—nothing is sent yet.`
-                )
-              }
-            />
-          </section>
-
-          <div className="page-grid">
-            <div className="task-column">
-              <div className="section-heading">
-                <div>
-                  <p className="eyebrow muted">Your next steps</p>
-                  <h2>Ready when you are</h2>
-                </div>
-                <div className="sort-group" aria-label="Sort your next steps">
-                  <button
-                    className={sort === 'smart' ? 'selected' : ''}
-                    onClick={() => setSort('smart')}
-                  >
-                    <Icon name="spark" size={15} /> Smart order
-                  </button>
-                  <button className={sort === 'due' ? 'selected' : ''} onClick={() => setSort('due')}>
-                    Due soon
-                  </button>
-                  <button
-                    className={sort === 'quick' ? 'selected' : ''}
-                    onClick={() => setSort('quick')}
-                  >
-                    Quick wins
-                  </button>
-                  <button
-                    className="sort-info"
-                    aria-label="How smart order works"
-                    onClick={() => setSmartModal(true)}
-                  >
-                    <Icon name="info" size={17} />
-                  </button>
-                </div>
-              </div>
-
-              <div className="task-list">
-                {sortedTasks.map((task, index) => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    recommended={index === 0 && sort === 'smart'}
-                    onOpen={openTask}
-                  />
-                ))}
-              </div>
-
-              {tasks.length === 0 && (
-                <div className="all-done-card">
-                  <div>
-                    <Icon name="spark" size={28} />
-                  </div>
-                  <h3>You’re all caught up!</h3>
-                  <p>We’ll let you know when Aster adds another step.</p>
-                </div>
-              )}
-
-              <section className="status-section">
-                <div className="status-heading">
-                  <span className="status-icon review">
-                    <Icon name="clock" size={18} />
-                  </span>
-                  <div>
-                    <h2>Aster is reviewing</h2>
-                    <p>You’ve done your part. No action needed right now.</p>
-                  </div>
-                  <span className="status-count">{reviewing.length}</span>
-                </div>
-                <div className="review-list">
-                  {reviewing.map((item) => (
-                    <article
-                      className="compact-task review-task"
-                      key={`${item.title}-${item.submitted}`}
-                    >
-                      <div className="compact-check">
-                        <Icon name="clock" size={18} />
-                      </div>
-                      <div className="compact-copy">
-                        <h3>{item.title}</h3>
-                        <p>{item.description}</p>
-                        <div className="compact-meta">
-                          <span>{item.submitted}</span>
-                          <span>{item.eta}</span>
-                        </div>
-                      </div>
-                      <div className="status-pill">
-                        <span className="pulse" /> In review
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </section>
-
-              <section className="status-section">
-                <div className="status-heading">
-                  <span className="status-icon locked">
-                    <Icon name="lock" size={18} />
-                  </span>
-                  <div>
-                    <h2>Coming up later</h2>
-                    <p>These will open automatically when you’re ready for them.</p>
-                  </div>
-                  <span className="status-count">{lockedTasks.length}</span>
-                </div>
-                <div className="locked-list">
-                  {lockedTasks.map((item) => (
-                    <article className="compact-task locked-task" key={item.title}>
-                      <div className="compact-check">
-                        <Icon name="lock" size={17} />
-                      </div>
-                      <div className="compact-copy">
-                        <h3>{item.title}</h3>
-                        <p>{item.description}</p>
-                        <div className="prerequisite">
-                          <Icon name="arrow" size={14} /> {item.prerequisite}
-                        </div>
-                      </div>
-                      <span className="locked-due">{item.due}</span>
-                    </article>
-                  ))}
-                </div>
-              </section>
-
-              <section className={`completed-section ${completedOpen ? 'expanded' : ''}`}>
-                <button
-                  className="completed-toggle"
-                  onClick={() => setCompletedOpen((open) => !open)}
-                  aria-expanded={completedOpen}
-                >
-                  <div className="completed-mark">
-                    <Icon name="check" size={19} />
-                  </div>
-                  <div>
-                    <strong>{completed.length} steps completed</strong>
-                    <span>{earnedPoints.toLocaleString()} Momentum points earned</span>
-                  </div>
-                  <Icon name="chevron" size={19} />
-                </button>
-                {completedOpen && (
-                  <div className="completed-list">
-                    {completed.map((item) => (
-                      <div className="completed-row" key={`${item.title}-${item.date}`}>
-                        <span className="mini-check">
-                          <Icon name="check" size={14} />
-                        </span>
-                        <strong>{item.title}</strong>
-                        <span>{item.date}</span>
-                        <span className="earned">
-                          <Icon name="spark" size={13} /> +{item.points}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
-            </div>
-
-            <InsightColumn
-              earnedPoints={earnedPoints}
-              availableToday={availableToday}
-              completedCount={completed.length}
-              onResume={() => {
-                const task = tasks.find((item) => item.id === 'profile');
-                if (task) openTask(task);
-              }}
-              onOpenPoints={() => setPointsModal(true)}
-            />
-          </div>
-
-          <footer>
-            <span>Aster University sample experience · Designed with Audentra</span>
-            <span>
-              <a href="#privacy">Privacy</a>
-              <a href="#accessibility">Accessibility</a>
-              <a href="#help">Get help</a>
-            </span>
-          </footer>
-        </div>
+        <main className="content-wrap" id="main-content" tabIndex={-1} ref={main}>
+          {renderPage()}
+        </main>
       </section>
 
       {activeTask && (
@@ -362,6 +380,6 @@ export default function App() {
           {toast}
         </div>
       )}
-    </main>
+    </div>
   );
 }

@@ -1,4 +1,10 @@
-export const TOTAL_STEPS = 12;
+export const TOTAL_STEPS = 14;
+
+/** Every date in the portal is read against this day. Matches `CAMPUS_TODAY` in campus-data.js. */
+export const PORTAL_TODAY = '2026-08-20';
+
+/** A deadline this many days out or closer is escalated on screen. ENR-160 AC 6. */
+export const ESCALATION_WINDOW = 14;
 
 export const initialTasks = [
   {
@@ -8,7 +14,7 @@ export const initialTasks = [
     description:
       'Pay your $500 enrollment deposit to confirm that you’re joining Aster’s incoming class.',
     due: 'Nov 16',
-    daysLeft: 100,
+    daysLeft: 88,
     points: 100,
     tomorrow: 99,
     minutes: 4,
@@ -16,10 +22,83 @@ export const initialTasks = [
     kind: 'external',
     priority: 'critical',
     unlocks: 3,
+    office: 'Student Financial Services',
     why: 'This confirms your enrollment and opens housing, advising, and orientation.',
+    destination: {
+      mark: 'A',
+      name: 'Aster secure payment portal',
+      url: 'payments.aster.edu',
+      note: 'You’ll finish payment on Aster’s website. When it’s received, this checklist will update automatically—usually within a minute.',
+      cta: 'Open Aster payment page',
+      prototypeNote: 'Prototype: this button simulates Aster confirming payment.',
+    },
     steps: [
       'Continue to Aster’s secure payment page.',
       'Pay by card or bank transfer.',
+      'Come back anytime—Audentra will mark this complete automatically.',
+    ],
+  },
+  {
+    id: 'income-verification',
+    category: 'Money & aid',
+    title: 'Verify your household income',
+    description:
+      'Aster’s Financial Aid office needs to confirm the income you reported before your federal loan can be finalized.',
+    due: 'Sep 2',
+    daysLeft: 13,
+    points: 95,
+    tomorrow: 94,
+    minutes: 6,
+    action: 'Upload documents',
+    kind: 'upload',
+    priority: 'critical',
+    unlocks: 1,
+    financial: true,
+    office: 'Student Financial Services',
+    consequence: 'Your federal loan stays pending until this is verified.',
+    why: 'Your loan cannot be finalized while verification is open, so its amount stays off your balance until this clears.',
+    upload: {
+      prompt: 'Choose your income documents',
+      hint: 'PDF, JPG, or PNG · Up to 10 MB',
+      fileName: 'household_income_2025.pdf',
+      fileSize: '2.4 MB',
+      privacy: 'Encrypted and shared only with authorized Student Financial Services staff.',
+    },
+    steps: [
+      'Gather last year’s tax return, or a signed statement of non-filing.',
+      'Upload every page, including schedules.',
+      'Financial Services reviews it in 3–5 business days and updates your package.',
+    ],
+  },
+  {
+    id: 'loan-agreement',
+    category: 'Money & aid',
+    title: 'Sign your federal loan agreement',
+    description:
+      'Sign the Master Promissory Note on the federal student aid website so Aster can release your loan money.',
+    due: 'Sep 30',
+    daysLeft: 41,
+    points: 80,
+    tomorrow: 79,
+    minutes: 8,
+    action: 'Sign agreement',
+    kind: 'external',
+    priority: 'soon',
+    financial: true,
+    office: 'Student Financial Services',
+    consequence: 'Aster cannot release your loan money without a signed agreement.',
+    why: 'The agreement is a federal requirement. Signing it early means your loan is ready the moment verification clears.',
+    destination: {
+      mark: 'F',
+      name: 'Federal Student Aid',
+      url: 'studentaid.gov',
+      note: 'You’ll sign on the federal student aid website using your FSA ID. When it’s signed, this checklist will update automatically—usually within a day.',
+      cta: 'Open Federal Student Aid',
+      prototypeNote: 'Prototype: this button simulates the federal site confirming your signature.',
+    },
+    steps: [
+      'Sign in with your FSA ID.',
+      'Read the agreement and sign it electronically.',
       'Come back anytime—Audentra will mark this complete automatically.',
     ],
   },
@@ -30,13 +109,14 @@ export const initialTasks = [
     description:
       'Add the contact details you didn’t have during welcome setup. It’s okay to update them later.',
     due: 'Nov 23',
-    daysLeft: 107,
+    daysLeft: 95,
     points: 72,
     tomorrow: 71,
     minutes: 2,
     action: 'Add details',
     kind: 'profile',
     priority: 'soon',
+    office: 'Admissions Office',
     why: 'Aster needs a reliable way to reach you with time-sensitive enrollment updates.',
     steps: [
       'Confirm your mobile number.',
@@ -51,14 +131,22 @@ export const initialTasks = [
     description:
       'Upload your immunization record so Aster University Health Services can verify the required vaccines before arrival.',
     due: 'Nov 30',
-    daysLeft: 114,
+    daysLeft: 102,
     points: 83,
     tomorrow: 82,
     minutes: 5,
     action: 'Upload record',
     kind: 'upload',
     priority: 'soon',
+    office: 'Health Services',
     why: 'Submitting early leaves time to resolve a missing dose or incomplete record before move-in.',
+    upload: {
+      prompt: 'Choose a record to upload',
+      hint: 'PDF, JPG, or PNG · Up to 10 MB',
+      fileName: 'immunization_record.pdf',
+      fileSize: '1.8 MB',
+      privacy: 'Encrypted and shared only with authorized Health Services staff.',
+    },
     steps: [
       'Ask your doctor for a current immunization record.',
       'Upload a clear PDF, JPG, or PNG.',
@@ -72,7 +160,7 @@ export const initialTasks = [
     description:
       'Let Aster know whether you plan to live on campus, commute, or need help deciding.',
     due: 'Dec 15',
-    daysLeft: 129,
+    daysLeft: 117,
     points: 68,
     tomorrow: 67,
     minutes: 3,
@@ -80,6 +168,7 @@ export const initialTasks = [
     kind: 'form',
     priority: 'normal',
     unlocks: 1,
+    office: 'Housing & Residential Life',
     why: 'Your answer opens the right housing or commuter next steps.',
     steps: [
       'Choose the option that best matches your current plan.',
@@ -128,12 +217,239 @@ export const housingOptions = [
   ['unsure', 'I’m not sure yet', 'Help me compare my options'],
 ];
 
+/** Read by the Messages row in the navigation and by the topbar bell. ENR-180. */
+export const unreadMessages = 2;
+
 export const enrollmentAdvisor = {
   name: 'Tomás Okafor',
   initials: 'TO',
   office: 'Admissions Office',
+  label: 'Your enrollment advisor',
   intro:
     'We’re here to help. Tomás holds your file, decides what you send to Admissions, and is the person to ask when a step is blocked.',
   location: { building: 'Building C', where: 'ground floor' },
   hours: { window: '9:00 AM–5:00 PM', days: 'Monday to Friday' },
+};
+
+export const financialAidAdvisor = {
+  name: 'Amara Nwosu',
+  initials: 'AN',
+  office: 'Student Financial Services',
+  label: 'Your financial aid advisor',
+  intro:
+    'Amara reads your aid package, explains what each figure means, and is the person to ask before you borrow anything.',
+  location: { building: 'Building A', where: 'ground floor' },
+  hours: { window: '9:00 AM–4:00 PM', days: 'Monday to Friday' },
+};
+
+/* ------------------------------------------------------------------ *
+ * My Financials — ENR-166
+ * ------------------------------------------------------------------ */
+
+export const academicYear = {
+  label: '2026–27 academic year',
+  entry: 'Spring 2027 entry',
+};
+
+/**
+ * `direct` marks what Aster bills the student for. The rest is money the year
+ * costs but that Aster never charges — the distinction the card asks for when
+ * it says an estimate must never look like a bill.
+ */
+export const costOfAttendance = [
+  { id: 'tuition', label: 'Tuition', amount: 41200, direct: true },
+  { id: 'fees', label: 'Fees', amount: 2860, direct: true },
+  { id: 'housing', label: 'Housing', amount: 12400, direct: true },
+  { id: 'meals', label: 'Meals', amount: 6300, direct: true },
+  { id: 'books', label: 'Books and supplies', amount: 1240, direct: false, estimate: true },
+  { id: 'personal', label: 'Personal and travel', amount: 2000, direct: false, estimate: true },
+];
+
+export const additionalAid = [
+  {
+    id: 'merit-topup',
+    label: 'Aster Merit Top-up',
+    amount: 2500,
+    prefix: 'up to',
+    note: 'Apply by Dec 1 · one essay, no separate form',
+  },
+  {
+    id: 'work-study',
+    label: 'Federal Work-Study',
+    amount: 2400,
+    note: 'Offered and not yet accepted · about 8 hours a week',
+  },
+];
+
+const ACADEMIC_METRICS = [
+  {
+    id: 'gpa',
+    label: 'Grade point average',
+    term: 'gpa',
+    minimumLabel: 'minimum 2.0',
+    minimum: 2,
+    max: 4,
+  },
+  {
+    id: 'pace',
+    label: 'Completion pace',
+    term: 'pace',
+    minimumLabel: 'minimum 67%',
+    minimum: 67,
+    max: 100,
+  },
+  {
+    id: 'credits',
+    label: 'Attempted credits',
+    term: 'credits',
+    minimumLabel: 'maximum 180',
+    minimum: 0,
+    max: 180,
+  },
+];
+
+const academicNotStarted = {
+  started: false,
+  intro:
+    'Aster checks three things at the end of each term to keep your aid. You have not started classes yet, so there is nothing to check.',
+  firstCheck: 'Your first check: after the Spring 2027 term ends.',
+  metrics: ACADEMIC_METRICS.map((metric) => ({ ...metric, value: null })),
+};
+
+const academicStarted = {
+  started: true,
+  intro:
+    'Aster checks three things at the end of each term to keep your aid. This is what your record showed after the Spring 2027 term.',
+  firstCheck: 'Last checked: May 22, 2027 · next check after the Fall 2027 term.',
+  metrics: [
+    { ...ACADEMIC_METRICS[0], value: 3.42, display: '3.42', above: true },
+    { ...ACADEMIC_METRICS[1], value: 88, display: '88%', above: true },
+    { ...ACADEMIC_METRICS[2], value: 31, display: '31', above: true, invert: true },
+  ],
+};
+
+/**
+ * One entry per state in the topbar switcher. `aid`, `payments` and `schedule`
+ * are the only things that move; cost of attendance never does.
+ */
+export const financialStates = {
+  pending: {
+    aid: [
+      { id: 'aster-grant', label: 'Aster Grant', kind: 'grant', source: 'Aster University', amount: 28000, status: 'accepted' },
+      { id: 'pell', label: 'Federal Pell Grant', kind: 'grant', term: 'pell', source: 'U.S. Department of Education', amount: 5600, status: 'accepted' },
+      {
+        id: 'direct-loan',
+        label: 'Federal Direct Subsidized Loan',
+        kind: 'loan',
+        term: 'subsidized',
+        source: 'U.S. Department of Education',
+        amount: null,
+        status: 'pending',
+        blockedBy: 'income-verification',
+        blockedNote: 'Waiting on your income verification.',
+      },
+    ],
+    payments: [],
+    schedule: [
+      { id: 'deposit', date: 'Nov 16', label: 'Enrollment deposit', amount: 500, status: 'due', taskId: 'deposit' },
+      { id: 'i1', date: 'Jan 5', label: 'Installment 1', amount: 7165, status: 'scheduled' },
+      { id: 'i2', date: 'Feb 5', label: 'Installment 2', amount: 7165, status: 'scheduled' },
+      { id: 'i3', date: 'Mar 5', label: 'Installment 3', amount: 7165, status: 'scheduled' },
+      { id: 'i4', date: 'Apr 5', label: 'Installment 4', amount: 7165, status: 'scheduled' },
+    ],
+    academic: academicNotStarted,
+  },
+  final: {
+    aid: [
+      { id: 'aster-grant', label: 'Aster Grant', kind: 'grant', source: 'Aster University', amount: 28000, status: 'accepted' },
+      { id: 'pell', label: 'Federal Pell Grant', kind: 'grant', term: 'pell', source: 'U.S. Department of Education', amount: 5600, status: 'accepted' },
+      {
+        id: 'direct-loan',
+        label: 'Federal Direct Subsidized Loan',
+        kind: 'loan',
+        term: 'subsidized',
+        source: 'U.S. Department of Education',
+        amount: 3500,
+        status: 'accepted',
+      },
+    ],
+    payments: [{ id: 'deposit', date: 'Aug 7', label: 'Enrollment deposit', amount: 500, status: 'received' }],
+    schedule: [
+      { id: 'deposit', date: 'Aug 7', label: 'Enrollment deposit', amount: 500, status: 'received' },
+      { id: 'i1', date: 'Jan 5', label: 'Installment 1', amount: 6290, status: 'due' },
+      { id: 'i2', date: 'Feb 5', label: 'Installment 2', amount: 6290, status: 'scheduled' },
+      { id: 'i3', date: 'Mar 5', label: 'Installment 3', amount: 6290, status: 'scheduled' },
+      { id: 'i4', date: 'Apr 5', label: 'Installment 4', amount: 6290, status: 'scheduled' },
+    ],
+    academic: academicStarted,
+  },
+};
+
+export const paymentPlan = {
+  name: '4-month plan',
+  term: 'plan',
+  detail: 'Interest-free · set up Aug 7',
+};
+
+/**
+ * Written once, read everywhere. A term that appears in the ledger, the
+ * schedule and the rail cannot drift into three different explanations.
+ */
+export const financialTerms = {
+  coa: {
+    title: 'Cost of attendance',
+    body: 'Everything the year is expected to cost — tuition and fees, plus housing, meals, books and travel. It is a planning figure, not a bill. Aster only charges you for part of it.',
+  },
+  aid: {
+    title: 'Financial aid',
+    body: 'Money that lowers what you owe. Grants and scholarships are not repaid. Loans are. Each source below says which it is.',
+  },
+  pell: {
+    title: 'Federal Pell Grant',
+    body: 'A federal grant for students with high financial need. It is not repaid, and the amount depends on the income your family reported.',
+  },
+  subsidized: {
+    title: 'Federal Direct Subsidized Loan',
+    body: 'A federal loan you repay after you leave school. Subsidized means the government pays the interest while you are enrolled at least half time.',
+  },
+  balance: {
+    title: 'Estimated remaining balance',
+    body: 'What is left after the aid you have accepted and the payments Aster has recorded. It is an estimate: it changes when aid is finalized, when your housing or meal plan changes, or after verification.',
+  },
+  direct: {
+    title: 'What Aster bills you directly',
+    body: 'Tuition, fees, housing and meals — the part of the cost that arrives as a bill from Aster and appears in your payment schedule.',
+  },
+  indirect: {
+    title: 'What you spend elsewhere',
+    body: 'Books, supplies, travel and personal costs. Aster estimates these so your aid can cover them, but Aster never charges you for them.',
+  },
+  estimate: {
+    title: 'Why this is an estimate',
+    body: 'Aster has not finished confirming every figure. Estimates can change after verification, after your housing choice, and after your aid package is final.',
+  },
+  plan: {
+    title: '4-month plan',
+    body: 'Instead of one bill, what Aster charges you is split into four equal monthly payments at no extra cost. The total does not change.',
+  },
+  schedule: {
+    title: 'How installments are worked out',
+    body: 'Aster divides what it bills you, minus your accepted aid, across the payments left in the year. If your aid changes, every remaining installment is recalculated.',
+  },
+  gpa: {
+    title: 'Grade point average',
+    body: 'The average of your grades so far, on a four-point scale. Aster asks for at least 2.0 to keep federal aid.',
+  },
+  pace: {
+    title: 'Completion pace',
+    body: 'The share of the credits you signed up for that you actually finished. Aster asks for at least 67%. Dropping a class after the deadline lowers it.',
+  },
+  credits: {
+    title: 'Attempted credits',
+    body: 'Every credit you have signed up for, including ones you dropped or repeated. Federal aid stops after 180 for a four-year degree.',
+  },
+  progress: {
+    title: 'Academic progress',
+    body: 'A check Aster runs at the end of each term to confirm you are moving through your degree. It decides whether your federal aid continues.',
+  },
 };

@@ -7,6 +7,13 @@ const SIGNALS = [
   ['04', 'How long it takes', 'Quick wins appear when they can clear the path without distracting you.'],
 ];
 
+const CREDIT_STEPS = [
+  ['01', 'Evidence arrives', 'Aster reads the transcripts and score reports you sent with your application.'],
+  ['02', 'A rule is proposed', 'A published credit policy is matched against that evidence. That suggestion is what you see on this page.'],
+  ['03', 'A person reviews it', 'The Registrar’s Office compares the course, its contact hours and its content against Aster’s own.'],
+  ['04', 'A decision is recorded', 'Approved, partly approved, or not approved. Only at this point does a requirement change.'],
+];
+
 const POINT_RULES = [
   'Each task starts with a maximum reward set by Aster.',
   'The reward typically decreases by one point per day.',
@@ -44,6 +51,30 @@ export default function InfoModal({ variant, onClose }) {
             <div className="modal-note">
               <Icon name="info" size={18} /> The order is a recommendation—not a restriction. You
               can open any available task.
+            </div>
+          </>
+        ) : variant === 'credit' ? (
+          <>
+            <span className="modal-kicker credit">
+              <Icon name="shield" size={16} /> Credit approval
+            </span>
+            <h2 id="info-title">A match is a suggestion. Only the Registrar decides.</h2>
+            <p>
+              Audentra can spot that something you already did looks like an Aster course. It cannot
+              grant credit for it, and neither can this page.
+            </p>
+            <div className="signal-grid">
+              {CREDIT_STEPS.map(([number, title, copy]) => (
+                <div key={number}>
+                  <span>{number}</span>
+                  <strong>{title}</strong>
+                  <p>{copy}</p>
+                </div>
+              ))}
+            </div>
+            <div className="modal-note safe">
+              <Icon name="shield" size={18} /> Until a decision is recorded, nothing has changed.
+              Plan your courses as if a match does not exist.
             </div>
           </>
         ) : (

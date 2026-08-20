@@ -1,78 +1,260 @@
+import { useEffect, useRef, useState } from 'react';
 import Icon from '../Icon.jsx';
+import { NAV, PROFILE_ID, UTILITY_ID, destinationById } from '../lib/navigation.js';
 
-export default function Sidebar({ open, taskCount, onNavigate }) {
+const GROUP_STORE = 'aster.nav.groups';
+
+/** Groups open by default. Anything unreadable in storage falls back to open. */
+function readCollapsed() {
+  try {
+    const raw = window.localStorage.getItem(GROUP_STORE);
+    const parsed = raw ? JSON.parse(raw) : null;
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function NavBadge({ count, noun }) {
+  if (count == null || count <= 0) return null;
   return (
-    <aside className={`sidebar ${open ? 'sidebar-open' : ''}`} aria-label="Primary navigation">
+    <span className={noun === 'unread messages' ? 'unread-dot' : 'nav-count'}>
+      <span aria-hidden="true">{count}</span>
+      <span className="sr-only">
+        {count} {noun}
+      </span>
+    </span>
+  );
+}
+
+function NavRow({ id, activeId, badges, leaf, onNavigate }) {
+  const item = destinationById(id);
+  if (!item) return null;
+  const active = item.id === activeId;
+
+  return (
+    <li>
+      <a
+        className={`nav-item${leaf ? ' nav-leaf' : ''}${active ? ' active' : ''}`}
+        href={item.route}
+        aria-current={active ? 'page' : undefined}
+        onClick={onNavigate}
+      >
+        <span className="nav-icon">
+          <Icon name={item.icon} />
+        </span>
+        {item.label}
+        {item.badge === 'openSteps' && <NavBadge count={badges.openSteps} noun="steps still open" />}
+        {item.badge === 'unread' && <NavBadge count={badges.unread} noun="unread messages" />}
+      </a>
+    </li>
+  );
+}
+
+function NavSkeleton() {
+  return (
+    <div className="nav-skeleton" aria-hidden="true">
+      {['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].map((key, index) => (
+        <span key={key} className={index === 2 || index === 5 ? 'skeleton-line label' : 'skeleton-line'} />
+      ))}
+    </div>
+  );
+}
+
+export default function Sidebar({
+  open,
+  activeId,
+  badges = {},
+  state = 'ready',
+  onNavigate,
+  onClose,
+  onRetry,
+}) {
+  const [collapsed, setCollapsed] = useState(readCollapsed);
+  const panel = useRef(null);
+  const help = destinationById(UTILITY_ID);
+  const profile = destinationById(PROFILE_ID);
+
+  // A collapsed group never hides where the student is.
+  useEffect(() => {
+    const holder = NAV.find(
+      (entry) => entry.kind === 'group' && entry.items.includes(activeId),
+    );
+    if (!holder) return;
+    setCollapsed((current) => (current[holder.id] ? { ...current, [holder.id]: false } : current));
+  }, [activeId]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(GROUP_STORE, JSON.stringify(collapsed));
+    } catch {
+      // A portal that cannot remember a preference still has to navigate.
+    }
+  }, [collapsed]);
+
+  // Below 820px the sidebar is a dialog: focus is trapped until it closes.
+  useEffect(() => {
+    if (!open) return undefined;
+    const node = panel.current;
+    if (!node) return undefined;
+
+    const focusable = () =>
+      Array.from(node.querySelectorAll('a[href], button:not([disabled])')).filter(
+        (element) => element.offsetParent !== null,
+      );
+
+    focusable()[0]?.focus();
+
+    const onKeyDown = (event) => {
+      if (event.key !== 'Tab') return;
+      const items = focusable();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    node.addEventListener('keydown', onKeyDown);
+    return () => node.removeEventListener('keydown', onKeyDown);
+  }, [open]);
+
+  function toggleGroup(id) {
+    setCollapsed((current) => ({ ...current, [id]: !current[id] }));
+  }
+
+  return (
+    <aside
+      className={`sidebar ${open ? 'sidebar-open' : ''}`}
+      ref={panel}
+      role={open ? 'dialog' : undefined}
+      aria-modal={open ? 'true' : undefined}
+      aria-label="Primary navigation"
+    >
       <div className="brand-row">
         <div className="university-mark" aria-hidden="true">
           A
         </div>
-        <div>
+        <div className="brand-name">
           <strong>Aster</strong>
           <span>New Student Portal</span>
         </div>
+        <button className="icon-button nav-close" aria-label="Close navigation" onClick={onClose}>
+          <Icon name="close" size={18} />
+        </button>
       </div>
 
-      <nav className="main-nav">
-        <a className="nav-item active" href="#my-enrollment" onClick={onNavigate}>
-          <span className="nav-icon">
-            <Icon name="check" />
-          </span>
-          My Enrollment
-          {taskCount > 0 && <span className="nav-count">{taskCount}</span>}
-        </a>
-        <a className="nav-item" href="#my-documents" onClick={(e) => e.preventDefault()}>
-          <span className="nav-icon">
-            <Icon name="file" />
-          </span>
-          My Documents
-        </a>
-        <a className="nav-item" href="#my-financials" onClick={(e) => e.preventDefault()}>
-          <span className="nav-icon">
-            <Icon name="wallet" />
-          </span>
-          My Financials
-        </a>
-        <a className="nav-item" href="#my-classrooms" onClick={(e) => e.preventDefault()}>
-          <span className="nav-icon">
-            <Icon name="book" />
-          </span>
-          My Classrooms
-        </a>
-        <a className="nav-item" href="#my-campus-life" onClick={(e) => e.preventDefault()}>
-          <span className="nav-icon">
-            <Icon name="home" />
-          </span>
-          My Campus Life
-        </a>
-        <a className="nav-item" href="#messages" onClick={(e) => e.preventDefault()}>
-          <span className="nav-icon">
-            <Icon name="message" />
-          </span>
-          Messages
-          <span className="unread-dot" aria-label="2 unread messages">
-            2
-          </span>
-        </a>
-      </nav>
+      {state === 'loading' && <NavSkeleton />}
 
-      <div className="sidebar-bottom">
-        <a className="nav-item" href="#help" onClick={(e) => e.preventDefault()}>
-          <span className="nav-icon">
-            <Icon name="help" />
+      {state === 'error' && (
+        <div className="nav-error" role="status">
+          <span>
+            <Icon name="alert" size={17} />
           </span>
-          Help center
-        </a>
-        <div className="profile-chip">
-          <div className="avatar">MJ</div>
-          <div>
-            <strong>Maya Johnson</strong>
-            <span>Incoming student</span>
-          </div>
-          <button className="icon-button compact" aria-label="Open profile menu">
-            <Icon name="chevron" size={16} />
+          <p>We couldn’t load your sections.</p>
+          <button onClick={onRetry}>
+            <Icon name="refresh" size={15} /> Try again
           </button>
         </div>
+      )}
+
+      {state !== 'loading' && state !== 'error' && (
+        <nav className="main-nav" aria-label="Primary">
+          <ul className="nav-list">
+            {NAV.map((entry) => {
+              if (entry.kind === 'link') {
+                return (
+                  <NavRow
+                    key={entry.id}
+                    id={entry.id}
+                    activeId={activeId}
+                    badges={badges}
+                    onNavigate={onNavigate}
+                  />
+                );
+              }
+
+              const isOpen = !collapsed[entry.id];
+              const holdsActive = entry.items.includes(activeId);
+
+              return (
+                <li className="nav-group" key={entry.id}>
+                  <button
+                    className={`nav-group-toggle${holdsActive && !isOpen ? ' holds-active' : ''}`}
+                    id={`nav-group-${entry.id}`}
+                    aria-expanded={isOpen}
+                    aria-controls={`nav-group-list-${entry.id}`}
+                    onClick={() => toggleGroup(entry.id)}
+                  >
+                    {entry.label}
+                    <span className={`group-chevron${isOpen ? ' open' : ''}`} aria-hidden="true">
+                      <Icon name="chevron" size={15} />
+                    </span>
+                  </button>
+                  <ul
+                    className="nav-sublist"
+                    id={`nav-group-list-${entry.id}`}
+                    aria-labelledby={`nav-group-${entry.id}`}
+                    hidden={!isOpen}
+                  >
+                    {entry.items.map((id) => (
+                      <NavRow
+                        key={id}
+                        id={id}
+                        activeId={activeId}
+                        badges={badges}
+                        leaf
+                        onNavigate={onNavigate}
+                      />
+                    ))}
+                  </ul>
+                </li>
+              );
+            })}
+          </ul>
+
+          {state === 'partial' && (
+            <p className="nav-note">
+              <Icon name="info" size={13} /> Some counts are unavailable. The sections still open.
+            </p>
+          )}
+        </nav>
+      )}
+
+      <div className="sidebar-bottom">
+        <a
+          className={`nav-item${activeId === help.id ? ' active' : ''}`}
+          href={help.route}
+          aria-current={activeId === help.id ? 'page' : undefined}
+          onClick={onNavigate}
+        >
+          <span className="nav-icon">
+            <Icon name={help.icon} />
+          </span>
+          {help.label}
+        </a>
+        <a
+          className={`profile-chip${activeId === profile.id ? ' active' : ''}`}
+          href={profile.route}
+          aria-current={activeId === profile.id ? 'page' : undefined}
+          onClick={onNavigate}
+        >
+          <span className="avatar" aria-hidden="true">
+            MJ
+          </span>
+          <span className="profile-name">
+            <strong>Maya Johnson</strong>
+            <span>Incoming student</span>
+          </span>
+          <span className="chip-chevron" aria-hidden="true">
+            <Icon name="chevron" size={16} />
+          </span>
+        </a>
         <p className="powered-by">
           Powered by <strong>Audentra</strong>
         </p>

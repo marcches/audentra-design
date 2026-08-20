@@ -1,24 +1,45 @@
 import Icon from '../Icon.jsx';
+import PreviewStateMenu from './PreviewStateMenu.jsx';
+import { FRAME_STATES } from '../lib/preview-state.js';
 
-export default function Topbar({ onOpenNav }) {
+export default function Topbar({
+  onOpenNav,
+  menuRef,
+  unread,
+  previewState,
+  previewStates = FRAME_STATES,
+  onPreviewState,
+}) {
   return (
     <header className="topbar">
-      <button className="icon-button mobile-menu" aria-label="Open navigation" onClick={onOpenNav}>
+      <button
+        className="icon-button mobile-menu"
+        ref={menuRef}
+        aria-label="Open navigation"
+        onClick={onOpenNav}
+      >
         <Icon name="menu" />
       </button>
       <div className="topbar-title">
         <span className="mobile-school">Aster</span>
-        <span className="concept-pill">Concept preview</span>
       </div>
       <div className="topbar-actions">
-        <button className="help-button">
-          <Icon name="help" size={17} /> Need help?
-        </button>
-        <button className="notification-button" aria-label="Notifications">
-          <span>2</span>
+        <PreviewStateMenu
+          state={previewState}
+          states={previewStates}
+          onChange={onPreviewState}
+        />
+        <a
+          className="notification-button"
+          href="#/messages"
+          aria-label={unread ? `Messages, ${unread} unread` : 'Messages'}
+        >
+          {unread ? <span aria-hidden="true">{unread}</span> : null}
           <Icon name="message" size={19} />
-        </button>
-        <div className="mobile-avatar">MJ</div>
+        </a>
+        <a className="mobile-avatar" href="#/profile" aria-label="Profile">
+          MJ
+        </a>
       </div>
     </header>
   );
