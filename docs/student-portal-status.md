@@ -187,13 +187,19 @@ ENR-174 AC1's Academic group (dissolved by the Jam) and ENR-210 AC1's fourth hou
 
 ## 6. Order
 
-1. **ENR-161** — write the card. Biggest hole, and the one the student feels: nothing in the portal
-   answers *what changed*. Fix AC3's persistence even if the card lands later.
-2. **ENR-162** — write the card. Half the work is deciding what a point is *worth*, which is a
-   product question and not a build one.
-3. **ENR-214** — write the card, scoped to ACs 1, 2 and 6, with the orientation-session gate in
-   `campus-data.js` as the worked example.
-4. **ENR-160 AC3** — one `section` field on the financial document tasks. Rides along with anything.
+**Specced on 2026-08-20, both ready to build:**
+
+1. **ENR-161 + ENR-162** — one pass, because they share a corner and ENR-167's own design brief says
+   so. No new card was needed: ENR-167 already serves both and landed only half of its brief. Spec:
+   `.scratch/ENR-167-student-portal-shell/spec-notifications-and-points.md`, references beside it.
+   Marco chose the **reward catalogue** reading of ENR-162 AC1 (a point's worth is what it redeems
+   for, not a currency) and a **panel on the bell** for ENR-161, not a fourteenth destination.
+2. **ENR-214** — spec written against the história, since ENR-164 serves only AUD-155 and AUD-156 and
+   `issue-tracker.md` forbids opening a Jira issue unasked. The divergence is recorded in the file's
+   front matter. Gated by the immunization record and the orientation session, both of which the
+   product already carries. Spec: `.scratch/ENR-214-registration-gate/spec.md`.
+3. **ENR-160 AC3** — one `section` field on the financial document tasks. Not specced; it rides along
+   with anything, and §8 of the ENR-214 spec names it so it stops being invisible.
 
 After those, the student portal is feature-complete against the board as it stands, and everything
 remaining is a Jam signature.

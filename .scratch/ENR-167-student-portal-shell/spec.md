@@ -6,6 +6,11 @@ Jam: https://jam.dev/c/14fb7032-828f-4d8f-9c05-7e2ee13abbda — rename Checklist
 
 > Jira status is `Development`, which the triage table in `docs/agents/triage-labels.md` does not
 > carry. `ready-for-agent` is the nearest role and the card is fully specified; Jira stays authoritative.
+>
+> **This is the first pass, and it built half the card.** ENR-167's design brief covers navigation,
+> the route to a person, **notifications** and **points**; what landed in `1eaacff` is the first two.
+> The second pass is `spec-notifications-and-points.md` in this directory, serving ENR-161 and
+> ENR-162. Read both before touching the shell.
 
 # Student portal shell — navigation vocabulary and institution identity
 
