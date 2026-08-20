@@ -1,4 +1,5 @@
 import Icon from '../Icon.jsx';
+import { enrollmentAdvisor } from '../data.js';
 
 export default function InsightColumn({
   earnedPoints,
@@ -6,8 +7,10 @@ export default function InsightColumn({
   completedCount,
   onResume,
   onOpenPoints,
-  onAskQuestion,
+  onContactAdvisor,
 }) {
+  const advisor = enrollmentAdvisor;
+
   return (
     <aside className="insight-column">
       <div className="skipped-card">
@@ -23,6 +26,42 @@ export default function InsightColumn({
         <button onClick={onResume}>
           Continue where I left off <Icon name="arrow" size={16} />
         </button>
+      </div>
+
+      <div className="advisor-card">
+        <span className="panel-label">Your enrollment advisor</span>
+        <div className="advisor-identity">
+          <span className="advisor-avatar" aria-hidden="true">
+            {advisor.initials}
+          </span>
+          <div>
+            <strong>{advisor.name}</strong>
+            <span>{advisor.office}</span>
+          </div>
+        </div>
+        <p>{advisor.intro}</p>
+        <div className="advisor-availability">
+          <div>
+            <span aria-hidden="true">
+              <Icon name="pin" size={15} />
+            </span>
+            <p>
+              <strong>{advisor.location.building}</strong>, {advisor.location.where}
+            </p>
+          </div>
+          <div>
+            <span aria-hidden="true">
+              <Icon name="clock" size={15} />
+            </span>
+            <p>
+              Open <strong>{advisor.hours.window}</strong>, {advisor.hours.days}
+            </p>
+          </div>
+        </div>
+        <div className="advisor-actions">
+          <button onClick={() => onContactAdvisor('email')}>Email</button>
+          <button onClick={() => onContactAdvisor('message')}>Message</button>
+        </div>
       </div>
 
       <div className="momentum-card">
@@ -53,19 +92,6 @@ export default function InsightColumn({
         </div>
         <button className="learn-link" onClick={onOpenPoints}>
           How points work <Icon name="arrow" size={14} />
-        </button>
-      </div>
-
-      <div className="support-card">
-        <div className="support-avatars">
-          <span>AL</span>
-          <span>KS</span>
-          <span>+8</span>
-        </div>
-        <h3>You’re not doing this alone.</h3>
-        <p>Your Aster enrollment team can see where you’re stuck and help you keep moving.</p>
-        <button onClick={onAskQuestion}>
-          <Icon name="message" size={16} /> Ask a question
         </button>
       </div>
     </aside>

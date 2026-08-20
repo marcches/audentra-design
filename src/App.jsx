@@ -9,6 +9,7 @@ import InsightColumn from './components/InsightColumn.jsx';
 import { sortTasks } from './lib/task-helpers.js';
 import {
   TOTAL_STEPS,
+  enrollmentAdvisor,
   initialCompleted,
   initialReviewing,
   initialTasks,
@@ -314,8 +315,12 @@ export default function App() {
                 if (task) openTask(task);
               }}
               onOpenPoints={() => setPointsModal(true)}
-              onAskQuestion={() =>
-                setToast('A message window would open here in the production experience.')
+              onContactAdvisor={(channel) =>
+                setToast(
+                  `${channel === 'email' ? 'An email' : 'A message'} to ${
+                    enrollmentAdvisor.name
+                  } would open here—nothing is sent yet.`
+                )
               }
             />
           </div>

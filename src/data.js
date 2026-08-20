@@ -127,3 +127,13 @@ export const housingOptions = [
   ['commute', 'I plan to commute', 'Share commuter resources with me'],
   ['unsure', 'I’m not sure yet', 'Help me compare my options'],
 ];
+
+export const enrollmentAdvisor = {
+  name: 'Tomás Okafor',
+  initials: 'TO',
+  office: 'Admissions Office',
+  intro:
+    'We’re here to help. Tomás holds your file, decides what you send to Admissions, and is the person to ask when a step is blocked.',
+  location: { building: 'Building C', where: 'ground floor' },
+  hours: { window: '9:00 AM–5:00 PM', days: 'Monday to Friday' },
+};
