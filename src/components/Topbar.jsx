@@ -7,7 +7,7 @@ export default function Topbar({ onOpenNav }) {
         <Icon name="menu" />
       </button>
       <div className="topbar-title">
-        <span className="mobile-school">Harvard</span>
+        <span className="mobile-school">Aster</span>
         <span className="concept-pill">Concept preview</span>
       </div>
       <div className="topbar-actions">

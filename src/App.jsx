@@ -68,14 +68,14 @@ export default function App() {
         {
           title: task.title,
           description:
-            'Your record was submitted successfully. Harvard’s team is reviewing it now.',
+            'Your record was submitted successfully. Aster’s team is reviewing it now.',
           submitted: 'Submitted just now',
           eta: 'Usually 2–3 business days',
           points: task.points,
         },
         ...current,
       ]);
-      setToast('Record submitted — your points are reserved while Harvard reviews it.');
+      setToast('Record submitted — your points are reserved while Aster reviews it.');
     } else {
       setCompleted((current) => [
         { title: task.title, date: 'Just now', points: task.points },
@@ -98,7 +98,7 @@ export default function App() {
         />
       )}
 
-      <section className="workspace" id="checklist">
+      <section className="workspace" id="my-enrollment">
         <Topbar onOpenNav={() => setNavOpen(true)} />
 
         <div className="content-wrap">
@@ -158,7 +158,7 @@ export default function App() {
                   <p className="eyebrow muted">Your next steps</p>
                   <h2>Ready when you are</h2>
                 </div>
-                <div className="sort-group" aria-label="Sort checklist">
+                <div className="sort-group" aria-label="Sort your next steps">
                   <button
                     className={sort === 'smart' ? 'selected' : ''}
                     onClick={() => setSort('smart')}
@@ -201,7 +201,7 @@ export default function App() {
                     <Icon name="spark" size={28} />
                   </div>
                   <h3>You’re all caught up!</h3>
-                  <p>We’ll let you know when Harvard adds another step.</p>
+                  <p>We’ll let you know when Aster adds another step.</p>
                 </div>
               )}
 
@@ -211,7 +211,7 @@ export default function App() {
                     <Icon name="clock" size={18} />
                   </span>
                   <div>
-                    <h2>Harvard is reviewing</h2>
+                    <h2>Aster is reviewing</h2>
                     <p>You’ve done your part. No action needed right now.</p>
                   </div>
                   <span className="status-count">{reviewing.length}</span>
@@ -321,7 +321,7 @@ export default function App() {
           </div>
 
           <footer>
-            <span>Harvard University sample experience · Designed with Audentra</span>
+            <span>Aster University sample experience · Designed with Audentra</span>
             <span>
               <a href="#privacy">Privacy</a>
               <a href="#accessibility">Accessibility</a>

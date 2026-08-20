@@ -63,7 +63,7 @@ export default function InsightColumn({
           <span>+8</span>
         </div>
         <h3>You’re not doing this alone.</h3>
-        <p>Your Harvard enrollment team can see where you’re stuck and help you keep moving.</p>
+        <p>Your Aster enrollment team can see where you’re stuck and help you keep moving.</p>
         <button onClick={onAskQuestion}>
           <Icon name="message" size={16} /> Ask a question
         </button>

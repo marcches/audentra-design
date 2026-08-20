@@ -5,27 +5,45 @@ export default function Sidebar({ open, taskCount, onNavigate }) {
     <aside className={`sidebar ${open ? 'sidebar-open' : ''}`} aria-label="Primary navigation">
       <div className="brand-row">
         <div className="university-mark" aria-hidden="true">
-          H
+          A
         </div>
         <div>
-          <strong>Harvard</strong>
+          <strong>Aster</strong>
           <span>New Student Portal</span>
         </div>
       </div>
 
       <nav className="main-nav">
-        <a className="nav-item active" href="#checklist" onClick={onNavigate}>
+        <a className="nav-item active" href="#my-enrollment" onClick={onNavigate}>
           <span className="nav-icon">
             <Icon name="check" />
           </span>
-          Checklist
-          <span className="nav-count">{taskCount}</span>
+          My Enrollment
+          {taskCount > 0 && <span className="nav-count">{taskCount}</span>}
         </a>
-        <a className="nav-item" href="#offer" onClick={(e) => e.preventDefault()}>
+        <a className="nav-item" href="#my-documents" onClick={(e) => e.preventDefault()}>
           <span className="nav-icon">
             <Icon name="file" />
           </span>
-          My offer
+          My Documents
+        </a>
+        <a className="nav-item" href="#my-financials" onClick={(e) => e.preventDefault()}>
+          <span className="nav-icon">
+            <Icon name="wallet" />
+          </span>
+          My Financials
+        </a>
+        <a className="nav-item" href="#my-classrooms" onClick={(e) => e.preventDefault()}>
+          <span className="nav-icon">
+            <Icon name="book" />
+          </span>
+          My Classrooms
+        </a>
+        <a className="nav-item" href="#my-campus-life" onClick={(e) => e.preventDefault()}>
+          <span className="nav-icon">
+            <Icon name="home" />
+          </span>
+          My Campus Life
         </a>
         <a className="nav-item" href="#messages" onClick={(e) => e.preventDefault()}>
           <span className="nav-icon">
@@ -35,12 +53,6 @@ export default function Sidebar({ open, taskCount, onNavigate }) {
           <span className="unread-dot" aria-label="2 unread messages">
             2
           </span>
-        </a>
-        <a className="nav-item" href="#campus" onClick={(e) => e.preventDefault()}>
-          <span className="nav-icon">
-            <Icon name="home" />
-          </span>
-          Explore Harvard
         </a>
       </nav>
 

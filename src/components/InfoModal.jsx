@@ -8,7 +8,7 @@ const SIGNALS = [
 ];
 
 const POINT_RULES = [
-  'Each task starts with a maximum reward set by Harvard.',
+  'Each task starts with a maximum reward set by Aster.',
   'The reward typically decreases by one point per day.',
   'Your deadline never changes—and points never affect admission decisions.',
 ];

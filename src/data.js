@@ -6,7 +6,7 @@ export const initialTasks = [
     category: 'Your offer',
     title: 'Lock in your place',
     description:
-      'Pay your $500 enrollment deposit to confirm that you’re joining Harvard’s incoming class.',
+      'Pay your $500 enrollment deposit to confirm that you’re joining Aster’s incoming class.',
     due: 'Nov 16',
     daysLeft: 100,
     points: 100,
@@ -18,7 +18,7 @@ export const initialTasks = [
     unlocks: 3,
     why: 'This confirms your enrollment and opens housing, advising, and orientation.',
     steps: [
-      'Continue to Harvard’s secure payment page.',
+      'Continue to Aster’s secure payment page.',
       'Pay by card or bank transfer.',
       'Come back anytime—Audentra will mark this complete automatically.',
     ],
@@ -37,7 +37,7 @@ export const initialTasks = [
     action: 'Add details',
     kind: 'profile',
     priority: 'soon',
-    why: 'Harvard needs a reliable way to reach you with time-sensitive enrollment updates.',
+    why: 'Aster needs a reliable way to reach you with time-sensitive enrollment updates.',
     steps: [
       'Confirm your mobile number.',
       'Add an emergency contact.',
@@ -49,7 +49,7 @@ export const initialTasks = [
     category: 'Health & wellness',
     title: 'Share your health records',
     description:
-      'Upload your immunization record so Harvard University Health Services can verify the required vaccines before arrival.',
+      'Upload your immunization record so Aster University Health Services can verify the required vaccines before arrival.',
     due: 'Nov 30',
     daysLeft: 114,
     points: 83,
@@ -70,7 +70,7 @@ export const initialTasks = [
     category: 'Campus life',
     title: 'Tell us where you’ll live',
     description:
-      'Let Harvard know whether you plan to live on campus, commute, or need help deciding.',
+      'Let Aster know whether you plan to live on campus, commute, or need help deciding.',
     due: 'Dec 15',
     daysLeft: 129,
     points: 68,
@@ -98,7 +98,7 @@ export const lockedTasks = [
   },
   {
     title: 'Meet your academic adviser',
-    description: 'We’ll show available advisers after Harvard assigns your academic program.',
+    description: 'We’ll show available advisers after Aster assigns your academic program.',
     prerequisite: 'Waiting for program assignment',
     due: 'Date coming soon',
   },
@@ -115,7 +115,7 @@ export const initialCompleted = [
 export const initialReviewing = [
   {
     title: 'Final transcript check',
-    description: 'Harvard received your transcript and is reviewing it now.',
+    description: 'Aster received your transcript and is reviewing it now.',
     submitted: 'Submitted Aug 6',
     eta: 'Usually 2–3 business days',
     points: 60,
@@ -123,7 +123,7 @@ export const initialReviewing = [
 ];
 
 export const housingOptions = [
-  ['on-campus', 'I plan to live on campus', 'Show me Harvard housing options'],
+  ['on-campus', 'I plan to live on campus', 'Show me Aster housing options'],
   ['commute', 'I plan to commute', 'Share commuter resources with me'],
   ['unsure', 'I’m not sure yet', 'Help me compare my options'],
 ];

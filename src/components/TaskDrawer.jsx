@@ -110,20 +110,20 @@ export default function TaskDrawer({
                   <div className="external-destination">
                     <div className="university-mark small">H</div>
                     <div>
-                      <strong>Harvard secure payment portal</strong>
+                      <strong>Aster secure payment portal</strong>
                       <span>payments.harvard.edu</span>
                     </div>
                     <Icon name="shield" size={19} />
                   </div>
                   <p>
-                    You’ll finish payment on Harvard’s website. When it’s received, this checklist
+                    You’ll finish payment on Aster’s website. When it’s received, this checklist
                     will update automatically—usually within a minute.
                   </p>
                   <button className="primary-button full" onClick={() => onComplete(task)}>
-                    Open Harvard payment page <Icon name="external" size={17} />
+                    Open Aster payment page <Icon name="external" size={17} />
                   </button>
                   <small className="prototype-note">
-                    Prototype: this button simulates Harvard confirming payment.
+                    Prototype: this button simulates Aster confirming payment.
                   </small>
                 </div>
               )}
