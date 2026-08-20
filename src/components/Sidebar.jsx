@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '../Icon.jsx';
 import { NAV, PROFILE_ID, UTILITY_ID, destinationById } from '../lib/navigation.js';
+import { FOCUSABLE } from '../lib/overlay.js';
 
 const GROUP_STORE = 'aster.nav.groups';
 
@@ -104,9 +105,11 @@ export default function Sidebar({
     const node = panel.current;
     if (!node) return undefined;
 
+    // The one overlay that never unmounts, so it keeps its own effect — but it
+    // reads the shared selector rather than a fourth copy of one. ENR-181.
     const focusable = () =>
-      Array.from(node.querySelectorAll('a[href], button:not([disabled])')).filter(
-        (element) => element.offsetParent !== null,
+      Array.from(node.querySelectorAll(FOCUSABLE)).filter(
+        (element) => element.getClientRects().length > 0,
       );
 
     focusable()[0]?.focus();

@@ -1,9 +1,12 @@
+import { useRef } from 'react';
 import Icon from '../Icon.jsx';
 import { housingOptions } from '../data.js';
+import { useOverlay } from '../lib/overlay.js';
 import { kindIcon } from '../lib/task-helpers.js';
 
 export default function TaskDrawer({
   task,
+  suspended,
   tab,
   onTab,
   onClose,
@@ -15,11 +18,18 @@ export default function TaskDrawer({
   housing,
   onHousing,
 }) {
+  const panel = useRef(null);
+  // Focus, `Esc` and the tab trap, the same way every other overlay gets them.
+  // `suspended` matters here: the points modal opens from inside this drawer,
+  // and until it closes `Esc` belongs to it alone.
+  useOverlay(panel, { onClose, suspended });
+
   return (
     <>
       <button className="modal-scrim" aria-label="Close task" onClick={onClose} />
       <aside
         className="task-drawer"
+        ref={panel}
         role="dialog"
         aria-modal="true"
         aria-labelledby="drawer-title"
@@ -108,10 +118,10 @@ export default function TaskDrawer({
               {task.kind === 'external' && (
                 <div className="external-panel">
                   <div className="external-destination">
-                    <div className="university-mark small">H</div>
+                    <div className="university-mark small">{task.destination.mark}</div>
                     <div>
-                      <strong>Aster secure payment portal</strong>
-                      <span>payments.harvard.edu</span>
+                      <strong>{task.destination.name}</strong>
+                      <span>{task.destination.url}</span>
                     </div>
                     <Icon name="shield" size={19} />
                   </div>

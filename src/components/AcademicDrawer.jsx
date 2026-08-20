@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Icon from '../Icon.jsx';
 import { confidenceLabel, requirementStatus } from '../lib/academic-helpers.js';
+import { useOverlay } from '../lib/overlay.js';
 import { program } from '../data-academics.js';
-
-const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 const NEXT_STEPS = [
   'The Registrar’s Office compares your evidence against Aster’s credit policy.',
@@ -12,54 +11,16 @@ const NEXT_STEPS = [
 ];
 
 /**
- * One drawer, two kinds, the way `TaskDrawer` carries four. Focus is trapped
- * while it is open and returns to whatever opened it — the pattern this repo
- * owes every overlay.
+ * One drawer, two kinds, the way `TaskDrawer` carries four. Focus, `Esc` and the
+ * tab trap come from `useOverlay` — the pattern this repo owes every overlay,
+ * and since ENR-181 the one it actually has. `suspended` is the credit modal
+ * opening on top of this drawer: while it is there, `Esc` belongs to it.
  */
 export default function AcademicDrawer({ item, onClose, onAsk, onOpenCredit, suspended }) {
   const panel = useRef(null);
-  const opener = useRef(null);
   const [tab, setTab] = useState('evidence');
 
-  // Mount only: remember what opened this, and hand focus back on the way out.
-  // Kept apart from the key handler below so that suspending the drawer for a
-  // modal does not run this cleanup and steal focus out of the modal.
-  useEffect(() => {
-    opener.current = document.activeElement;
-    panel.current?.querySelector(FOCUSABLE)?.focus();
-    const returnTo = opener.current;
-    return () => returnTo?.focus?.();
-  }, []);
-
-  useEffect(() => {
-    // A modal opened from inside the drawer sits on top of it. While it is
-    // there, Esc and the tab trap belong to the modal, not to us.
-    if (suspended) return undefined;
-    const node = panel.current;
-
-    function onKeyDown(event) {
-      if (event.key === 'Escape') {
-        event.stopPropagation();
-        onClose();
-        return;
-      }
-      if (event.key !== 'Tab' || !node) return;
-      const targets = [...node.querySelectorAll(FOCUSABLE)].filter((el) => !el.disabled);
-      if (targets.length === 0) return;
-      const first = targets[0];
-      const last = targets[targets.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-
-    document.addEventListener('keydown', onKeyDown, true);
-    return () => document.removeEventListener('keydown', onKeyDown, true);
-  }, [onClose, suspended]);
+  useOverlay(panel, { onClose, suspended });
 
   const isMatch = item.kind === 'match';
 

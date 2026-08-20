@@ -61,7 +61,12 @@ function tabFromHash() {
   return window.location.hash.startsWith('#/clubs') ? 'clubs' : 'events';
 }
 
-export default function MyCampusLife({ previewState = 'ready', tab, onToast = () => {} }) {
+export default function MyCampusLife({
+  previewState = 'ready',
+  tab,
+  onToast = () => {},
+  onOverlay = () => {},
+}) {
   const [hashTab, setHashTab] = useState(tabFromHash);
   const [view, setView] = useState('for-you');
   const [eventCategory, setEventCategory] = useState('All');
@@ -69,6 +74,14 @@ export default function MyCampusLife({ previewState = 'ready', tab, onToast = ()
   const [eventLimit, setEventLimit] = useState(EVENT_PAGE);
   const [clubLimit, setClubLimit] = useState(CLUB_PAGE);
   const [open, setOpen] = useState(null);
+
+  // "One overlay owns the screen at a time" needs App to hear about an overlay
+  // it does not itself hold, so Edward can stand down for it — ENR-181.
+  useEffect(() => {
+    onOverlay(Boolean(open));
+  }, [onOverlay, open]);
+
+  useEffect(() => () => onOverlay(false), [onOverlay]);
 
   const returnFocus = useRef(null);
   const eventList = useRef(null);

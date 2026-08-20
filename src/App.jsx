@@ -16,6 +16,8 @@ import FinancialsOverview from './pages/FinancialsOverview.jsx';
 import FinancialsAid from './pages/FinancialsAid.jsx';
 import FinancialsPayments from './pages/FinancialsPayments.jsx';
 import MyClassrooms from './components/MyClassrooms.jsx';
+import Edward from './components/edward/Edward.jsx';
+import { buildRecord } from './lib/edward.js';
 import { sortTasks } from './lib/task-helpers.js';
 import { buildLedger } from './lib/money.js';
 import {
@@ -61,6 +63,9 @@ export default function App() {
   const [toast, setToast] = useState(null);
   const [hash, setHash] = useState(() => window.location.hash || DEFAULT_ROUTE);
   const [preview, setPreview] = useState(readPreviewState);
+  // A section that owns its own drawer reports it, so the rule "one overlay owns
+  // the screen at a time" survives an overlay App does not hold — ENR-181.
+  const [sectionOverlay, setSectionOverlay] = useState(false);
 
   const main = useRef(null);
   const menuButton = useRef(null);
@@ -101,6 +106,27 @@ export default function App() {
   const badges = unavailable
     ? {}
     : { openSteps: viewTasks.length, unread, required: requiredEventCount(preview) };
+
+  // Edward reads the same objects the pages render — never a copy of them, so a
+  // figure it says out loud cannot drift from the figure on screen. ENR-181.
+  const edwardRecord = useMemo(
+    () =>
+      buildRecord({
+        state,
+        tasks: viewTasks,
+        completed: viewCompleted,
+        reviewing: viewReviewing,
+        totalSteps: TOTAL_STEPS,
+        snapshot,
+        ledger,
+        requiredEvents: requiredEventCount(preview),
+      }),
+    [state, viewTasks, viewCompleted, viewReviewing, snapshot, ledger, preview],
+  );
+
+  const dialogOpen = Boolean(
+    activeTask || smartModal || pointsModal || progressModal || navOpen || sectionOverlay,
+  );
 
   useEffect(() => {
     const onHashChange = () => {
@@ -157,15 +183,12 @@ export default function App() {
     return () => window.clearTimeout(timer);
   }, [toast]);
 
+  // Every overlay reads `Esc` for itself through `useOverlay`, and stops there,
+  // so a stack unwinds one layer at a time. The navigation drawer is the one
+  // overlay that never unmounts, so its key stays here — ENR-181.
   useEffect(() => {
     const onKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        setActiveTask(null);
-        setSmartModal(false);
-        setPointsModal(false);
-        setProgressModal(false);
-        setNavOpen(false);
-      }
+      if (event.key === 'Escape') setNavOpen(false);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -241,6 +264,23 @@ export default function App() {
         enrollmentAdvisor.name
       } would open here—nothing is sent yet.`,
     );
+  }
+
+  /**
+   * Edward hands the student to the page that does the thing — ENR-176 AC 5. A
+   * route that names a step lands inside that step, not merely near it.
+   */
+  function edwardRoute(target) {
+    const task = target.taskId ? byId[target.taskId] : null;
+    if (task) {
+      openTaskFromSummary(task);
+      return;
+    }
+    window.location.hash = target.route;
+  }
+
+  function edwardContact(person) {
+    setToast(`A message to ${person.name} would open here — nothing is sent yet.`);
   }
 
   function renderPage() {
@@ -324,7 +364,7 @@ export default function App() {
     if (current.id === 'my-classrooms') {
       return (
         <PageShell eyebrow={groupLabel(current)} title={current.label} lede={current.lede}>
-          <MyClassrooms state={preview} onToast={setToast} />
+          <MyClassrooms state={preview} onToast={setToast} onOverlay={setSectionOverlay} />
         </PageShell>
       );
     }
@@ -332,7 +372,14 @@ export default function App() {
     // My Campus Life is a group of two destinations and one screen — ENR-189.
     // The route chooses the tab; the required band sits above both.
     if (current.group === 'campus') {
-      return <MyCampusLife previewState={preview} tab={current.id} onToast={setToast} />;
+      return (
+        <MyCampusLife
+          previewState={preview}
+          tab={current.id}
+          onToast={setToast}
+          onOverlay={setSectionOverlay}
+        />
+      );
     }
 
     // Every other destination states what will appear there and what produces
@@ -440,6 +487,7 @@ export default function App() {
       {activeTask && (
         <TaskDrawer
           task={activeTask}
+          suspended={smartModal || pointsModal || progressModal}
           tab={drawerTab}
           onTab={setDrawerTab}
           onClose={() => setActiveTask(null)}
@@ -472,6 +520,16 @@ export default function App() {
           {toast}
         </div>
       )}
+
+      {/* No route, no navigation entry, every page — ENR-175 AC 1 and AC 2. */}
+      <Edward
+        page={current}
+        record={edwardRecord}
+        state={state}
+        dialogOpen={dialogOpen}
+        onRoute={edwardRoute}
+        onContact={edwardContact}
+      />
     </div>
   );
 }

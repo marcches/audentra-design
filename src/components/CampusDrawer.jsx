@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import Icon from '../Icon.jsx';
+import { useOverlay } from '../lib/overlay.js';
 import {
   longDate,
   registrationAction,
@@ -7,38 +8,10 @@ import {
   shortDate,
 } from '../lib/campus-helpers.js';
 
-const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-
 export default function CampusDrawer({ item, kind, past, onClose, onToast }) {
   const panel = useRef(null);
 
-  useEffect(() => {
-    const node = panel.current;
-    const focusable = () => [...node.querySelectorAll(FOCUSABLE)];
-    focusable()[0]?.focus();
-
-    function onKeyDown(keyEvent) {
-      if (keyEvent.key === 'Escape') {
-        onClose();
-        return;
-      }
-      if (keyEvent.key !== 'Tab') return;
-      const list = focusable();
-      if (list.length === 0) return;
-      const first = list[0];
-      const last = list[list.length - 1];
-      if (keyEvent.shiftKey && document.activeElement === first) {
-        keyEvent.preventDefault();
-        last.focus();
-      } else if (!keyEvent.shiftKey && document.activeElement === last) {
-        keyEvent.preventDefault();
-        first.focus();
-      }
-    }
-
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
-  }, [onClose]);
+  useOverlay(panel, { onClose });
 
   const isEvent = kind === 'event';
   const action = isEvent && !past ? registrationAction(item) : null;

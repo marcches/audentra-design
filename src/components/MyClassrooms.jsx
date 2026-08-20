@@ -43,13 +43,21 @@ function buildView(state) {
   return { requirements: publishedRequirements, matches: creditMatches };
 }
 
-export default function MyClassrooms({ state, onToast }) {
+export default function MyClassrooms({ state, onToast, onOverlay = () => {} }) {
   const { requirements, matches } = useMemo(() => buildView(state), [state]);
   const [open, setOpen] = useState(() =>
     defaultOpenRequirements(publishedRequirements, creditMatches),
   );
   const [drawerItem, setDrawerItem] = useState(null);
   const [creditModal, setCreditModal] = useState(false);
+
+  // "One overlay owns the screen at a time" needs App to hear about an overlay
+  // it does not itself hold, so Edward can stand down for it — ENR-181.
+  useEffect(() => {
+    onOverlay(Boolean(drawerItem) || creditModal);
+  }, [onOverlay, creditModal, drawerItem]);
+
+  useEffect(() => () => onOverlay(false), [onOverlay]);
 
   useEffect(() => {
     if (!creditModal) return undefined;

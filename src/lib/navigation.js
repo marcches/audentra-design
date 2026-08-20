@@ -181,9 +181,12 @@ export const DESTINATIONS = [
     route: '#/help',
     icon: 'help',
     kind: 'utility',
-    lede: 'Ask Aster anything that is blocking a step.',
-    appears: 'Answers from Aster, and the questions you have asked, appear here.',
-    produces: 'Ask your advisor anything that is blocking a step.',
+    // ENR-181 took "ask" back for Edward. Help is where Aster's own guides live
+    // and where a request reaches a named office — a different promise, so it
+    // stops being written in the assistant's words. ENR-182 designs the page.
+    lede: 'Aster’s guides, and a way to reach the office that owns a step.',
+    appears: 'Aster’s guides, and any request you raise with an office, appear here.',
+    produces: 'Raise one when a step is blocked and you need a person on it.',
     next: 'appointments',
     built: false,
   },
