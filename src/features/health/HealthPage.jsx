@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import EntryCard from '../../design-system/patterns/EntryCard.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
-import { destinationById } from '../../lib/navigation.js';
+import { panelById } from '../../lib/navigation.js';
 import RecordCard from './RecordCard.jsx';
 import HealthRail from './HealthRail.jsx';
+import AccessibilityPanel from '../accessibility/AccessibilityPanel.jsx';
 import DocumentDrawer from '../documents/DocumentDrawer.jsx';
 import { filesLabel } from '../documents/logic.js';
 import { healthStanding } from './logic.js';
@@ -16,7 +17,9 @@ import { healthStanding } from './logic.js';
  * section of its own, Accessibility, on 2026-08-21 (ADR-0003): filed under
  * Health it read as a medical matter, which is the one thing the question says
  * Aster is not asking about. It has no sidebar row — the sidebar is the Jam's
- * list — so the entry card under the record is its way in.
+ * list — and since that afternoon no page of its own either: the entry card
+ * under the record opens it as a panel, which is how this portal opens what
+ * lives inside a page. `AccessibilityPanel`.
  *
  * The section's one figure is the **record's state** and nothing else.
  *
@@ -38,11 +41,11 @@ export const HEALTH_PREVIEW_STATES = [
   // state is also the live demonstration of the wait — checking runs on the
   // clock, and `in review` is what it lands in and stays in.
   ['ready', 'Ready', 'A record still to send.'],
-  ['empty', 'Nothing sent yet', 'The health step skipped at onboarding: no record.'],
+  ['empty', 'Nothing sent yet', 'The health step skipped at onboarding: no record, and the question still open.'],
   ['health-returned', 'Record came back', 'A record sent back with a reason.'],
-  ['health-settled', 'Record accepted', 'The record accepted, and the section still shows it.'],
-  ['send-fails', 'Sending fails', 'The next thing you send doesn’t reach Aster.'],
-  ['partial', 'Partial data', 'The record couldn’t be read.'],
+  ['health-settled', 'Record accepted', 'The record accepted and the accommodation question answered, and the section still shows both.'],
+  ['send-fails', 'Sending fails', 'The next thing you send — a record, or an answer to the question — doesn’t reach Aster.'],
+  ['partial', 'Partial data', 'Neither the record nor your answer could be read.'],
   ['loading', 'Loading', 'Before your health record arrives.'],
   ['error', 'Error', 'The section couldn’t be loaded at all.'],
 ];
@@ -57,20 +60,30 @@ export default function HealthPage({
   onSubmit = () => {},
   onToast = () => {},
   onOverlay = () => {},
+  answer,
+  savingAnswer = false,
+  answerFailed = null,
+  onAnswer = () => {},
   onRetry = () => {},
 }) {
-  const accessibility = destinationById('accessibility');
+  const accessibility = panelById('accessibility');
   const [open, setOpen] = useState(false);
+  const [accessOpen, setAccessOpen] = useState(false);
 
   const unavailable = previewState === 'partial';
 
   useEffect(() => {
     setOpen(false);
+    setAccessOpen(false);
   }, [previewState]);
 
+  // Either panel is an overlay App has to hear about, so Edward stands down for
+  // it — ENR-181. The record drawer opens from the card, the question from the
+  // door under it; they are never both open, because each is opened from the
+  // page and the page is behind whichever one is up.
   useEffect(() => {
-    onOverlay(open);
-  }, [open, onOverlay]);
+    onOverlay(open || accessOpen);
+  }, [open, accessOpen, onOverlay]);
 
   useEffect(() => () => onOverlay(false), [onOverlay]);
 
@@ -103,8 +116,8 @@ export default function HealthPage({
         title={accessibility.label}
         note={accessibility.lede}
         standing="Yours to answer, or not. Not right now is a complete answer, and nothing here is a medical matter."
-        href={accessibility.route}
-        action="Open Accessibility"
+        onOpen={() => setAccessOpen(true)}
+        action={accessibility.action}
       />
 
       {open && requirement && (
@@ -123,6 +136,18 @@ export default function HealthPage({
             onToast(`${filesLabel(submission)} would open exactly as you sent it.`)
           }
           onOpenStep={() => setOpen(false)}
+        />
+      )}
+
+      {accessOpen && (
+        <AccessibilityPanel
+          answer={answer}
+          saving={savingAnswer}
+          failed={Boolean(answerFailed)}
+          unavailable={unavailable}
+          onAnswer={onAnswer}
+          onRetry={() => (unavailable ? onRetry() : onAnswer(answerFailed))}
+          onClose={() => setAccessOpen(false)}
         />
       )}
     </PageShell>

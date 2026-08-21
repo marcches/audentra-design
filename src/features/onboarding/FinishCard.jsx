@@ -7,7 +7,7 @@ import { savedCount, skippedCount } from './logic.js';
 /** Where a skipped step is finished, so the offer to come back is a route and not a promise. */
 const WHERE = {
   health: { label: 'Health', route: '#/health' },
-  photo: { label: 'My Documents', route: '#/profile/documents' },
+  photo: { label: 'your profile', route: '#/profile' },
   housing: { label: 'Housing', route: '#/housing' },
   permissions: { label: 'your profile', route: '#/profile' },
 };

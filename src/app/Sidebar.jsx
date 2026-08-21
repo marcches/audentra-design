@@ -1,13 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '../design-system/Icon.jsx';
+import AsterMark from '../design-system/marks/AsterMark.jsx';
+import AudentraMark from '../design-system/marks/AudentraMark.jsx';
 import { IconButton } from '../design-system/primitives/Button.jsx';
+import NavItem, { NavGroup, NavSkeleton, ProfileChip } from '../design-system/primitives/NavItem.jsx';
+import StateCard from '../design-system/patterns/StateCard.jsx';
 import { NAV, PROFILE_ID, UTILITY_ID, destinationById } from '../lib/navigation.js';
 import { FOCUSABLE } from '../lib/overlay.js';
 
-const GROUP_STORE = 'aster.nav.groups';
+const GROUP_STORE = 'aster.nav.open';
 
-/** Groups open by default. Anything unreadable in storage falls back to open. */
-function readCollapsed() {
+/**
+ * Groups closed by default — every accordion in the product is (Marco,
+ * 2026-08-21) — and the one holding the page you are on is opened for you, so
+ * a closed group never hides where the student is. What she opens after that
+ * is remembered. Anything unreadable in storage falls back to closed.
+ */
+function readOpen() {
   try {
     const raw = window.localStorage.getItem(GROUP_STORE);
     const parsed = raw ? JSON.parse(raw) : null;
@@ -17,57 +26,40 @@ function readCollapsed() {
   }
 }
 
-function NavBadge({ count, noun }) {
-  if (count == null || count <= 0) return null;
-  return (
-    <span className="nav-count">
-      <span aria-hidden="true">{count}</span>
-      <span className="sr-only">
-        {count} {noun}
-      </span>
-    </span>
-  );
+/** A row's count, and what it says to a screen reader — the number alone is a number. */
+function countFor(item, badges) {
+  if (item.badge === 'openSteps') {
+    const n = badges.openSteps;
+    return { count: n, label: n === 1 ? '1 step still open' : `${n} steps still open` };
+  }
+  if (item.badge === 'required') {
+    const n = badges.required;
+    return { count: n, label: n === 1 ? '1 required event' : `${n} required events` };
+  }
+  return {};
 }
 
-function NavRow({ id, activeId, badges, leaf, onNavigate }) {
+/**
+ * One destination, as a row. The shape is `NavItem` (design-system); this
+ * only reads the destination model and hands it a route, a glyph and a label.
+ */
+function NavRow({ id, activeId, badges, onNavigate }) {
   const item = destinationById(id);
   if (!item) return null;
-  // A row is the way in for its own page and for the pages that live under it
-  // — My Documents under Profile, Accessibility under Health — so the student
-  // always sees which section she is in.
-  const active = item.id === activeId || destinationById(activeId)?.parent === item.id;
-
+  const { count, label } = countFor(item, badges);
   return (
     <li>
-      <a
-        className={`nav-item${leaf ? ' nav-leaf' : ''}${active ? ' active' : ''}`}
+      <NavItem
         href={item.route}
-        aria-current={active ? 'page' : undefined}
+        icon={item.icon}
+        active={item.id === activeId}
+        count={count}
+        countLabel={label}
         onClick={onNavigate}
       >
-        <span className="nav-icon">
-          <Icon name={item.icon} />
-        </span>
         {item.label}
-        {item.badge === 'openSteps' && <NavBadge count={badges.openSteps} noun="steps still open" />}
-        {item.badge === 'required' && (
-          <NavBadge
-            count={badges.required}
-            noun={badges.required === 1 ? 'required event' : 'required events'}
-          />
-        )}
-      </a>
+      </NavItem>
     </li>
-  );
-}
-
-function NavSkeleton() {
-  return (
-    <div className="nav-skeleton" aria-hidden="true">
-      {['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].map((key, index) => (
-        <span key={key} className={index === 2 || index === 5 ? 'skeleton-line label' : 'skeleton-line'} />
-      ))}
-    </div>
   );
 }
 
@@ -81,29 +73,27 @@ export default function Sidebar({
   onClose,
   onRetry,
 }) {
-  const [collapsed, setCollapsed] = useState(readCollapsed);
+  const [openGroups, setOpenGroups] = useState(readOpen);
   const panel = useRef(null);
   const help = destinationById(UTILITY_ID);
   const profile = destinationById(PROFILE_ID);
-  // The chip is the way in to the profile and to what lives under it.
-  const onProfile = activeId === profile.id || destinationById(activeId)?.parent === profile.id;
 
-  // A collapsed group never hides where the student is.
+  // A closed group never hides where the student is.
   useEffect(() => {
     const holder = NAV.find(
       (entry) => entry.kind === 'group' && entry.items.includes(activeId),
     );
     if (!holder) return;
-    setCollapsed((current) => (current[holder.id] ? { ...current, [holder.id]: false } : current));
+    setOpenGroups((current) => (current[holder.id] ? current : { ...current, [holder.id]: true }));
   }, [activeId]);
 
   useEffect(() => {
     try {
-      window.localStorage.setItem(GROUP_STORE, JSON.stringify(collapsed));
+      window.localStorage.setItem(GROUP_STORE, JSON.stringify(openGroups));
     } catch {
       // A portal that cannot remember a preference still has to navigate.
     }
-  }, [collapsed]);
+  }, [openGroups]);
 
   // Below 820px the sidebar is a dialog: focus is trapped until it closes.
   useEffect(() => {
@@ -140,7 +130,7 @@ export default function Sidebar({
   }, [open]);
 
   function toggleGroup(id) {
-    setCollapsed((current) => ({ ...current, [id]: !current[id] }));
+    setOpenGroups((current) => ({ ...current, [id]: !current[id] }));
   }
 
   return (
@@ -151,10 +141,12 @@ export default function Sidebar({
       aria-modal={open ? 'true' : undefined}
       aria-label="Primary navigation"
     >
+      {/* The brand row is the topbar's height; the mark is the `md` disc, the
+          same size the profile chip ends the column with. */}
       <div className="brand-row">
-        <div className="university-mark" aria-hidden="true">
-          A
-        </div>
+        <span className="brand-mark" aria-hidden="true">
+          <AsterMark size={40} tile />
+        </span>
         <div className="brand-name">
           <strong>Aster</strong>
           <span>New Student Portal</span>
@@ -172,113 +164,81 @@ export default function Sidebar({
       {state === 'loading' && <NavSkeleton />}
 
       {state === 'error' && (
-        <div className="nav-error" role="status">
-          <span>
-            <Icon name="alert" size={17} />
-          </span>
-          <p>Your sections couldn’t be loaded.</p>
-          <button onClick={onRetry}>
-            <Icon name="refresh" size={15} /> Try again
-          </button>
-        </div>
+        <StateCard
+          variant="error"
+          size="compact"
+          className="nav-error"
+          title="Your sections couldn’t be loaded."
+          action={{ label: 'Try again', icon: 'refresh', onClick: onRetry }}
+        >
+          Nothing you’ve done is lost.
+        </StateCard>
       )}
 
       {state !== 'loading' && state !== 'error' && (
         <nav className="main-nav" aria-label="Primary">
           <ul className="nav-list">
-            {NAV.map((entry) => {
-              if (entry.kind === 'link') {
-                return (
-                  <NavRow
-                    key={entry.id}
-                    id={entry.id}
-                    activeId={activeId}
-                    badges={badges}
-                    onNavigate={onNavigate}
-                  />
-                );
-              }
-
-              const isOpen = !collapsed[entry.id];
-              const holdsActive = entry.items.includes(activeId);
-
-              return (
-                <li className="nav-group" key={entry.id}>
-                  <button
-                    className={`nav-group-toggle${holdsActive && !isOpen ? ' holds-active' : ''}`}
-                    id={`nav-group-${entry.id}`}
-                    aria-expanded={isOpen}
-                    aria-controls={`nav-group-list-${entry.id}`}
-                    onClick={() => toggleGroup(entry.id)}
-                  >
-                    {entry.label}
-                    <span className={`group-chevron${isOpen ? ' open' : ''}`} aria-hidden="true">
-                      <Icon name="chevron" size={15} />
-                    </span>
-                  </button>
-                  <ul
-                    className="nav-sublist"
-                    id={`nav-group-list-${entry.id}`}
-                    aria-labelledby={`nav-group-${entry.id}`}
-                    hidden={!isOpen}
-                  >
-                    {entry.items.map((id) => (
-                      <NavRow
-                        key={id}
-                        id={id}
-                        activeId={activeId}
-                        badges={badges}
-                        leaf
-                        onNavigate={onNavigate}
-                      />
-                    ))}
-                  </ul>
-                </li>
-              );
-            })}
+            {NAV.map((entry) =>
+              entry.kind === 'link' ? (
+                <NavRow
+                  key={entry.id}
+                  id={entry.id}
+                  activeId={activeId}
+                  badges={badges}
+                  onNavigate={onNavigate}
+                />
+              ) : (
+                <NavGroup
+                  key={entry.id}
+                  id={entry.id}
+                  label={entry.label}
+                  open={Boolean(openGroups[entry.id])}
+                  holdsActive={entry.items.includes(activeId)}
+                  onToggle={() => toggleGroup(entry.id)}
+                >
+                  {entry.items.map((id) => (
+                    <NavRow
+                      key={id}
+                      id={id}
+                      activeId={activeId}
+                      badges={badges}
+                      onNavigate={onNavigate}
+                    />
+                  ))}
+                </NavGroup>
+              ),
+            )}
           </ul>
 
           {state === 'partial' && (
             <p className="nav-note">
-              <Icon name="info" size={13} /> Some counts are unavailable. The sections still open.
+              <Icon name="info" size={14} /> Some counts are unavailable. The sections still open.
             </p>
           )}
         </nav>
       )}
 
+      {/* The foot: Help is a row like any other; the chip is the way in to the
+          profile; the vendor's line closes the column. */}
       <div className="sidebar-bottom">
-        <a
-          className={`nav-item${activeId === help.id ? ' active' : ''}`}
+        <NavItem
           href={help.route}
-          aria-current={activeId === help.id ? 'page' : undefined}
+          icon={help.icon}
+          active={activeId === help.id}
           onClick={onNavigate}
         >
-          <span className="nav-icon">
-            <Icon name={help.icon} />
-          </span>
           {help.label}
-        </a>
-        <a
-          className={`profile-chip${onProfile ? ' active' : ''}`}
+        </NavItem>
+        <ProfileChip
           href={profile.route}
-          aria-current={onProfile ? 'page' : undefined}
+          person={identity}
+          name={identity.displayName}
+          standing={identity.standing}
+          active={activeId === profile.id}
           onClick={onNavigate}
-        >
-          <span className="avatar" aria-hidden="true">
-            {identity.initials}
-          </span>
-          <span className="profile-name">
-            {/* The preferred name, from the record — ENR-179 AC 3. Typed here,
-                it was one of two copies and the profile could not govern it. */}
-            <strong>{identity.displayName}</strong>
-            <span>{identity.standing}</span>
-          </span>
-          <span className="chip-chevron" aria-hidden="true">
-            <Icon name="chevron" size={16} />
-          </span>
-        </a>
+        />
         <p className="powered-by">
-          Powered by <strong>Audentra</strong>
+          Powered by <AudentraMark height={13} /> <strong>Audentra</strong>
         </p>
       </div>
     </aside>

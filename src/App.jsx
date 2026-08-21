@@ -20,15 +20,11 @@ import AidPage from './features/financials/AidPage.jsx';
 import PaymentsPage from './features/financials/PaymentsPage.jsx';
 import ClassroomsPage from './features/classrooms/ClassroomsPage.jsx';
 import ProfilePage from './features/profile/ProfilePage.jsx';
-import DocumentsPage, { DOCUMENT_PREVIEW_STATES } from './features/documents/DocumentsPage.jsx';
 import AppointmentsPage, { APPOINTMENT_PREVIEW_STATES } from './features/appointments/AppointmentsPage.jsx';
 import HelpPage, { HELP_PREVIEW_STATES } from './features/help/HelpPage.jsx';
 import HousingPage, { HOUSING_PREVIEW_STATES } from './features/housing/HousingPage.jsx';
 import HealthPage, { HEALTH_PREVIEW_STATES } from './features/health/HealthPage.jsx';
-import AccessibilityPage, {
-  ACCESSIBILITY_PREVIEW_STATES,
-  answerToast,
-} from './features/accessibility/AccessibilityPage.jsx';
+import { answerToast } from './features/accessibility/AccessibilityPanel.jsx';
 import { documentsFor } from './features/documents/data.js';
 import { answerFor } from './features/accessibility/data.js';
 import { offices } from './features/help/data.js';
@@ -92,6 +88,20 @@ function withReads(record, ids = storedReadIds()) {
   return { ...record, requirements: applyReadDecisions(record.requirements, ids) };
 }
 
+const GROUPS_STORE = 'aster.enrollment.groups';
+const GROUPS_DEFAULT = { reviewing: false, later: false, completed: false };
+
+/** The remembered disclosure state of My Enrollment's groups; unreadable storage falls back to the defaults. */
+function readGroups() {
+  try {
+    const raw = window.localStorage.getItem(GROUPS_STORE);
+    const parsed = raw ? JSON.parse(raw) : null;
+    return parsed && typeof parsed === 'object' ? { ...GROUPS_DEFAULT, ...parsed } : GROUPS_DEFAULT;
+  } catch {
+    return GROUPS_DEFAULT;
+  }
+}
+
 export default function App() {
   const [tasks, setTasks] = useState(initialTasks);
   const [completed, setCompleted] = useState(initialCompleted);
@@ -99,7 +109,12 @@ export default function App() {
   const [activeTask, setActiveTask] = useState(null);
   const [drawerTab, setDrawerTab] = useState('action');
   const [sort, setSort] = useState('smart');
-  const [completedOpen, setCompletedOpen] = useState(false);
+  // Which of My Enrollment's three not-open groups are open. All three start
+  // closed — every accordion in the product does (Marco, 2026-08-21): the head
+  // already says what is inside and how much, and an open group is a group the
+  // student chose to read. Her choice is remembered the way the sidebar
+  // remembers its groups.
+  const [groups, setGroups] = useState(readGroups);
   const [smartModal, setSmartModal] = useState(false);
   const [pointsModal, setPointsModal] = useState(false);
   const [progressModal, setProgressModal] = useState(false);
@@ -107,6 +122,13 @@ export default function App() {
   const [fileReady, setFileReady] = useState(false);
   const { toasts, push: pushToast, dismiss: dismissToast } = useToasts();
   const [hash, setHash] = useState(() => window.location.hash || DEFAULT_ROUTE);
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(GROUPS_STORE, JSON.stringify(groups));
+    } catch {
+      // A portal that cannot remember a preference still has to work.
+    }
+  }, [groups]);
   const [preview, setPreview] = useState(readPreviewState);
   // A section that owns its own drawer reports it, so the rule "one overlay owns
   // the screen at a time" survives an overlay App does not hold — ENR-181.
@@ -524,7 +546,7 @@ export default function App() {
     // every specimen is sitting in the frame it will actually live in.
     if (hash === STYLEGUIDE_ROUTE) return <Styleguide onToast={pushToast} />;
 
-    if (state === 'loading') return <PageSkeleton />;
+    if (state === 'loading') return <PageSkeleton label={current?.label} />;
 
     if (!current) {
       return (
@@ -557,7 +579,8 @@ export default function App() {
           reviewing={viewReviewing}
           locked={viewLocked}
           completed={viewCompleted}
-          completedOpen={completedOpen}
+          identity={identity}
+          groups={groups}
           sort={sort}
           progress={progress}
           totalSteps={TOTAL_STEPS}
@@ -571,7 +594,7 @@ export default function App() {
           onOpenSmart={() => setSmartModal(true)}
           onOpenTask={openTask}
           onOpenPoints={() => setPointsModal(true)}
-          onToggleCompleted={() => setCompletedOpen((open) => !open)}
+          onToggleGroup={(id) => setGroups((current) => ({ ...current, [id]: !current[id] }))}
           onResume={() => {
             const task = viewTasks.find((item) => item.id === 'profile');
             if (task) openTask(task);
@@ -596,8 +619,28 @@ export default function App() {
 
     // ENR-184. `empty` means a record opened today rather than a section with
     // nothing in it, so this page reads the raw preview value too.
+    //
+    // The record goes with it. My Documents is a panel on this page since
+    // 2026-08-21, so everything the panel needs to send a file — the record,
+    // the clock, the read marks — is handed down from here, where it has lived
+    // since ENR-206, rather than being held by whichever screen is showing it.
     if (current.id === 'profile') {
-      return <ProfilePage destination={current} state={preview} record={record} onToast={pushToast} />;
+      return (
+        <ProfilePage
+          destination={current}
+          state={preview}
+          record={record}
+          tasks={viewTasks}
+          sendingId={sendingId}
+          failedId={failedId}
+          onSubmit={submitDocument}
+          onMarkRead={markDocumentRead}
+          onToast={pushToast}
+          onOpenTask={openTaskFromSummary}
+          onOverlay={setSectionOverlay}
+          onRetry={() => choosePreview('ready')}
+        />
+      );
     }
 
     // ENR-183. Two of this page's states are its own — a student with nothing
@@ -629,28 +672,6 @@ export default function App() {
       );
     }
 
-    // ENR-165. `changes-requested` is this page's own, and `empty` here is a
-    // record Aster has asked things of and received none of them, so this page
-    // reads the raw preview value too.
-    if (current.id === 'my-documents') {
-      return (
-        <DocumentsPage
-          destination={current}
-          previewState={preview}
-          record={record}
-          sendingId={sendingId}
-          failedId={failedId}
-          tasks={viewTasks}
-          onSubmit={submitDocument}
-          onMarkRead={markDocumentRead}
-          onToast={pushToast}
-          onOverlay={setSectionOverlay}
-          onOpenTask={openTaskFromSummary}
-          onRetry={() => choosePreview('ready')}
-        />
-      );
-    }
-
     // ENR-206. Health reads the immunization record out of the same list My
     // Documents renders — never a copy of it.
     if (current.id === 'health') {
@@ -662,25 +683,13 @@ export default function App() {
           task={byId.health ?? null}
           sendingId={sendingId}
           failedId={failedId}
-          onSubmit={submitDocument}
-          onToast={pushToast}
-          onOverlay={setSectionOverlay}
-          onRetry={() => choosePreview('ready')}
-        />
-      );
-    }
-
-    // ADR-0003. The accommodation answer, on a section of its own; it reaches
-    // no other module — ADR-0001.
-    if (current.id === 'accessibility') {
-      return (
-        <AccessibilityPage
-          destination={current}
-          previewState={preview}
           answer={answer}
           savingAnswer={savingAnswer}
           answerFailed={answerFailed}
           onAnswer={answerAccommodation}
+          onSubmit={submitDocument}
+          onToast={pushToast}
+          onOverlay={setSectionOverlay}
           onRetry={() => choosePreview('ready')}
         />
       );
@@ -857,15 +866,11 @@ export default function App() {
                       ? APPOINTMENT_PREVIEW_STATES
                       : current?.id === 'help'
                         ? HELP_PREVIEW_STATES
-                        : current?.id === 'my-documents'
-                          ? DOCUMENT_PREVIEW_STATES
-                          : current?.id === 'housing'
-                            ? HOUSING_PREVIEW_STATES
-                            : current?.id === 'health'
-                              ? HEALTH_PREVIEW_STATES
-                              : current?.id === 'accessibility'
-                                ? ACCESSIBILITY_PREVIEW_STATES
-                                : undefined
+                        : current?.id === 'housing'
+                          ? HOUSING_PREVIEW_STATES
+                          : current?.id === 'health'
+                            ? HEALTH_PREVIEW_STATES
+                            : undefined
           }
           onPreviewState={choosePreview}
         />

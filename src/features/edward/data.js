@@ -94,7 +94,6 @@ export const PAGE_QUESTIONS = {
     { text: 'What is due soonest?', intent: 'next-deadline' },
     { text: 'How do momentum points work?', intent: 'points' },
   ],
-  'my-documents': [{ text: 'Which documents does Aster still need from me?', intent: 'documents' }],
   appointments: [{ text: 'Who should I talk to about a blocked step?', intent: 'advisor' }],
   messages: [{ text: 'Who should I talk to about a blocked step?', intent: 'advisor' }],
   'my-classrooms': [
@@ -116,7 +115,10 @@ export const PAGE_QUESTIONS = {
   events: [{ text: 'Which campus events am I required to attend?', intent: 'events' }],
   clubs: [{ text: 'Which campus events am I required to attend?', intent: 'events' }],
   help: [{ text: 'Who should I talk to about a blocked step?', intent: 'advisor' }],
-  profile: [{ text: 'What can you see about me?', intent: 'privacy' }],
+  profile: [
+    { text: 'Which documents does Aster still need from me?', intent: 'documents' },
+    { text: 'What can you see about me?', intent: 'privacy' },
+  ],
 };
 
 /**

@@ -4,11 +4,12 @@ import EntryCard from '../../design-system/patterns/EntryCard.jsx';
 import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
-import { destinationById } from '../../lib/navigation.js';
+import { panelById } from '../../lib/navigation.js';
 import { checkingOne, needsYou, standing, standingLede } from '../documents/logic.js';
 import FieldRow from './FieldRow.jsx';
 import PermissionGrant from './PermissionGrant.jsx';
 import ProfileRail from './ProfileRail.jsx';
+import DocumentsPanel from '../documents/DocumentsPanel.jsx';
 import {
   RECORD_CATEGORIES,
   channelOptions,
@@ -28,15 +29,30 @@ import { buildProfile, grantsFor, identityFor, runsFor } from './logic.js';
  * where a student goes looking for it. And the academic documents panel that
  * duplicated My Documents is gone: what is held elsewhere is named and routed
  * to, never copied — one record, one place, ENR-174 AC 4. Since the Jam of
- * 2026-08-21 My Documents lives *under* this page: the first card is its way
- * in, with the record's own standing on it — read from the same record App
- * hands My Documents, never a copy.
+ * 2026-08-21 My Documents lives *under* this page, and since that afternoon it
+ * is a panel rather than a page of its own: the first card is the door, with
+ * the record's own standing on it — read from the record App holds, never a
+ * copy — and it opens `DocumentsPanel`, where the rest of the portal opens what
+ * lives inside a page.
  *
  * Like My Classrooms, this page reads the raw preview value rather than
  * `frameState`: `empty` means "a record opened today" here, which is a real
  * state of this screen and not the frame's idea of nothing.
  */
-export default function ProfilePage({ destination, state, record, onToast }) {
+export default function ProfilePage({
+  destination,
+  state,
+  record,
+  tasks = [],
+  sendingId = null,
+  failedId = null,
+  onSubmit = () => {},
+  onMarkRead = () => {},
+  onToast = () => {},
+  onOpenTask = () => {},
+  onOverlay = () => {},
+  onRetry = () => {},
+}) {
   const { groups, version, updated, ownership, blanks } = useMemo(
     () => buildProfile(state),
     [state],
@@ -46,7 +62,7 @@ export default function ProfilePage({ destination, state, record, onToast }) {
 
   // The documents standing, from the record itself. `partial` reads as unread,
   // not as settled, the way My Documents reads it.
-  const documents = destinationById('my-documents');
+  const documents = panelById('my-documents');
   const requirements = record?.requirements ?? [];
   const mine = unchecked ? [] : needsYou(requirements);
   const documentsStanding = standingLede({
@@ -59,13 +75,23 @@ export default function ProfilePage({ destination, state, record, onToast }) {
   const [channel, setChannel] = useState('portal');
   const [choiceOpen, setChoiceOpen] = useState(false);
   const [grants, setGrants] = useState(() => grantsFor(state));
+  const [documentsOpen, setDocumentsOpen] = useState(false);
 
   // The preview control switches the record underneath the page; what the
   // student changed on the old one must not survive onto the new one.
   useEffect(() => {
     setGrants(grantsFor(state));
     setChoiceOpen(false);
+    setDocumentsOpen(false);
   }, [state]);
+
+  // "One overlay owns the screen at a time" needs App to hear about an overlay
+  // it does not hold, so Edward can stand down for it — ENR-181.
+  useEffect(() => {
+    onOverlay(documentsOpen);
+  }, [documentsOpen, onOverlay]);
+
+  useEffect(() => () => onOverlay(false), [onOverlay]);
 
   const mobile = groups
     .flatMap((group) => group.fields)
@@ -211,15 +237,15 @@ export default function ProfilePage({ destination, state, record, onToast }) {
         note={documents.lede}
         count={mine.length}
         standing={documentsStanding}
-        href={documents.route}
-        action="Open My Documents"
+        onOpen={() => setDocumentsOpen(true)}
+        action={documents.action}
       />
 
       {groups.map((group) => (
         <section className="section-card" key={group.id} aria-labelledby={`${group.id}-title`}>
           <div className="status-heading">
             <span className="status-icon record">
-              <Icon name={group.icon} size={18} />
+              <Icon weight="duotone" name={group.icon} size={18} />
             </span>
             <div>
               <h2 id={`${group.id}-title`}>{group.title}</h2>
@@ -264,7 +290,7 @@ export default function ProfilePage({ destination, state, record, onToast }) {
       <section className="section-card" aria-labelledby="access-title">
         <div className="status-heading">
           <span className="status-icon private">
-            <Icon name="users" size={18} />
+            <Icon weight="duotone" name="users" size={18} />
           </span>
           <div>
             <h2 id="access-title">Who can see your record</h2>
@@ -326,7 +352,7 @@ export default function ProfilePage({ destination, state, record, onToast }) {
       <section className="section-card" aria-labelledby="elsewhere-title">
         <div className="status-heading">
           <span className="status-icon signpost">
-            <Icon name="pin" size={18} />
+            <Icon weight="duotone" name="pin" size={18} />
           </span>
           <div>
             <h2 id="elsewhere-title">What lives somewhere else</h2>
@@ -355,6 +381,22 @@ export default function ProfilePage({ destination, state, record, onToast }) {
           ))}
         </div>
       </section>
+
+      {documentsOpen && (
+        <DocumentsPanel
+          previewState={state}
+          record={record}
+          sendingId={sendingId}
+          failedId={failedId}
+          tasks={tasks}
+          onSubmit={onSubmit}
+          onMarkRead={onMarkRead}
+          onToast={onToast}
+          onOpenTask={onOpenTask}
+          onRetry={onRetry}
+          onClose={() => setDocumentsOpen(false)}
+        />
+      )}
     </PageShell>
   );
 }

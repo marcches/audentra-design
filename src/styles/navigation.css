@@ -48,188 +48,19 @@
 
 /* --- the navigation itself --- */
 
-/* The sidebar itself never scrolls: the list inside it does (`.main-nav`,
-   chrome.css), so the brand and the profile chip are always where she left
-   them. Round two of the Jam of 2026-08-21. */
-.sidebar {
-  overflow: hidden;
-}
-
-.brand-row .brand-name {
-  flex-direction: column;
-  gap: var(--space-1);
-  display: flex;
-}
-
 .status-icon.guide {
   color: var(--purple);
   background: var(--purple-soft);
 }
 
-.nav-list, .nav-sublist {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.nav-list {
-  flex-direction: column;
-  gap: var(--space-2);
-  display: flex;
-}
-
-.nav-group {
-  margin-top: var(--space-6);
-}
-
-.nav-group-toggle {
-  color: var(--muted);
-  cursor: pointer;
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-  background: 0 0;
-  border: 0;
-  border-radius: var(--radius-chip);
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-4);
-  width: 100%;
-  padding: var(--space-3) var(--space-5);
-  font-size: var(--fs-small);
-  font-weight: var(--fw-heavy);
-  display: flex;
-}
-
-.nav-group-toggle:hover {
-  color: var(--ink);
-  background: var(--canvas);
-}
-
-.nav-group-toggle.holds-active {
-  color: var(--purple-dark);
-}
-
-.group-chevron {
-  place-items: center;
-  transition: transform .18s;
-  display: grid;
-  transform: rotate(-90deg);
-}
-
-.group-chevron.open {
-  transform: rotate(0);
-}
-
-.nav-sublist {
-  border-left: 1px solid var(--line);
-  flex-direction: column;
-  gap: var(--space-1);
-  margin: var(--space-1) 0 0 var(--space-10);
-  padding-left: var(--space-2);
-  display: flex;
-}
-
-.nav-sublist[hidden] {
-  display: none;
-}
-
-.nav-item.nav-leaf {
-  min-height: 40px;
-  font-size: var(--fs-body);
-}
+/* The sidebar's own rules — the rows, the groups, the foot — live with the
+   frame in chrome.css. What stays here is the one control that must come
+   after `.icon-button`: the drawer's close button, hidden above 820px. */
 
 .nav-close {
-  width: 32px;
-  height: 32px;
+  flex: none;
   margin-left: auto;
   display: none;
-}
-
-.nav-note {
-  color: var(--muted);
-  align-items: flex-start;
-  gap: var(--space-3);
-  margin: var(--space-7) var(--space-2) 0;
-  font-size: var(--fs-meta);
-  line-height: var(--lh-body);
-  display: flex;
-}
-
-.nav-error {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-row);
-  justify-items: start;
-  gap: var(--space-4);
-  margin: var(--space-2) var(--space-1);
-  padding: var(--space-7);
-  display: grid;
-}
-
-.nav-error>span {
-  color: var(--amber);
-  background: var(--amber-soft);
-  border-radius: var(--radius-chip);
-  place-items: center;
-  width: 31px;
-  height: 31px;
-  display: grid;
-}
-
-.nav-error p {
-  margin: 0;
-  font-size: var(--fs-copy);
-  font-weight: var(--fw-semi);
-  line-height: var(--lh-heading);
-}
-
-.nav-error button {
-  color: var(--purple-dark);
-  cursor: pointer;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-chip);
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-5);
-  font-size: var(--fs-copy);
-  font-weight: var(--fw-bold);
-  display: inline-flex;
-}
-
-/* --- the profile chip is a route now, not a decoration --- */
-
-.profile-chip {
-  color: inherit;
-  border-radius: 0 0 var(--radius-tile) var(--radius-tile);
-  text-decoration: none;
-}
-
-.profile-chip:hover {
-  background: var(--canvas);
-}
-
-.profile-chip.active strong {
-  color: var(--purple-dark);
-}
-
-.profile-name {
-  flex-direction: column;
-  flex: 1;
-  gap: var(--space-1);
-  min-width: 0;
-  display: flex;
-}
-
-.profile-chip .avatar {
-  color: var(--purple-ink);
-  font-size: var(--fs-copy);
-}
-
-.chip-chevron {
-  color: var(--muted);
-  place-items: center;
-  display: grid;
 }
 
 /* --- the preview-state control --- */
@@ -445,61 +276,12 @@
   margin-bottom: var(--space-9);
 }
 
-/* --- error --- */
-
-.page-error {
-  background: var(--amber-soft);
-  border: 1px solid var(--amber-line);
-  border-radius: var(--radius-card);
-  justify-items: start;
-  gap: var(--space-5);
-  max-width: 660px;
-  margin-top: var(--space-10);
-  padding: var(--space-11) var(--space-11);
-  display: grid;
-}
-
-.page-error-icon {
-  color: var(--amber);
-  background: var(--surface);
-  border-radius: var(--radius-tile);
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  display: grid;
-}
-
-.page-error h2 {
-  margin: 0;
-  font-size: var(--fs-h2);
-}
-
-.page-error p {
-  color: var(--amber-ink);
-  margin: 0;
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-}
-
-.page-error button {
-  color: var(--on-ink);
-  cursor: pointer;
-  background: var(--ink);
-  border: 0;
-  border-radius: var(--radius-tile);
-  align-items: center;
-  gap: var(--space-3);
-  margin-top: var(--space-2);
-  padding: var(--space-5) var(--space-7);
-  font-size: var(--fs-body);
-  font-weight: var(--fw-bold);
-  display: inline-flex;
-}
+/* --- error --- the page-sized error is `StateCard` at `size="page"` (patterns.css). --- */
 
 /* --- loading --- */
 
 .skeleton-line {
-  background: linear-gradient(90deg,var(--line),var(--card-zone),var(--line)) 0 0/220% 100%;
+  background: linear-gradient(90deg,var(--line-strong),var(--line-soft),var(--line-strong)) 0 0/220% 100%;
   border-radius: var(--radius-pill);
   height: 12px;
   animation: 1.5s ease-in-out infinite skeleton-shimmer;
@@ -516,47 +298,99 @@
   }
 }
 
-.nav-skeleton {
-  flex-direction: column;
-  gap: var(--space-6);
-  padding: var(--space-3) var(--space-5);
-  display: flex;
-}
-
-.nav-skeleton .skeleton-line {
-  height: 21px;
-}
-
-.nav-skeleton .skeleton-line.label {
-  width: 54%;
-  height: 9px;
-}
-
 .page-skeleton {
   flex-direction: column;
-  gap: var(--space-9);
+  gap: var(--hero-gap, var(--space-9));
   display: flex;
 }
 
-.skeleton-head {
+/* The page's anatomy, in skeleton: a band the height of the hero, a panel the
+   height of the summary, then cards — so loading → ready is a fade, not a
+   rearrangement (Jam, 2026-08-21). The band says what it is doing, once, where
+   the eye lands first. */
+.skeleton-band {
+  background: var(--purple-wash);
+  border: 1px solid var(--purple-line);
+  border-radius: var(--radius-card);
   flex-direction: column;
+  justify-content: center;
   gap: var(--space-6);
-  padding: var(--space-2) var(--space-1);
+  min-height: var(--hero-min, 172px);
+  padding: var(--space-10) var(--space-11);
   display: flex;
 }
 
-.skeleton-head .skeleton-line.short {
-  width: 118px;
-  height: 9px;
+.skeleton-status {
+  color: var(--purple-ink);
+  align-items: center;
+  gap: var(--space-4);
+  margin: 0;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-bold);
+  display: flex;
 }
 
-.skeleton-head .skeleton-line.title {
-  width: min(420px,68%);
+.skeleton-spinner {
+  color: var(--purple);
+  place-items: center;
+  display: grid;
+  animation: 1s linear infinite skeleton-spin;
+}
+
+@keyframes skeleton-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.skeleton-band .skeleton-line {
+  background: linear-gradient(90deg, var(--purple-line), var(--purple-soft), var(--purple-line)) 0 0/220% 100%;
+}
+
+.skeleton-band .skeleton-line.title {
+  width: min(420px, 68%);
   height: 31px;
 }
 
-.skeleton-head .skeleton-line.lede {
-  width: min(560px,86%);
+.skeleton-band .skeleton-line.lede {
+  width: min(560px, 86%);
+}
+
+.skeleton-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-8);
+  min-height: var(--panel-min, 102px);
+  padding: var(--space-8) var(--space-10);
+  display: grid;
+  box-shadow: var(--shadow-card);
+}
+
+.skeleton-disc {
+  background: var(--line-soft);
+  border-radius: var(--radius-round);
+  width: 56px;
+  height: 56px;
+  display: block;
+}
+
+.skeleton-lines {
+  flex-direction: column;
+  gap: var(--space-4);
+  display: flex;
+}
+
+.skeleton-lines .skeleton-line.short {
+  width: 40%;
+  height: 9px;
+}
+
+.skeleton-lines .skeleton-line.figure {
+  width: 70%;
+  height: 18px;
 }
 
 .skeleton-card {
@@ -572,6 +406,25 @@
 
 .skeleton-card .skeleton-line.short {
   width: 46%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-line {
+    animation: none;
+    background: var(--line-soft);
+  }
+  .skeleton-spinner {
+    animation: none;
+  }
+}
+
+@media (width<=820px) {
+  .skeleton-panel {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .skeleton-lines.trailing {
+    grid-column: 1 / -1;
+  }
 }
 
 /* --- the Dashboard --- */
@@ -673,7 +526,7 @@
     animation: none;
   }
 
-  .group-chevron, .skip-to-content, .summary-task {
+  .group-chevron, .nav-item, .nav-group-toggle, .profile-chip, .skip-to-content, .summary-task {
     transition: none;
   }
 }

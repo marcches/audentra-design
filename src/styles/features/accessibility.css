@@ -1,12 +1,13 @@
 /* ============================================================================
- * Accessibility — the accommodation question on a route of its own.
+ * Accessibility — the accommodation question, as a panel.
  *
  * These rules were written for ENR-206, where the question was the second card
- * inside Health, and moved here whole and in order when the question got its own
- * section (ADR-0003). Moved, not rewritten: the rendering of the card was
- * captured before and after and diffed to zero. The rail reuses `.teams-list`
- * from `health.css`, the way every rail reuses `.provenance-card` from
- * `campus.css`.
+ * inside Health; they moved here whole and in order when the question got its
+ * own section (ADR-0003), and they survived it becoming a drawer on 2026-08-21
+ * with two changes and no third. The office eyebrow inside the card is gone —
+ * the drawer's label is where a drawer says who owns what is in it — and the
+ * heading now beats `.drawer-content h2` by naming its parent, rather than by
+ * whichever file the cascade happens to read last.
  * ==========================================================================*/
 
 /* ── The question ── */
@@ -14,15 +15,8 @@
 .question-head {
   padding: 0;
 }
-.question-owner {
-  color: var(--muted);
-  letter-spacing: .13em;
-  text-transform: uppercase;
-  font-family: var(--font-geist-mono);
-  font-size: var(--fs-micro);
-}
-.question-head h2 {
-  margin-top: var(--space-4);
+.drawer-content .question-head h2 {
+  margin: var(--space-8) 0 0;
   font-size: 19px;
   font-weight: var(--fw-semi);
   line-height: 1.35;

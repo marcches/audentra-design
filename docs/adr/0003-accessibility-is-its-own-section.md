@@ -52,3 +52,26 @@ nobody asked for an Accessibility section in the navigation — so the destinati
 `parent: 'health'` in `navigation.js`: no row, the Health row is active while it is open, and the
 way in is an `EntryCard` under the immunization record on Health, at `#/health/accessibility`. The
 substance of this ADR (a page of its own, no badge, the answer reaches no other module) is untouched.
+
+## Amended again 2026-08-21, that afternoon
+
+The route goes too. Marco, reading the two entry cards back: *they don't open pages of their own any
+more, they open the side panel — it has to follow the user flow the rest of the portal has.* He is
+right, and the fault was ours for stopping halfway. The first amendment took the sidebar row away
+and left the page, which produced a fourth kind of destination: a page with no navigation, reachable
+from exactly one card, and addressable by a URL nothing links to. The portal already has one way of
+opening what lives inside a page, and it is `Drawer`.
+
+So `#/health/accessibility` is gone — the hash falls through to the 404 the way `#/dashboard` does —
+and the entry card under the immunization record opens `AccessibilityPanel`. Accessibility is no
+longer a destination at all: it is declared in `PANELS` in `navigation.js`, which carries the copy
+the door needs and deliberately nothing else, because a panel has no address to land on. My
+Documents made the same move on the same afternoon, under Profile.
+
+The substance of this ADR is *still* untouched, and this is now the third surface it has survived:
+the question is not a card inside Health's record, it has no badge and cannot be counted, and the
+answer reaches no module but `App`. What it lost is the rail — `Usually replies in 2 days` and `Who
+is on the other side` both named Accessibility Services, which the panel's own label names — and the
+office eyebrow inside the card, for the same reason. What it gained is the thing ADR-0001 was
+originally about: the question is now read *beside* the record it must not be mistaken for, without
+being filed under it.

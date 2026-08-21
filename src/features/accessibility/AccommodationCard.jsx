@@ -4,8 +4,11 @@ import { answerInfo, answerOption, answerState } from './logic.js';
 import { offices } from '../help/data.js';
 
 /**
- * The accommodation question — ENR-208. Built inside Health by ENR-206 and moved
- * to its own section by ADR-0003; the card itself is unchanged in construction.
+ * The accommodation question — ENR-208. Built inside Health by ENR-206, given a
+ * section of its own by ADR-0003, and the body of the Accessibility panel since
+ * 2026-08-21; the question itself is unchanged in construction. The office's
+ * name used to head it and is now the panel's label, which is where a drawer
+ * says who owns what is inside it.
  *
  * ## Why this card has no heading band
  *
@@ -66,9 +69,8 @@ export default function AccommodationCard({
   }
 
   return (
-    <section className="section-card question-card" aria-labelledby="accommodation-title">
+    <div className="question-body">
       <div className="question-head">
-        <span className="question-owner">{office.name}</span>
         <h2 id="accommodation-title">{accommodationQuestion.title}</h2>
         <p className="question-lede">{accommodationQuestion.lede}</p>
         <p className="question-collects">
@@ -168,6 +170,6 @@ export default function AccommodationCard({
       <p className="card-foot question-foot">
         <Icon name="lock" size={14} /> {accommodationQuestion.seenBy}
       </p>
-    </section>
+    </div>
   );
 }

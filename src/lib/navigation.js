@@ -22,11 +22,14 @@
  * page registry in `App.jsx` — a destination whose page has not landed yet
  * shows its placeholder, which is its honest state.
  *
- * `parent` says a destination lives under another one. It has no sidebar row
- * of its own; the parent's row stays active while it is open; it is reached
- * from an `EntryCard` on the parent's page and from deep links. My Documents
- * lives under Profile and Accessibility under Health — the Jam of 2026-08-21,
- * and Marco's instruction the same morning.
+ * A destination is a place the navigation can reach. Two things the portal
+ * shows are not destinations: My Documents and Accessibility. The Jam of
+ * 2026-08-21 took them out of the sidebar and put them under Profile and
+ * Health; Marco finished the move the same afternoon — what has no row does not
+ * get a page either, it opens the side panel, because that is the portal's one
+ * way of opening what lives inside a page. They are declared in `PANELS` below,
+ * which carries the copy an `EntryCard` needs and nothing else: no route, no
+ * hero, no placeholder, because a panel has no address to land on.
  */
 
 export const GROUPS = {
@@ -59,7 +62,7 @@ export const DESTINATIONS = [
     id: 'my-enrollment',
     label: 'My Enrollment',
     route: '#/my-enrollment',
-    icon: 'check',
+    icon: 'checklist',
     badge: 'openSteps',
     lede: 'Everything Aster still needs from you, in the order that keeps you moving.',
     // The one hero with a flag: the eyebrow states a fact about her standing,
@@ -73,29 +76,7 @@ export const DESTINATIONS = [
     },
     appears: 'The steps Aster still needs from you appear here.',
     produces: 'New steps open as you finish the ones before them.',
-    next: 'my-documents',
-    built: true,
-  },
-  {
-    id: 'my-documents',
-    label: 'My Documents',
-    route: '#/profile/documents',
-    icon: 'file',
-    // Under Profile since the Jam of 2026-08-21: no sidebar row, the profile
-    // chip is the way in. No badge either — the count of what needs her sits on
-    // the entry card on Profile and on the page, My Enrollment already counts
-    // the steps, and the bell carries a decision she has not opened
-    // (ENR-158 AC 5).
-    parent: 'profile',
-    lede: 'Everything you have sent Aster, and everything Aster has sent you.',
-    hero: {
-      kicker: 'Profile · My Documents',
-      title: 'Everything on file.',
-      lede: 'Everything you have sent Aster, and everything Aster has sent you, in one place.',
-    },
-    appears: 'Documents you upload and documents Aster sends you appear here.',
-    produces: 'The first one arrives when you complete a step that asks for a file.',
-    next: 'my-enrollment',
+    next: 'profile',
     built: true,
   },
   {
@@ -120,7 +101,7 @@ export const DESTINATIONS = [
     id: 'my-classrooms',
     label: 'My Degree',
     route: '#/my-classrooms',
-    icon: 'book',
+    icon: 'degree',
     lede: 'What your degree asks of you, and the courses that satisfy each requirement.',
     hero: {
       kicker: 'Academic · BA Computer Science',
@@ -140,7 +121,7 @@ export const DESTINATIONS = [
     route: '#/health',
     // Not a heart and not a cross: this section is not a medical record, and the
     // first thing a student reads must not suggest it is.
-    icon: 'shield',
+    icon: 'health',
     // No badge, deliberately. The record's open state is already counted on
     // My Documents — the same thing twice in one sidebar is a lie about how much
     // is outstanding.
@@ -153,33 +134,7 @@ export const DESTINATIONS = [
     },
     appears: 'The health step from onboarding is finished here, whatever is left of it.',
     produces: 'The record is open to you from the day your offer is accepted.',
-    next: 'my-documents',
-    built: true,
-  },
-  {
-    id: 'accessibility',
-    label: 'Accessibility',
-    route: '#/health/accessibility',
-    icon: 'accessibility',
-    // A page of its own (ADR-0003) but not a sidebar row: Marco took the row
-    // out on 2026-08-21 — the sidebar is the Jam's list and nobody asked for a
-    // section — so it lives under Health and is reached from the entry card
-    // under the record.
-    parent: 'health',
-    // Its own section, not a card inside Health — ADR-0003. And no badge, ever:
-    // any counter that could include the accommodation question would turn a
-    // complete "not right now" into a pending item, which is the one thing this
-    // section exists to avoid (ADR-0001, ENR-208 AC 3).
-    lede: 'One question that’s yours to answer, or not.',
-    hero: {
-      kicker: 'Health · Accessibility',
-      title: 'Accommodations, if you want them.',
-      lede: 'One question that’s yours to answer, or not.',
-      motif: 'accessibility',
-    },
-    appears: 'The question from onboarding is finished here, whatever you answered.',
-    produces: 'It is open to you from the day your offer is accepted.',
-    next: 'my-documents',
+    next: 'profile',
     built: true,
   },
 
@@ -204,7 +159,7 @@ export const DESTINATIONS = [
     lede: 'Every source paying towards your year, and what could still be added.',
     appears: 'Aid you have been offered, and the paperwork it still needs, appear here.',
     produces: 'They arrive once your aid package is released.',
-    next: 'my-documents',
+    next: 'profile',
     built: true,
   },
   {
@@ -316,6 +271,53 @@ export const DESTINATIONS = [
 ];
 
 /**
+ * The two things that live inside a page rather than beside it.
+ *
+ * A panel is not a small destination. It has no route, so nothing links to it
+ * and the back button never lands in it; it has no hero, because a drawer says
+ * where you are in its label; it has no placeholder, because there is no
+ * address for a student to arrive at before it is built. What it has is the
+ * copy the `EntryCard` on the parent page needs — the name the door carries,
+ * and the one line saying what is behind it — declared here for the same reason
+ * every destination's copy is: a concept must not end up with two names on two
+ * screens (ENR-174 AC4).
+ *
+ * `owner` is the page that holds the door. It is what the panel's drawer label
+ * leads with, and it is the reason each of these is under the section it is
+ * under: the record is part of what Aster knows about her, and the accommodation
+ * question is asked beside the health step it must never be mistaken for
+ * (ADR-0003).
+ *
+ * Neither carries a count. My Enrollment already counts the steps, and any
+ * counter that could include the accommodation question would turn a complete
+ * "not right now" into a pending item — the one thing that section exists to
+ * avoid (ADR-0001, ENR-208 AC 3). The number on the documents card is the
+ * record's own, read live from the record.
+ */
+export const PANELS = {
+  'my-documents': {
+    id: 'my-documents',
+    owner: 'Profile',
+    label: 'My Documents',
+    icon: 'file',
+    lede: 'Everything you have sent Aster, and everything Aster has sent you.',
+    action: 'Open My Documents',
+  },
+  accessibility: {
+    id: 'accessibility',
+    owner: 'Health',
+    label: 'Accessibility',
+    icon: 'accessibility',
+    lede: 'One question that’s yours to answer, or not.',
+    action: 'Open Accessibility',
+  },
+};
+
+export function panelById(id) {
+  return PANELS[id] ?? null;
+}
+
+/**
  * The home. The Dashboard that used to hold this slot summarised sections the
  * student then had to open anyway; the Jam of 2026-08-20 removed it. My
  * Enrollment is the page that already answers "what now", so it is the landing.
@@ -365,7 +367,7 @@ export function onboardingStepFrom(hash) {
  * The sidebar, in order — Laura's, from the Jam of 2026-08-21: what I must do,
  * who I talk to, my degree, my health, where I will live, then the money and the
  * rest of my life at Aster. My Documents left the list for the profile that
- * morning, and Accessibility never joined it (see `parent` above).
+ * morning, and Accessibility never joined it (see `PANELS` above).
  *
  * Messages is gone. It was never a card: it arrived in the product base as a
  * decorative row and ENR-180 kept it because the topbar bell needed somewhere to

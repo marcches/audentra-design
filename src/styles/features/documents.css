@@ -645,7 +645,12 @@
   line-height: var(--lh-body);
 }
 
-/* --- the rail --- */
+/* --- the anchor card this section named ---
+ *
+ * `waiting-card` was My Documents' rail until 2026-08-21, when the section
+ * became a panel and the rail went with it: `With Aster right now` restated the
+ * rows under it. The variant survives on the styleguide, which is where a shape
+ * the product may want again is kept, and these two rules are what it needs. */
 
 .waiting-card strong {
   letter-spacing: var(--ls-tight);
@@ -660,45 +665,91 @@
   line-height: var(--lh-body);
 }
 
-.waiting-list {
-  flex-direction: column;
-  gap: var(--space-5);
-  margin: var(--space-7) 0 0;
-  padding: 0;
-  list-style: none;
+/* --- the panel ---------------------------------------------------------------
+ *
+ * My Documents opens as a drawer since 2026-08-21, so the record has to read at
+ * 465px instead of at 700. Nothing here is a new shape. The rows are the same
+ * `.document-row` children of the same `.card-rows`, the runs are labelled with
+ * `.panel-label` — the caps label every drawer in the product already uses —
+ * and the two notices are `<Notice>`.
+ *
+ * The one thing that had to be said: `.card-rows` bleeds to a card's edge by
+ * pulling `--card-pad` back on each side, and inside a drawer the padding is
+ * the drawer's, not a card's. So the token is *restated*, and the negative
+ * margin keeps working untouched. Retyping the margin against `--space-11`
+ * would have been the same number written a second place it could drift from. */
+
+.documents-drawer .panel-run {
+  padding-top: var(--space-10);
+}
+
+.documents-drawer .panel-label {
+  align-items: center;
+  gap: var(--space-4);
+  margin: 0 0 var(--space-6);
   display: flex;
 }
 
-.waiting-list li {
-  flex-direction: column;
-  gap: var(--space-1);
-  display: flex;
+.documents-drawer .card-rows {
+  --card-pad: var(--drawer-inset);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  margin-bottom: 0;
 }
 
-.waiting-list strong {
-  font-size: var(--fs-copy);
+/* A notice inside a run is about that run, so it gets the same treatment the
+   drawer already gives one docked at its head. */
+.documents-drawer .panel-run > .notice {
+  border-radius: var(--radius-row);
+  margin: 0 0 var(--space-8);
+  padding: var(--space-6) var(--space-7);
 }
 
-.waiting-list span {
-  opacity: .75;
-  font-size: var(--fs-meta);
-}
-
-.keeping-card em {
-  font-style: normal;
-  font-weight: var(--fw-semi);
-}
-
-.provenance-card .keeping-note {
+/* The retention guardrail, under the record it is about. It was a card in the
+   rail; a foot is what is left when the column it stood in is gone, and it is
+   the more honest place for a sentence that qualifies everything above it. */
+.documents-drawer .panel-foot {
   color: var(--muted);
   align-items: flex-start;
-  gap: var(--space-3);
-  margin-top: var(--space-6);
+  gap: var(--space-4);
+  margin-top: var(--space-10);
   font-size: var(--fs-micro);
+  line-height: var(--lh-body);
   display: flex;
 }
 
-.keeping-note svg {
+.documents-drawer .panel-foot svg {
   flex: none;
   margin-top: var(--space-1);
+}
+
+/* The panel is 465px and never wider, which is inside the width the rows were
+   designed against at 380 — so it takes the narrow row, at every viewport. The
+   same three declarations sit in `health.css` under `@media (width<=620px)`,
+   keyed to the viewport; here they are keyed to the container, because that is
+   what actually decides it. When a container query can key both, this block and
+   that one become one. Until then the reason is written in both places rather
+   than in neither.
+
+   The deadline chip stops competing with the title for the row width, and the
+   chevron goes: at this width the whole row is the button, and on a settled row
+   the chevron is the only thing in the trail, which puts an empty line under
+   every accepted document. */
+.documents-drawer .document-row {
+  grid-template-columns: auto minmax(0, 1fr);
+  row-gap: var(--space-5);
+}
+
+.documents-drawer .document-trail {
+  grid-column: 2;
+  justify-content: space-between;
+}
+
+.documents-drawer .document-open {
+  display: none;
+}
+
+.documents-drawer .document-row:has(.document-trail:empty) {
+  row-gap: 0;
 }

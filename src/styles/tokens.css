@@ -306,6 +306,11 @@
   --hero-min: 184px;
   --panel-min: 114px;
   --control-height: 38px;
+  /* The frame's two fixed measures: the sidebar's width, which the workspace
+     steps past, and the topbar's height, which the brand row across from it
+     matches so the mark and the controls share one centre line. */
+  --sidebar-width: 254px;
+  --topbar-height: 70px;
   --safe-bottom: 76px;
   --toast-bottom: 25px;
   /* The tooltip's three measurements. They are constants rather than steps
