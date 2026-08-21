@@ -1,0 +1,35 @@
+/* ============================================================================
+ * Direction A — faithful to the reference.
+ *
+ * Everything that is not a token: the numbered card head with its tinted
+ * glyph, the white mark on ink, the bar under a figure. Kept short on purpose;
+ * if this file grows, the tokens are missing something.
+ * ==========================================================================*/
+
+.screen[data-direction="a"] .sb-brand-name { display: none; }
+.screen[data-direction="a"] .sb-brand .mark svg * { fill: #fff; }
+.screen[data-direction="a"] .sb-brand { padding-bottom: 26px; }
+.screen[data-direction="a"] .sb-item { height: 42px; }
+
+/* The reference's card head: a tinted circle with the glyph, then "1." */
+.screen[data-direction="a"] .card-num { display: inline; color: var(--ink); font-weight: 600; font-size: var(--fs-h2); }
+.screen[data-direction="a"] .card-glyph {
+  width: 28px; height: 28px; padding: 6px; border-radius: 50%;
+  background: var(--glyph-bg, var(--accent-soft)); color: var(--glyph-fg, var(--accent-ink));
+}
+.screen[data-direction="a"] .card-glyph.green { --glyph-bg: var(--green-soft); --glyph-fg: var(--green); }
+.screen[data-direction="a"] .card-glyph.muted { --glyph-bg: var(--surface-2); --glyph-fg: var(--ink-2); }
+
+/* Where the student is reached: a washed panel, the student's face, the word. */
+.screen[data-direction="a"] .action-group.reaches {
+  background: var(--accent-wash); border: 1px solid var(--accent-line);
+  border-radius: var(--r-row); padding: 10px;
+}
+.screen[data-direction="a"] .action-group.internal { padding: 0 10px; }
+
+/* A's figure carries a bar — the reference's habit of a value with a bar. */
+.screen[data-direction="a"] .trend { display: block; width: 72px; height: 3px; border-radius: 2px; background: var(--line-soft); position: relative; margin-top: 6px; }
+.screen[data-direction="a"] .trend i { position: absolute; inset: 0 auto 0 0; width: var(--v); border-radius: 2px; background: var(--fig-color, var(--ink-2)); }
+.screen[data-direction="a"] .fig.blocked .trend { display: none; }
+
+.screen[data-direction="a"] .rail .card-head h2 { font-size: var(--fs-h3); }

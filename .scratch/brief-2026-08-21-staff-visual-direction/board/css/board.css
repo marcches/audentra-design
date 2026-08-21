@@ -1,0 +1,65 @@
+/* ============================================================================
+ * The board — the frame around the screen. One floating control to switch the
+ * direction and to go full screen; nothing else competes with the screen.
+ * ==========================================================================*/
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: #0c101d; }
+body.board {
+  margin: 0; min-height: 100vh;
+  background: #0c101d; color: #e6e8f2;
+  font-family: 'Geist', system-ui, sans-serif; font-size: 13px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+body.board button { font: inherit; }
+
+/* The stage: the screen at its natural 1440, centred, with room to breathe. */
+.stage { padding: 28px 24px 96px; overflow-x: auto; min-height: 100vh; }
+.stage-inner { display: grid; justify-content: center; }
+.frame { border-radius: 8px; overflow: hidden; box-shadow: 0 30px 90px #00000099, 0 0 0 1px #ffffff14; }
+.frame > .screen[hidden] { display: none; }
+
+/* The switcher: bottom centre, small, out of the way. */
+.switcher {
+  position: fixed; left: 50%; bottom: 22px; z-index: 50; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px; border-radius: 14px;
+  background: #10152aeb; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 14px 40px #00000080, 0 0 0 1px #ffffff1a;
+  transition: opacity .2s, transform .2s;
+}
+.switcher .seg { display: flex; gap: 2px; }
+.switcher button {
+  height: 36px; min-width: 36px; padding: 0 12px; border: 0; border-radius: 9px;
+  background: transparent; color: #c3c6d8; font-size: 13px; font-weight: 650; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
+  transition: background-color .15s, color .15s;
+}
+.switcher button:hover { color: #fff; background: #ffffff10; }
+.switcher button[aria-pressed="true"] { background: #fff; color: #10152a; }
+.switcher button .letter { font-weight: 750; font-size: 14px; }
+.switcher button .name { font-weight: 500; font-size: 12px; opacity: .85; }
+.switcher button[aria-pressed="true"] .name { opacity: .75; }
+.switcher .rule { width: 1px; height: 22px; background: #ffffff1f; margin: 0 4px; }
+.switcher .full { padding: 0 12px; }
+.switcher .full svg { width: 16px; height: 16px; fill: currentColor; }
+.switcher .full .off { display: none; }
+.switcher:focus-within, .switcher:hover { opacity: 1; }
+
+/* Full screen: no stage, no frame, the screen is the window. */
+body.is-full { overflow: auto; }
+body.is-full .stage { padding: 0; min-height: 0; overflow: visible; }
+body.is-full .stage-inner { display: block; }
+body.is-full .frame { border-radius: 0; box-shadow: none; overflow: visible; }
+body.is-full .frame > .screen { width: 100%; min-width: 1280px; min-height: 100vh; }
+body.is-full .frame > .screen .sb { position: sticky; top: 0; height: 100vh; align-self: start; overflow: hidden; }
+body.is-full .switcher { opacity: .38; }
+body.is-full .switcher:hover, body.is-full .switcher:focus-within { opacity: 1; }
+body.is-full .switcher .full .on { display: none; }
+body.is-full .switcher .full .off { display: inline; }
+
+@media print {
+  .switcher { display: none; }
+  .stage { padding: 0; }
+  .frame { box-shadow: none; border-radius: 0; }
+}

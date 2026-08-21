@@ -196,6 +196,33 @@ The named person who holds this student's file and is reachable from every secti
 An advisor is not a reviewer: they can chase a decision, not make one.
 _Avoid_: Counselor, agent, contact.
 
+### On the other side of the desk
+
+The staff workspace's words, added 2026-08-21 with the staff visual-direction board
+(`.scratch/brief-2026-08-21-staff-visual-direction/`). Two screens were drawn before any staff card was
+built, and both needed a word the student side had already spent.
+
+**Task (staff)**:
+The staff workspace's unit of work: one thing one person at Aster does about one student — *Follow
+up: Unaccepted Financial Aid Package* — with a type, a group, a priority, an owner, a team and an
+SLA, and closed with an *outcome* that is recorded apart from its status. It is not the student's
+*Step* seen from the other side: a step is the student's to do and a task is Aster's, and one may
+produce the other — a package not accepted by its date raises a follow-up task, and a task's outcome
+may send a step back to *open* with a reason. A follow-up is a new task carrying an attempt number,
+never the old one reopened (ENR-39). The code's use of *task* for a checklist step is the collision
+this entry exists to end: on the student side the word is Step, and only Step. ENR-82 is its screen.
+_Avoid_: Step; case; ticket; work item; to-do; activity.
+
+**Division**:
+The unit a director answers for, and the row of the executive's operational view: throughput,
+capacity and service performance, period over period, so that a question reaches a specific person
+(ENR-30, ENR-72). What the student sees of the same team is its *Office* — the Admissions Office and
+the Financial Aid Office are each one division to the executive and one office to the student, and
+neither name replaces the other. In this prototype there is one division per office, each with a
+named director; a division with too little data says so rather than showing a change of zero, and a
+figure out of its season is not shown at all.
+_Avoid_: Department; unit; team; area; office, where the executive's row is meant.
+
 ### Where the student will live
 
 Housing asks two questions of very different weight, and the whole section depends on not blurring

@@ -1,0 +1,253 @@
+/* ============================================================================
+ * Tokens — three directions, one palette.
+ *
+ * Layer 1 is the product's palette, verbatim from `src/styles/tokens.css`, so
+ * that whichever direction is chosen starts from colours the student portal
+ * already owns. Layer 2 is what every direction shares — the meaning of a
+ * colour is the product's, not a direction's (green: done; amber: someone has
+ * to act; crimson: a deadline or a failure; purple: the action). Layer 3 is
+ * the direction: everything that differs is a token here, and nothing that
+ * differs is written anywhere else.
+ *
+ * The attribute lives on `.screen`, never on the document, so two screens in
+ * different directions can share one page (the compare view).
+ * ==========================================================================*/
+
+.screen {
+  /* ── 1. Palette (the product's) ─────────────────────────────────────────── */
+  --ink-900: #152037; --ink-800: #1b203a; --ink-700: #312960; --ink-600: #5f6879;
+  --ink-500: #687086; --ink-400: #9aa0b0; --ink-300: #b9b4dd; --ink-200: #d9dbe6;
+  --ink-150: #e6e7ee; --ink-100: #eff0f4; --ink-75: #f1f2f6; --ink-50: #f6f6fb;
+  --ink-25: #f5f5fa; --ink-0: #fff;
+
+  --purple-700: #312960; --purple-600: #45358e; --purple-500: #4d3bb3; --purple-450: #5b48bd;
+  --purple-400: #6854d9; --purple-200: #ddd8f7; --purple-100: #e6e2ff; --purple-50: #efedff;
+  --purple-25: #f7f5ff;
+
+  --green-700: #2f6152; --green-500: #227a5b; --green-200: #b9f1d7; --green-100: #dff3ea;
+  --green-50: #e8f7f0; --green-25: #f3fbf7;
+
+  --amber-700: #75602c; --amber-500: #a65d19; --amber-200: #f0dcb8; --amber-100: #fff1dc;
+  --amber-50: #fff4df; --amber-25: #fff7e8;
+
+  --crimson-700: #7a3a46; --crimson-500: #a51c30; --crimson-200: #eed3d8; --crimson-50: #f9e9ec;
+
+  --purple-grad-from: #5e47cd; --purple-grad-to: #735ee0;
+
+  /* ── 2. Roles every direction shares ────────────────────────────────────── */
+  --ink: var(--ink-900);
+  --ink-2: var(--ink-600);
+  --muted: var(--ink-500);
+  --faint: var(--ink-400);
+
+  --line: var(--ink-150);
+  --line-soft: var(--ink-100);
+  --line-strong: var(--ink-200);
+
+  --on-ink: #fff;
+  --on-ink-muted: var(--ink-300);
+  --on-ink-line: #ffffff2e;
+
+  --purple: var(--purple-400);
+  --purple-dark: var(--purple-500);
+  --purple-hover: var(--purple-450);
+  --purple-ink: var(--purple-600);
+  --purple-deep: var(--purple-700);
+  --purple-line: var(--purple-200);
+  --purple-tint: var(--purple-100);
+  --purple-soft: var(--purple-50);
+  --purple-wash: var(--purple-25);
+
+  --green: var(--green-500);       --green-ink: var(--green-700);
+  --green-line: var(--green-200);  --green-tint: var(--green-100);  --green-soft: var(--green-50);
+  --amber: var(--amber-500);       --amber-ink: var(--amber-700);
+  --amber-line: var(--amber-200);  --amber-tint: var(--amber-100);  --amber-soft: var(--amber-50);
+  --crimson: var(--crimson-500);   --crimson-ink: var(--crimson-700);
+  --crimson-line: var(--crimson-200); --crimson-tint: var(--crimson-50);
+
+  --font-sans: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --fw-regular: 400; --fw-medium: 500; --fw-semi: 600; --fw-bold: 700; --fw-heavy: 750;
+
+  /* The accent is purple in all three. A direction may still decide where it
+     is allowed to appear; it may not pick another hue. */
+  --accent: var(--purple);
+  --accent-hover: var(--purple-hover);
+  --accent-ink: var(--purple-ink);
+  --accent-line: var(--purple-line);
+  --accent-tint: var(--purple-tint);
+  --accent-soft: var(--purple-soft);
+  --accent-wash: var(--purple-wash);
+}
+
+/* ── 3a. Direction A — faithful to the reference ─────────────────────────────
+   Dark ink chrome, white canvas, white cards on a hairline, numbered heads,
+   airy. The navy in the stakeholder's screenshot is, to the eye, the
+   product's own `--ink-800`; A and B are already relatives. */
+.screen[data-direction="a"] {
+  --sb-width: 224px;
+  --sb-bg: var(--ink-800);
+  --sb-fg: #fff;
+  --sb-fg-2: #c3c6d8;
+  --sb-icon: #a4a9c0;
+  --sb-line: var(--on-ink-line);
+  --sb-active-bg: #ffffff14;
+  --sb-active-fg: #fff;
+  --sb-hover-bg: #ffffff0a;
+
+  --canvas: #fff;
+  --surface: #fff;
+  --surface-2: var(--ink-50);
+
+  --card-bg: #fff;
+  --card-line: var(--ink-150);
+  --card-radius: 10px;
+  --card-shadow: none;
+  --card-pad: 20px;
+  --card-gap: 16px;
+  --card-head-bg: transparent;
+
+  --r-ctl: 8px;
+  --r-tile: 10px;
+  --r-chip: 999px;
+  --r-row: 8px;
+
+  --fs-title: 24px;
+  --fs-h2: 16px;
+  --fs-h3: 14px;
+  --fs-body: 14px;
+  --fs-copy: 13px;
+  --fs-meta: 12px;
+  --fs-small: 11px;
+  --fs-figure: 24px;
+  --lh-body: 1.5;
+
+  --ctl-h: 40px;
+  --row-h: 44px;
+  --icon: 20px;
+  --tile: 56px;
+  --font-num: var(--font-sans);
+
+  --btn-primary-bg: var(--purple);
+  --btn-primary-fg: #fff;
+  --btn-primary-shadow: none;
+  --btn-secondary-fg: var(--purple-dark);
+  --btn-secondary-line: #c8c1ea;
+  --tab-active: var(--purple);
+  --tab-active-fg: var(--purple-dark);
+}
+
+/* ── 3b. Direction B — the student's family ─────────────────────────────────
+   The portal's own vocabulary, densified for people who work in it all day:
+   glass sidebar, cool canvas, the 18px card with a zoned head, duotone marks
+   in tinted tiles, the anchor card on ink at the top of the rail, the
+   gradient primary. */
+.screen[data-direction="b"] {
+  --sb-width: 254px;
+  --sb-bg: #ffffffeb;
+  --sb-fg: var(--ink);
+  --sb-fg-2: var(--ink-2);
+  --sb-icon: var(--ink-2);
+  --sb-line: var(--line);
+  --sb-active-bg: var(--purple-soft);
+  --sb-active-fg: var(--purple-dark);
+  --sb-hover-bg: var(--ink-25);
+
+  --canvas: var(--ink-25);
+  --surface: #fff;
+  --surface-2: var(--ink-75);
+
+  --card-bg: #fff;
+  --card-line: var(--ink-150);
+  --card-radius: 18px;
+  --card-shadow: 0 7px 22px #1f253a0e, 0 1px 2px #1f253a0d;
+  --card-pad: 18px;
+  --card-gap: 16px;
+  --card-head-bg: var(--ink-50);
+
+  --r-ctl: 12px;
+  --r-tile: 12px;
+  --r-chip: 99px;
+  --r-row: 15px;
+
+  --fs-title: 25px;
+  --fs-h2: 15px;
+  --fs-h3: 13.5px;
+  --fs-body: 12.5px;
+  --fs-copy: 11.5px;
+  --fs-meta: 10.5px;
+  --fs-small: 9.5px;
+  --fs-figure: 27px;
+  --lh-body: 1.55;
+
+  --ctl-h: 38px;
+  --row-h: 40px;
+  --icon: 18px;
+  --tile: 52px;
+  --font-num: var(--font-sans);
+
+  --btn-primary-bg: linear-gradient(135deg, var(--purple-grad-from), var(--purple-grad-to));
+  --btn-primary-fg: #fff;
+  --btn-primary-shadow: 0 6px 14px #5e47cd33;
+  --btn-secondary-fg: var(--purple-ink);
+  --btn-secondary-line: var(--purple-line);
+  --tab-active: var(--purple-soft);
+  --tab-active-fg: var(--purple-dark);
+}
+
+/* ── 3c. Direction C — editorial ────────────────────────────────────────────
+   What ENR-90's brief says, read literally: newspaper density, hierarchy by
+   type and rules rather than boxes, numbers in a mono face, the change before
+   the absolute, colour spent only where it means something. */
+.screen[data-direction="c"] {
+  --sb-width: 208px;
+  --sb-bg: #fff;
+  --sb-fg: var(--ink);
+  --sb-fg-2: var(--ink-2);
+  --sb-icon: var(--ink-500);
+  --sb-line: var(--ink-200);
+  --sb-active-bg: transparent;
+  --sb-active-fg: var(--ink);
+  --sb-hover-bg: transparent;
+
+  --canvas: #fff;
+  --surface: #fff;
+  --surface-2: #fff;
+
+  --card-bg: transparent;
+  --card-line: var(--ink-200);
+  --card-radius: 0;
+  --card-shadow: none;
+  --card-pad: 0px;
+  --card-gap: 0px;
+  --card-head-bg: transparent;
+
+  --r-ctl: 6px;
+  --r-tile: 0;
+  --r-chip: 0;
+  --r-row: 0;
+
+  --fs-title: 28px;
+  --fs-h2: 11px;
+  --fs-h3: 13px;
+  --fs-body: 13px;
+  --fs-copy: 12px;
+  --fs-meta: 11px;
+  --fs-small: 10.5px;
+  --fs-figure: 22px;
+  --lh-body: 1.45;
+
+  --ctl-h: 34px;
+  --row-h: 34px;
+  --icon: 16px;
+  --tile: 0px;
+  --font-num: var(--font-mono);
+
+  --btn-primary-bg: var(--purple);
+  --btn-primary-fg: #fff;
+  --btn-primary-shadow: none;
+  --btn-secondary-fg: var(--ink);
+  --btn-secondary-line: var(--ink-200);
+  --tab-active: var(--ink);
+  --tab-active-fg: var(--ink);
+}

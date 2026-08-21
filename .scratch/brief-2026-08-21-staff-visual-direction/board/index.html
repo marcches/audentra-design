@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Staff portal — visual direction</title>
+<meta name="description" content="Three visual directions for the Audentra staff portal, rendered on two screens: ENR-90 Operational health by division and ENR-82 Task detail. Same bones, three skins. Pick one.">
+<link rel="icon" href="assets/img/audentra-symbol.svg">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/board.css">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/structure.css">
+<link rel="stylesheet" href="css/direction-a.css">
+<link rel="stylesheet" href="css/direction-b.css">
+<link rel="stylesheet" href="css/direction-c.css">
+</head>
+<body class="board">
+
+<!-- The only thing the board puts over the screen: switch the direction, go full screen. -->
+<nav class="switcher" aria-label="Direction">
+  <div class="seg">
+    <button type="button" data-dir="a" aria-pressed="true" title="A · Faithful to the reference (1)"><span class="letter">A</span><span class="name">Reference</span></button>
+    <button type="button" data-dir="b" aria-pressed="false" title="B · The student’s family (2)"><span class="letter">B</span><span class="name">Family</span></button>
+    <button type="button" data-dir="c" aria-pressed="false" title="C · Editorial (3)"><span class="letter">C</span><span class="name">Editorial</span></button>
+  </div>
+  <span class="rule" aria-hidden="true"></span>
+  <button type="button" class="full" data-action="full" aria-pressed="false" aria-label="Full screen" title="Full screen (f)"><i data-icon="corners-out" class="on"></i><i data-icon="corners-in" class="off"></i></button>
+</nav>
+
+<main class="stage">
+  <div class="stage-inner">
+    <div class="frame">
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SCREEN 1 — ENR-90 · Staff · Executive operational view
+     Morning Brew › Operational health by division. Delta as the headline,
+     the absolute subordinate, the period stated, one figure out of season,
+     one blocked, one division with insufficient data, four insight states.
+     No assignment control exists at this level.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="screen" data-screen="brew" data-direction="a" hidden>
+  <aside class="sb" aria-label="Sidebar">
+    <div class="sb-brand">
+      <span class="mark" aria-label="Audentra">
+        <svg viewBox="0 0 192.33 149.59" aria-hidden="true"><polygon fill="#1e5bff" points="147 55.02 125.99 94.63 97.87 40.25 118.6 0 147 55.02"/><path fill="#6a38ff" d="M118.6,0h-33.33c-4.94,0-9.49,2.86-11.86,7.47l-33.95,65.75-11.06,21.42L0,149.59h33.45c4.94,0,9.49-2.86,11.86-7.47l24.53-47.5.46-.9,27.62-53.48L118.6,0Z"/><polygon fill="#04b2a9" points="154.37 149.59 125.99 94.63 77.31 94.63 154.37 149.59"/><path fill="#02cdc7" d="M125.99,94.63l21.01-39.6,20.44,39.61,24.26,46.96c1.86,3.6-.59,8-4.45,8h-32.88l-28.38-54.96"/></svg>
+      </span>
+      <span class="sb-brand-name">Audentra</span>
+    </div>
+    <nav class="sb-nav" aria-label="Sections">
+      <a class="sb-item active" href="#" aria-current="page"><i data-icon="coffee"></i><span>Morning Brew</span></a>
+      <a class="sb-item" href="#"><i data-icon="briefcase"></i><span>My Work</span></a>
+      <a class="sb-item" href="#"><i data-icon="users-three"></i><span>Team Work</span></a>
+      <a class="sb-item" href="#"><i data-icon="strategy"></i><span>Core Plays</span></a>
+      <a class="sb-item" href="#"><i data-icon="student"></i><span>Students</span></a>
+      <a class="sb-item" href="#"><i data-icon="chats-circle"></i><span>Communications</span></a>
+      <a class="sb-item" href="#"><i data-icon="chart-bar"></i><span>Reports</span></a>
+      <a class="sb-item" href="#"><i data-icon="calendar-blank"></i><span>Calendar</span></a>
+      <a class="sb-item" href="#"><i data-icon="sparkle"></i><span>AI Insights</span></a>
+      <a class="sb-item" href="#"><i data-icon="book-open"></i><span>Knowledge Base</span></a>
+      <a class="sb-item" href="#"><i data-icon="gear"></i><span>Settings</span></a>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-user">
+        <span class="avatar sm" aria-hidden="true">VH</span>
+        <div><strong>Vivian Hale</strong><small>VP of Enrollment</small></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="page-top">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Morning Brew</a><span class="sep">/</span><span class="current">Operational health</span></nav>
+      <div class="page-actions">
+        <button type="button" class="btn secondary"><i data-icon="clock-counter-clockwise"></i>Previous reads<i data-icon="caret-down" class="small"></i></button>
+        <button type="button" class="btn secondary icon-only" aria-label="More"><i data-icon="dots-three"></i></button>
+      </div>
+    </header>
+
+    <div class="page-title">
+      <span class="tile purple" aria-hidden="true"><i data-icon="coffee"></i></span>
+      <div class="title-copy">
+        <h1 class="title">Operational health by division</h1>
+        <div class="title-meta">
+          <span class="pill quiet"><i data-icon="clock"></i>Read at 7:02 AM ET · Thu, Aug 21, 2026</span>
+          <span class="sep"></span>
+          <span class="pill quiet"><i data-icon="hourglass"></i>About 5 minutes</span>
+          <span class="sep"></span>
+          <span class="pill quiet"><i data-icon="arrows-left-right"></i>Aug 1–20 vs Jul 1–20, 2026</span>
+          <span class="sep"></span>
+          <span class="pill quiet"><i data-icon="calendar-blank"></i>Fall 2026 cycle · seasonality rule v2</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="tabs" aria-label="Morning Brew">
+      <a class="tab" href="#">Daily read</a>
+      <a class="tab active" href="#" aria-current="page">Operational health</a>
+    </nav>
+
+    <div class="content brew-layout">
+      <section class="col-main">
+        <p class="deck"><strong>Three of six divisions moved this period.</strong> The one to ask about is the Financial Aid Office: packages went out faster and answers came back slower, and the two figures are about the same students.</p>
+
+        <article class="card" aria-labelledby="h-div">
+          <header class="card-head">
+            <i data-icon="buildings" class="card-glyph"></i>
+            <span class="card-num" data-n="1">1.</span>
+            <h2 id="h-div">By division</h2>
+            <span class="card-aside">Change is the headline · the absolute is under it</span>
+          </header>
+          <table class="divisions">
+            <colgroup><col class="c-div"><col><col><col></colgroup>
+            <thead>
+              <tr>
+                <th scope="col">Division<small>and who answers for it</small></th>
+                <th scope="col">Throughput<small>what got done</small></th>
+                <th scope="col">Capacity<small>what each person has open · lower is better</small></th>
+                <th scope="col">Service performance<small>how fast a student got an answer</small></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="div-cell"><span class="avatar xs" aria-hidden="true">HO</span><div><strong>Admissions Office</strong><small>Helen Okoro, Director of Admissions</small></div></div></td>
+                <td><div class="fig good"><span class="delta"><i data-icon="arrow-up"></i>12%</span><span class="abs">784 vs 700</span><span class="def">Applications decided</span><span class="trend"><i style="--v:62%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+                <td><div class="fig good"><span class="delta"><i data-icon="arrow-down"></i>8%</span><span class="abs">41 vs 45</span><span class="def">Open files per reader</span><span class="trend"><i style="--v:44%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+                <td><div class="fig good"><span class="delta"><i data-icon="arrow-down"></i>0.6 d</span><span class="abs">4.1 vs 4.7 days</span><span class="def">Median days to a decision</span><span class="trend"><i style="--v:38%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+              </tr>
+              <tr>
+                <td><div class="div-cell"><span class="avatar xs" aria-hidden="true">DR</span><div><strong>Financial Aid Office</strong><small>Daniel Reyes, Director of Financial Aid</small></div></div></td>
+                <td><div class="fig good"><span class="delta"><i data-icon="arrow-up"></i>21%</span><span class="abs">1,032 vs 853</span><span class="def">Packages issued</span><span class="trend"><i style="--v:80%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+                <td><div class="fig watch"><span class="delta"><i data-icon="arrow-up"></i>34%</span><span class="abs">58 vs 43</span><span class="def">Open verifications per officer</span><span class="trend"><i style="--v:88%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+                <td><div class="fig watch"><span class="delta"><i data-icon="arrow-up"></i>1.8 d</span><span class="abs">5.2 vs 3.4 days</span><span class="def">Median days to answer a question</span><span class="trend"><i style="--v:92%"></i></span><a class="basis open" href="#" aria-expanded="true">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+              </tr>
+              <tr class="basis-row">
+                <td colspan="4">
+                  <div class="basis-line">
+                    <i data-icon="ruler"></i>
+                    <div><strong>Median days to answer a question</strong> · Rule <span class="rule">FA-SVC-01 v2</span>, effective Jul 1, 2026, owned by the Financial Aid data steward<span class="sep">·</span>Days between a student’s question on an aid package and the office’s first answer, median over <span class="rule">1,032</span> packages with a question, Aug 1–20<span class="sep">·</span>Source: student requests, canonical records, enumerable</div>
+                    <a class="link" href="#">Trace the records<i data-icon="arrow-right"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><div class="div-cell"><span class="avatar xs" aria-hidden="true">GW</span><div><strong>Office of the Registrar</strong><small>Grace Whitmore, University Registrar</small></div></div></td>
+                <td><div class="fig watch"><span class="delta"><i data-icon="arrow-down"></i>18%</span><span class="abs">312 vs 380</span><span class="def">Transcripts evaluated</span><span class="trend"><i style="--v:56%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+                <td><div class="fig watch"><span class="delta"><i data-icon="arrow-up"></i>40%</span><span class="abs">49 vs 35</span><span class="def">Backlog per evaluator</span><span class="trend"><i style="--v:95%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+                <td><div class="fig blocked"><span class="delta"><i data-icon="warning-circle"></i>Not published</span><span class="abs">Rule RG-SVC-01 was withdrawn on Aug 14; its owner has been told. No earlier value stands in for it.</span><span class="def">Transcript turnaround</span></div></td>
+              </tr>
+              <tr>
+                <td><div class="div-cell"><span class="avatar xs" aria-hidden="true">OB</span><div><strong>Housing Services</strong><small>Omar Bellamy, Director of Housing</small></div></div></td>
+                <td><div class="fig good"><span class="delta"><i data-icon="arrow-up"></i>3%</span><span class="abs">588 vs 571</span><span class="def">Assignments made</span><span class="trend"><i style="--v:18%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+                <td><div class="fig flat"><span class="delta"><i data-icon="minus"></i>No change</span><span class="abs">212 vs 212</span><span class="def">Unassigned students per coordinator</span><span class="trend"><i style="--v:0%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+                <td><div class="fig good"><span class="delta"><i data-icon="arrow-down"></i>0.2 d</span><span class="abs">2.1 vs 2.3 days</span><span class="def">Median days to confirm a plan</span><span class="trend"><i style="--v:22%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+              </tr>
+              <tr>
+                <td><div class="div-cell"><span class="avatar xs" aria-hidden="true">LP</span><div><strong>Student Health Services</strong><small>Dr. Lillian Park, Director of Health Services</small></div></div></td>
+                <td colspan="3"><p class="insufficient"><strong>Insufficient data for a comparison.</strong> 9 records this period; the rule needs 30. Immunization records start arriving on Aug 25, and the figures will be here the morning after.</p></td>
+              </tr>
+              <tr>
+                <td><div class="div-cell"><span class="avatar xs" aria-hidden="true">SA</span><div><strong>Academic Advising Office</strong><small>Samuel Adeyemi, Director of Advising</small></div></div></td>
+                <td><div class="fig good"><span class="delta"><i data-icon="arrow-up"></i>9%</span><span class="abs">1,140 vs 1,046</span><span class="def">Appointments held</span><span class="trend"><i style="--v:52%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+                <td><div class="fig flat"><span class="delta"><i data-icon="arrow-up"></i>6 pts</span><span class="abs">71% vs 65%</span><span class="def">Published hours booked · neither way is better</span><span class="trend"><i style="--v:71%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+                <td><div class="fig watch"><span class="delta"><i data-icon="arrow-up"></i>1.1 d</span><span class="abs">3.9 vs 2.8 days</span><span class="def">Median days to the next open time</span><span class="trend"><i style="--v:66%"></i></span><a class="basis" href="#">Basis<i data-icon="caret-down" class="small"></i></a></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <footer class="card-foot">
+            <span>Every figure states its period and its rule, and opens to its basis in one step.</span>
+            <span>Green: better for the student. Amber: someone has to look. Nothing here assigns, reassigns or changes a task.</span>
+          </footer>
+        </article>
+
+        <article class="card" aria-labelledby="h-ins">
+          <header class="card-head">
+            <i data-icon="flag" class="card-glyph"></i>
+            <span class="card-num" data-n="2">2.</span>
+            <h2 id="h-ins">What moved, and who to ask</h2>
+            <span class="card-aside">4 items · 2 carried, of 5 allowed</span>
+          </header>
+          <ol class="insights">
+            <li class="insight new">
+              <span class="ins-state">New</span>
+              <div>
+                <p><strong>Financial Aid: packages go out faster, answers come back slower.</strong> Throughput is up 21% while the median time to answer a student’s question rose from 3.4 to 5.2 days. Both figures count the same 1,032 packages — the office is issuing, and not yet replying.</p>
+                <footer><span>Aug 1–20 vs Jul 1–20</span><a class="link" href="#">Ask Daniel Reyes<i data-icon="arrow-right"></i></a></footer>
+              </div>
+            </li>
+            <li class="insight changed">
+              <span class="ins-state">Changed<small>first shown Aug 18</small></span>
+              <div>
+                <p><strong>Registrar: the evaluation backlog grew again, 35 to 49 per evaluator.</strong> What changed since Monday: two of seven evaluators have been out since Aug 17, and transcripts evaluated fell 18% in the same days.</p>
+                <footer><span>Was 35 → 42 on Aug 18 · now 49</span><a class="link" href="#">Ask Grace Whitmore<i data-icon="arrow-right"></i></a></footer>
+              </div>
+            </li>
+            <li class="insight carried">
+              <span class="ins-state">Carried<small>since Aug 14 · day 7</small></span>
+              <div>
+                <p><strong>Housing: 212 students are still unassigned.</strong> No movement in seven days — the figure, the period and the director are the same as on Aug 14. It stays here until it moves, or until you set it aside.</p>
+                <footer><span>Carried 2 of 5</span><a class="link" href="#">Ask Omar Bellamy<i data-icon="arrow-right"></i></a><a class="link dismiss" href="#"><i data-icon="x"></i>Set aside for me</a></footer>
+              </div>
+            </li>
+            <li class="insight resolved">
+              <span class="ins-state">Resolved</span>
+              <div>
+                <p><strong>Admissions: the median time to a decision is back under 4.5 days</strong> since Aug 19, after eleven days above it. Shown once; it will not appear tomorrow.</p>
+                <footer><span>First shown Aug 8 · resolved Aug 19</span></footer>
+              </div>
+            </li>
+          </ol>
+        </article>
+      </section>
+
+      <aside class="rail" aria-label="Context">
+        <article class="card" aria-labelledby="h-read">
+          <header class="card-head"><i data-icon="clock" class="card-glyph"></i><h2 id="h-read">This read</h2></header>
+          <dl class="kv">
+            <div class="kv-row"><dt>Produced</dt><dd>7:02 AM ET · Aug 21, 2026</dd></div>
+            <div class="kv-row"><dt>Reading time</dt><dd>About 5 minutes</dd></div>
+            <div class="kv-row"><dt>Comparison</dt><dd>Aug 1–20 vs Jul 1–20 — the same 20 days</dd></div>
+            <div class="kv-row"><dt>Season</dt><dd>Fall 2026 cycle, rule v2, set by Aster</dd></div>
+            <div class="kv-row"><dt>Carried</dt><dd>2 of 5 allowed, per reader</dd></div>
+          </dl>
+          <p class="canon"><i data-icon="database"></i><span>Counts of canonical records, read at 7:02 AM ET. Nothing on this page is modelled, projected or generated.</span></p>
+        </article>
+
+        <article class="card" aria-labelledby="h-noshow">
+          <header class="card-head"><i data-icon="eye-slash" class="card-glyph"></i><h2 id="h-noshow">Not shown this period</h2><span class="card-aside">3</span></header>
+          <ul class="noshow">
+            <li><i data-icon="calendar-x"></i><div><strong>Deposits posted</strong><small>Admissions · out of season until Nov 1. Not shown flat, not shown as zero.</small></div></li>
+            <li><i data-icon="warning-circle"></i><div><strong>Transcript turnaround</strong><small>Registrar · rule RG-SVC-01 withdrawn Aug 14 · owner notified</small></div></li>
+            <li><i data-icon="hourglass"></i><div><strong>Student Health Services</strong><small>Insufficient data until Aug 25 · 9 of the 30 records the rule needs</small></div></li>
+          </ul>
+        </article>
+
+        <article class="card" aria-labelledby="h-dirs">
+          <header class="card-head"><i data-icon="users" class="card-glyph"></i><h2 id="h-dirs">Directors</h2></header>
+          <ul class="directors">
+            <li><span class="avatar xs" aria-hidden="true">DR</span><div><strong>Daniel Reyes</strong><small>Financial Aid Office</small></div><a class="link" href="#">Ask</a></li>
+            <li><span class="avatar xs" aria-hidden="true">GW</span><div><strong>Grace Whitmore</strong><small>Office of the Registrar</small></div><a class="link" href="#">Ask</a></li>
+            <li><span class="avatar xs" aria-hidden="true">OB</span><div><strong>Omar Bellamy</strong><small>Housing Services</small></div><a class="link" href="#">Ask</a></li>
+            <li><span class="avatar xs" aria-hidden="true">HO</span><div><strong>Helen Okoro</strong><small>Admissions Office</small></div><a class="link" href="#">Ask</a></li>
+            <li><span class="avatar xs" aria-hidden="true">SA</span><div><strong>Samuel Adeyemi</strong><small>Academic Advising Office</small></div><a class="link" href="#">Ask</a></li>
+            <li><span class="avatar xs" aria-hidden="true">LP</span><div><strong>Dr. Lillian Park</strong><small>Student Health Services</small></div><a class="link" href="#">Ask</a></li>
+          </ul>
+        </article>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SCREEN 2 — ENR-82 · Staff · Task detail, the Outcomes tab.
+     The stakeholder's reference, redrawn. Names are Aster's people; copy is
+     the reference's. The one thing added is the card's own guardrail: what is
+     internal and what reaches the student never look like the same surface.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="screen" data-screen="task" data-direction="a">
+  <aside class="sb" aria-label="Sidebar">
+    <div class="sb-brand">
+      <span class="mark" aria-label="Audentra">
+        <svg viewBox="0 0 192.33 149.59" aria-hidden="true"><polygon fill="#1e5bff" points="147 55.02 125.99 94.63 97.87 40.25 118.6 0 147 55.02"/><path fill="#6a38ff" d="M118.6,0h-33.33c-4.94,0-9.49,2.86-11.86,7.47l-33.95,65.75-11.06,21.42L0,149.59h33.45c4.94,0,9.49-2.86,11.86-7.47l24.53-47.5.46-.9,27.62-53.48L118.6,0Z"/><polygon fill="#04b2a9" points="154.37 149.59 125.99 94.63 77.31 94.63 154.37 149.59"/><path fill="#02cdc7" d="M125.99,94.63l21.01-39.6,20.44,39.61,24.26,46.96c1.86,3.6-.59,8-4.45,8h-32.88l-28.38-54.96"/></svg>
+      </span>
+      <span class="sb-brand-name">Audentra</span>
+    </div>
+    <nav class="sb-nav" aria-label="Sections">
+      <a class="sb-item" href="#"><i data-icon="coffee"></i><span>Morning Brew</span></a>
+      <a class="sb-item active" href="#" aria-current="page"><i data-icon="briefcase"></i><span>My Work</span></a>
+      <a class="sb-item" href="#"><i data-icon="users-three"></i><span>Team Work</span></a>
+      <a class="sb-item" href="#"><i data-icon="strategy"></i><span>Core Plays</span></a>
+      <a class="sb-item" href="#"><i data-icon="student"></i><span>Students</span></a>
+      <a class="sb-item" href="#"><i data-icon="chats-circle"></i><span>Communications</span></a>
+      <a class="sb-item" href="#"><i data-icon="chart-bar"></i><span>Reports</span></a>
+      <a class="sb-item" href="#"><i data-icon="calendar-blank"></i><span>Calendar</span></a>
+      <a class="sb-item" href="#"><i data-icon="sparkle"></i><span>AI Insights</span></a>
+      <a class="sb-item" href="#"><i data-icon="book-open"></i><span>Knowledge Base</span></a>
+      <a class="sb-item" href="#"><i data-icon="gear"></i><span>Settings</span></a>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-user">
+        <span class="avatar sm"><img src="assets/img/people/amara-nwosu.webp" alt="" width="32" height="32"></span>
+        <div><strong>Amara Nwosu</strong><small>Financial aid advisor</small></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="page-top">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="#">My Work</a><span class="sep">/</span><a href="#">Enrollment Activity Center</a><span class="sep">/</span><span class="current">ENR-24567</span></nav>
+      <div class="page-actions">
+        <button type="button" class="btn secondary">Mark Complete</button>
+        <button type="button" class="btn secondary">More<i data-icon="dots-three"></i></button>
+      </div>
+    </header>
+
+    <div class="page-title">
+      <span class="tile green" aria-hidden="true"><i data-icon="phone"></i></span>
+      <div class="title-copy">
+        <h1 class="title">Follow up: Unaccepted Financial Aid Package</h1>
+        <div class="title-meta">
+          <span class="pill green"><i data-icon="check" class="small"></i>Interaction Completed</span>
+          <span class="sep"></span>
+          <span class="pill ink"><i data-icon="arrow-up" class="small"></i>High priority</span>
+          <span class="sep"></span>
+          <span class="pill quiet">ENR-24567</span>
+          <span class="sep"></span>
+          <span class="pill quiet"><i data-icon="calendar-blank"></i>Aug 12, 2026 · 2:00 PM</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="tabs" aria-label="Task">
+      <a class="tab" href="#">Overview</a>
+      <a class="tab" href="#">Next Step</a>
+      <a class="tab active" href="#" aria-current="page">Outcomes</a>
+      <a class="tab" href="#">Comments</a>
+      <a class="tab" href="#">History</a>
+    </nav>
+
+    <div class="content task-layout">
+      <article class="card" aria-labelledby="h-c1">
+        <header class="card-head">
+          <i data-icon="check-circle" class="card-glyph green"></i>
+          <span class="card-num" data-n="1">1.</span>
+          <h2 id="h-c1">Interaction Outcome</h2>
+        </header>
+        <dl class="kv">
+          <div class="kv-row"><dt><i data-icon="chat-circle"></i>Outcome</dt><dd>Student reached</dd></div>
+          <div class="kv-row"><dt><i data-icon="chat-teardrop-text"></i>Resolution</dt><dd>Questions answered</dd></div>
+          <div class="kv-row"><dt><i data-icon="clock"></i>Next step</dt><dd>Student will review and accept the package</dd></div>
+          <div class="kv-row"><dt><i data-icon="info"></i>Follow-up needed</dt><dd>Yes — check back in 3 days</dd></div>
+        </dl>
+        <hr class="divider">
+        <p class="label">Recommended disposition</p>
+        <span class="pill green">Move forward</span>
+      </article>
+
+      <article class="card" aria-labelledby="h-c2">
+        <header class="card-head">
+          <i data-icon="waveform" class="card-glyph"></i>
+          <span class="card-num" data-n="2">2.</span>
+          <h2 id="h-c2">Call Recording &amp; Transcript</h2>
+          <span class="card-aside">6:42 · Aug 12, 2:03 PM</span>
+        </header>
+        <div class="player" role="group" aria-label="Recording">
+          <button type="button" class="play" aria-label="Play"><i data-icon="play" class="fill"></i></button>
+          <span class="ptime">0:00</span>
+          <span class="track" aria-hidden="true" style="--v:0%"><i></i><b></b></span>
+          <span class="ptime">6:42</span>
+          <span class="speed">1.0×<i data-icon="caret-down" class="small"></i></span>
+        </div>
+        <div class="transcript">
+          <div class="turn">
+            <span class="avatar xs"><img src="assets/img/people/amara-nwosu.webp" alt="" width="26" height="26"></span>
+            <div><div class="turn-head"><span class="turn-who">Amara (Advisor)</span><span class="turn-time">00:01</span></div><p>Hi Maya, this is Amara from the Financial Aid Office. I’m calling to follow up on your financial aid package.</p></div>
+          </div>
+          <div class="turn">
+            <span class="avatar xs"><img src="assets/img/people/maya-johnson.webp" alt="" width="26" height="26"></span>
+            <div><div class="turn-head"><span class="turn-who">Maya (Student)</span><span class="turn-time">00:10</span></div><p>Hi Amara! I had a few questions about the loans and work-study.</p></div>
+          </div>
+          <div class="turn">
+            <span class="avatar xs"><img src="assets/img/people/amara-nwosu.webp" alt="" width="26" height="26"></span>
+            <div><div class="turn-head"><span class="turn-who">Amara (Advisor)</span><span class="turn-time">00:22</span></div><p>Absolutely, I can walk you through those and the next steps.</p></div>
+          </div>
+        </div>
+        <footer class="card-foot"><a class="link" href="#">View full transcript<i data-icon="arrow-square-out"></i></a></footer>
+      </article>
+
+      <aside class="rail" aria-label="Context">
+        <article class="card" aria-labelledby="h-stu">
+          <header class="card-head"><i data-icon="user" class="card-glyph"></i><h2 id="h-stu">Student</h2></header>
+          <div class="student-card">
+            <span class="avatar lg"><img src="assets/img/people/maya-johnson.webp" alt="" width="56" height="56"></span>
+            <div>
+              <strong>Maya Johnson</strong>
+              <small>First-year · Fall 2026 · Health Sciences</small>
+              <a class="link" href="#">View full profile<i data-icon="arrow-square-out"></i></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="h-td">
+          <header class="card-head"><i data-icon="file-text" class="card-glyph"></i><h2 id="h-td">Task details</h2></header>
+          <dl class="kv">
+            <div class="kv-row"><dt>Task type</dt><dd>Enrollment follow-up</dd></div>
+            <div class="kv-row"><dt>Task group</dt><dd>Enrollment-related</dd></div>
+            <div class="kv-row"><dt>Priority</dt><dd><span class="pill ink"><i data-icon="arrow-up" class="small"></i>High</span></dd></div>
+            <div class="kv-row"><dt>Owner</dt><dd><span class="with-avatar"><span class="avatar xs" style="--av:20px"><img src="assets/img/people/amara-nwosu.webp" alt="" width="20" height="20"></span>Amara Nwosu</span></dd></div>
+            <div class="kv-row"><dt>Team</dt><dd>Financial Aid Office</dd></div>
+            <div class="kv-row"><dt>Created</dt><dd>Aug 8, 2026 · 9:15 AM</dd></div>
+          </dl>
+        </article>
+
+        <article class="card" aria-labelledby="h-sla">
+          <header class="card-head"><i data-icon="clock" class="card-glyph"></i><h2 id="h-sla">SLA</h2></header>
+          <dl class="kv">
+            <div class="kv-row"><dt>Due</dt><dd>Aug 12, 2026 · 2:00 PM</dd></div>
+            <div class="kv-row"><dt>Time remaining</dt><dd>2d 4h</dd></div>
+            <div class="kv-row"><dt>Status</dt><dd><span class="bar" aria-hidden="true" style="--bar-color: var(--green)"><i style="--v:62%"></i></span></dd></div>
+          </dl>
+          <div class="sla-status"><span class="pill green"><i data-icon="check" class="small"></i>On track</span></div>
+        </article>
+
+        <article class="card" aria-labelledby="h-rel">
+          <header class="card-head"><i data-icon="link" class="card-glyph"></i><h2 id="h-rel">Related</h2></header>
+          <ul class="related">
+            <li><a href="#"><i data-icon="file-text"></i>Financial Aid Package</a></li>
+            <li><a href="#"><i data-icon="file-text"></i>Enrollment Application</a></li>
+            <li><a href="#"><i data-icon="chats"></i>Previous Communications (2)</a></li>
+          </ul>
+        </article>
+      </aside>
+
+      <article class="card" aria-labelledby="h-c3">
+        <header class="card-head">
+          <i data-icon="sparkle" class="card-glyph"></i>
+          <span class="card-num" data-n="3">3.</span>
+          <h2 id="h-c3">AI Summary</h2>
+          <span class="card-aside">From the call · internal</span>
+        </header>
+        <p>Maya had questions about loans and work-study options. Amara reviewed the aid package and clarified loan amounts, repayment basics, and work-study eligibility. Maya plans to log in later today to review the package and will likely accept it.</p>
+      </article>
+
+      <article class="card" aria-labelledby="h-c4">
+        <header class="card-head">
+          <i data-icon="chart-line-up" class="card-glyph"></i>
+          <span class="card-num" data-n="4">4.</span>
+          <h2 id="h-c4">Conversation Signals</h2>
+        </header>
+        <div class="signals">
+          <div class="sig"><i data-icon="smiley"></i><span class="name">Sentiment</span><span class="bar" aria-hidden="true"><i style="--v:88%"></i></span><span class="val">Positive</span></div>
+          <div class="sig"><i data-icon="users"></i><span class="name">Engagement</span><span class="bar" aria-hidden="true"><i style="--v:82%"></i></span><span class="val">High</span></div>
+          <div class="sig text"><i data-icon="target"></i><span class="name">Intent</span><span class="val">Information seeking</span></div>
+          <div class="sig"><i data-icon="trend-up"></i><span class="name">Likelihood to accept package</span><span class="bar" aria-hidden="true"><i style="--v:80%"></i></span><span class="val">High</span></div>
+          <div class="sig"><i data-icon="shield-check"></i><span class="name">Confidence (AI quality)</span><span class="bar" aria-hidden="true"><i style="--v:86%"></i></span><span class="val">High</span></div>
+        </div>
+      </article>
+
+      <article class="card span-2" aria-labelledby="h-c5">
+        <header class="card-head">
+          <i data-icon="sparkle" class="card-glyph"></i>
+          <span class="card-num" data-n="5">5.</span>
+          <h2 id="h-c5">Suggested Follow-Up</h2>
+          <span class="card-aside">Suggested by AI · nothing is sent until you say so</span>
+        </header>
+        <div class="suggest-grid">
+          <div class="suggest">
+            <div class="sug"><i data-icon="envelope-simple"></i><div><strong>Send a recap email with financial aid links</strong><p>Provide links to loan information, work-study details, and next steps.</p></div></div>
+            <div class="sug"><i data-icon="clock"></i><div><strong>Create a reminder follow-up for 3 days from now</strong><p>Check back on Aug 15, 2026 to confirm review and answer any new questions.</p></div></div>
+          </div>
+          <div class="actions">
+            <div class="action-group reaches">
+              <span class="reach-tag"><span class="avatar"><img src="assets/img/people/maya-johnson.webp" alt="" width="18" height="18"></span>Reaches Maya</span>
+              <button type="button" class="btn primary"><i data-icon="envelope-simple"></i>Generate recap email</button>
+            </div>
+            <div class="action-group internal">
+              <span class="reach-tag">Internal · a reminder for you</span>
+              <button type="button" class="btn secondary"><i data-icon="calendar-plus"></i>Schedule follow-up</button>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+</div>
+
+    </div>
+  </div>
+</main>
+
+
+<script src="js/icons.js"></script>
+<script src="js/board.js"></script>
+</body>
+</html>
