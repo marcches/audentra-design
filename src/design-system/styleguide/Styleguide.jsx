@@ -649,14 +649,12 @@ export default function Styleguide({ onToast }) {
           </div>
           <Block
             title="A status head can be the group’s handle"
-            note="Give the status head count, open, onToggle and controls and it is a button: the count before the chevron, the card closing on the head. The one disclosure in the product — no details element, no hand-made toggle, no box of its own. A group with nothing in it has no toggle."
+            note="Give the status head count, open, onToggle and controls and it is a button: the count before the chevron, the card closing on the head. The one disclosure in the product — no details element, no hand-made toggle, no box of its own. A group with nothing in it has no toggle. The head is bare when the rows carry their own tile: the mark is said on the head or on the rows, never both."
           >
             <div className="sg-grid">
               <Card className={groupOpen ? '' : 'collapsed'}>
                 <CardHead
                   kind="status"
-                  icon="clock"
-                  tone="review"
                   title="Aster is reviewing"
                   note="You’ve done your part. No action needed right now."
                   count={2}
@@ -666,22 +664,38 @@ export default function Styleguide({ onToast }) {
                 />
                 {groupOpen && (
                   <CardRows id="sg-group-demo">
-                    <div className="sg-row">
-                      <span>Final transcript check</span>
-                      <strong>In review</strong>
-                    </div>
-                    <div className="sg-row">
-                      <span>Immunization record</span>
-                      <strong>In review</strong>
-                    </div>
+                    <article className="compact-task review-task">
+                      <div className="compact-check review" aria-hidden="true">
+                        <Icon name="clock" size={21} weight="duotone" />
+                      </div>
+                      <div className="compact-copy">
+                        <h3>Final transcript check</h3>
+                        <p>Aster received your transcript and is reviewing it now.</p>
+                      </div>
+                      <div className="status-pill">
+                        <span className="pulse" /> In review
+                      </div>
+                    </article>
+                    <article className="compact-task done-task">
+                      <div className="compact-check done" aria-hidden="true">
+                        <Icon name="check" size={21} />
+                      </div>
+                      <div className="compact-copy">
+                        <h3>Accept your offer</h3>
+                        <div className="compact-meta">
+                          <span>Completed Aug 7</span>
+                        </div>
+                      </div>
+                      <span className="earned">
+                        <Icon name="spark" size={13} /> +150
+                      </span>
+                    </article>
                   </CardRows>
                 )}
               </Card>
               <Card>
                 <CardHead
                   kind="status"
-                  icon="lock"
-                  tone="locked"
                   title="Coming up later"
                   note="These will open automatically when you’re ready for them."
                 />

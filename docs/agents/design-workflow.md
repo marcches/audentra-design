@@ -354,6 +354,11 @@ was that box, and it was the only one of three identical groups that could close
 - **The student's choice is remembered** per group (`localStorage`, the way the sidebar remembers
   its groups), and nothing else is stored.
 - **The group the page exists for never closes.** On My Enrollment that is *Your next steps*.
+- **The mark is on the head or on the rows, never both.** A status head takes its tile when the
+  rows carry none; when every row carries a tile — a task's kind, a step's standing — the head is
+  *bare* (no `icon`), and the rows of every group share the task row's columns (a 40px tile, the
+  copy, the trailing cell) and its horizontal padding, so the tiles and the titles of all four
+  groups sit on the same x down the page.
 
 ## 5. Build — the design system is a contract
 

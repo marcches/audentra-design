@@ -210,15 +210,6 @@
    head that is the group's handle + `CardRows` — so the green box it used to be
    (`.completed-section`, with `#d9e7e1`, `#6d7c74` and a 25px margin typed by
    hand) is gone. What is left here is the row's own shape. */
-.mini-check {
-  width: 23px;
-  height: 23px;
-}
-
-.completed-row>span:nth-child(3) {
-  color: var(--faint);
-}
-
 .skipped-top {
   justify-content: space-between;
   align-items: center;

@@ -119,12 +119,13 @@ export default function EnrollmentPage({
     >
       {/* Open — the group the page exists for. It never collapses, and it wears
           the same head as the three below it, so the four read as one list of
-          groups and not as a section with three appendices. */}
+          groups and not as a section with three appendices. The heads are bare:
+          every row under them carries its own tile — the task's kind here, the
+          step's standing below — and the mark is said on the row or on the head,
+          never on both. */}
       <Card>
         <CardHead
           kind="status"
-          icon="checklist"
-          tone="accent"
           title="Your next steps"
           note={tasks.length > 0 ? 'Ready when you are.' : 'Nothing is waiting on you right now.'}
           aside={
@@ -187,8 +188,6 @@ export default function EnrollmentPage({
       <Card className={reviewing.length > 0 && !open('reviewing') ? 'collapsed' : ''}>
         <CardHead
           kind="status"
-          icon="clock"
-          tone="review"
           title="Aster is reviewing"
           note="You’ve done your part. No action needed right now."
           count={reviewing.length > 0 ? reviewing.length : undefined}
@@ -200,8 +199,8 @@ export default function EnrollmentPage({
             <CardRows className="review-list" id="enrollment-reviewing" hidden={!open('reviewing')}>
               {reviewing.map((item) => (
                 <article className="compact-task review-task" key={`${item.title}-${item.submitted}`}>
-                  <div className="compact-check">
-                    <Icon name="clock" size={18} weight="duotone" />
+                  <div className="compact-check review" aria-hidden="true">
+                    <Icon name="clock" size={21} weight="duotone" />
                   </div>
                   <div className="compact-copy">
                     <h3>{item.title}</h3>
@@ -228,8 +227,6 @@ export default function EnrollmentPage({
       <Card className={locked.length > 0 && !open('later') ? 'collapsed' : ''}>
         <CardHead
           kind="status"
-          icon="lock"
-          tone="locked"
           title="Coming up later"
           note="These will open automatically when you’re ready for them."
           count={locked.length > 0 ? locked.length : undefined}
@@ -241,8 +238,8 @@ export default function EnrollmentPage({
             <CardRows className="locked-list" id="enrollment-later" hidden={!open('later')}>
               {locked.map((item) => (
                 <article className="compact-task locked-task" key={item.title}>
-                  <div className="compact-check">
-                    <Icon name="lock" size={17} weight="duotone" />
+                  <div className="compact-check locked" aria-hidden="true">
+                    <Icon name="lock" size={21} weight="duotone" />
                   </div>
                   <div className="compact-copy">
                     <h3>{item.title}</h3>
@@ -266,8 +263,6 @@ export default function EnrollmentPage({
       <Card className={completed.length > 0 && !open('completed') ? 'collapsed' : ''}>
         <CardHead
           kind="status"
-          icon="check"
-          tone="done"
           title={
             completed.length === 0 ? 'No steps completed yet' : `${completed.length} steps completed`
           }
@@ -290,20 +285,22 @@ export default function EnrollmentPage({
         {completed.length > 0 && (
           <CardRows className="completed-list" id="enrollment-completed" hidden={!open('completed')}>
             {completed.map((item) => (
-              <div className="completed-row" key={`${item.title}-${item.date}`}>
-                <span className="mini-check" aria-hidden="true">
-                  <Icon name="check" size={14} />
-                </span>
-                <strong>{item.title}</strong>
-                <span>{item.date}</span>
+              <article className="compact-task done-task" key={`${item.title}-${item.date}`}>
+                <div className="compact-check done" aria-hidden="true">
+                  <Icon name="check" size={21} />
+                </div>
+                <div className="compact-copy">
+                  <h3>{item.title}</h3>
+                  <div className="compact-meta">
+                    <span>Completed {item.date}</span>
+                  </div>
+                </div>
                 {rewardsOn ? (
                   <span className="earned">
                     <Icon name="spark" size={13} /> +{item.points}
                   </span>
-                ) : (
-                  <span />
-                )}
-              </div>
+                ) : null}
+              </article>
             ))}
           </CardRows>
         )}

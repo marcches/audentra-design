@@ -61,10 +61,17 @@ export default function Card({ as: Tag = 'section', variant, className, children
  * `onToggle` and it is the static head it always was — which is also what an
  * empty group gets, because a button that opens nothing is a lie.
  *
- * Which groups open by default is the page's business, and it is written
- * where the page decides it (`EnrollmentPage`): a group that changes without
- * the student acting starts open, because something new in it is news;
- * history starts closed.
+ * Every group starts closed (Marco, 2026-08-21); what the student opens is
+ * remembered by the page.
+ *
+ * ## The mark is on the head or on the rows, never both
+ *
+ * A status head takes an icon tile when the rows under it carry none — the
+ * tile is then the card's one mark. When the rows carry their own tile (a task's
+ * kind, a step's standing), the head goes **bare**: no tile, no empty column,
+ * the name at the card's padding. A clock on the head and a clock on every row
+ * is the same glyph said twice, and the rows no longer line up with the rows
+ * of the card beside them (Marco, 2026-08-21).
  */
 export function CardHead({
   kind = 'card',
@@ -95,6 +102,7 @@ export function CardHead({
 
   const isStatus = kind === 'status';
   const collapsible = isStatus && typeof onToggle === 'function';
+  const bare = isStatus && !icon;
 
   const tile = icon ? (
     <span
@@ -130,7 +138,7 @@ export function CardHead({
     return (
       <button
         type="button"
-        className={`status-heading collapsible${open ? ' open' : ''}`}
+        className={`status-heading collapsible${bare ? ' bare' : ''}${open ? ' open' : ''}`}
         aria-expanded={open ? 'true' : 'false'}
         aria-controls={controls}
         onClick={onToggle}
@@ -143,7 +151,7 @@ export function CardHead({
   }
 
   return (
-    <div className={isStatus ? 'status-heading' : 'card-heading'}>
+    <div className={isStatus ? `status-heading${bare ? ' bare' : ''}` : 'card-heading'}>
       {tile}
       {copy}
       {trailing}
