@@ -49,7 +49,7 @@ export default function FinancialsPage({
       summary={
         <BalanceStrip ledger={ledger} year={year} unknown={isEmpty} onContact={onContact} />
       }
-      alert={escalated ? <AlertStrip task={escalated} onOpen={onOpenTask} /> : null}
+      notice={escalated ? <AlertStrip task={escalated} onOpen={onOpenTask} /> : null}
       tabs={<GroupTabs group="financials" activeId={destination.id} />}
       rail={rail}
     >

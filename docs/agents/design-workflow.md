@@ -85,7 +85,7 @@ passes slots, never markup sequence, so it cannot arrange them wrongly.
 | --- | --- | --- |
 | `hero` | The purple band. Eyebrow (mono — who owns this record, as of when), one sentence, the section's icon. Copy lives in `navigation.js`; a page overrides only what it must compute. | Always |
 | `summary` | **The section's one figure, and the person who owns the subject.** The progress ring, the balance, the degree count — plus the advisor. Tucks into the band. In a group it is the *group's* figure, filled by the group shell. | When the section has a standing |
-| `notice` | What is on fire, or a caveat true of the whole section. The required strip on a one-grid page, the provenance note. In a group, it is true of every leaf or it does not belong here. | When there is one |
+| `notice` | **One `<Notice>`, true of the whole section.** The shell docks it: to the foot of the summary panel when there is one, and to a single line above the tab row when there is not. In a group, it is true of every leaf or it does not belong here. | When there is one |
 | `tabs` | `<GroupTabs>` — which leaf of the group you are reading. | Groups with 2+ built leaves |
 | `rail` | The insight column. `PageShell` renders the `<aside>`; rail components must not carry their own. | When the section has one |
 
@@ -99,6 +99,28 @@ Two rules make the order non-negotiable:
   overlaps them. Written on the panel instead, it followed the panel everywhere — which is how the
   balance ended up sitting on top of the escalation strip on My Financials (Jam, 2026-08-20).
 
+### The band and the panel are the same height on every route
+
+Two sections side by side may differ in everything below the tab row and in nothing above it. A
+student moving between them should see the content change, not the page resize under them — and
+before the Jam of 2026-08-21 they did resize, because the copy decided the height:
+
+- the band was as tall as its lede, so My Documents (one line) was shorter than My Classrooms (two);
+- the panel was as tall as the line under its figure, and a section that passed none had no line at
+  all — 123px on three sections, 137 on one, 139 on another.
+
+So the space is reserved rather than measured. `--hero-min` and `--panel-min` are the floors, and
+above them **the copy slots reserve their lines whether or not the copy fills them**: `.hero-lede`
+reserves two lines (three below 820px, where the motif and the window squeeze it), and the line under
+the figure reserves two. Both elements are rendered even when empty, so the box exists either way.
+
+Two consequences for copy, and they are the point:
+
+- **A lede that needs a third line is too long.** Shorten it in `navigation.js`. Do not let the band
+  grow — that puts one section's word count in charge of every other section's layout.
+- **A section with nothing to say under its figure says nothing, and keeps the space.** An empty
+  second line is not a defect. A page that jumps when you navigate to it is.
+
 ### A group is one screen, so the group owns everything above the tabs
 
 `PageShell` owns the *order* of the slots, so a page cannot arrange them wrongly. It cannot own their
@@ -109,12 +131,12 @@ balance panel and the other two showed none, so the panel blinked in and out alo
 files had been treated as three screens. They are one screen read three ways.
 
 **A group whose leaves are more than one file gets a group shell** — a component between the leaf and
-`PageShell` that fills `hero`, `summary`, `alert` and `tabs` once. `FinancialsPage` is the reference:
+`PageShell` that fills `hero`, `summary`, `notice` and `tabs` once. `FinancialsPage` is the reference:
 a leaf passes only `children` and `rail`, so it *cannot* differ above the tab row, because it is
 never asked. A group whose leaves are one component with a tab switch — My Campus Life — already has
 this property and needs no shell.
 
-The check, on any group: open each leaf and confirm the band, the summary, the alert and the tab row
+The check, on any group: open each leaf and confirm the band, the summary, the notice and the tab row
 are pixel-identical, **in every preview state**, including the empty and partial ones. The rail and
 the main column are below the tabs and are what the tab switches, so those may and should differ.
 
@@ -135,13 +157,14 @@ either being told to fill the row, leaving the advisor as a 576px box with 150px
 beside it.
 
 - **The figure cell is `SummaryFigure`**: an optional mark (ring, avatar, or nothing), the label, the
-  figure, and at most **one** line under it. Never a second — see below.
+  figure, and at most **one** line under it, which is given two lines' worth of room and always
+  drawn. Never a second element — see below.
 - **The advisor is `AdvisorBar`, identical on every section**: the label, the name and office on one
   line, and two icon buttons. It is sized by the figure cell beside it, and 61px pays for two lines
   of copy and one row of controls, which is why the controls are icons and why the building and the
   office hours are not in it. A section that shows more or less here is drift.
-- **Anything that qualifies the figure goes to the foot**, in the `alert` slot — `AlertStrip` for an
-  escalation, `.summary-note` for a caveat. As a fourth line inside the figure cell, My Classrooms'
+- **Anything that qualifies the figure goes to the foot**, which is the `notice` slot — one
+  `<Notice>`, docked there by the shell. As a fourth line inside the figure cell, My Classrooms'
   credit-match caveat made its panel 139px against everyone else's 123 and pushed the advisor
   off-centre beside it.
 

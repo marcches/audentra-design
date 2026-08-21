@@ -29,7 +29,10 @@
   background: linear-gradient(118deg,var(--ink) 0%,var(--purple-deep) 56%,var(--purple-ink) 100%);
   border-radius: var(--radius-panel);
   align-items: center;
-  min-height: 172px;
+  /* One height on every route. A section whose lede runs to two lines used to
+     make its own band taller than the next section's, so moving between them
+     shifted everything below by the difference — Jam of 2026-08-21. */
+  min-height: var(--hero-min);
   padding: 32px calc(var(--panel-pad) + var(--band-outdent));
   display: flex;
   position: relative;
@@ -87,11 +90,25 @@
   line-height: var(--lh-tight);
 }
 
-/* `pretty` keeps the last line from orphaning a word — "…can change / it." */
-.page-hero p:last-child {
+/* The lede, and the reason the band is the same height on every route — Jam of
+   2026-08-21.
+ *
+ * `min-height` is two lines of this element's own line-height, so a lede that
+ * runs to one line keeps the second line's space rather than pulling the band
+ * up around it. Moving between My Documents ("Everything you have sent Aster…",
+ * one line) and My Classrooms ("Every requirement your program sets… not the
+ * record itself.", two) used to shift the whole page below by the difference.
+ *
+ * Two is the ceiling as well as the floor: a lede that needs three lines is a
+ * lede that is doing the page's job, and `navigation.js` is where it gets
+ * shortened — not here, by letting the band grow.
+ *
+ * `pretty` keeps the last line from orphaning a word — "…can change / it." */
+.hero-lede {
   color: var(--line-strong);
   text-wrap: pretty;
   max-width: 620px;
+  min-height: calc(2 * var(--lh-body) * 1em);
   margin: var(--space-6) 0 0;
   font-size: var(--fs-h4);
   line-height: var(--lh-body);
@@ -191,7 +208,11 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
   align-items: stretch;
   gap: var(--space-8) var(--space-11);
-  min-height: 102px;
+  /* Same rule as the band, and measured on this cell alone: the panel's foot
+     is a notice, which is there on some sections and not on others, so folding
+     it into the minimum would make the sections that have one *shorter* than
+     the sections that do not. */
+  min-height: var(--panel-min);
   padding: var(--space-9) var(--panel-pad);
   display: grid;
 }
@@ -204,33 +225,172 @@
   }
 }
 
-/* An escalation is a footnote to the figure above it, not another band in the
-   stack: the balance says "estimate — this will go down", and this is the one
-   thing that would settle it. Attached, it cannot be scrolled past separately
-   from the number it qualifies — ENR-160 AC 6. */
-/* The panel used to clip, which is all this needed. It stopped clipping when
-   the advisor's tooltip started hanging below its button, so the one child that
-   meets the panel's bottom edge takes the corners itself. */
+/* --- the notice, and the four zones it docks into ---------------------------
+ *
+ * A sentence the section has to say. It has no shape of its own — no border, no
+ * radius, no shadow, no margin — and takes all four from whichever zone it is
+ * docked into. `Notice.jsx` has the reasoning; this is the drawing.
+ *
+ * That is the whole fix for the band the Jam of 2026-08-21 circled. The band
+ * was not too loud, and it was not the wrong amber: it was a card on the canvas
+ * holding one sentence, and a card on the canvas is a thing in its own right. A
+ * footnote is not a thing in its own right, so it stops being drawn as one.
+ *
+ * `--notice-wash` and `--notice-ink` are the tone; the zone decides whether the
+ * wash is spent. Written the other way round — a background on `.notice.soon` —
+ * the line above the tab row came out as an amber band again, which is the
+ * thing this is here to stop.
+ */
+.notice {
+  /* The mark's own width, published so the wrapped action can line up under the
+     sentence rather than under the icon. `Notice.jsx` draws it at this size. */
+  --notice-mark: 16px;
+  color: var(--muted);
+  background: var(--notice-wash, none);
+  align-items: baseline;
+  gap: var(--space-5);
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+/* Bare, and never the 34px disc `.alert-strip` used. A mark sized to be a shape
+   sets the height of everything beside it: that disc is why one 18px line of
+   type cost a 62px strip. */
+.notice-mark {
+  color: var(--notice-ink, var(--muted));
+  flex: none;
+  align-self: flex-start;
+  /* A 16px glyph rides in a 24px box; this drops it onto the first baseline
+     rather than floating it above the line. */
+  margin-top: 1px;
+}
+
+.notice-copy {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+/* What happened, then why it matters — one sentence, two weights. `.alert-strip`
+   set the lead as `display: block` at full ink, so every notice was two lines
+   whether or not it had two lines' worth to say, and both of them shouted. */
+.notice-copy strong {
+  color: var(--ink);
+  font-weight: var(--fw-semi);
+}
+
+.notice-title:after {
+  content: " · ";
+  color: var(--ink-300);
+  font-weight: var(--fw-regular);
+}
+
+/* The exception inside the sentence — *verification couldn't be checked just
+   now*, *one requirement's credits haven't synced*. Colour is spent once, here,
+   and it is amber wherever the notice's own tone sits, because the clause is
+   the part of the line that is not settled. */
+.notice-copy em {
+  color: var(--amber);
+  font-style: normal;
+}
+
+/* One way to act, in the notice's own ink, and it is the end of the sentence
+   rather than a control beside it. `.alert-strip` closed with a filled
+   `secondary-button` that competed for the same click as the row it pointed at
+   — two purple buttons, one of them a shortcut to the other. */
+.notice-action {
+  color: var(--notice-ink, var(--purple));
+  flex: none;
+  align-self: center;
+  font-weight: var(--fw-semi);
+}
+
+/* The tones. `urgent` and `soon` are `escalation()`'s two levels, so a deadline
+   arrives here already carrying one. `working` is Aster holding something and
+   `quiet` is everything true but not hers to act on — neither is given a colour
+   that asks her to act, because she cannot. */
+.notice.urgent {
+  --notice-ink: var(--crimson);
+  --notice-wash: var(--crimson-soft);
+}
+
+.notice.soon {
+  --notice-ink: var(--amber);
+  --notice-wash: var(--amber-soft);
+}
+
+.notice.working {
+  --notice-ink: var(--purple);
+  --notice-wash: var(--purple-wash);
+}
+
+.notice.quiet {
+  --notice-ink: var(--muted);
+  --notice-wash: var(--canvas);
+}
+
+/* Something is settled. Rare on purpose — a gate that is open is not news, and
+   this product does not draw a green bar to say nothing is wrong. It earns its
+   place only where the sentence is the outcome of a step the student just took,
+   which is the onboarding frame and nowhere else so far. */
+.notice.done {
+  --notice-ink: var(--green);
+  --notice-wash: var(--green-wash);
+}
+
+/* --- zone: the panel's foot ------------------------------------------------
+ *
+ * An escalation is a footnote to the figure above it, not another band in the
+ * stack: the balance says "estimate — this will go down", and this is the one
+ * thing that would settle it. Attached, it cannot be scrolled past separately
+ * from the number it qualifies — ENR-160 AC 6. Every section but My Campus Life
+ * opens with this panel, so this is where a page-wide notice lands by default,
+ * and it costs the page no height of its own at all.
+ *
+ * The panel used to clip, which is all this needed. It stopped clipping when
+ * the advisor's tooltip started hanging below its button, so the one child that
+ * meets the panel's bottom edge takes the corners itself. */
 .summary-alert {
   border-top: 1px solid var(--line);
   border-radius: 0 0 var(--radius-card) var(--radius-card);
   overflow: hidden;
 }
 
-.summary-alert .alert-strip {
-  border: 0;
-  border-radius: 0;
-  margin: 0;
-  padding: var(--space-5) var(--panel-pad);
+/* The zone owns the inset, because the panel's padding is the panel's fact and
+   a notice cannot know it — the same reason `.card-rows` reads `--card-pad`. */
+.summary-alert .notice {
+  padding: var(--space-6) var(--panel-pad);
 }
 
-.summary-note.quiet {
-  color: var(--muted);
-  font-weight: var(--fw-medium);
+/* --- zone: a card's head ---------------------------------------------------
+ *
+ * One list, not the whole section. It goes under that list's heading and above
+ * its rows, inside the card, run out to the card's edges the way `.card-rows`
+ * runs out to them — Vercel's read-only strip over its chart, Sentry's amber
+ * line over the list of organisations it is about. Docked there it cannot be
+ * read as belonging to anything but the rows under it, which is exactly what a
+ * band floating above the card could not say. */
+.section-card > .notice {
+  border-bottom: 1px solid var(--line);
+  margin: calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad)) var(--card-pad);
+  padding: var(--space-6) var(--card-pad);
 }
 
-.summary-note.failed {
-  color: var(--crimson);
+/* Under a heading it is the second band of the head, so it keeps square top
+   corners and the heading's hairline separates them. First, it is the head. */
+.section-card > .notice:first-child {
+  border-radius: calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0 0;
+}
+
+/* --- zone: a card's foot ---------------------------------------------------
+ *
+ * Provenance, and anything else read after the content rather than before it:
+ * which catalogue a record comes from, who holds the official copy. `.card-foot`
+ * already draws the band; the notice only stops adding a second one. */
+.card-foot .notice {
+  background: none;
+  padding: 0;
 }
 
 /* The tuck is a fact about these two being adjacent, not a property of the
@@ -242,13 +402,55 @@
   margin: calc(-1 * (var(--hero-gap) + var(--hero-tuck))) 0 var(--hero-gap);
 }
 
-/* The notice slot. A caveat true of the whole section sits one card-gap above
-   what it qualifies, and the shell draws that gap rather than the notice. It
-   used to be three distances for one position: the amber gate strip sat flush
-   on the first card, the catalogue note on My Classrooms pulled itself 12px up
-   into the panel, and the tab row kept its own 18. Jam of 2026-08-21. */
+/* --- zone: a host with no head and no foot ---------------------------------
+ *
+ * A drawer, the onboarding step frame, Edward's thread. There is no card here
+ * to be the head or the foot of — the drawer *is* the card — so the notice sits
+ * in the content flow and takes `--radius-row`, which is the token for a block
+ * nested inside a card. That is still a zone of its host and not a card on the
+ * canvas, which is the distinction the whole pattern turns on.
+ *
+ * It is the one zone that publishes a margin, because in a flow there is no
+ * neighbouring band to meet. */
+.drawer-content > .notice,
+.step-column .notice,
+.edward-thread > .notice {
+  border-radius: var(--radius-row);
+  margin: 0 0 var(--space-9);
+  padding: var(--space-6) var(--space-7);
+}
+
+/* --- zone: the one line above the tab row ----------------------------------
+ *
+ * The other dock, and the one that only My Campus Life needs: a section with no
+ * summary panel has no foot to hang a footnote on. It is deliberately not a
+ * card. A card here is the amber band the Jam of 2026-08-21 circled — 1180 wide
+ * and 62 tall, plus an 18px gap, spent on a sentence of sixty characters, and
+ * seventy per cent of it empty. Twingate and Upwork both draw the page-wide
+ * obligation as a rule with a line of type in it, at half the height and none
+ * of the ceremony, and that is what this is.
+ *
+ * The shell draws the gap under it, not the notice. It used to be three
+ * distances for one position: the amber gate strip sat flush on the first card,
+ * the catalogue note on My Classrooms pulled itself 12px up into the panel, and
+ * the tab row kept its own 18. */
 .page-notice {
   margin: 0 0 var(--space-9);
+}
+
+/* The two rules belong to the notice, not to the slot. My Campus Life passes a
+   whole `section-card` through here — its required sessions are a card with rows
+   in it, not a sentence — and a card that came pre-drawn does not want a second
+   frame around it. Written on `.page-notice` it got one.
+ *
+ * No wash either: on the canvas a tint is a shape, and the two rules already say
+ * where this begins and ends. The mark keeps the tone's colour, which is the
+ * whole escalation a line needs. */
+.page-notice > .notice {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: none;
+  padding: var(--space-6) 0;
 }
 
 /* Which leaf of a group you are reading. It sits directly above what it
@@ -374,10 +576,16 @@
   line-height: var(--lh-tight);
 }
 
+/* The line under the figure, and the panel's half of the same rule. Two lines
+   reserved, always, so the panel does not change height between a section that
+   says "You're right on track. Your next task takes about 4 minutes." and one
+   that says "Nothing is waiting on you right now." — `SummaryFigure` renders
+   the element even when the section passes nothing into it. */
 .summary-figure-copy p,
 .progress-summary p {
   color: var(--muted);
   max-width: 46ch;
+  min-height: calc(2 * var(--lh-body) * 1em);
   margin: var(--space-2) 0 0;
   font-size: var(--fs-copy);
   line-height: var(--lh-body);
@@ -645,6 +853,15 @@
   color: var(--purple-dark);
   background: var(--purple-wash);
   border: 1px solid var(--purple-line);
+}
+
+/* A control never wraps its own label; the layout around it wraps instead. A
+   button that breaks in half changes height, and everything in the row with it
+   moves. */
+.primary-button,
+.secondary-button,
+.text-button {
+  white-space: nowrap;
 }
 
 .secondary-button:hover {
@@ -1930,6 +2147,15 @@ footer a {
     padding-top: 31px;
     padding-bottom: 31px;
   }
+  /* Below this the lede is squeezed twice — `.hero-copy` gives 145px to the
+     motif from 1060px down, and the window keeps shrinking — so the longest
+     ledes reach a third line somewhere under 700px. The reservation goes up to
+     three here rather than at the exact width each sentence happens to break,
+     because the point is that every route is the same height at any one width,
+     not that no line is ever left empty. */
+  .hero-lede {
+    min-height: calc(3 * var(--lh-body) * 1em);
+  }
   .task-action .text-button {
     display: none;
   }
@@ -1949,10 +2175,10 @@ footer a {
     --band-outdent: 8px;
     --panel-pad: 16px;
     --hero-tuck: 14px;
+    --hero-min: 220px;
   }
   .page-hero {
     border-radius: var(--radius-card);
-    min-height: 220px;
     padding-top: var(--space-11);
     padding-bottom: var(--space-11);
   }
@@ -1963,8 +2189,12 @@ footer a {
     max-width: 315px;
     font-size: var(--fs-figure);
   }
-  .page-hero p:last-child {
+  /* Three lines at this width, and the same rule: the space is reserved whether
+     or not the sentence fills it. `--hero-min` above is the floor the band keeps
+     when even three lines do not reach it. */
+  .hero-lede {
     max-width: 315px;
+    min-height: calc(3 * var(--lh-body) * 1em);
     font-size: var(--fs-body);
   }
   .hero-motif {
@@ -2340,6 +2570,21 @@ footer a {
 /* --- the state card at narrow widths --- */
 
 @media (width<=620px) {
+  /* The action drops under the sentence rather than squeezing it: at this width
+     `See the 2 steps →` and the line it belongs to cannot both keep their
+     measure, and the sentence is the part that has to stay readable. It is the
+     control that moves, never the control that wraps — see the button rule
+     above. */
+  .notice {
+    flex-wrap: wrap;
+  }
+  .notice-copy {
+    flex: 1 0 100%;
+  }
+  .notice-action {
+    align-self: flex-start;
+    margin-left: calc(var(--space-5) + var(--notice-mark));
+  }
   .state-card {
     padding: var(--space-11) var(--space-9);
   }

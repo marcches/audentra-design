@@ -107,64 +107,6 @@
   line-height: var(--lh-body);
 }
 
-/* --- the notices above the head --- */
-
-.step-notice {
-  border-radius: var(--radius-row);
-  align-items: flex-start;
-  gap: var(--space-5);
-  margin: 0 0 var(--space-9);
-  padding: var(--space-6) var(--space-7);
-  font-size: var(--fs-copy);
-  line-height: var(--lh-body);
-  display: flex;
-}
-
-.step-notice svg {
-  flex: none;
-  margin-top: 1px;
-}
-
-.step-notice.info {
-  color: var(--green-ink);
-  background: var(--green-wash);
-  border: 1px solid var(--green-line);
-}
-
-.step-notice.info svg {
-  color: var(--green);
-}
-
-/* A refusal is not a failure. It is the shape of the path, said out loud. */
-.step-notice.alert {
-  color: var(--ink);
-  background: var(--purple-wash);
-  border: 1px solid var(--purple-line);
-}
-
-.step-notice.alert svg {
-  color: var(--purple);
-}
-
-.step-notice.resume {
-  color: var(--ink);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  justify-content: space-between;
-}
-
-.step-notice.resume svg {
-  color: var(--purple);
-}
-
-.step-notice.resume span {
-  flex: 1;
-}
-
-.step-notice .text-button {
-  flex: none;
-}
-
 /* ENR-149 AC 4. A save that failed says so where the save was pressed, and the
    count above it has not moved. */
 .step-failed {

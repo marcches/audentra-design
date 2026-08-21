@@ -2,6 +2,7 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
 import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
 import EntryCard from '../../design-system/patterns/EntryCard.jsx';
+import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
@@ -184,21 +185,27 @@ export default function ProfilePage({ destination, state, record, onToast }) {
     </>
   );
 
+  /**
+   * The legend for the two groups below, on the foot of the panel whose figure
+   * counts them. It was a full-width band above the cards until the Jam of
+   * 2026-08-21; the sentence has not changed, only where it is drawn.
+   *
+   * Its tone is `quiet` on purpose even when a check has failed: nothing in it
+   * is hers to act on, and a colour that says otherwise would be a false alarm
+   * about her own record.
+   */
   const note = (
-    <p className="record-note ownership">
-      <Icon name="shield" size={15} />
-      <span>
-        Everything under <strong>Yours to change</strong> you can change here, and the change takes
-        effect at once. Everything under <strong>Aster’s record</strong> belongs to the office named
-        beside it. Each of those rows shows how to reach them.
-        {unchecked && (
-          <em> Verification couldn’t be checked just now, so no row on this page claims to be verified.</em>
-        )}
-        {identity.usingLegalName && (
-          <em> Aster is using your legal first name until you set a preferred one.</em>
-        )}
-      </span>
-    </p>
+    <Notice tone="quiet" icon="shield">
+      Everything under <strong>Yours to change</strong> you can change here, and the change takes
+      effect at once. Everything under <strong>Aster’s record</strong> belongs to the office named
+      beside it. Each of those rows shows how to reach them.
+      {unchecked && (
+        <em> Verification couldn’t be checked just now, so no row on this page claims to be verified.</em>
+      )}
+      {identity.usingLegalName && (
+        <em> Aster is using your legal first name until you set a preferred one.</em>
+      )}
+    </Notice>
   );
 
   return (

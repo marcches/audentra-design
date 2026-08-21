@@ -45,6 +45,10 @@ screens needed had no names and no components, so each screen invented its own f
 - **Reach for a primitive before writing markup.** A drawer is `<Drawer>`, a rail's first card is
   `<AnchorCard>`, a card is `<Card>` + `<CardHead>` + `<CardRows>`. If you are typing `modal-scrim`
   or `anchor-card` by hand, stop — you are re-creating something that exists.
+- **A sentence the page has to say is `<Notice>`, and it never gets a band of its own.** It docks
+  into the thing it is about — the foot of the summary panel, the head of a card, a card's foot —
+  and which one is decided by the scope of the sentence. If you are writing a full-width strip
+  above the content, stop: that is the shape nine sections each reinvented before 2026-08-21.
 - **An icon-only control is `<IconButton name label>`**, which shows its `label` on hover and on
   keyboard focus. A hint may only repeat that name; anything a student can read nowhere else is an
   `<InfoTip>`, which is a button, because hover reaches neither a phone nor a keyboard.
@@ -65,8 +69,9 @@ src/
   design-system/             # the product's vocabulary. Knows no domain, imports no data.
     Icon.jsx
     primitives/              # Drawer, AnchorCard, Card (+CardHead/Rows/Foot), Button
-    patterns/                # PageShell, GroupTabs, StateCard, SummaryFigure, AdvisorBar,
-                             # InfoModal, PageError, PageSkeleton, SectionPlaceholder
+    patterns/                # PageShell, GroupTabs, Notice, StateCard, SummaryFigure,
+                             # AdvisorBar, InfoModal, PageError, PageSkeleton,
+                             # SectionPlaceholder
     styleguide/              # the page at #/styleguide
 
   app/                       # the shell every page renders inside

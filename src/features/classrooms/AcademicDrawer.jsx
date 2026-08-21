@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Drawer from '../../design-system/primitives/Drawer.jsx';
 import Icon from '../../design-system/Icon.jsx';
+import Notice from '../../design-system/patterns/Notice.jsx';
 import { confidenceLabel, requirementStatus } from './logic.js';
 import { program } from './data.js';
 
@@ -133,16 +134,10 @@ function MatchBody({ match, tab, onTab, onAsk, onOpenCredit }) {
         yet.
       </p>
 
-      <div className="advisory-banner">
-        <Icon name="info" size={18} />
-        <div>
-          <strong>Not approved. Nothing here counts.</strong>
-          <p>
-            Your requirement status, your credit total and your degree progress are exactly what they
-            were before this match existed. Only the {program.officialRecord.office} can change that.
-          </p>
-        </div>
-      </div>
+      <Notice tone="soon" icon="info" title="Not approved. Nothing here counts">
+        Your requirement status, your credit total and your degree progress are exactly what they
+        were before this match existed. Only the {program.officialRecord.office} can change that.
+      </Notice>
 
       <div className="drawer-tabs" role="tablist">
         <button

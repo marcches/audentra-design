@@ -7,6 +7,7 @@ import AcademicDrawer from './AcademicDrawer.jsx';
 import CreditMatchCard from './CreditMatchCard.jsx';
 import InfoModal from '../../design-system/patterns/InfoModal.jsx';
 import RequirementCard from './RequirementCard.jsx';
+import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import {
@@ -136,35 +137,41 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
   // floating off-centre beside it; on the foot it qualifies the number without
   // changing the shape of the panel. A failed check is crimson, a match still
   // waiting is amber, and nothing waiting asks nothing of the student.
-  const caveat = unknownProgram ? null : (
-    <p
-      className={`summary-note ${
-        matches === null ? 'failed' : matches.length > 0 ? '' : 'quiet'
-      }`}
-    >
-      <Icon name={matches === null ? 'alert' : 'info'} size={14} />
-      {matches === null
-        ? 'Your transcript couldn’t be checked for matches. Nothing approved has changed.'
-        : matches.length > 0
-          ? `${matches.length} potential ${
-              matches.length === 1 ? 'match isn’t' : 'matches aren’t'
-            } counted here`
-          : 'Nothing is waiting on a credit decision'}
-    </p>
-  );
-
-  // Provenance, said once: whose record this is not, and which catalog it reads.
-  const note = unknownProgram ? null : (
-    <p className="record-note">
-      <Icon name="shield" size={15} />
-      <span>
-        Catalog {program.catalog} · {program.publishedOn} · read-only. This isn’t your official
-        academic record. The {program.officialRecord.office} holds your transcript.
-        {totals.pending > 0 && (
-          <em> *One requirement’s credits haven’t synced, so this total is incomplete.</em>
-        )}
-      </span>
-    </p>
+  /**
+   * One caveat on the figure, on the panel's foot — the Jam of 2026-08-21.
+   *
+   * This page used to spend two slots and two shapes here. `alert` held the
+   * line about matches, and `notice` held a full-width band of provenance:
+   * *catalog 2026 · published · read-only · this isn't your official academic
+   * record · the Registrar's Office holds your transcript.* Every clause of
+   * that band is already printed in the rail beside it — the catalog and the
+   * published date in `Your program`, the office and where to find it in
+   * `Your official record` — so the band was a row of the page spent saying a
+   * third time what the rail says once, at the top of the reading order.
+   *
+   * What was only in the band is the sync caveat, and it is not provenance: it
+   * is the reason the number above it is short. So it comes here, to the number,
+   * and the band goes.
+   *
+   * Ranked, because the foot holds one line: a total that cannot be trusted
+   * beats a check that did not run, which beats how many matches are waiting.
+   */
+  const caveat = unknownProgram ? null : totals.pending > 0 ? (
+    <Notice tone="soon" icon="alert">
+      One requirement’s credits haven’t synced, so this total is incomplete.
+    </Notice>
+  ) : matches === null ? (
+    <Notice tone="soon" icon="alert">
+      Your transcript couldn’t be checked for matches. Nothing approved has changed.
+    </Notice>
+  ) : (
+    <Notice tone="quiet" icon="info">
+      {matches.length > 0
+        ? `${matches.length} potential ${
+            matches.length === 1 ? 'match isn’t' : 'matches aren’t'
+          } counted here`
+        : 'Nothing is waiting on a credit decision'}
+    </Notice>
   );
 
   return (
@@ -174,8 +181,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
         hero={hero}
         summaryLabel="Degree progress"
         summary={summary}
-        alert={caveat}
-        notice={note}
+        notice={caveat}
         rail={
           <ClassroomsRail
             approved={totals.approved}

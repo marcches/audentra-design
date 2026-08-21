@@ -7,7 +7,7 @@
  *
  * The vocabulary here is about a wait and a decision, so almost nothing in this
  * block is a new shape: the rows are `.card-rows` children on the card's own
- * white, the drawer is the task drawer, the strips are `.alert-strip`. What is
+ * white, the drawer is the task drawer, the two notices are `<Notice>`. What is
  * genuinely new is three things the portal had no expression for:
  *
  *   - a **state as the line under a title** rather than a chip on the right, so
@@ -186,23 +186,6 @@
 
 .card-rows > .rows-caption + * {
   border-top: 0;
-}
-
-/* --- the strip that gives permission to leave --- */
-
-.alert-strip.checking {
-  color: var(--ink);
-  background: var(--purple-soft);
-  border-color: var(--purple-line);
-}
-
-.alert-strip.checking .alert-strip-icon {
-  color: var(--purple);
-  background: var(--purple-tint);
-}
-
-.alert-strip.checking .pulse {
-  background: var(--purple);
 }
 
 /* --- the drawer --- */

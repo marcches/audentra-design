@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
+import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import AppointmentDrawer from './AppointmentDrawer.jsx';
@@ -184,40 +185,43 @@ export default function AppointmentsPage({
 
   // A booking that failed is a footnote to the figure above it: *this one is not it.* The shell
   // rides it on the foot of the summary rather than stacking another band into the page.
+  /**
+   * Two failures, two scopes, and they used to be two bands stacked on top of
+   * each other — the exact thing the Jam of 2026-08-21 asked us to stop.
+   *
+   * A booking that never reached its team is about her next conversation, which
+   * is the figure on the panel, so it takes the panel's foot. Times that would
+   * not load are about the card that books one, so they head that card and
+   * nothing else. Neither is a band, and neither has to be ranked against the
+   * other any more, because they are no longer competing for one place.
+   */
   const alert =
     failed.length === 0 ? null : (
-      <div className="alert-strip urgent" role="status">
-        <span className="alert-strip-icon" aria-hidden="true">
-          <Icon name="alert" size={19} />
-        </span>
-        <p>
-          <strong>{failedType.label} · not booked</strong>
-          This never reached {failedType.team}, so nothing is scheduled. The time you chose may
-          still be open.
-        </p>
-        <button
-          className="secondary-button"
-          onClick={() => openBooking(failedType, null, failed[0].id)}
-        >
-          Try again <Icon name="refresh" size={15} />
-        </button>
-      </div>
+      <Notice
+        tone="urgent"
+        icon="alert"
+        title={`${failedType.label} · not booked`}
+        action={{
+          label: 'Try again',
+          icon: 'refresh',
+          onClick: () => openBooking(failedType, null, failed[0].id),
+        }}
+      >
+        This never reached {failedType.team}, so nothing is scheduled. The time you chose may still
+        be open.
+      </Notice>
     );
 
-  const notice = timesFailed ? (
-    <div className="alert-strip urgent" role="alert">
-      <span className="alert-strip-icon" aria-hidden="true">
-        <Icon name="alert" size={19} />
-      </span>
-      <p>
-        <strong>The published times couldn’t be loaded</strong>
-        Booking is closed until they do, rather than opening a picker with nothing in it. The
-        conversations you have already booked loaded normally and are unaffected.
-      </p>
-      <button className="secondary-button" onClick={onRetry}>
-        Try again <Icon name="refresh" size={15} />
-      </button>
-    </div>
+  const bookingNotice = timesFailed ? (
+    <Notice
+      tone="urgent"
+      icon="alert"
+      title="The published times couldn’t be loaded"
+      action={{ label: 'Try again', icon: 'refresh', onClick: onRetry }}
+    >
+      Booking is closed until they do, rather than opening a picker with nothing in it. The
+      conversations you have already booked loaded normally and are unaffected.
+    </Notice>
   ) : null;
 
   return (
@@ -242,8 +246,7 @@ export default function AppointmentsPage({
           }
         />
       }
-      alert={alert}
-      notice={notice}
+      notice={alert}
       rail={
         <AppointmentsRail
           availability={availability}
@@ -263,6 +266,8 @@ export default function AppointmentsPage({
             <p>What it’s about decides which team receives it.</p>
           </div>
         </div>
+
+        {bookingNotice}
 
         <div className="card-rows type-list">
           {conversationTypes.map((type) => (

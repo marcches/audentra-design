@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import Notice from '../../design-system/patterns/Notice.jsx';
 import { BOUNDARY_NOTE, EDWARD, GREETING } from './data.js';
 import EdwardMessage from './EdwardMessage.jsx';
 
@@ -70,10 +71,9 @@ export default function EdwardThread({
       )}
 
       {unreachable && messages.length === 0 && (
-        <p className="edward-notice" role="status">
-          <Icon name="info" size={14} /> Your record is not loading right now, so I can only answer
-          from what Aster has published.
-        </p>
+        <Notice tone="quiet" icon="info">
+          Your record is not loading right now, so I can only answer from what Aster has published.
+        </Notice>
       )}
 
       {messages.map((message) => (

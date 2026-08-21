@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
+import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import AskCard from './AskCard.jsx';
 import GuideList from './GuideList.jsx';
@@ -240,21 +241,17 @@ export default function HelpPage({
           onAsk={focusAsk}
         />
       }
-      alert={
+      notice={
         waiting ? (
-          <div className="alert-strip soon" role="status">
-            <span className="alert-strip-icon" aria-hidden="true">
-              <Icon name="alert" size={19} />
-            </span>
-            <p>
-              <strong>{officeOf(waiting).name} asked you something</strong>
-              {waiting.subject} · nothing is late while this is open, but it stops moving until you
-              reply.
-            </p>
-            <button className="secondary-button" onClick={() => openDetail(waiting)}>
-              Open it <Icon name="arrow" size={15} />
-            </button>
-          </div>
+          <Notice
+            tone="soon"
+            icon="alert"
+            title={`${officeOf(waiting).name} asked you something`}
+            action={{ label: 'Open it', onClick: () => openDetail(waiting) }}
+          >
+            {waiting.subject} · nothing is late while this is open, but it stops moving until you
+            reply.
+          </Notice>
         ) : null
       }
       rail={<HelpRail onToast={onToast} />}

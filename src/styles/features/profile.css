@@ -31,17 +31,6 @@
   display: grid;
 }
 
-/* The legend for the whole page. Purple, not the provenance green: green means
-   covered, satisfied, done, and this note says none of those things. */
-.record-note.ownership svg {
-  color: var(--purple);
-}
-
-.record-note strong {
-  color: var(--ink);
-  font-weight: var(--fw-bold);
-}
-
 .status-icon.record {
   color: var(--purple-dark);
   background: var(--purple-soft);

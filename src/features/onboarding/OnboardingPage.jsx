@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
+import Notice from '../../design-system/patterns/Notice.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import PreviewStateMenu from '../../app/PreviewStateMenu.jsx';
 import StepRail from '../../design-system/patterns/StepRail.jsx';
@@ -345,21 +346,28 @@ export default function OnboardingPage({ requestedStep, previewState, onPreviewS
 
           {frameState === 'ready' && (
             <>
+              {/* A refusal is not a failure — it is the shape of the path, said
+                  out loud — so `alert` reads as `working` rather than as an
+                  escalation. `info` is the one place in the portal a notice is
+                  allowed to be green: the sentence is the outcome of a step she
+                  has just taken. */}
               {notice && (
-                <p className={`step-notice ${notice.tone}`} role="status">
-                  <Icon name={notice.tone === 'alert' ? 'lock' : 'check'} size={15} />
-                  <span>{notice.text}</span>
-                </p>
+                <Notice
+                  tone={notice.tone === 'alert' ? 'working' : 'done'}
+                  icon={notice.tone === 'alert' ? 'lock' : 'check'}
+                >
+                  {notice.text}
+                </Notice>
               )}
 
               {resume && (
-                <p className="step-notice resume" role="status">
-                  <Icon name="clock" size={15} />
-                  <span>{resume}</span>
-                  <button className="text-button" onClick={() => setResumeShown(false)}>
-                    Dismiss
-                  </button>
-                </p>
+                <Notice
+                  tone="quiet"
+                  icon="clock"
+                  action={{ label: 'Dismiss', icon: 'close', onClick: () => setResumeShown(false) }}
+                >
+                  {resume}
+                </Notice>
               )}
 
               {/* ENR-149 Scenario 4, made something you can look at: the

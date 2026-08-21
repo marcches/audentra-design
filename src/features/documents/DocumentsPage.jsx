@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { enrollmentAdvisor } from '../enrollment/data.js';
 import Icon from '../../design-system/Icon.jsx';
+import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
 import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
@@ -148,37 +149,22 @@ export default function DocumentsPage({
           />
         </>
       }
-      alert={
-        rejected ? (
-          <div className="alert-strip urgent" role="status">
-            <span className="alert-strip-icon" aria-hidden="true">
-              <Icon name="alert" size={19} />
-            </span>
-            <p>
-              <strong>{rejected.step ?? rejected.title} · sent back</strong>
-              {officeOf(rejected).name} sent it back and said why. Send a new copy in the same
-              place. Nothing else on your record is affected.
-            </p>
-            <button className="secondary-button" onClick={() => openDocument(rejected)}>
-              See what to fix <Icon name="arrow" size={15} />
-            </button>
-          </div>
-        ) : null
-      }
+      /* Sent back is the one thing on this page that is hers to act on and has a
+         consequence, so it takes the panel's foot: the figure says how much of
+         her record Aster has accepted, and this is the piece that went the other
+         way. The permission-to-leave notice used to sit *above* it in the loud
+         full-width slot, which had the page shouting the quieter of the two. */
       notice={
-        checking ? (
-          // The permission to leave, stated by the page rather than left for the
-          // student to guess — ENR-157 AC 3, drawn by Airwallex.
-          <div className="alert-strip checking" role="status">
-            <span className="alert-strip-icon" aria-hidden="true">
-              <i className="pulse" />
-            </span>
-            <p>
-              <strong>Aster is checking your {checking.title.toLowerCase()}</strong>
-              You can close this page or go somewhere else. It keeps going, and this record shows
-              where it got to whenever you come back.
-            </p>
-          </div>
+        rejected ? (
+          <Notice
+            tone="urgent"
+            icon="alert"
+            title={`${rejected.step ?? rejected.title} · sent back`}
+            action={{ label: 'See what to fix', onClick: () => openDocument(rejected) }}
+          >
+            {officeOf(rejected).name} sent it back and said why. Send a new copy in the same place.
+            Nothing else on your record is affected.
+          </Notice>
         ) : null
       }
       rail={<DocumentsRail requirements={requirements} unavailable={unavailable} onToast={onToast} />}
@@ -235,6 +221,17 @@ export default function DocumentsPage({
             <p>Everything you have sent Aster, and everything Aster has sent you.</p>
           </div>
         </div>
+
+        {/* The permission to leave, stated by the page rather than left for the
+            student to guess — ENR-157 AC 3, drawn by Airwallex. It heads this
+            card and not the page: what is being checked is one row of this list,
+            and the row it is about is a few pixels below it. */}
+        {checking ? (
+          <Notice tone="working" icon="clock" title={`Aster is checking your ${checking.title.toLowerCase()}`}>
+            You can close this page or go somewhere else. It keeps going, and this record shows where
+            it got to whenever you come back.
+          </Notice>
+        ) : null}
 
         {unavailable ? (
           // Not the empty state. "Nothing on the record yet" would be a lie about

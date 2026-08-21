@@ -202,16 +202,8 @@
   display: flex;
 }
 
-.edward-boundary svg, .edward-notice svg {
+.edward-boundary svg {
   flex: none;
-}
-
-.edward-notice {
-  color: var(--amber);
-  background: var(--amber-soft);
-  align-items: flex-start;
-  font-weight: var(--fw-semi);
-  line-height: var(--lh-body);
 }
 
 /* --- suggestions: rows that wrap, never chips that truncate --- */

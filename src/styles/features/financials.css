@@ -12,64 +12,6 @@
    ────────────────────────────────────────────────────────────────────────── */
 
 /* The escalation strip — ENR-160 AC 6, at the top and again on the row. */
-.alert-strip {
-  border: 1px solid var(--line);
-  background: var(--surface);
-  border-radius: var(--radius-row);
-  align-items: center;
-  gap: var(--space-6);
-  margin: 0 0 var(--space-9);
-  padding: var(--space-6) var(--space-7);
-  display: flex;
-}
-
-.alert-strip.urgent {
-  border-color: color-mix(in srgb, var(--crimson) 30%, var(--line));
-  background: color-mix(in srgb, var(--crimson) 5%, var(--surface));
-}
-
-.alert-strip.soon {
-  border-color: color-mix(in srgb, var(--amber) 30%, var(--line));
-  background: var(--amber-soft);
-}
-
-.alert-strip-icon {
-  border-radius: var(--radius-chip);
-  flex: none;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  display: grid;
-}
-
-.alert-strip.urgent .alert-strip-icon {
-  color: var(--crimson);
-  background: color-mix(in srgb, var(--crimson) 12%, var(--surface));
-}
-
-.alert-strip.soon .alert-strip-icon {
-  color: var(--amber);
-  background: color-mix(in srgb, var(--amber) 14%, var(--surface));
-}
-
-.alert-strip p {
-  color: var(--muted);
-  flex: 1;
-  margin: 0;
-  font-size: var(--fs-copy);
-  line-height: var(--lh-body);
-}
-
-.alert-strip strong {
-  color: var(--ink);
-  font-size: var(--fs-body);
-  display: block;
-}
-
-.alert-strip .secondary-button {
-  flex: none;
-}
-
 /* The money figure carries a chip beside it, so it is a row. Its size comes
    from `.summary-figure.money`, with the rest of the scale. */
 .balance-figure {
@@ -1048,13 +990,6 @@
   }
   .installment-label {
     font-size: var(--fs-copy);
-  }
-  .alert-strip {
-    flex-wrap: wrap;
-  }
-  .alert-strip .secondary-button {
-    flex: 1 0 100%;
-    justify-content: center;
   }
   .pay-cta .primary-button {
     flex: 1 0 100%;

@@ -1,13 +1,17 @@
-import Icon from '../../design-system/Icon.jsx';
+import Notice from '../../design-system/patterns/Notice.jsx';
 import { daysUntilOpen, opensOn, outstanding, yoursToAct } from './logic.js';
 import { registration } from './data.js';
 
 /**
  * The consequence, stated once — ENR-214 AC 2.
  *
- * It goes in `PageShell`'s `notice` slot: one line true of the whole section,
- * above everything. An obligation must not hide behind something nobody opened,
- * which is the rule ENR-189 already set for a required session.
+ * It goes in `PageShell`'s `notice` slot, which docks it to the foot of the
+ * enrollment panel. That is the right place for it twice over: an obligation
+ * must not hide behind something nobody opened — the rule ENR-189 set for a
+ * required session — and the panel above it says *3 of 9 steps complete*, of
+ * which this is the reason. Attached to the figure it cannot be scrolled past
+ * without it. As its own amber band above the cards it was a full row of the
+ * page spent on one sentence, which is what the Jam of 2026-08-21 circled.
  *
  * Three clauses, and the third is the one most checklists leave out: what is
  * happening, what it needs, **and by when**.
@@ -18,15 +22,13 @@ import { registration } from './data.js';
 export default function GateNotice({ state, items, unavailable, onRetry, onShow }) {
   if (unavailable) {
     return (
-      <div className="gate-notice muted">
-        <Icon name="flag" size={17} />
-        <p>What’s outstanding for {registration.label} couldn’t be checked.</p>
-        {onRetry && (
-          <button className="secondary-button" onClick={onRetry}>
-            Try again
-          </button>
-        )}
-      </div>
+      <Notice
+        tone="quiet"
+        icon="flag"
+        action={onRetry ? { label: 'Try again', icon: 'refresh', onClick: onRetry } : null}
+      >
+        What’s outstanding for {registration.label} couldn’t be checked.
+      </Notice>
     );
   }
 
@@ -41,40 +43,35 @@ export default function GateNotice({ state, items, unavailable, onRetry, onShow 
   if (state === 'waiting') {
     const waiting = outstanding(items);
     return (
-      <div className="gate-notice muted">
-        <Icon name="clock" size={17} />
-        <p>
-          {waiting.length === 1 ? (
-            <>
-              Your {waiting[0].label.toLowerCase()} is with Aster. Nothing more is needed from you
-              before {registration.label} opens on {when}.
-            </>
-          ) : (
-            <>
-              Everything {registration.label} needs is with Aster. Nothing more is needed from you
-              before it opens on {when}.
-            </>
-          )}
-        </p>
-      </div>
+      <Notice tone="working" icon="clock">
+        {waiting.length === 1 ? (
+          <>
+            Your {waiting[0].label.toLowerCase()} is with Aster. Nothing more is needed from you
+            before {registration.label} opens on {when}.
+          </>
+        ) : (
+          <>
+            Everything {registration.label} needs is with Aster. Nothing more is needed from you
+            before it opens on {when}.
+          </>
+        )}
+      </Notice>
     );
   }
 
   const mine = yoursToAct(items);
-  // The one escalation this card spends. A deadline is not a failure while
+  // The one escalation this notice spends. A deadline is not a failure while
   // there is time; inside a week it is the most important thing on the page.
   const urgent = days <= 7;
 
   return (
-    <div className={`gate-notice ${urgent ? 'urgent' : 'soon'}`}>
-      <Icon name="flag" size={17} />
-      <p>
-        {mine.length === 1 ? 'One step has' : `${mine.length} steps have`} to be done before{' '}
-        {registration.label} opens on {when}.
-      </p>
-      <button className="link-button" onClick={onShow}>
-        See the {mine.length === 1 ? 'step' : `${mine.length} steps`} <Icon name="arrow" size={14} />
-      </button>
-    </div>
+    <Notice
+      tone={urgent ? 'urgent' : 'soon'}
+      icon="flag"
+      action={{ label: `See the ${mine.length === 1 ? 'step' : `${mine.length} steps`}`, onClick: onShow }}
+    >
+      {mine.length === 1 ? 'One step has' : `${mine.length} steps have`} to be done before{' '}
+      {registration.label} opens on {when}.
+    </Notice>
   );
 }

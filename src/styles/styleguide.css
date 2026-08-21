@@ -458,3 +458,92 @@
   letter-spacing: var(--ls-snug);
   font-size: var(--fs-h3);
 }
+
+/* --- the notice, and the zones it docks into --------------------------------
+ *
+ * The specimens on this section are not swatches: a notice has no shape of its
+ * own, so showing one on its own would show nothing. Each demo is the real host
+ * — a summary panel, a section card — with a real notice in its zone, which is
+ * the only way the rule this section states can be checked by eye. */
+.sg-zone-title {
+  letter-spacing: var(--ls-snug);
+  margin: var(--space-9) 0 0;
+  font-size: var(--fs-h4);
+}
+
+.sg-zone-demo {
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  margin-top: var(--space-6);
+  padding: var(--space-10);
+}
+
+/* The panel is built to tuck under a hero band, and there is no band here. The
+   demo cancels the tuck rather than borrowing a band it does not need. */
+.sg-zone-demo .page-summary,
+.sg-zone-demo .section-card {
+  margin: 0;
+}
+
+.sg-zone-demo.tones {
+  flex-direction: column;
+  gap: var(--space-6);
+  display: flex;
+}
+
+/* Each tone needs a host to take its wash from, and in this one place the host
+   is the demo itself. `--card-radius` is what a docked notice reads for its
+   corners; the zones publish it, so the specimen publishes it too. */
+.sg-zone-demo.tones .notice {
+  --card-radius: var(--radius-row);
+  border-radius: var(--radius-row);
+  padding: var(--space-6) var(--space-7);
+}
+
+.sg-zone-row {
+  color: var(--muted);
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+  font-size: var(--fs-copy);
+}
+
+/* Scope, then where it goes: the pairing is the whole rule, so it is set as one
+   and not as prose with the answers buried in it. */
+.sg-scope-list {
+  gap: var(--space-5);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.sg-scope-list li {
+  grid-template-columns: 13rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-7);
+  display: grid;
+}
+
+.sg-scope-list strong {
+  color: var(--ink);
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
+}
+
+.sg-scope-list span {
+  color: var(--muted);
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+@media (width<=620px) {
+  .sg-scope-list li {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .sg-zone-demo {
+    padding: var(--space-7);
+  }
+}

@@ -184,57 +184,6 @@
    ========================================================================= */
 
 /* AC 2 — what is blocked, and by when, above everything. */
-.gate-notice {
-  border-radius: var(--radius-row);
-  align-items: center;
-  gap: var(--space-5);
-  padding: var(--space-6) var(--space-7);
-  font-size: var(--fs-copy);
-  line-height: var(--lh-body);
-  display: flex;
-}
-
-.gate-notice p {
-  flex: 1;
-  margin: 0;
-}
-
-.gate-notice svg {
-  flex: none;
-}
-
-.gate-notice.soon {
-  color: var(--amber);
-  background: var(--amber-soft);
-}
-
-/* The one escalation this card spends: inside a week, a deadline stops being
-   a fact and becomes the most important thing on the page. */
-.gate-notice.urgent {
-  color: var(--crimson);
-  background: var(--crimson-soft);
-}
-
-/* Waiting on Aster, and unavailable. Neither is hers to act on, so neither
-   gets a colour that asks her to. */
-.gate-notice.muted {
-  color: var(--muted);
-  background: var(--canvas);
-}
-
-.gate-notice.soon p, .gate-notice.urgent p {
-  color: var(--ink);
-}
-
-.gate-notice .link-button {
-  color: inherit;
-  flex: none;
-  align-items: center;
-  gap: var(--space-2);
-  font-weight: var(--fw-bold);
-  display: inline-flex;
-}
-
 /* AC 1 — the mark, wherever the requirement appears. A chip in the row that
    already holds standing; never a border, never a left bar on a rounded card. */
 .gate-chip {

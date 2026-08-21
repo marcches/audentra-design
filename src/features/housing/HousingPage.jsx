@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
 import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
+import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
@@ -200,22 +201,24 @@ export default function HousingPage({
         </>
       }
       summaryLabel="Your housing plan"
+      /* A save that did not land is a footnote to the plan above it, not a
+         full-size `StateCard` band between the panel and the cards — the Jam of
+         2026-08-21. A `StateCard` is an empty state: it is what a region shows
+         *instead of* content, and there is content here. */
       notice={
         failure ? (
-          <div role="alert">
-            <StateCard
-              variant="error"
-              icon="alert"
-              title="That change was not saved"
-              action={{
-                label: 'Try again',
-                icon: 'refresh',
-                onClick: () => onToast(`Retrying would send the change to ${housingOffice} again.`),
-              }}
-            >
-              {failure}
-            </StateCard>
-          </div>
+          <Notice
+            tone="urgent"
+            icon="alert"
+            title="That change was not saved"
+            action={{
+              label: 'Try again',
+              icon: 'refresh',
+              onClick: () => onToast(`Retrying would send the change to ${housingOffice} again.`),
+            }}
+          >
+            {failure}
+          </Notice>
         ) : null
       }
       rail={

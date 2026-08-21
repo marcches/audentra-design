@@ -44,8 +44,11 @@ export default function SummaryFigure({ mark, label, explain, figure, money, chi
             <InfoTip title={explain.title ?? label}>{explain.body ?? explain}</InfoTip>
           ) : null}
         </span>
+        {/* Always rendered, like the band's lede: the cell reserves two lines
+            here whether the section fills them or not, so no two sections'
+            panels come out different heights. */}
         <strong>{figure}</strong>
-        {children ? <p>{children}</p> : null}
+        <p>{children}</p>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import Button, { IconButton } from '../primitives/Button.jsx';
 import Drawer from '../primitives/Drawer.jsx';
 import Field from '../primitives/Field.jsx';
 import Tooltip, { InfoTip } from '../primitives/Tooltip.jsx';
+import Notice from '../patterns/Notice.jsx';
 import StateCard from '../patterns/StateCard.jsx';
 import StepRail from '../patterns/StepRail.jsx';
 import SummaryFigure from '../patterns/SummaryFigure.jsx';
@@ -821,6 +822,152 @@ export default function Styleguide({ onToast }) {
               </p>
             </div>
           </div>
+        </Section>
+
+        <Section
+          id="sg-notice"
+          title="Notice"
+          rule="The third rung, and the one the other two point at. A notice has no shape of its own — no border, no radius, no shadow, no margin — because it is never a thing in its own right. It is a zone of whatever it is about, and which zone is decided by the scope of the sentence, never by feel."
+        >
+          <p className="sg-note">
+            Before the Jam of 2026-08-21 there were nine of these, one per section:{' '}
+            <code>.gate-notice</code>, <code>.alert-strip</code>, <code>.advisory-banner</code>,{' '}
+            <code>.required-strip</code>, <code>.record-note</code>, <code>.summary-note</code>, a{' '}
+            <code>StateCard</code> pressed into service on My Housing, and two more in the drawers.
+            Same job, nine anatomies, nine palettes. Worse than the duplication was the placement:{' '}
+            <code>PageShell</code> had two slots for one job and no rule saying which, so My
+            Documents put <em>your transcript was sent back</em> in the quiet one and{' '}
+            <em>we are still checking it</em> in the loud one above it.
+          </p>
+          <p className="sg-note">
+            And the loud one was a card on the canvas — 1180 wide, 62 tall, an 18px gap under it,
+            holding one sentence of sixty characters. Seventy per cent empty, and a whole row of the
+            page&rsquo;s rhythm spent on a footnote.
+          </p>
+
+          <h3 className="sg-zone-title">Where it goes</h3>
+          <ul className="sg-scope-list">
+            <li>
+              <strong>The whole section</strong>
+              <span>
+                the foot of the summary panel. Pass it to <code>PageShell</code>&rsquo;s{' '}
+                <code>notice</code> and the shell docks it there; the figure says 33% and the notice
+                is why it is not 100%, so it cannot be scrolled past without the number. It costs
+                the page no height of its own.
+              </span>
+            </li>
+            <li>
+              <strong>One list</strong>
+              <span>
+                the head of that list&rsquo;s <code>.section-card</code>, under its heading. Put it
+                there yourself — only the page knows which card the sentence is about.
+              </span>
+            </li>
+            <li>
+              <strong>Provenance</strong>
+              <span>
+                the card&rsquo;s <code>.card-foot</code>. Read after the content, not before it.
+              </span>
+            </li>
+            <li>
+              <strong>One row</strong>
+              <span>
+                not this component. A chip on the row — <code>GateChip</code> is the one that
+                exists.
+              </span>
+            </li>
+            <li>
+              <strong>No summary panel</strong>
+              <span>
+                the shell falls back to one line above the tab row: two hairlines and a sentence,
+                never a card. Only My Campus Life needs it.
+              </span>
+            </li>
+          </ul>
+
+          <h3 className="sg-zone-title">On the panel&rsquo;s foot</h3>
+          <div className="sg-zone-demo">
+            <section className="page-summary">
+              <div className="summary-main">
+                <SummaryFigure
+                  mark={
+                    <div className="progress-ring" style={{ '--progress': '119deg' }}>
+                      <span>33%</span>
+                    </div>
+                  }
+                  label="Your enrollment progress"
+                  figure="3 of 9 steps complete"
+                >
+                  You&rsquo;re right on track. Your next task takes about 4 minutes.
+                </SummaryFigure>
+                <AdvisorBar advisor={ADVISOR} onContact={() => {}} />
+              </div>
+              <div className="summary-alert">
+                <Notice tone="soon" icon="flag" action={{ label: 'See the 2 steps', onClick: () => {} }}>
+                  2 steps have to be done before class registration opens on September 1.
+                </Notice>
+              </div>
+            </section>
+          </div>
+
+          <h3 className="sg-zone-title">On a card&rsquo;s head</h3>
+          <div className="sg-zone-demo">
+            <section className="section-card">
+              <div className="status-heading">
+                <span className="status-icon signpost">
+                  <Icon name="progress" size={18} />
+                </span>
+                <div>
+                  <h2>Everything on file</h2>
+                  <p>Everything you have sent Aster, and everything Aster has sent you.</p>
+                </div>
+              </div>
+              <Notice tone="working" icon="clock" title="Aster is checking your transcript">
+                You can close this page or go somewhere else. It keeps going, and this record shows
+                where it got to whenever you come back.
+              </Notice>
+              <div className="card-rows">
+                <div className="sg-zone-row">Transcript · in review with the Registrar</div>
+                <div className="sg-zone-row">Proof of address · accepted 12 August</div>
+              </div>
+            </section>
+          </div>
+
+          <h3 className="sg-zone-title">Tones</h3>
+          <div className="sg-zone-demo tones">
+            <Notice
+              tone="urgent"
+              icon="alert"
+              title="Verify your household income · due in 3 days"
+              action={{ label: 'Open it', onClick: () => {} }}
+            >
+              Your aid is held until this clears, and the term bill is issued on 1 September.
+            </Notice>
+            <Notice tone="soon" icon="flag" action={{ label: 'See the 2 steps', onClick: () => {} }}>
+              2 steps have to be done before class registration opens on September 1.
+            </Notice>
+            <Notice tone="working" icon="clock" title="Aster is checking your transcript">
+              You can close this page or go somewhere else. It keeps going.
+            </Notice>
+            <Notice tone="quiet" icon="shield">
+              Catalog 2026 · read-only. The Registrar&rsquo;s Office holds your official transcript.{' '}
+              <em>One requirement&rsquo;s credits haven&rsquo;t synced.</em>
+            </Notice>
+          </div>
+          <p className="sg-note">
+            <code>urgent</code> and <code>soon</code> are <code>escalation()</code>&rsquo;s two
+            levels, so a deadline arrives already carrying its tone and nobody picks a colour in
+            markup. <code>working</code> is Aster holding something and <code>quiet</code> is
+            everything true but not hers to act on — neither is given a colour that asks her to act,
+            because she cannot. Inside the sentence, <code>&lt;em&gt;</code> is the one exception
+            clause, and it is the only place a notice spends a second colour.
+          </p>
+          <p className="sg-note">
+            One action or none, and it is the end of the sentence rather than a control beside it. A
+            filled button here competes for the same click as the row it points at, which is what{' '}
+            <code>.alert-strip</code> did on four screens. Two actions is a decision, and a decision
+            is a modal.
+          </p>
         </Section>
 
         <Section

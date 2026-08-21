@@ -12,18 +12,13 @@ import { heroFor } from '../../lib/navigation.js';
  * sat on top of it. The Jam of 2026-08-20 called that out, and asked for My
  * Enrollment's construction everywhere.
  *
- * So the shell owns the order now. Five slots, always in this sequence:
+ * So the shell owns the order now. Four slots, always in this sequence:
  *
  *   hero      the band that says where you are          — always
  *   summary   the section's one figure, and who owns it — tucked under the hero
- *   notice    a caveat true of the whole section        — full width
+ *   notice    one line true of the whole section        — see below
  *   tabs      which leaf of the group you are reading   — directly above it
  *   body      main column, and the rail beside it
- *
- * `alert` is not a sixth slot: an escalation is a footnote to the figure, not a
- * sibling of it. The balance reads "estimate · this number will go down" and the
- * alert is the reason it is not settled, so it rides on the foot of the summary
- * panel rather than stacking another full-width band into the page.
  *
  * The tab row comes last of the four because everything above it is true of the
  * whole group and everything below it is what the tab switches. That is why the
@@ -36,11 +31,39 @@ import { heroFor } from '../../lib/navigation.js';
  * tuck between the hero and the summary is a rule about those two elements
  * being adjacent, which is now guaranteed rather than hoped for.
  *
+ * ## The notice does not get a place of its own — Jam of 2026-08-21
+ *
+ * There were two slots for one job, and no rule saying which. `alert` rode the
+ * foot of the summary panel and `notice` was a full-width band above the tabs,
+ * so every page picked by feel — and My Documents picked backwards, putting
+ * *your transcript was sent back, send a new copy* in the quiet slot and *we
+ * are still checking it* in the loud one above it.
+ *
+ * The band was the worse half. On My Enrollment it was a rounded amber card,
+ * 1180 wide and 62 tall with an 18px gap under it, holding one sentence of
+ * sixty characters — seventy per cent empty, and a whole row of the page's
+ * rhythm spent on a footnote. A notice is not a thing in its own right, so it
+ * should not be drawn as one.
+ *
+ * One slot now, and the shell docks it:
+ *
+ *   summary panel present   the notice is that panel's **foot**. The figure
+ *                           says 33%, and the notice is why it is not 100%;
+ *                           attached, it cannot be scrolled past without the
+ *                           number, and it costs the page no height at all.
+ *   no summary panel        one **line** above the tab row — two hairlines and
+ *                           a sentence, not a card. Only My Campus Life.
+ *
+ * Everything narrower than the whole section docks somewhere else, and the page
+ * places it itself, because only the page knows what it is about: a notice for
+ * one list is the head of that list's `.section-card`, provenance is its
+ * `.card-foot`, and a fact about one row is a chip on the row. `Notice.jsx` has
+ * the four zones and the rule for choosing between them.
+ *
  * The shell owns the distances too, since the Jam of 2026-08-21: `--hero-gap`
  * after the band or the panel tucked into it, `--space-9` after the notice and
- * after the tab row. The notice is wrapped in `.page-notice` for exactly that —
- * a notice cannot bring its own distance, so a page cannot get the gap wrong
- * the way three of them had.
+ * after the tab row. A notice cannot bring its own distance, so a page cannot
+ * get the gap wrong the way three of them had.
  */
 export default function PageShell({
   destination,
@@ -48,7 +71,6 @@ export default function PageShell({
   tabs,
   summary,
   summaryLabel,
-  alert,
   notice,
   rail,
   children,
@@ -67,7 +89,12 @@ export default function PageShell({
             {kicker}
           </p>
           <h1>{title}</h1>
-          {lede && <p>{lede}</p>}
+          {/* Always rendered, even with nothing in it. Two reasons, and the
+              second one was a bug waiting: the band reserves two lines here so
+              every route's band is the same height (below), and the rule that
+              styles it used to read `.page-hero p:last-child` — with no lede,
+              that selector landed on the eyebrow and restyled it. */}
+          <p className="hero-lede">{lede}</p>
         </div>
 
         {motif && (
@@ -87,11 +114,11 @@ export default function PageShell({
       {summary && (
         <section className="page-summary" aria-label={summaryLabel}>
           <div className="summary-main">{summary}</div>
-          {alert && <div className="summary-alert">{alert}</div>}
+          {notice && <div className="summary-alert">{notice}</div>}
         </section>
       )}
 
-      {notice ? <div className="page-notice">{notice}</div> : null}
+      {notice && !summary ? <div className="page-notice">{notice}</div> : null}
       {tabs}
 
       {rail ? (
