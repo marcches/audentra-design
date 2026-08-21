@@ -248,7 +248,7 @@ export default function AppointmentsPage({
       <section className="section-card" aria-labelledby="book-heading">
         <div className="card-heading">
           <span className="card-icon" aria-hidden="true">
-            <Icon name="calendar" size={19} />
+            <Icon weight="duotone" name="calendar" size={19} />
           </span>
           <div>
             <h2 id="book-heading">Book a conversation</h2>
@@ -274,7 +274,7 @@ export default function AppointmentsPage({
       <section className="section-card" aria-labelledby="conversations-heading">
         <div className="card-heading">
           <span className="card-icon" aria-hidden="true">
-            <Icon name="check" size={19} />
+            <Icon weight="duotone" name="check" size={19} />
           </span>
           <div>
             <h2 id="conversations-heading">Your conversations</h2>
@@ -333,7 +333,7 @@ export default function AppointmentsPage({
         <section className="section-card" aria-labelledby="record-heading">
           <div className="card-heading">
             <span className="card-icon" aria-hidden="true">
-              <Icon name="clock" size={19} />
+              <Icon weight="duotone" name="clock" size={19} />
             </span>
             <div>
               <h2 id="record-heading">Past and cancelled</h2>

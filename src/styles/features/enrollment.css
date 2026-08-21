@@ -167,35 +167,6 @@
   font-weight: var(--fw-semi);
 }
 
-.all-done-card {
-  text-align: center;
-  background: var(--green-wash);
-  border: 1px solid var(--green-tint);
-  border-radius: var(--radius-card);
-  padding: var(--space-13) var(--space-11);
-}
-
-.all-done-card>div {
-  color: var(--green);
-  background: var(--green-tint);
-  border-radius: var(--radius-card);
-  place-items: center;
-  width: 54px;
-  height: 54px;
-  margin: 0 auto var(--space-6);
-  display: grid;
-}
-
-.all-done-card h3 {
-  margin: 0 0 var(--space-3);
-}
-
-.all-done-card p {
-  color: var(--muted);
-  margin: 0;
-  font-size: var(--fs-body);
-}
-
 /* The tint this used to declare had never once been drawn. `.locked-task` only
    ever appears as a child of `.card-rows`, and the row reset — "a row gives up
    its own background" — is the same specificity and came later in the file, so
@@ -235,80 +206,10 @@
   font-size: var(--fs-small);
 }
 
-.completed-section {
-  background: var(--green-wash);
-  border: 1px solid #d9e7e1;
-  border-radius: var(--radius-row);
-  margin-top: 25px;
-  overflow: hidden;
-}
-
-.completed-toggle {
-  text-align: left;
-  cursor: pointer;
-  background: 0 0;
-  border: 0;
-  grid-template-columns: 35px minmax(0,1fr) 25px;
-  align-items: center;
-  gap: var(--space-5);
-  width: 100%;
-  min-height: 68px;
-  padding: var(--space-6) var(--space-8);
-  display: grid;
-}
-
-.completed-mark, .mini-check {
-  color: var(--green);
-  background: var(--green-tint);
-  border-radius: var(--radius-round);
-  place-items: center;
-  display: grid;
-}
-
-.completed-mark {
-  width: 35px;
-  height: 35px;
-}
-
-.completed-toggle>div:nth-child(2) {
-  flex-direction: column;
-  gap: var(--space-1);
-  display: flex;
-}
-
-.completed-toggle strong {
-  font-size: var(--fs-body);
-}
-
-.completed-toggle span {
-  color: #6d7c74;
-  font-size: var(--fs-small);
-}
-
-.completed-toggle>svg {
-  transition: transform .2s;
-}
-
-.completed-list {
-  background: var(--surface);
-  border-top: 1px solid var(--green-tint);
-}
-
-.completed-row {
-  border-bottom: 1px solid var(--line-soft);
-  grid-template-columns: 25px minmax(0,1fr) 65px 55px;
-  align-items: center;
-  gap: var(--space-4);
-  min-height: 47px;
-  padding: var(--space-3) var(--space-8);
-  font-size: var(--fs-meta);
-  display: grid;
-}
-
-.completed-row:last-child {
-  border-bottom: 0;
-}
-
+/* The completed group is a card like the other two now — `Card` + a status
+   head that is the group's handle + `CardRows` — so the green box it used to be
+   (`.completed-section`, with `#d9e7e1`, `#6d7c74` and a 25px margin typed by
+   hand) is gone. What is left here is the row's own shape. */
 .mini-check {
   width: 23px;
   height: 23px;
@@ -322,18 +223,6 @@
   justify-content: space-between;
   align-items: center;
   display: flex;
-}
-
-.tiny-avatar {
-  color: var(--purple-ink);
-  background: var(--purple-tint);
-  border-radius: var(--radius-round);
-  place-items: center;
-  width: 33px;
-  height: 33px;
-  font-size: var(--fs-meta);
-  font-weight: var(--fw-heavy);
-  display: grid;
 }
 
 .drawer-reward {

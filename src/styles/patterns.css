@@ -609,17 +609,9 @@
   display: flex;
 }
 
+/* The advisor's disc is `Avatar` now (below). The bar only says where it sits. */
 .advisor-avatar {
-  color: var(--purple-dark);
-  background: var(--purple-soft);
-  border-radius: var(--radius-round);
   flex: none;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  font-size: 11px;
-  font-weight: var(--fw-heavy);
-  display: grid;
 }
 
 .advisor-bar-copy {
@@ -1086,6 +1078,19 @@
   background: var(--line);
 }
 
+/* The two tones every section may need: the section's own content (purple,
+   once), and finished (green, once). `done` used to live in onboarding.css,
+   which meant My Enrollment's completed group was styled by another feature. */
+.status-icon.accent {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+}
+
+.status-icon.done {
+  color: var(--green);
+  background: var(--green-tint);
+}
+
 .status-count {
   color: var(--muted);
   background: var(--line);
@@ -1407,8 +1412,13 @@ footer a {
   padding-left: var(--space-4);
 }
 
+/* The drawer's own horizontal inset, named once. Anything inside that has to
+   bleed to the panel's edge reads this rather than retyping the step — which is
+   how `.card-rows` works in a card, and it has to keep working here. The sheet
+   below 620 narrows it, and the bleed narrows with it. */
 .drawer-content {
-  padding: var(--space-11) var(--space-11) var(--space-13);
+  --drawer-inset: var(--space-11);
+  padding: var(--drawer-inset) var(--drawer-inset) var(--space-13);
 }
 
 .drawer-icon {
@@ -2244,6 +2254,9 @@ footer a {
   .status-heading {
     grid-template-columns: 34px minmax(0,1fr) auto;
   }
+  .status-heading .sort-group {
+    grid-column: 1 / -1;
+  }
   .status-heading p {
     line-height: var(--lh-heading);
   }
@@ -2275,7 +2288,8 @@ footer a {
     height: 59px;
   }
   .drawer-content {
-    padding: var(--space-10) var(--space-9) var(--space-12);
+    --drawer-inset: var(--space-9);
+    padding: var(--space-10) var(--drawer-inset) var(--space-12);
   }
   .drawer-content h2 {
     font-size: var(--fs-display);
@@ -2431,6 +2445,12 @@ footer a {
  * take the corner they touch instead of meeting a rounded card with a square
  * edge. `--card-pad` and `--card-radius` are the card's, so a row never has to
  * know a number the card decided. */
+/* A closed group keeps its rows in the tree (so `aria-controls` always names
+   something real) and hides them; the attribute must beat `display: block`. */
+.card-rows[hidden] {
+  display: none;
+}
+
 .card-rows {
   border-radius: 0 0 calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px);
   margin: 0 calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad));
@@ -3114,4 +3134,221 @@ footer a {
   .tip-bubble[data-placed] {
     animation: none;
   }
+}
+
+/* --- People: the one disc — Jam of 2026-08-21 -------------------------------
+ *
+ * `Avatar`. A photo when the record has one, initials when it does not, at four
+ * sizes. Six classes drew this disc before, none of them able to show a face.
+ * The photo is a real `<img>`, so the disc is the clip and nothing else. */
+.avatar {
+  --avatar-size: 40px;
+  color: var(--purple-ink);
+  background: linear-gradient(145deg, var(--purple-soft), var(--purple-line));
+  border-radius: var(--radius-round);
+  flex: none;
+  place-items: center;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+  letter-spacing: var(--ls-snug);
+  display: grid;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.avatar-xs { --avatar-size: 24px; font-size: var(--fs-micro); }
+.avatar-sm { --avatar-size: 32px; font-size: var(--fs-micro); }
+.avatar-md { --avatar-size: 40px; }
+.avatar-lg { --avatar-size: 56px; font-size: var(--fs-copy); }
+
+/* A photo sits on the same disc so a slow image and a missing image look the
+   same from the outside; the hairline keeps a pale photo off a pale surface. */
+img.avatar {
+  box-shadow: inset 0 0 0 1px #1f253a14;
+}
+
+/* --- Spot: the one illustration ------------------------------------------------
+ *
+ * The band's orbit motif at card scale — two rings, a core, two sparks, a
+ * duotone glyph — in the colour contract's tones. The size is one variable and
+ * everything inside is a fraction of it. */
+.spot {
+  --spot-size: 84px;
+  --spot-ink: var(--muted);
+  --spot-tint: var(--line-soft);
+  --spot-ring: var(--line-strong);
+  --spot-dot: var(--purple-line);
+  width: var(--spot-size);
+  height: var(--spot-size);
+  margin: 0 auto var(--space-6);
+  display: block;
+  position: relative;
+}
+
+.spot-ring {
+  border: 1px solid var(--spot-ring);
+  border-radius: var(--radius-round);
+  position: absolute;
+  inset: 12%;
+}
+
+.spot-ring.dashed {
+  opacity: .6;
+  border-style: dashed;
+  inset: 0;
+  transform: rotate(12deg);
+}
+
+.spot-core {
+  color: var(--spot-ink);
+  background: var(--spot-tint);
+  border-radius: var(--radius-round);
+  place-items: center;
+  display: grid;
+  position: absolute;
+  inset: 28%;
+  box-shadow: inset 0 1px #fffc;
+}
+
+.spot-dot {
+  background: var(--spot-dot);
+  border-radius: var(--radius-round);
+  position: absolute;
+  box-shadow: 0 0 10px var(--spot-dot);
+}
+
+.spot-dot.one { width: 8%; height: 8%; top: 12%; right: 16%; }
+.spot-dot.two { width: 5%; height: 5%; bottom: 14%; left: 14%; }
+
+.spot-accent  { --spot-ink: var(--purple-dark); --spot-tint: var(--purple-soft); --spot-ring: var(--purple-line); --spot-dot: var(--green-line); }
+.spot-done    { --spot-ink: var(--green);       --spot-tint: var(--green-tint);  --spot-ring: var(--green-line);  --spot-dot: var(--green-line); }
+.spot-working { --spot-ink: var(--amber);       --spot-tint: var(--amber-tint);  --spot-ring: var(--amber-line);  --spot-dot: var(--amber-line); }
+.spot-error   { --spot-ink: var(--crimson);     --spot-tint: var(--crimson-soft); --spot-ring: var(--crimson-line); --spot-dot: var(--crimson-line); }
+.spot-quiet   { --spot-dot: var(--purple-line); }
+
+/* --- The state card, now with a spot, a fourth variant and a page size --- */
+.state-card.done {
+  background: var(--green-wash);
+  border-color: var(--green-tint);
+}
+
+/* Inside a card — the all-caught-up message in My Enrollment's steps card. The
+   card is already the surface; this sits on it without a second border. */
+.state-card.inset {
+  background: var(--green-wash);
+  border-color: var(--green-tint);
+  margin: var(--space-2) 0 0;
+}
+
+/* Standing in for a whole page: centred under the band, wider, taller. */
+.state-card.size-page {
+  max-width: 560px;
+  margin: var(--space-12) auto 0;
+  padding: var(--space-12) var(--space-11);
+}
+
+.state-card.size-page h3 {
+  font-size: var(--fs-h1);
+}
+
+/* --- The status head as the group's handle ----------------------------------
+ *
+ * The same grid as the static head, as a button: the reset, the cursor, the
+ * count before the chevron. The card publishes its padding and radius, so the
+ * head can run out to the card's edges as a hit area without knowing either. */
+.status-heading.collapsible {
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  /* The zone rule above gives the head its band, its corners, its padding and
+     the gap below; a button only has to stop shrinking to its content. */
+  width: calc(100% + 2 * var(--card-pad));
+  transition: background-color var(--dur-fast) var(--ease);
+}
+
+.status-heading.collapsible:hover {
+  background: var(--surface-sunk);
+}
+
+.status-heading.collapsible:focus-visible {
+  outline-offset: -3px;
+}
+
+.status-trailing {
+  align-items: center;
+  gap: var(--space-4);
+  display: flex;
+}
+
+.status-chevron {
+  color: var(--muted);
+  place-items: center;
+  display: grid;
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.status-chevron.open {
+  transform: rotate(180deg);
+}
+
+/* A closed group is the head and nothing under it: the hairline and the gap
+   below the head go, the band takes all four of the card's corners, and the
+   card's own bottom padding is eaten the way `.card-foot` eats it. */
+.section-card.collapsed > .status-heading.collapsible {
+  border-bottom: 0;
+  border-radius: calc(var(--card-radius) - 1px);
+  margin-bottom: calc(-1 * var(--card-pad));
+}
+
+/* The completed rows, now rows in a card like every other list. */
+.card-rows.completed-list .completed-row {
+  border-bottom: 1px solid var(--line-soft);
+  grid-template-columns: 25px minmax(0, 1fr) 65px 55px;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 47px;
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+  font-size: var(--fs-meta);
+  display: grid;
+}
+
+.card-rows.completed-list .completed-row:last-child {
+  border-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-chevron,
+  .status-heading.collapsible {
+    transition: none;
+  }
+}
+
+/* Compact: the card inside a narrow column — the sidebar, when its list did not
+   load. Left-aligned, a row's radius, a smaller spot, the same crimson. */
+.state-card.size-compact {
+  text-align: left;
+  border-radius: var(--radius-row);
+  padding: var(--space-7);
+}
+
+.state-card.size-compact .spot {
+  margin: 0 0 var(--space-6);
+}
+
+.state-card.size-compact h3 {
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-body);
+}
+
+.state-card.size-compact p {
+  margin: 0;
+  font-size: var(--fs-copy);
+}
+
+.state-card.size-compact .secondary-button {
+  margin: var(--space-6) 0 0;
 }

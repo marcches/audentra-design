@@ -19,6 +19,9 @@ export const record = {
   legalFirstName: 'Amelia',
   familyName: 'Johnson',
   standing: 'Incoming student',
+  // The photo on her record — the one the campus card uses, and the one every
+  // place that draws her reads (Jam, 2026-08-21).
+  photo: '/people/maya-johnson.webp',
   studentId: 'AST-2031-04417',
   // AC 6. A record with a version is a record you can talk to an office about.
   version: 4,

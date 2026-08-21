@@ -593,3 +593,131 @@
   margin: 0 0 var(--space-4);
   font-size: var(--fs-copy);
 }
+
+/* --- icons, people, marks and spots — Jam of 2026-08-21 --- */
+
+.sg-icon-rules {
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.sg-icon-rules li {
+  border-bottom: 1px solid var(--line-soft);
+  align-items: center;
+  gap: var(--space-7);
+  padding: var(--space-4) 0;
+  display: flex;
+}
+
+.sg-icon-spec {
+  color: var(--ink-2);
+  flex: none;
+  align-items: center;
+  gap: var(--space-5);
+  width: 7rem;
+  display: flex;
+}
+
+.sg-icon-rules code {
+  color: var(--ink);
+  flex: none;
+  width: 16ch;
+}
+
+.sg-icon-rules p {
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--fs-copy);
+}
+
+.sg-icons {
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.sg-icons li {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+}
+
+.sg-icon-weights {
+  color: var(--ink-2);
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.sg-icons code {
+  color: var(--muted);
+  font-size: var(--fs-micro);
+}
+
+.sg-people-row,
+.sg-marks-row,
+.sg-spots-row {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+  display: flex;
+}
+
+.sg-people-sep {
+  background: var(--line);
+  flex: none;
+  width: 1px;
+  height: var(--space-12);
+  display: block;
+}
+
+.sg-mark-on-ink {
+  color: var(--on-ink);
+  background: var(--surface-ink);
+  border-radius: var(--radius-tile);
+  place-items: center;
+  padding: var(--space-4) var(--space-6);
+  display: grid;
+}
+
+.sg-spots-row .spot {
+  margin: 0;
+}
+
+.sg-skeleton-demo .page-skeleton {
+  pointer-events: none;
+}
+
+/* --- Navigation: the sidebar's column, standing on the canvas --- */
+
+.sg-nav-demo {
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  flex-direction: column;
+  width: var(--sidebar-width);
+  max-width: 100%;
+  padding: 0 var(--space-9) var(--space-9);
+  display: flex;
+}
+
+.sg-nav-demo + .sg-nav-demo {
+  margin-top: var(--space-8);
+}
+
+/* A specimen has no window to fill: its list is as tall as its rows. */
+.sg-nav-demo .main-nav {
+  flex: none;
+  overflow: visible;
+}

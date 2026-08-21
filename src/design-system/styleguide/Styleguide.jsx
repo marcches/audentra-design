@@ -12,6 +12,13 @@ import StateCard from '../patterns/StateCard.jsx';
 import StepRail from '../patterns/StepRail.jsx';
 import SummaryFigure from '../patterns/SummaryFigure.jsx';
 import AdvisorBar from '../patterns/AdvisorBar.jsx';
+import Avatar from '../primitives/Avatar.jsx';
+import NavItem, { NavGroup, NavSkeleton, ProfileChip } from '../primitives/NavItem.jsx';
+import Spot from '../patterns/Spot.jsx';
+import PageSkeleton from '../patterns/PageSkeleton.jsx';
+import AsterMark from '../marks/AsterMark.jsx';
+import AudentraMark from '../marks/AudentraMark.jsx';
+import { ICON_NAMES } from '../Icon.jsx';
 
 /**
  * The design system, rendered.
@@ -217,7 +224,13 @@ const ADVISOR = {
   label: 'Your enrollment advisor',
   name: 'Tomás Okafor',
   office: 'Admissions Office',
+  photo: '/people/tomas-okafor.webp',
 };
+
+const STUDENT = { name: 'Maya Johnson', initials: 'MJ', photo: '/people/maya-johnson.webp' };
+const NO_PHOTO = { name: 'Renata Oliveira', initials: 'RO' };
+
+const ICON_WEIGHTS = ['regular', 'bold', 'fill', 'duotone'];
 
 /** Read a token off the live cascade, so a swatch cannot go stale. */
 function useTokens(names) {
@@ -304,6 +317,8 @@ function Swatches({ group }) {
 
 export default function Styleguide({ onToast }) {
   const [drawer, setDrawer] = useState(false);
+  const [groupOpen, setGroupOpen] = useState(true);
+  const [navOpen, setNavOpen] = useState(true);
   const [postcode, setPostcode] = useState('0213');
   const radiusValues = useTokens(RADIUS.map(([t]) => t));
   const typeValues = useTokens(TYPE.map(([t]) => t));
@@ -443,6 +458,73 @@ export default function Styleguide({ onToast }) {
         </Section>
 
         <Section
+          id="sg-icons"
+          title="Icons — Phosphor, four weights, each with a job"
+          rule="The glyphs are Phosphor’s, vendored as path data; the names are ours. Regular is the default at 16px and up; bold is automatic below it; fill is the on state of a control and nothing else; duotone is the mark in a flat tinted tile and nothing else — never on a gradient, which is why the band’s orbit core stays outline. Light and thin are not vendored. A glyph that is only a line — a check, an arrow, a caret, an x — never takes duotone or fill: Phosphor invents a box to put it in, and a check with a square behind it is a checkbox. Icon gives those regular back. ADR 0004."
+        >
+          <Block
+            title="The rule, applied"
+            note="A nav row you are on, a bell with unread, the sort you chose: fill. A status head, a task tile, a state card: duotone. Everything else: regular, or bold when it is small."
+          >
+            <ul className="sg-icon-rules">
+              <li>
+                <span className="sg-icon-spec">
+                  <Icon name="checklist" size={20} />
+                  <Icon name="checklist" size={20} weight="fill" />
+                </span>
+                <code>regular → fill</code>
+                <p>A nav row, off and on. The glyph says “you are here”; the tint no longer has to.</p>
+              </li>
+              <li>
+                <span className="sg-icon-spec">
+                  <Icon name="bell" size={20} />
+                  <Icon name="bell" size={20} weight="fill" />
+                </span>
+                <code>regular → fill</code>
+                <p>The bell, with nothing unread and with something. Fill is switchable or it is wrong.</p>
+              </li>
+              <li>
+                <span className="sg-icon-spec">
+                  <Icon name="calendar" size={14} />
+                  <Icon name="calendar" size={20} />
+                </span>
+                <code>bold at 14px · regular at 20px</code>
+                <p>The same name at two sizes. Nobody passed a weight; Icon read the size.</p>
+              </li>
+              <li>
+                <span className="sg-icon-spec">
+                  <span className="status-icon review">
+                    <Icon name="clock" size={18} weight="duotone" />
+                  </span>
+                  <span className="card-icon">
+                    <Icon name="file" size={19} weight="duotone" />
+                  </span>
+                </span>
+                <code>duotone, in a tile</code>
+                <p>Two-tone only ever sits in a flat tinted tile, and the tile passes it. Inline, it is a tile that lost its tile.</p>
+              </li>
+            </ul>
+          </Block>
+          <Block
+            title="Every name, every weight"
+            note="Our name under each; the four weights across. Add one in scripts/icons/manifest.mjs and run npm run icons."
+          >
+            <ul className="sg-icons">
+              {ICON_NAMES.map((name) => (
+                <li key={name}>
+                  <span className="sg-icon-weights">
+                    {ICON_WEIGHTS.map((weight) => (
+                      <Icon key={weight} name={name} size={20} weight={weight} />
+                    ))}
+                  </span>
+                  <code>{name}</code>
+                </li>
+              ))}
+            </ul>
+          </Block>
+        </Section>
+
+        <Section
           id="sg-depth"
           title="Depth"
           rule="Three planes, so three shadows. A raw shadow in a rule is a decision about the whole product taken locally — the same bug as a raw hex, and harder to see."
@@ -558,13 +640,57 @@ export default function Styleguide({ onToast }) {
               id="sg-entry"
               icon="file"
               title="An entry card"
-              note="The way in to a section that lives under this one — head, then foot, nothing between. The card is a door, not a copy of the room."
+              note="The way in to a panel that lives under this page — head, then foot, nothing between. The action is a button, because what it opens is the side panel, not a page."
               count={2}
               standing="What stands there today, beside the one way in."
-              href="#/styleguide"
+              onOpen={() => onToast("The panel this door opens would slide in from the right.")}
               action="Open it"
             />
           </div>
+          <Block
+            title="A status head can be the group’s handle"
+            note="Give the status head count, open, onToggle and controls and it is a button: the count before the chevron, the card closing on the head. The one disclosure in the product — no details element, no hand-made toggle, no box of its own. A group with nothing in it has no toggle."
+          >
+            <div className="sg-grid">
+              <Card className={groupOpen ? '' : 'collapsed'}>
+                <CardHead
+                  kind="status"
+                  icon="clock"
+                  tone="review"
+                  title="Aster is reviewing"
+                  note="You’ve done your part. No action needed right now."
+                  count={2}
+                  open={groupOpen}
+                  onToggle={() => setGroupOpen((value) => !value)}
+                  controls="sg-group-demo"
+                />
+                {groupOpen && (
+                  <CardRows id="sg-group-demo">
+                    <div className="sg-row">
+                      <span>Final transcript check</span>
+                      <strong>In review</strong>
+                    </div>
+                    <div className="sg-row">
+                      <span>Immunization record</span>
+                      <strong>In review</strong>
+                    </div>
+                  </CardRows>
+                )}
+              </Card>
+              <Card>
+                <CardHead
+                  kind="status"
+                  icon="lock"
+                  tone="locked"
+                  title="Coming up later"
+                  note="These will open automatically when you’re ready for them."
+                />
+                <p className="inline-empty">
+                  Nothing is waiting on a prerequisite. An empty group is not a button.
+                </p>
+              </Card>
+            </div>
+          </Block>
         </Section>
 
         <Section
@@ -598,6 +724,175 @@ export default function Styleguide({ onToast }) {
               <AdvisorBar advisor={ADVISOR} onContact={() => {}} />
             </div>
           </section>
+        </Section>
+
+        <Section
+          id="sg-people"
+          title="People, marks, and the one illustration"
+          rule="A person is a face; a thing is a glyph; an office is a name. People Aster knows are drawn with Avatar — the photo on the record, initials when there is none — and nothing else in the product draws a person. The photos are synthetic: no real person, provenance in public/people/SOURCES.md."
+        >
+          <div className="sg-grid">
+            <Block
+              title="Avatar — four sizes, two states"
+              note="xs 24 · sm 32 · md 40 · lg 56. The name is beside it, so the image is decorative; pass alone when it is not."
+            >
+              <div className="sg-people-row">
+                {['xs', 'sm', 'md', 'lg'].map((size) => (
+                  <Avatar key={size} person={STUDENT} size={size} />
+                ))}
+                <span className="sg-people-sep" aria-hidden="true" />
+                {['xs', 'sm', 'md', 'lg'].map((size) => (
+                  <Avatar key={size} person={NO_PHOTO} size={size} />
+                ))}
+              </div>
+              <p className="sg-note">
+                Maya has a photo on her record; Renata — a family member on a permission — does not,
+                and will not: Aster holds no photo of her. Both are the same primitive.
+              </p>
+            </Block>
+            <Block
+              title="Marks — drawn, not icons"
+              note="The institution’s mark and the vendor’s. A mark that is also the glyph for “flower” somewhere else can be mistaken for a button, so these live in design-system/marks/ and nowhere in the icon set."
+            >
+              <div className="sg-marks-row">
+                <span className="university-mark" aria-hidden="true">
+                  <AsterMark size={44} tile />
+                </span>
+                <AsterMark size={28} title="Aster University" />
+                <span className="sg-people-sep" aria-hidden="true" />
+                <AudentraMark height={26} title="Audentra" />
+                <span className="sg-mark-on-ink">
+                  <AudentraMark height={22} mono title="Audentra, one colour" />
+                </span>
+              </div>
+              <p className="sg-note">
+                Aster’s own payment portal carries the Aster mark; Federal Student Aid keeps a
+                monogram — we do not draw other people’s trademarks.
+              </p>
+            </Block>
+          </div>
+          <Block
+            title="Spot — the band’s motif at card scale"
+            note="Two rings, a core, two sparks, a duotone glyph. It goes on a state card and nowhere else; StateCard draws its own."
+          >
+            <div className="sg-spots-row">
+              <Spot icon="file" tone="quiet" />
+              <Spot icon="clock" tone="working" />
+              <Spot icon="alert" tone="error" />
+              <Spot icon="check" tone="done" />
+              <Spot icon="spark" tone="accent" />
+            </div>
+          </Block>
+        </Section>
+
+        <Section
+          id="sg-nav"
+          title="Navigation — the sidebar"
+          rule="One row for every destination, top-level or inside a group: --control-height tall, the glyph regular and filled on the row you are on, a flat count when something there is still open. The group's label above its rows is the hierarchy — the rows are rows. One left edge for the mark, every glyph, every label and the avatar."
+        >
+          <div className="sg-grid">
+            <Block
+              title="The column — brand, list, foot"
+              note="NavItem, NavGroup and ProfileChip, in a column the sidebar's width. Hover a row; open and close the first group. The second is closed over the page you are on, and its label says so."
+            >
+              <div className="sg-nav-demo">
+                <div className="brand-row">
+                  <span className="brand-mark" aria-hidden="true">
+                    <AsterMark size={40} tile />
+                  </span>
+                  <div className="brand-name">
+                    <strong>Aster</strong>
+                    <span>New Student Portal</span>
+                  </div>
+                </div>
+                <nav className="main-nav" aria-label="Sidebar specimen">
+                  <ul className="nav-list">
+                    <li>
+                      <NavItem href="#/styleguide" icon="checklist" active count={6} countLabel="6 steps still open">
+                        My Enrollment
+                      </NavItem>
+                    </li>
+                    <li>
+                      <NavItem href="#/styleguide" icon="calendar">
+                        Appointments
+                      </NavItem>
+                    </li>
+                    <li>
+                      <NavItem href="#/styleguide" icon="degree">
+                        My Degree
+                      </NavItem>
+                    </li>
+                    <NavGroup
+                      id="sg-financials"
+                      label="My Financials"
+                      open={navOpen}
+                      onToggle={() => setNavOpen((value) => !value)}
+                    >
+                      <li>
+                        <NavItem href="#/styleguide" icon="wallet">
+                          Overview
+                        </NavItem>
+                      </li>
+                      <li>
+                        <NavItem href="#/styleguide" icon="award">
+                          Financial aid
+                        </NavItem>
+                      </li>
+                      <li>
+                        <NavItem href="#/styleguide" icon="card">
+                          Payments
+                        </NavItem>
+                      </li>
+                    </NavGroup>
+                    <NavGroup id="sg-campus" label="My Campus Life" open={false} holdsActive onToggle={() => {}}>
+                      <li>
+                        <NavItem href="#/styleguide" icon="ticket" count={1} countLabel="1 required event">
+                          Events
+                        </NavItem>
+                      </li>
+                    </NavGroup>
+                  </ul>
+                </nav>
+                <div className="sidebar-bottom">
+                  <NavItem href="#/styleguide" icon="help">
+                    Help
+                  </NavItem>
+                  <ProfileChip
+                    href="#/styleguide"
+                    person={STUDENT}
+                    name="Maya Johnson"
+                    standing="Incoming student"
+                  />
+                  <p className="powered-by">
+                    Powered by <AudentraMark height={13} /> <strong>Audentra</strong>
+                  </p>
+                </div>
+              </div>
+            </Block>
+            <Block
+              title="Asleep, and failed"
+              note="NavSkeleton is the list's own anatomy — a glyph and a word per row, an eyebrow where a group's label will be — so loading → ready is a fade. The failed list is StateCard in its compact size: crimson, because that is the colour of a panel that failed."
+            >
+              <div className="sg-nav-demo">
+                <NavSkeleton />
+              </div>
+              <div className="sg-nav-demo">
+                <StateCard
+                  variant="error"
+                  size="compact"
+                  className="nav-error"
+                  title="Your sections couldn’t be loaded."
+                  action={{
+                    label: 'Try again',
+                    icon: 'refresh',
+                    onClick: () => onToast?.('The sections would load again here.'),
+                  }}
+                >
+                  Nothing you’ve done is lost.
+                </StateCard>
+              </div>
+            </Block>
+          </div>
         </Section>
 
         <Section
@@ -915,7 +1210,7 @@ export default function Styleguide({ onToast }) {
             <section className="section-card">
               <div className="status-heading">
                 <span className="status-icon signpost">
-                  <Icon name="progress" size={18} />
+                  <Icon weight="duotone" name="progress" size={18} />
                 </span>
                 <div>
                   <h2>Everything on file</h2>
@@ -1034,25 +1329,50 @@ export default function Styleguide({ onToast }) {
         <Section
           id="sg-states"
           title="States"
-          rule="Every section answers four questions: what if it is loading, empty, unavailable, or broken. A screen without all four is a screen that has only been designed for the happy path."
+          rule="Every section answers four questions: what if it is loading, empty, unavailable, or broken. A screen without all four is a screen that has only been designed for the happy path. Each state card draws its own Spot; the page-sized error is the same card standing in for a whole page."
         >
           <div className="sg-grid">
-            <StateCard variant="empty" icon="file" title="Nothing here yet">
+            <StateCard variant="empty" title="Nothing here yet">
               An empty state says what will appear here and what produces it — never just “no
               results”.
             </StateCard>
             <StateCard
               variant="error"
-              icon="alert"
               title="This didn’t load"
               action={{ label: 'Try again', icon: 'refresh', onClick: () => {} }}
             >
-              An error says what is unaffected, so the student knows what they have not lost.
+              An error says what is unaffected, so the student knows what they have not lost. It is
+              crimson: the colour contract says a failed panel is.
             </StateCard>
-            <StateCard variant="partial" icon="clock" title="Not available just now">
+            <StateCard variant="partial" title="Not available just now">
               Unavailable is not empty. The difference is whether there is nothing, or whether we
               cannot see it.
             </StateCard>
+            <StateCard variant="done" icon="spark" title="You’re all caught up.">
+              Done is the fourth: there was something, and it is finished. Green, once.
+            </StateCard>
+          </div>
+          <h3 className="sg-zone-title">The page-sized error</h3>
+          <div className="sg-zone-demo">
+            <StateCard
+              variant="error"
+              size="page"
+              title="Something went wrong loading My Enrollment"
+              action={{ label: 'Try again', icon: 'refresh', onClick: () => {} }}
+            >
+              Nothing you did caused it, and nothing you have sent Aster was affected. Trying again
+              usually works.
+            </StateCard>
+          </div>
+          <h3 className="sg-zone-title">Loading — the page’s own anatomy, and one visible sentence</h3>
+          <p className="sg-note">
+            A band the height of the hero, a panel the height of the summary, then cards, so
+            loading → ready is a fade and not a rearrangement; and a spinner with “Loading My
+            Enrollment…” where the eye lands first. No progress bar at the top — two vocabularies
+            for “wait” is one too many. Reduced motion stops the shimmer and the spin.
+          </p>
+          <div className="sg-zone-demo sg-skeleton-demo">
+            <PageSkeleton label="My Enrollment" />
           </div>
         </Section>
 
@@ -1134,7 +1454,7 @@ export default function Styleguide({ onToast }) {
               onClose={() => setDrawer(false)}
             >
               <div className="drawer-icon">
-                <Icon name="book" size={25} />
+                <Icon weight="duotone" name="book" size={25} />
               </div>
               <h2 id="sg-drawer-title">This is the frame, and only the frame</h2>
               <p className="drawer-description">

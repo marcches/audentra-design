@@ -69,7 +69,7 @@ export default function AppointmentDrawer({
       onClose={onClose}
     >
       <div className={`drawer-icon appointment ${state.tone}`}>
-        <Icon name={appointment.format === 'video' ? 'video' : 'calendar'} size={25} />
+        <Icon weight="duotone" name={appointment.format === 'video' ? 'video' : 'calendar'} size={25} />
       </div>
       <h2 id="appointment-drawer-title">
         {type.label} with {type.person.name}

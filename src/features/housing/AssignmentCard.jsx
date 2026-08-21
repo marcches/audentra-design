@@ -36,7 +36,7 @@ export default function AssignmentCard({ assignment, shortlist }) {
           <strong>{residence.name}</strong>
           <span>{assignment.room}</span>
           <span className="assignment-meta">
-            <Icon name="pin" size={13} /> {residence.area} · {residence.walk} min walk
+            <Icon weight="duotone" name="pin" size={13} /> {residence.area} · {residence.walk} min walk
           </span>
         </div>
       </div>

@@ -45,9 +45,42 @@ export default function Card({ as: Tag = 'section', variant, className, children
  *
  * `tone` is the status icon's variant, and it is the one place a card head is
  * allowed colour — which is the rule "spend colour once per card" made into an
- * argument rather than a reminder.
+ * argument rather than a reminder. The glyph in the tile is **duotone**: that
+ * is the one weight a tinted tile takes, and the head passes it itself so no
+ * page has to remember (`Icon.jsx`).
+ *
+ * ## A status head can be the group's handle — Jam of 2026-08-21
+ *
+ * Laura asked for *Aster is reviewing* and *Coming up later* to collapse the
+ * way *steps completed* did, and the honest finding was that *completed* was
+ * a one-off green box with its own toggle while the other two were cards
+ * with a static head: three groups of the same kind, two shapes, one of them
+ * clickable. So the status head is the one disclosure shape the product has:
+ * give it `onToggle` and it renders as a `<button aria-expanded>` with the
+ * `count` before the chevron, and the card closes on the head. Give it no
+ * `onToggle` and it is the static head it always was — which is also what an
+ * empty group gets, because a button that opens nothing is a lie.
+ *
+ * Which groups open by default is the page's business, and it is written
+ * where the page decides it (`EnrollmentPage`): a group that changes without
+ * the student acting starts open, because something new in it is news;
+ * history starts closed.
  */
-export function CardHead({ kind = 'card', icon, iconSize, tone, eyebrow, title, titleId, note, aside }) {
+export function CardHead({
+  kind = 'card',
+  icon,
+  iconSize,
+  tone,
+  eyebrow,
+  title,
+  titleId,
+  note,
+  aside,
+  count,
+  open,
+  onToggle,
+  controls,
+}) {
   if (kind === 'section') {
     return (
       <div className="section-heading">
@@ -61,22 +94,59 @@ export function CardHead({ kind = 'card', icon, iconSize, tone, eyebrow, title, 
   }
 
   const isStatus = kind === 'status';
+  const collapsible = isStatus && typeof onToggle === 'function';
+
+  const tile = icon ? (
+    <span
+      className={isStatus ? ['status-icon', tone].filter(Boolean).join(' ') : 'card-icon'}
+      aria-hidden="true"
+    >
+      <Icon name={icon} size={iconSize ?? (isStatus ? 18 : 19)} weight="duotone" />
+    </span>
+  ) : null;
+
+  const copy = (
+    <div>
+      <h2 id={titleId}>{title}</h2>
+      {note ? <p>{note}</p> : null}
+    </div>
+  );
+
+  const trailing =
+    count != null || collapsible ? (
+      <span className="status-trailing">
+        {count != null ? <span className="status-count">{count}</span> : null}
+        {collapsible ? (
+          <span className={`status-chevron${open ? ' open' : ''}`} aria-hidden="true">
+            <Icon name="chevron" size={18} />
+          </span>
+        ) : null}
+      </span>
+    ) : (
+      aside
+    );
+
+  if (collapsible) {
+    return (
+      <button
+        type="button"
+        className={`status-heading collapsible${open ? ' open' : ''}`}
+        aria-expanded={open ? 'true' : 'false'}
+        aria-controls={controls}
+        onClick={onToggle}
+      >
+        {tile}
+        {copy}
+        {trailing}
+      </button>
+    );
+  }
 
   return (
     <div className={isStatus ? 'status-heading' : 'card-heading'}>
-      {icon ? (
-        <span
-          className={isStatus ? ['status-icon', tone].filter(Boolean).join(' ') : 'card-icon'}
-          aria-hidden="true"
-        >
-          <Icon name={icon} size={iconSize ?? (isStatus ? 18 : 19)} />
-        </span>
-      ) : null}
-      <div>
-        <h2 id={titleId}>{title}</h2>
-        {note ? <p>{note}</p> : null}
-      </div>
-      {aside}
+      {tile}
+      {copy}
+      {trailing}
     </div>
   );
 }

@@ -29,7 +29,7 @@ export default function TaskCard({
 
       <div className="task-card-body">
         <div className={`task-type-icon ${task.kind}`}>
-          <Icon name={kindIcon(task.kind)} size={21} />
+          <Icon name={kindIcon(task.kind)} size={21} weight="duotone" />
         </div>
 
         <div className="task-main">

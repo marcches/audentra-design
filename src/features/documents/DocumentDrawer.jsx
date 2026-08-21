@@ -115,7 +115,7 @@ export default function DocumentDrawer({
       onClose={onClose}
     >
       <div className="drawer-icon">
-        <Icon name="file" size={25} />
+        <Icon weight="duotone" name="file" size={25} />
       </div>
       <h2 id="document-drawer-title">{requirement.title}</h2>
       <p className="document-lede" role="status">

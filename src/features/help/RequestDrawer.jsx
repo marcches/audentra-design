@@ -34,7 +34,7 @@ export default function RequestDrawer({ request, replyText, onReply, onSend, onC
       onClose={onClose}
     >
       <div className="drawer-icon">
-        <Icon name="message" size={25} />
+        <Icon weight="duotone" name="message" size={25} />
       </div>
       <h2 id="request-drawer-title">{request.subject}</h2>
 

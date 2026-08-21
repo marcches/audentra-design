@@ -47,6 +47,8 @@ export function identityFor(state) {
     firstName,
     displayName: `${firstName} ${record.familyName}`,
     initials: `${firstName[0]}${record.familyName[0]}`,
+    name: `${firstName} ${record.familyName}`,
+    photo: record.photo ?? null,
     standing: record.standing,
     // True when the portal is using the legal name because it has nothing else.
     usingLegalName: !preferred,

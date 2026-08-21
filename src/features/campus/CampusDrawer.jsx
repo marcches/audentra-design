@@ -22,7 +22,7 @@ export default function CampusDrawer({ item, kind, past, onClose, onToast }) {
       onClose={onClose}
     >
       <div className={`drawer-icon campus ${item.required ? 'required' : ''}`}>
-        <Icon name={isEvent ? 'calendar' : 'users'} size={25} />
+        <Icon weight="duotone" name={isEvent ? 'calendar' : 'users'} size={25} />
       </div>
       <h2 id="campus-drawer-title">{isEvent ? item.title : item.name}</h2>
       <p className="drawer-description">{isEvent ? item.summary : item.description}</p>

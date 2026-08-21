@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import Avatar from '../../design-system/primitives/Avatar.jsx';
 import { RECORD_CATEGORIES } from './data.js';
 import { grantedNames, listSentence } from './logic.js';
 
@@ -24,9 +25,7 @@ export default function GrantCard({ grant, onEdit, onRemove }) {
   return (
     <article className="grant-row">
       <div className="grant-top">
-        <span className="grant-avatar" aria-hidden="true">
-          {grant.person.initials}
-        </span>
+        <Avatar person={grant.person} size="md" className="grant-avatar" />
         <div className="grant-who">
           <strong>{grant.person.name}</strong>
           <small>

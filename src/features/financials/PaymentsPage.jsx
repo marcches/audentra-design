@@ -49,7 +49,7 @@ export default function PaymentsPage({
       <Card aria-labelledby="billed-title">
         <div className="card-heading">
           <span className="card-icon">
-            <Icon name="receipt" size={19} />
+            <Icon weight="duotone" name="receipt" size={19} />
           </span>
           <div>
             <h2 id="billed-title">What Aster bills you, and what it doesn’t</h2>

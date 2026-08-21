@@ -8,7 +8,7 @@ export default function OrgRow({ org, matched, onOpen }) {
       onClick={(clickEvent) => onOpen(org, clickEvent.currentTarget)}
     >
       <span className="org-tile" aria-hidden="true">
-        {org.initials}
+        {org.icon ? <Icon name={org.icon} size={24} weight="duotone" /> : org.initials}
       </span>
 
       <span className="campus-row-copy">

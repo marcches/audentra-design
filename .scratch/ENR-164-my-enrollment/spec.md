@@ -6,6 +6,10 @@ Jam: https://jam.dev/c/14fb7032-828f-4d8f-9c05-7e2ee13abbda — move Momentum po
 Jam: https://jam.dev/c/04f3bcd2-8bbb-42e9-b13c-72edbee1e0ce — take the Momentum points pill out of the
      progress panel and put a reduced Your enrollment advisor in its place; inside the rail, Momentum
      goes on top and the saved-from-welcome card below.
+Jam: https://jam.dev/c/dce61b7f-4665-4363-a24f-d07e5ef4994d — Laura, 2026-08-21: collapse *Aster is
+     reviewing* and *Coming up later* like *steps completed*; a photo for "MJ"; the loading state
+     must read as loading; the error red and centred. Built as a design-system pass:
+     `.scratch/jam-2026-08-21-my-enrollment/`.
 
 > Jira status is `Code Review`, which the triage table in `docs/agents/triage-labels.md` does not
 > carry. `ready-for-human` is the nearest role. Jira stays authoritative.

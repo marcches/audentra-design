@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import AsterMark from '../../design-system/marks/AsterMark.jsx';
 import Drawer from '../../design-system/primitives/Drawer.jsx';
 import Tooltip from '../../design-system/primitives/Tooltip.jsx';
 import { kindIcon } from './logic.js';
@@ -26,7 +27,7 @@ export default function TaskDrawer({
       suspended={suspended}
     >
       <div className={`drawer-icon ${task.kind}`}>
-        <Icon name={kindIcon(task.kind)} size={25} />
+        <Icon name={kindIcon(task.kind)} size={25} weight="duotone" />
       </div>
       <h2 id="drawer-title">{task.title}</h2>
       <p className="drawer-description">{task.description}</p>
@@ -105,7 +106,13 @@ export default function TaskDrawer({
           {task.kind === 'external' && (
             <div className="external-panel">
               <div className="external-destination">
-                <div className="university-mark small">{task.destination.mark}</div>
+                <div className="university-mark small" aria-hidden="true">
+                  {task.destination.mark === 'aster' ? (
+                    <AsterMark size={30} tile />
+                  ) : (
+                    task.destination.mark
+                  )}
+                </div>
                 <div>
                   <strong>{task.destination.name}</strong>
                   <span>{task.destination.url}</span>

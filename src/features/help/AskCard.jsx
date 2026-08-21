@@ -154,7 +154,7 @@ export default function AskCard({
               onClick={onToggleGuide}
             >
               <span className="status-icon guide" aria-hidden="true">
-                <Icon name="book" size={17} />
+                <Icon weight="duotone" name="book" size={17} />
               </span>
               <span>
                 <span className="panel-label">Aster has already answered this</span>

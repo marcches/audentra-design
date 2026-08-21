@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import Avatar from '../../design-system/primitives/Avatar.jsx';
 import { PEOPLE } from './logic.js';
 
 /** A paragraph that holds newlines is a list. Nothing else in an answer is. */
@@ -25,9 +26,7 @@ function PersonCard({ who, onContact }) {
   const person = PEOPLE[who] ?? PEOPLE.enrollment;
   return (
     <div className="edward-person">
-      <span className="advisor-avatar" aria-hidden="true">
-        {person.initials}
-      </span>
+      <Avatar person={person} size="sm" />
       <div>
         <strong>{person.name}</strong>
         <span>

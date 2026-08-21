@@ -102,6 +102,9 @@ export default function PageShell({
             <div className="orbit-ring ring-one" />
             <div className="orbit-ring ring-two" />
             <div className="orbit-core">
+              {/* Outline here, on purpose: the core is a gradient disc, and a
+                  two-tone glyph's back layer turns to mud on a gradient. The
+                  duotone rule is for flat tinted tiles. */}
               <Icon name={motif} size={30} />
             </div>
             <i className="spark-dot one" />

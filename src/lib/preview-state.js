@@ -62,7 +62,7 @@ export const PREVIEW_STATES = [
   // ENR-167 second pass and ENR-214. Listed here too, so a `?state=` link to
   // either survives a reload — `readPreviewState` validates against this list.
   ['rewards-off', 'Rewards off', 'An institution that does not run a points program.'],
-  ['registration-open', 'Nothing gates registration', 'An institution that holds registration for nothing.'],
+  ['registration-open', 'No registration gate', 'Class registration does not wait on any step.'],
   ['partial', 'Partial data', 'The catalog loaded; your transcript could not be checked.'],
   ['error', 'Error', 'The published catalog could not be loaded at all.'],
   ['aid-final', 'Aid finalized', 'My Financials with the federal loan approved and nothing outstanding.'],
@@ -89,7 +89,7 @@ export const FRAME_STATES = [
   // does when ready; what reads them is the shell and the checklist, from the
   // raw preview value, the way ENR-188 already does.
   ['rewards-off', 'Rewards off', 'An institution that does not run a points program.'],
-  ['registration-open', 'Nothing gates registration', 'An institution that holds registration for nothing.'],
+  ['registration-open', 'No registration gate', 'Class registration does not wait on any step.'],
 ];
 
 const FRAME_IDS = new Set(FRAME_STATES.map(([id]) => id));
@@ -140,11 +140,21 @@ export const FINANCIALS_STATES = [
  * today, which holds what the application gave it and nothing the student has
  * chosen yet. `partial` is the one that matters most on this screen, because a
  * verification nobody could check must never render as verified.
+ *
+ * The last two were My Documents' own while it was a page of its own. It is a
+ * panel on this page since 2026-08-21, and a state you cannot reach is a state
+ * nobody can look at — so the list this page offers is the list of everything
+ * reachable from it, panel included. `empty` and `partial` already meant
+ * something to both, and they still do: the same id switches the record under
+ * the card and under the panel at once, which is the point of holding one
+ * record in `App`.
  */
 export const PROFILE_STATES = [
-  ['ready', 'Ready', 'The full record: one number pending, one address unverified, one authorization.'],
-  ['empty', 'New record', 'The day Aster opened it, only what your application gave it.'],
-  ['partial', 'Partial data', 'The record loaded; verification and family permissions could not be read.'],
+  ['ready', 'Ready', 'The full record: one number pending, one address unverified, one authorization. Three documents still need her.'],
+  ['empty', 'New record', 'The day Aster opened it, only what your application gave it, and nothing sent yet.'],
+  ['partial', 'Partial data', 'The record loaded; verification, family permissions and what Aster decided could not be read.'],
+  ['changes-requested', 'A document came back', 'One submission an office sent back, with its reason, as the only thing outstanding.'],
+  ['send-fails', 'Sending fails', 'The next file you send from My Documents does not reach Aster.'],
   ['loading', 'Loading', 'Before the record arrives.'],
   ['error', 'Error', 'The record could not be loaded.'],
 ];

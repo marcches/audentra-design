@@ -428,12 +428,6 @@
   font-size: var(--fs-small);
 }
 
-.edward-person .advisor-avatar {
-  width: 32px;
-  height: 32px;
-  font-size: 10px;
-}
-
 .edward-person .secondary-button {
   flex: none;
   min-height: 30px;

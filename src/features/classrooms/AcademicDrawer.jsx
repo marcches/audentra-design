@@ -42,7 +42,7 @@ function CourseBody({ course, requirement }) {
   return (
     <>
       <div className={`drawer-icon course ${course.state}`}>
-        <Icon name={course.state === 'approved' ? 'check' : 'book'} size={25} />
+        <Icon weight="duotone" name={course.state === 'approved' ? 'check' : 'book'} size={25} />
       </div>
       <h2 id="academic-drawer-title">
         {course.code} · {course.title}
@@ -124,7 +124,7 @@ function MatchBody({ match, tab, onTab, onAsk, onOpenCredit }) {
   return (
     <>
       <div className="drawer-icon match">
-        <Icon name="alert" size={25} />
+        <Icon weight="duotone" name="alert" size={25} />
       </div>
       <h2 id="academic-drawer-title">
         {match.target.courseCode} · {match.target.courseTitle}

@@ -277,6 +277,84 @@ Green means exactly one thing — **covered, satisfied, done** — and never ide
 means someone still has to act, crimson means a deadline is close or a panel failed, and an estimate
 is deliberately neither.
 
+### Icons — Phosphor, four weights, each with a job
+
+The glyphs are Phosphor's, vendored as path data (ADR 0004); the names are ours, and a component
+asks for `alert`, never `warning`. The weight is chosen by **role**, not by taste, and the code
+chooses it in almost every case:
+
+| Weight | Job | Who passes it |
+| --- | --- | --- |
+| **regular** | every glyph of 16px or more — inline with text, in a button, in a fact | nobody; it is the default |
+| **bold** | every glyph below 16px — chips, pills, meta facts — so the stroke survives | nobody; `Icon` switches by size |
+| **fill** | the *on* state of a stateful control, and nothing else — the nav row you are on, the sort you chose, the bell with unread | the control (`NavRow`, the sort group, the bell) |
+| **duotone** | the mark in a tinted tile, and nothing else — a status head, a task-type tile, a state card, a drawer's header tile, the band's orbit core | the tile (`CardHead`, `StateCard`, `Spot`, `.task-type-icon`, `.drawer-icon`) |
+
+Light and thin are not vendored: two tile weights would be two tile styles. **Duotone never sits on
+a gradient** — the band's orbit core stays outline, because a two-tone back layer turns to mud on a
+gradient disc. **A glyph that is only a line never takes duotone or fill** — a check, an arrow, a
+caret, an x, three bars, a spinner: Phosphor invents a box to put the line in, and a check with a
+square behind it is a checkbox. `Icon` gives those regular back when a tile asks (`LINE_GLYPHS`). A filled glyph that
+cannot be switched off is a control that looks pressed; a duotone glyph inline with text is a tile
+that lost its tile. If a page is writing `weight=` by hand, it is usually doing a primitive's job —
+stop and look for the tile.
+
+Adding an icon: one line in `scripts/icons/manifest.mjs` (our name → Phosphor's), `npm run icons`,
+commit `src/design-system/icon-paths.js`. The script refuses a Phosphor name that does not exist.
+The full grid, every name in every weight, is at `#/styleguide`.
+
+### People, marks and the one illustration
+
+**A person is a face; a thing is a glyph; an office is a name.** The Jam of 2026-08-21 asked for a
+photo on the "MJ" in My Enrollment's rail, and the finding was that six classes drew a purple disc
+with initials and none of them had a place for a face. Now:
+
+- **A person** Aster knows — the student, an advisor, a club contact — is `<Avatar person size>`:
+  the photo on the record when there is one, initials when there is not, at `xs 24 · sm 32 · md 40 ·
+  lg 56`. `alt=""` when the name is printed beside it (nearly always); `alone` when it is not, and
+  the name becomes the alt. The photos in `public/people/` are **synthetic** — generated faces, no
+  real person — and `SOURCES.md` there records where each came from. Never fetch a face at runtime.
+- **A thing** — an office, a residence, an organisation, a destination on another site — never gets
+  a face. It is a glyph in a tile (`org.icon`, duotone), or a monogram. Offices are a name and
+  nothing else (Help already decides this).
+- **Edward** is neither: an assistant with a mark, so it cannot be mistaken for someone at Aster.
+- **Marks** are drawn components under `design-system/marks/`, not icons: `AsterMark` (the
+  institution's — the brand row, the favicon, the tile for Aster's own payment portal) and
+  `AudentraMark` (the vendor's, in "Powered by" and nowhere else). A third party's site keeps a
+  monogram; we do not draw other people's trademarks.
+- **The one illustration is `<Spot>`**: the band's orbit motif at card scale with a duotone glyph
+  in the core, in the colour contract's tones. `StateCard` draws its own. It goes where a state
+  needs a picture — empty, partial, error, done — and nowhere else; an imported illustration set is
+  a second visual language sitting inside the first, and was rejected for that reason.
+
+### Loading and error — one shape each, in the page's own anatomy
+
+- **Loading** is `PageSkeleton`, and it is the page's anatomy drawn in skeleton: a band the height
+  of the hero, a panel the height of the summary, then cards — so loading → ready is a fade, not a
+  rearrangement. It says what it is doing **once, visibly**, in the band: a spinner and "Loading
+  {label}…", the same sentence the screen reader already had. No progress bar at the top; the
+  product would then have two vocabularies for "wait". `prefers-reduced-motion` stops the shimmer
+  and the spin and the sentence does the work.
+- **Error** is `StateCard variant="error"` — at `size="page"` when it stands for the whole page
+  (`PageError`), centred under the band. It is **crimson**, because the colour contract says a
+  failed panel is crimson, and it was amber until the Jam of 2026-08-21 pointed at it. One error
+  shape in the product; a second one is drift.
+
+### A group of rows can close — the disclosure
+
+`CardHead kind="status"` is the product's one disclosure: give it `count`, `open`, `onToggle` and
+`controls` and it renders as a `<button aria-expanded>` with the count before the chevron, and the
+card closes on the head. No `details`, no hand-made toggle, no box of its own — *steps completed*
+was that box, and it was the only one of three identical groups that could close. Rules:
+
+- **A group that changes without the student acting starts open** (something new in it is news);
+  **history starts closed**. The page decides, and says why, where it decides.
+- **An empty group is not a toggle.** The head is static and the group's one line shows. A button
+  that opens nothing is a lie.
+- **The student's choice is remembered** per group (`localStorage`, the way the sidebar remembers
+  its groups), and nothing else is stored.
+- **The group the page exists for never closes.** On My Enrollment that is *Your next steps*.
+
 ## 5. Build — the design system is a contract
 
 This repo has **no UI library and no CSS framework**. Deviating from that is the fastest way to make
@@ -303,6 +381,10 @@ guess, and guessing is what produced 436 hand-typed colours and eight hand-typed
 | A button | `<Button kind>` / `<IconButton name label>` | `<button className="primary-button">` |
 | A hint on a control | `<IconButton>` (built in) or `<Tooltip tip>` | `::after { content: attr(data-tip) }` |
 | A word the student may not know | `<InfoTip title>` | a bubble only a mouse can reach |
+| A person | `<Avatar person size>` | a `span` with initials, or an `img` with no rule about who gets one |
+| A group of rows that can close | `<CardHead kind="status" count open onToggle controls>` | a `details`, a hand-made toggle, a box of its own |
+| A picture on a state | `<StateCard>` (it draws its own `<Spot>`) | an imported illustration set |
+| The institution's or the vendor's mark | `<AsterMark>` / `<AudentraMark>` | a letter in a tile, an icon from the set |
 
 `CardHead` takes `kind="status" | "card" | "section"` — the three, and only three, ways a card may
 open. `IconButton` takes `label`, not `aria-label`, so an icon-only control cannot ship unnamed.
@@ -365,7 +447,11 @@ Four more things it is worth not re-deciding:
   bug that put the whole card system inside My Financials.
 - **A new section** gets a file under `src/styles/features/` and a line in `app.css`, which holds
   the cascade order and nothing else.
-- **Icons** are our own — add to `src/design-system/Icon.jsx`, 24×24, stroke 1.9, `currentColor`.
+- **Icons** are Phosphor, vendored: one line in `scripts/icons/manifest.mjs`, `npm run icons`, commit
+  `icon-paths.js`. Never a package, never a hand-drawn one-off, never `weight=` on a page when a
+  primitive owns the tile. See *Icons* in §4.
+- **People** are `<Avatar person>`; **things** are a glyph in a tile; **marks** live in
+  `design-system/marks/`. See *People, marks and the one illustration* in §4.
 - **Components** are function components, one per file, props over context. A section's page, parts,
   `data.js` and `logic.js` live together in `src/features/<name>/`. State lives in `App.jsx` unless
   the card says otherwise. `design-system/` imports no feature and no data — ever.
@@ -418,7 +504,7 @@ Feedback so far comes from Laura Barcellos, mostly on the `Audentra Student Onbo
 - [ ] Card read; `Out of scope` and `Guardrails` respected
 - [ ] `references.md` has ≥2 Mobbin searches, with links and a line on what was taken or rejected
 - [ ] `spec.md` written, states enumerated
-- [ ] Built with tokens, existing classes, our own icons — no new dependency
+- [ ] Built with tokens, existing classes, icons from the manifest, people through `Avatar` — no new dependency
 - [ ] `npm run build` clean, screen checked in the browser at wide and narrow widths
 - [ ] Keyboard and `Esc` behavior verified on any overlay
 - [ ] Jam feedback, if any was given, either resolved or filed as new scope

@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import Avatar from '../../design-system/primitives/Avatar.jsx';
 import { RECORD_CATEGORIES } from './data.js';
 
 /**
@@ -21,9 +22,7 @@ export default function PermissionGrant({ grant, onToggle, onRevoke }) {
   return (
     <article className="permission-grant">
       <header className="grant-head">
-        <span className="grant-avatar" aria-hidden="true">
-          {grant.person.initials}
-        </span>
+        <Avatar person={grant.person} size="md" className="grant-avatar" />
         <div className="grant-who">
           <strong>{grant.person.name}</strong>
           <p>

@@ -52,7 +52,15 @@ screens needed had no names and no components, so each screen invented its own f
 - **An icon-only control is `<IconButton name label>`**, which shows its `label` on hover and on
   keyboard focus. A hint may only repeat that name; anything a student can read nowhere else is an
   `<InfoTip>`, which is a button, because hover reaches neither a phone nor a keyboard.
-- **Icons are ours** — add to `src/design-system/Icon.jsx`, 24×24, stroke 1.9, `currentColor`.
+- **Icons are Phosphor, vendored — never a package, never a hand-drawn one-off.** Add a line to
+  `scripts/icons/manifest.mjs`, run `npm run icons`, commit `icon-paths.js`. Four weights, each with
+  one job: regular (≥16px), bold (below 16px, automatic), fill (the *on* state of a control, only),
+  duotone (the mark in a flat tinted tile, only — never on a gradient). A tile passes its own weight;
+  a page almost never writes `weight=`. ADR 0004.
+- **A person is `<Avatar person>`; a thing is a glyph in a tile.** People Aster knows get a photo
+  from `public/people/` (synthetic faces, provenance in `SOURCES.md`) and initials when none is on
+  file; offices, residences, organisations and other sites never get a face. Marks — Aster's and
+  Audentra's — live in `design-system/marks/`. The one illustration is `<Spot>`.
 - **Accessibility and responsive behaviour are part of done**, not a follow-up.
 
 Full contract, including how a page is composed and how a card is read: `docs/agents/design-workflow.md`.
@@ -67,9 +75,10 @@ src/
   main.jsx
 
   design-system/             # the product's vocabulary. Knows no domain, imports no data.
-    Icon.jsx
-    primitives/              # Drawer, AnchorCard, Card (+CardHead/Rows/Foot), Button
-    patterns/                # PageShell, GroupTabs, Notice, StateCard, SummaryFigure,
+    Icon.jsx  icon-paths.js (generated)
+    marks/                 # AsterMark, AudentraMark
+    primitives/              # Drawer, AnchorCard, Card (+CardHead/Rows/Foot), Button, Avatar
+    patterns/                # PageShell, GroupTabs, Notice, StateCard, Spot, SummaryFigure,
                              # AdvisorBar, InfoModal, PageError, PageSkeleton,
                              # SectionPlaceholder
     styleguide/              # the page at #/styleguide

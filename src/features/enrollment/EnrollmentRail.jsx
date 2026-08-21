@@ -1,7 +1,9 @@
 import Icon from '../../design-system/Icon.jsx';
+import Avatar from '../../design-system/primitives/Avatar.jsx';
 import MomentumCard from '../rewards/MomentumCard.jsx';
 
 export default function EnrollmentRail({
+  student,
   earnedPoints,
   availableToday,
   nextReward,
@@ -26,7 +28,9 @@ export default function EnrollmentRail({
 
       <div className="skipped-card">
         <div className="skipped-top">
-          <span className="tiny-avatar">MJ</span>
+          {/* The Jam of 2026-08-21: "moca uma foto para essa pessoa… acho que é
+              Maya". The card is about her, so it shows her. */}
+          <Avatar person={student} size="sm" />
           <span className="resume-badge">Saved from welcome</span>
         </div>
         <h3>No rush. You can finish these now.</h3>

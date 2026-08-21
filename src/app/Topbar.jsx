@@ -1,4 +1,5 @@
 import Icon from '../design-system/Icon.jsx';
+import Avatar from '../design-system/primitives/Avatar.jsx';
 import { IconButton } from '../design-system/primitives/Button.jsx';
 import PreviewStateMenu from './PreviewStateMenu.jsx';
 import TopbarPopover from './TopbarPopover.jsx';
@@ -107,7 +108,11 @@ export default function Topbar({
           }
           panelLabel="What changed"
           panelClass="note-pop"
-          trigger={<Icon name="bell" size={19} />}
+          trigger={
+            // Filled while something is unread — the bell is a control with an
+            // *on* state, and fill is the weight that state takes.
+            <Icon name="bell" size={19} weight={unread?.total ? 'fill' : 'regular'} />
+          }
           badge={
             // Counts unavailable render no dot at all — never a `0` that reads
             // as final. The rule ENR-180 set for the nav badges, kept here.
@@ -132,7 +137,7 @@ export default function Topbar({
         </TopbarPopover>
 
         <a className="mobile-avatar" href="#/profile" aria-label="Profile">
-          {identity.initials}
+          <Avatar person={identity} size="sm" />
         </a>
       </div>
     </header>

@@ -30,7 +30,7 @@ export default function AidSources({ snapshot, ledger, onOpenBlocker, blockers }
     <Card aria-labelledby="aid-title">
       <div className="card-heading">
         <span className="card-icon">
-          <Icon name="award" size={19} />
+          <Icon weight="duotone" name="award" size={19} />
         </span>
         <div>
           <h2 id="aid-title">

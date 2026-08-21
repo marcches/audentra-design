@@ -36,7 +36,7 @@ export default function GuideList({ guides, open, onToggle }) {
                 onClick={() => onToggle(guide.id)}
               >
                 <span className="status-icon guide" aria-hidden="true">
-                  <Icon name="book" size={17} />
+                  <Icon weight="duotone" name="book" size={17} />
                 </span>
                 <span>
                   <strong>{guide.topic}</strong>

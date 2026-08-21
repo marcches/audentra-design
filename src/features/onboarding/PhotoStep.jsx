@@ -27,7 +27,7 @@ export default function PhotoStep({ draft, onChange }) {
       <div className="card-body">
         <div className={chosen ? 'photo-zone has-file' : 'photo-zone'}>
           <span className="photo-mark" aria-hidden="true">
-            <Icon name={chosen ? 'check' : 'upload'} size={22} />
+            <Icon name={chosen ? 'check' : 'upload'} size={22} weight="duotone" />
           </span>
           {chosen ? (
             <>

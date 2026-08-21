@@ -26,7 +26,7 @@ export default function ScheduleList({ schedule, ledger, unavailable, onChangePl
     <Card aria-labelledby="schedule-title">
       <div className="card-heading">
         <span className="card-icon">
-          <Icon name="calendar" size={19} />
+          <Icon weight="duotone" name="calendar" size={19} />
         </span>
         <div>
           <h2 id="schedule-title">Payment schedule</h2>

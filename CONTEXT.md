@@ -106,7 +106,17 @@ One item on the My Enrollment checklist: something the student does, named as a 
 called by that one name wherever it appears: the card, the drawer, the alert, the notification. The
 document a step produces is a noun phrase (*Immunization record*), and the two never swap roles. A
 step's state is a suffix, never a rewrite of the name: *Verify your household income · sent back*.
-_Avoid_: Task (the code's word for the same object), to-do, item, requirement.
+
+A step is always in exactly one of four **standings**, and My Enrollment is one group per standing,
+in this order: *open* — the student can act on it now, the group the page exists for; *with Aster* —
+the student has done their part and a person at Aster is reading it, nothing is asked of them, and
+it comes back as *completed* or as *open* again with a reason; *locked* — it waits on another step,
+and says which, and opens on its own when that one is done; *completed* — finished, with the date
+and the points it earned at the time. Open is the only standing the student changes directly; with
+Aster never advances on a clock (see *In review*); locked advances only when its prerequisite
+completes. Added 2026-08-21, when the groups were made one shape.
+_Avoid_: Task (the code's word for the same object), to-do, item, requirement. For the standings:
+pending, in progress, blocked, done.
 
 **Wellness**:
 The product's one word for the category of health services a student may use — the Events filter,

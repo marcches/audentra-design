@@ -32,7 +32,8 @@ const TASKS = [
     office: 'Student Financial Services',
     why: 'This confirms your enrollment and opens housing, advising, and orientation.',
     destination: {
-      mark: 'A',
+      // Aster's own site carries Aster's mark; a third party keeps a monogram.
+      mark: 'aster',
       name: 'Aster secure payment portal',
       url: 'payments.aster.edu',
       note: 'You’ll finish payment on Aster’s website. When it’s received, this checklist will update automatically, usually within a minute.',
@@ -244,6 +245,7 @@ export const initialReviewing = [
 export const enrollmentAdvisor = {
   name: 'Tomás Okafor',
   initials: 'TO',
+  photo: '/people/tomas-okafor.webp',
   office: 'Admissions Office',
   label: 'Your enrollment advisor',
   intro:
@@ -255,6 +257,7 @@ export const enrollmentAdvisor = {
 export const financialAidAdvisor = {
   name: 'Amara Nwosu',
   initials: 'AN',
+  photo: '/people/amara-nwosu.webp',
   office: 'Student Financial Services',
   label: 'Your financial aid advisor',
   intro:

@@ -254,15 +254,7 @@
 }
 
 .grant-avatar {
-  color: var(--purple-dark);
-  background: var(--purple-soft);
-  border-radius: var(--radius-round);
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  font-size: 12px;
-  font-weight: var(--fw-heavy);
-  display: grid;
+  flex: none;
 }
 
 .grant-who strong {

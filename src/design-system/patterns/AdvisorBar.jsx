@@ -1,5 +1,6 @@
 import Icon from '../Icon.jsx';
 import Tooltip from '../primitives/Tooltip.jsx';
+import Avatar from '../primitives/Avatar.jsx';
 
 /**
  * The right half of the summary panel: the person who owns the subject.
@@ -30,9 +31,7 @@ import Tooltip from '../primitives/Tooltip.jsx';
 export default function AdvisorBar({ advisor, onContact }) {
   return (
     <div className="advisor-bar">
-      <span className="advisor-avatar" aria-hidden="true">
-        {advisor.initials}
-      </span>
+      <Avatar person={advisor} size="md" className="advisor-avatar" />
       <div className="advisor-bar-copy">
         <span className="panel-label">{advisor.label}</span>
         <strong>
