@@ -173,3 +173,60 @@ From [ENR-190](https://audentra.atlassian.net/browse/ENR-190), binding:
 - [x] Loading, error and partial data are all reachable from the preview control.
 - [x] `npm run build` clean; checked at 390px and 1280px; `Esc`, focus trap and focus return
       verified on both sheets; cancel leaves the conversation visible as `Cancelled`.
+
+---
+
+## Round 2 — the changes of 2026-08-21
+
+Source: `appointments-changes-2026-08-21.md` in this folder (received guidance, no ENR card). Grilled
+with Marco the same day; every recommendation below was approved ("prossiga tudo"). References for
+the new surfaces are in `references.md`, Round 2.
+
+### What the document assumed that the tree no longer had
+
+- The white summary card ("YOUR NEXT CONVERSATION" + advisor block) had already left in the Jam of
+  2026-08-21, so C3 and C8 were done before this round; what remained of them was the banner lede.
+- Card heads were already `CardHead` (bare glyph, name, line, trailing cell); T4 maps onto that head,
+  not onto an eyebrow above the name.
+- `BookingDrawer` existed but crashed on open (`useRef` not imported), which is why the document
+  reads "there is no picker". §9 restructured the existing, Mobbin-researched picker rather than
+  replacing it.
+
+### Decisions
+
+| # | Decision | Why |
+| --- | --- | --- |
+| Q1 | The product rule changed: a student can ask a team for a time. | ADR 0005; `CONTEXT.md` gains **Time request**; ENR-178 AC 1 / Scenario 2 are narrower than the screen and should be amended in Jira. |
+| Q2 | *Student Financial Services* → *Financial Aid Office* and *Aster University Health Services* → *Student Health Services*, portal-wide (11 + 2 files), glossary rewritten. *Housing Services* keeps its name — no Campus life row exists here, so *Residence Life Office* was not applied. | One vocabulary on both screens is the point of 8.11; renaming on Appointments alone would have left nine files in the old one. |
+| Q3 | Three rows: the checklist's categories ∩ the offices that publish conversations. | What A6's table assumes; grows on its own when a team under a new category publishes. |
+| Q4 | *Meet your academic adviser* carries `category: 'Your degree'` in checklist data. | The document derives the category from that step, and it had none; a checklist decision, invisible on My Enrollment. |
+| Q5 | The band is `ActionBand` **on the pointed row**; that row's button is the card's one `primary-button`, every other row's is secondary. | The guide's anatomy; `Button.jsx` allows one primary per card; a loose strip is the shape CLAUDE.md forbids. Case 2's button reads "Choose a time", not "Book a conversation". |
+| Q6 | The existing picker (day strip + parts of day) stays; tabs, the About field, the ask tab and the actions are built around it. | Researched and approved in ENR-183; 9.5's flat list was written believing nothing existed. |
+| Q7 | The result stays in place in the drawer (booked / failed / sent), `Done` closes. | The three "After you book" sentences are that result's facts — C4's confirmation copy. |
+| Q8 | The conversation row is an article with the badge, *Add to calendar* and *Reschedule*; the title opens the detail sheet, where Cancel stays. Reschedule reopens the picker with the record's id and replaces it; *Book this again* opens it with the About prefilled and creates a new record. | Two controls per row is the guide's density; the sheet keeps the facts and the cancel confirmation. |
+| Q9 | *Your conversations* starts open, *Past and cancelled* closed, both remembered in `localStorage` (`aster.appointments.groups`); the first opens by force when the band points at a NOT BOOKED row. | The workflow's exception: a group that changes without the student acting starts open. |
+| Q10 | Head: h2 "Book a conversation", line "What it's about", "How booking works" in the trailing cell. | `CardHead` has no eyebrow above the name. |
+
+### Applied beyond the questions
+
+- "How booking works" opens an `InfoModal` (`variant="booking"`) from the head link and the rail
+  card — the same shape "How points work" opens; `.how-panel` is a drawer tab and there is no task
+  drawer here.
+- An eighth preview state, `requested`, seeds one time request so REQUESTED, the row and the rail's
+  waiting card can be looked at without sending one.
+- T2 read as "no 11.5px as an affordance": `--fs-copy` is the product's copy step and 8.4 itself asks
+  for `.no-slots` at that size.
+- C7: `footer { color: var(--muted) }` (4.55:1, every page) and the cancelled/completed badges in
+  `--ink-2` (4.93:1); the REQUESTED badge is `--amber-ink` on the amber tint.
+- The time picker is on `#/styleguide` ("Picking a time"), which it was not.
+- 8.2's strings had no home — the white card they were for no longer exists — and were not applied.
+- The "Message {person}" action left the detail sheet: the screen routes by subject, not by person
+  (C8's reasoning), and it was a placeholder toast.
+
+### Done when (round 2)
+
+- [ ] Seven states plus `requested` render without console errors at 1440×900.
+- [ ] Ready: two full topic rows above the fold (L1); band on Academic advising; no aggregate count.
+- [ ] Booking, asking, reschedule, book-again and cancel-request all work from the rows and the sheet.
+- [ ] My Enrollment shows "The Financial Aid Office needs…" and "Student Health Services needs…".
+- [ ] `npm run build` clean; 390px checked; `Esc`, focus trap and return verified on both sheets.

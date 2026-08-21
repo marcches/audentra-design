@@ -54,8 +54,8 @@ export const offices = {
   },
   financial: {
     id: 'financial',
-    name: 'Student Financial Services',
-    short: 'Student Financial Services',
+    name: 'Financial Aid Office',
+    short: 'Financial Aid Office',
     holds: 'What Aster bills you, and the aid that covers it.',
     where: 'Building A, ground floor',
     hours: '9:00 AM–4:00 PM, Monday to Friday',

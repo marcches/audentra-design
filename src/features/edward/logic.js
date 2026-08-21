@@ -37,7 +37,7 @@ import { destinationById } from '../../lib/navigation.js';
 /** The two people an answer can end at. There are no others in the portal. */
 export const PEOPLE = { enrollment: enrollmentAdvisor, aid: financialAidAdvisor };
 
-/** Money questions go to Financial Services; everything else to Admissions. */
+/** Money questions go to the Financial Aid Office; everything else to Admissions. */
 const MONEY_INTENTS = new Set([
   'balance',
   'aid-sources',

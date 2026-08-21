@@ -23,7 +23,7 @@ const PROGRESS_STEPS = [
 
   ['02', 'When it is measured', 'At the end of every term, once grades are final. Never mid-term, and never from this page.'],
 
-  ['03', 'Who decides', 'Student Financial Services reviews each record on its own, including anything that happened to you that a number cannot show.'],
+  ['03', 'Who decides', 'The Financial Aid Office reviews each record on its own, including anything that happened to you that a number cannot show.'],
 
   ['04', 'What you hear', 'A decision comes to you from Aster directly, with what to do next if you are under a minimum. Nothing changes before that.'],
 
@@ -47,7 +47,19 @@ export default function InfoModal({ variant, onClose }) {
       <div className="info-modal" ref={panel}>
         <IconButton className="modal-close" name="close" label="Close" onClick={onClose} />
 
-        {variant === 'smart' ? (
+        {variant === 'booking' ? (
+          <>
+            <span className="modal-kicker">
+              <Icon name="calendar" size={16} /> Appointments
+            </span>
+            <h2 id="info-title">How booking works</h2>
+            <p>
+              What you write it’s about decides which team gets it. Each team publishes its own
+              times, and picking one books it on the spot. If none of the published times work, you
+              can ask that team for a different one, and they come back to you here.
+            </p>
+          </>
+        ) : variant === 'smart' ? (
           <>
             <span className="modal-kicker">
               <Icon name="spark" size={16} /> Smart order

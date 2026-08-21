@@ -36,7 +36,7 @@ export default function AidPage({
     return (
       <FinancialsPage {...frame}>
         <StateCard variant="empty" icon="award" title="No aid package yet">
-          Student Financial Services releases your package after your deposit is recorded. When it
+          The Financial Aid Office releases your package after your deposit is recorded. When it
           lands, every source appears here with what it is and whether you repay it.
         </StateCard>
       </FinancialsPage>

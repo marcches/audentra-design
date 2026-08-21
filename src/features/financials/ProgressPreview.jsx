@@ -90,7 +90,7 @@ export default function ProgressPreview({ progress, unavailable, onExplain, onRe
 
           <p className="preview-disclaimer">
             <Icon name="shield" size={16} />
-            This is a preview. It isn’t Aster’s decision. Student Financial Services reviews every
+            This is a preview. It isn’t Aster’s decision. The Financial Aid Office reviews every
             record individually.
           </p>
 

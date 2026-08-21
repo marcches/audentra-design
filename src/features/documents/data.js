@@ -64,7 +64,7 @@ export const documentRequirements = [
     needs: 'Last year’s federal tax return, including every schedule. If nobody in your household filed, a signed statement of non-filing instead.',
     why: 'Verification is the check that your reported income matches your tax records. Aster has to finish it before your federal loan can be finalized.',
     accepts: PDF_IMAGE,
-    privacy: 'Encrypted, and read only by authorized Student Financial Services staff.',
+    privacy: 'Encrypted, and read only by authorized Financial Aid Office staff.',
     // ENR-158 AC 6: what acceptance releases, named on the requirement itself so
     // the release is part of the same state change rather than a later surprise.
     unblocks: 'Your federal loan is finalized and its amount joins your balance.',
@@ -95,7 +95,7 @@ export const documentRequirements = [
           remedies: [
             'Send every page, including the schedules, with all four corners visible.',
             'Scan or photograph flat. A phone photo is fine if nothing is cropped.',
-            'If the income really did change, say so when you send it and Financial Services will reconcile it.',
+            'If the income really did change, say so when you send it and the Financial Aid Office will reconcile it.',
           ],
           unread: true,
         },

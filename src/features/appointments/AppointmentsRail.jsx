@@ -1,100 +1,65 @@
 import Icon from '../../design-system/Icon.jsx';
 import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
-import { shortDate } from '../campus/logic.js';
 
 /**
- * The rail's anchor is the section's key secondary figure: **how much time is actually open.** It
- * is the number that decides whether "book a conversation" is an invitation or a wall, and it is
- * broken down by team so a student can see which office has gone quiet.
+ * The rail — the same pair of cards the reference screen carries, since the changes of 2026-08-21
+ * (C1). The slot is persistent across the portal; what goes in it is each screen's own choice, and
+ * this screen's is the rule, not a metric.
  *
- * Under it, what happens after the button is pressed — the promise ENR-178 AC 4 and AC 6 make
- * together: it reaches two calendars, or it reaches neither and says so.
+ * The permanent card, in the position and treatment of the guide's momentum card, says how booking
+ * works — the one sentence the student actually asks ("why does this team have nothing, have they
+ * forgotten me?") — and ends in the link that opens the longer version, the way "How points work"
+ * does. No numeral: the aggregate count of times was the second largest text on the screen and led
+ * nowhere (T3), and the per-team table repeated the list beside it line for line (C1).
+ *
+ * The conditional card, in the position and treatment of the guide's skipped card, renders only
+ * while a time request is waiting on a team (A7, ADR 0005). The split with the page's band is by
+ * whose turn it is: the band is what depends on the student — book, try again, ask; this card is
+ * what depends on the team. It is also what keeps the request visible while the history section is
+ * closed.
  */
-export default function AppointmentsRail({ availability, publisher, unavailable, onToast }) {
-  const open = availability.perType.filter((entry) => entry.count > 0);
-
+export default function AppointmentsRail({
+  publisher,
+  unavailable = false,
+  requests = [],
+  onOpenHow,
+  onSeeRequest,
+}) {
   return (
     <>
-      <AnchorCard variant="availability" label="Times open now">
-
-        {unavailable ? (
-          <span className="counts-figure unknown">Not available</span>
-        ) : (
-          <span className="counts-figure">
-            {availability.total}
-            <small>
-              across {open.length} of {availability.perType.length} teams
-            </small>
-          </span>
-        )}
-
-        <div className="counts-divider" />
-
-        {unavailable ? (
-          <p>
-            The published times could not be loaded. Conversations you have already booked are
-            unaffected. This is about what you could book next.
-          </p>
-        ) : (
-          <>
-            <ul className="team-times">
-              {availability.perType.map(({ type, count, nextDate }) => (
-                <li key={type.id}>
-                  <span>{type.team}</span>
-                  <strong className={count === 0 ? 'none' : undefined}>
-                    {count === 0 ? 'None yet' : `${count} · from ${shortDate(nextDate)}`}
-                  </strong>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </AnchorCard>
-
-      <div className="provenance-card">
-        <span className="panel-label">After you book</span>
-        <ol className="after-list">
-          <li>
-            <span aria-hidden="true">
-              <Icon name="calendar" size={14} />
-            </span>
-            <span>The time lands on your calendar and on the team’s, at the same moment.</span>
-          </li>
-          <li>
-            <span aria-hidden="true">
-              <Icon name="send" size={14} />
-            </span>
-            <span>What you wrote goes with the booking, so the team arrives prepared.</span>
-          </li>
-          <li>
-            <span aria-hidden="true">
-              <Icon name="alert" size={14} />
-            </span>
-            <span>
-              If it can’t reach the team, it says so and stays in your list as{' '}
-              <strong>Not booked</strong>. It’s never shown as confirmed.
-            </span>
-          </li>
-        </ol>
-
-        <div className="provenance-meta">
+      <AnchorCard variant="booking" label="How booking works">
+        <p>
+          {unavailable
+            ? 'The published times couldn’t be loaded. Conversations you’ve already booked aren’t affected.'
+            : 'Each team publishes the times it can offer, and picking one books it on the spot. If none of them work, you can ask that team for a different time and they come back to you here.'}
+        </p>
+        <div className="booking-provenance">
           <span>
-            <Icon name="clock" size={14} /> Times updated {publisher.updated}
+            <Icon name="clock" size={13} /> Times updated {publisher.updated}
           </span>
+          <span aria-hidden="true">·</span>
           <span>
-            <Icon name="shield" size={14} /> {publisher.system}
+            <Icon name="shield" size={13} /> {publisher.system}
           </span>
         </div>
-
-        <button
-          className="secondary-button"
-          onClick={() =>
-            onToast('A request for another time would go to the team. Nothing is sent yet.')
-          }
-        >
-          <Icon name="mail" size={16} /> Ask a team for another time
+        <button type="button" className="learn-link" onClick={onOpenHow}>
+          How booking works <Icon name="arrow" size={14} />
         </button>
-      </div>
+      </AnchorCard>
+
+      {requests.map(({ appointment, type }) => (
+        <div className="skipped-card waiting-card" key={appointment.id}>
+          <span className="resume-badge">{type.team}</span>
+          <h3>Waiting on a team</h3>
+          <p>
+            You asked for a time on {appointment.requestedOn}. They haven’t answered yet. Nothing is
+            booked until they do.
+          </p>
+          <button type="button" onClick={() => onSeeRequest(appointment.id)}>
+            See the request <Icon name="arrow" size={16} />
+          </button>
+        </div>
+      ))}
     </>
   );
 }

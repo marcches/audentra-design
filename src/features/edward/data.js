@@ -63,7 +63,7 @@ export const GUIDANCE = {
   verificationPolicy: {
     topic: 'Income verification',
     body: [
-      'Verification is a federal check. Financial Services compares the income you reported against your tax return or a signed statement of non-filing.',
+      'Verification is a federal check. The Financial Aid Office compares the income you reported against your tax return or a signed statement of non-filing.',
       'It usually takes three to five business days once every page is uploaded. A loan cannot be finalized while it is open.',
     ],
   },

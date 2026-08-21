@@ -29,7 +29,7 @@ const TASKS = [
     kind: 'external',
     priority: 'critical',
     unlocks: 3,
-    office: 'Student Financial Services',
+    office: 'Financial Aid Office',
     why: 'This confirms your enrollment and opens housing, advising, and orientation.',
     destination: {
       // Aster's own site carries Aster's mark; a third party keeps a monogram.
@@ -51,7 +51,7 @@ const TASKS = [
     category: 'Money and aid',
     title: 'Verify your household income',
     description:
-      'Student Financial Services needs to confirm the income you reported. Your federal loan stays pending until they do.',
+      'The Financial Aid Office needs to confirm the income you reported. Your federal loan stays pending until they do.',
     due: 'Sep 2',
     daysLeft: 13,
     minutes: 6,
@@ -62,7 +62,7 @@ const TASKS = [
     priority: 'critical',
     unlocks: 1,
     financial: true,
-    office: 'Student Financial Services',
+    office: 'Financial Aid Office',
     consequence:
       'Verification is the check that your reported income matches your tax records. Your federal loan stays pending until it’s done.',
     why: 'Your loan cannot be finalized while verification is open, so its amount stays off your balance until this clears.',
@@ -71,12 +71,12 @@ const TASKS = [
       hint: 'PDF, JPG, or PNG · Up to 10 MB',
       fileName: 'household_income_2025.pdf',
       fileSize: '2.4 MB',
-      privacy: 'Encrypted and shared only with authorized Student Financial Services staff.',
+      privacy: 'Encrypted and shared only with authorized Financial Aid Office staff.',
     },
     steps: [
       'Gather last year’s tax return, or a signed statement of non-filing.',
       'Upload every page, including schedules.',
-      'Financial Services reviews it in 3–5 business days and updates your package.',
+      'The Financial Aid Office reviews it in 3–5 business days and updates your package.',
     ],
   },
   {
@@ -92,7 +92,7 @@ const TASKS = [
     kind: 'external',
     priority: 'soon',
     financial: true,
-    office: 'Student Financial Services',
+    office: 'Financial Aid Office',
     consequence: 'Aster cannot release your loan money without a signed agreement.',
     why: 'The agreement is a federal requirement. Signing it early means your loan is ready the moment verification clears.',
     destination: {
@@ -134,7 +134,7 @@ const TASKS = [
     category: 'Health and wellness',
     title: 'Send your immunization record',
     description:
-      'Aster University Health Services needs your immunization record. You can’t register for classes until they have it.',
+      'Student Health Services needs your immunization record. You can’t register for classes until they have it.',
     // Before class registration opens on Sep 1: the record gates it, so a
     // deadline after the gate was the portal contradicting itself (UX writing 6.1).
     due: 'Aug 28',
@@ -155,7 +155,7 @@ const TASKS = [
     // route to a second section without the foot still talking about Health.
     sectionFoot: 'Sending it there ticks this step off and opens class registration.',
     priority: 'soon',
-    office: 'Aster University Health Services',
+    office: 'Student Health Services',
     why: 'Submitting early leaves time to resolve a missing dose or incomplete record before you register for classes.',
     steps: [
       'Ask your doctor for a current immunization record.',
@@ -213,6 +213,12 @@ export const lockedTasks = [
   },
   {
     title: 'Meet your academic adviser',
+    // Appointments groups its conversations by the checklist's categories (A9 of
+    // the appointments changes, 2026-08-21), and academic advising is a
+    // conversation, so the step that names it carries the category it sits in.
+    // It is invisible here — a locked row prints no category — and it is the
+    // one place the category is decided.
+    category: 'Your degree',
     kind: 'meeting',
     description: 'Available advisers appear after Aster assigns your academic program.',
     prerequisite: 'Waiting for program assignment',
@@ -261,7 +267,7 @@ export const financialAidAdvisor = {
   name: 'Amara Nwosu',
   initials: 'AN',
   photo: '/people/amara-nwosu.webp',
-  office: 'Student Financial Services',
+  office: 'Financial Aid Office',
   label: 'Your financial aid advisor',
   intro:
     'Amara reads your aid package, explains what each figure means, and is the person to ask before you borrow anything.',

@@ -1378,7 +1378,10 @@
 /* Every page ends here, so this is where the corner Edward owns is reserved —
    ENR-175 AC 7 as structure rather than as a rule someone has to remember. */
 footer {
-  color: var(--faint);
+  /* `--muted`, not `--faint`: at 8.5px the faint voice measured 2.41:1 on the
+     canvas, and the footer links "Accessibility" (appointments changes, C7).
+     4.55:1 now. */
+  color: var(--muted);
   justify-content: space-between;
   margin-top: var(--space-12);
   padding: var(--space-9) var(--space-1) var(--safe-bottom);

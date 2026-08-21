@@ -43,7 +43,7 @@ export default function AidSources({ snapshot, ledger, onOpenBlocker, blockers }
 
       {snapshot.aid.length === 0 ? (
         <StateCard variant="empty" icon="award" title="No aid on your record yet">
-          Your package appears here once Student Financial Services releases it.
+          Your package appears here once the Financial Aid Office releases it.
         </StateCard>
       ) : (
         <ul className="aid-list">

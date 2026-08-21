@@ -721,3 +721,9 @@
   flex: none;
   overflow: visible;
 }
+
+/* The time picker specimen: the drawer's width, so the day strip and the slot
+   grid read as they do in the sheet. */
+.sg-picker-demo {
+  max-width: 409px;
+}

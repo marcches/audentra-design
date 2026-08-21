@@ -62,3 +62,47 @@ in it, and how a booking that failed is kept from looking like one that worked.
 - [Fresha — appointments table](https://mobbin.com/screens/0bf2f6b1-7979-4650-a8af-98ff6cf139cb)
   and [Jobber — visits](https://mobbin.com/screens/7b0579b2-4f76-41d9-a57a-01402ca970f1) — dense
   staff tables. Right for an office with a hundred bookings a week, wrong for a student with two.
+
+## Round 2 — the changes of 2026-08-21 (`appointments-changes-2026-08-21.md`)
+
+Three searches, `platform: web`, `mode: deep`, for the surfaces the document adds: asking a team for a
+time, the request that then waits, and actions on a booked conversation.
+
+### Asking for a time
+
+- [Preply — reschedule lesson](https://mobbin.com/screens/86cf0587-48a6-4076-b664-c9ede75ef7f8) —
+  the published grid on the left, and on the right a summary card that states the *current* time
+  and the *new* one with one button. We take the reading for **Reschedule**: it is the same picker,
+  opened from the conversation, and the result replaces the record instead of adding a second one.
+- [Deputy — leave request](https://mobbin.com/screens/ba0957bd-3383-4aab-9f98-0fe2a7e2bbe2) — a
+  request form in a side panel: a window, a free-text comment, who gets notified, `Add`. We take
+  the shape of the **Ask for a time** tab — one window field, one About field, one send — and the
+  fact that it is a *request*, not a booking, is said in the panel (`.picker-note`).
+
+### The request that waits
+
+- [Airbnb — trips](https://mobbin.com/screens/d3a8ceec-6af8-4f17-8e78-a9526936ac10) — a pending
+  reservation is a card with a `Pending` chip and **no date committed**, and a sentence above
+  explains what it is waiting on. We take the chip-on-the-row and the waiting sentence
+  (`Waiting on the team. Their answer shows up here.`), and keep the request in *Your conversations*
+  rather than in a tab of its own.
+- [7shifts — availability request](https://mobbin.com/screens/4a0cc094-3cb5-4a29-ac2e-4d545790cd8b)
+  — a pending request lists **what was asked** in the requester's words. We take that: the request
+  row prints the window the student wrote, so she can see what the team is reading.
+
+### Actions on a booked conversation
+
+- [Cal.com — bookings](https://mobbin.com/screens/88a3ad34-c6f6-4bf4-a9bb-bac7165b29e4) — actions
+  at the trailing edge of the row (`Cancel event`, `Edit ▾` with *Reschedule booking* and *Request
+  reschedule*). We take the trailing action column and the two verbs; we drop the menu — two
+  visible controls per row is the guide's anatomy (button + link).
+- [Klook — my bookings](https://mobbin.com/screens/28553296-8675-480c-8854-9927aebd419d) — the
+  state (`Booking confirmed`) sits above the card's one button. We take the order: badge, then
+  button, then link, in the action column.
+
+### Rejected
+
+- [Rise — reschedule](https://mobbin.com/screens/1144b729-1354-4500-aa73-0540a646c477) and
+  [Aboard — reschedule meeting](https://mobbin.com/screens/6354b959-4a80-4153-b535-7ad1a74ede8b) —
+  a date and time picker the user types into. That is the register ENR-178 moved away from and ADR
+  0005 keeps out: a request is a sentence, never a slot the student writes onto a calendar.

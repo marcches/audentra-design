@@ -20,6 +20,10 @@ export const PREVIEW_STATES = [
   // cannot be reached. Both are here so a `?state=` link to one survives a reload.
   ['no-times', 'No times published', 'Appointments before any team opens a calendar.'],
   ['booking-fails', 'Team unreachable', 'A booking that never reaches the team it was for.'],
+  // 2026-08-21, ADR 0005: a time the student asked a team for, and the team
+  // has not answered. Seeded so the REQUESTED badge, the row and the rail's
+  // waiting card can be looked at without sending one.
+  ['requested', 'A time asked for', 'Appointments with one request waiting on a team.'],
   // ENR-182: the two things only Help can be in. One is a request an office has
   // put back to the student; the other is a send that never arrived, which has
   // to be reachable to be looked at rather than only described in a spec.

@@ -320,6 +320,7 @@ function Swatches({ group }) {
 export default function Styleguide({ onToast }) {
   const [drawer, setDrawer] = useState(false);
   const [groupOpen, setGroupOpen] = useState(true);
+  const [sgSlot, setSgSlot] = useState(null);
   const [navOpen, setNavOpen] = useState(true);
   const [postcode, setPostcode] = useState('0213');
   const radiusValues = useTokens(RADIUS.map(([t]) => t));
@@ -1630,6 +1631,63 @@ export default function Styleguide({ onToast }) {
               The two real ones are in the topbar above: the bell’s feed opens with the status head;
               the points chip’s balance opens with an <code>AnchorCard</code> on ink, the way a rail
               opens.
+            </p>
+          </div>
+        </Section>
+
+        <Section
+          id="sg-picker"
+          title="Picking a time"
+          rule="A booking is a picker over what a team published, never a field the student types a time into. A strip of the days that exist; the times inside one of them, grouped by part of the day, with the absence printed where it is; and one note on the format of the marked time. Selecting marks — only the button books. Appointments is the section that draws it, and the second path beside it (asking the team for a time) is a sentence, not a slot."
+        >
+          <div className="sg-picker-demo">
+            <div className="day-strip" role="group" aria-label="Days this team has published">
+              <button type="button" className="day-chip selected" aria-pressed="true">
+                <small>Fri</small>
+                <strong>21</strong>
+                <span>5 times</span>
+              </button>
+              <button type="button" className="day-chip" aria-pressed="false">
+                <small>Mon</small>
+                <strong>24</strong>
+                <span>2 times</span>
+              </button>
+              <button type="button" className="day-chip" aria-pressed="false">
+                <small>Wed</small>
+                <strong>26</strong>
+                <span>4 times</span>
+              </button>
+            </div>
+            <div className="slot-parts">
+              <div className="slot-part">
+                <p className="panel-label">Morning</p>
+                <div className="slot-grid" role="group" aria-label="Morning times">
+                  {['9:30 AM', '10:00 AM', '11:30 AM'].map((time) => (
+                    <button
+                      key={time}
+                      type="button"
+                      className={`slot-chip ${sgSlot === time ? 'selected' : ''}`}
+                      aria-pressed={sgSlot === time}
+                      onClick={() => setSgSlot(time)}
+                    >
+                      {time}
+                      {time === '11:30 AM' && <Icon name="video" size={13} />}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="slot-part">
+                <p className="panel-label">Afternoon</p>
+                <p className="no-slots">No availability</p>
+              </div>
+            </div>
+            <p className="picker-note" aria-live="polite">
+              {sgSlot ? (
+                <>
+                  <Icon name={sgSlot === '11:30 AM' ? 'video' : 'pin'} size={13} />
+                  {sgSlot === '11:30 AM' ? 'Video call.' : 'In person, Building C, ground floor.'}
+                </>
+              ) : null}
             </p>
           </div>
         </Section>

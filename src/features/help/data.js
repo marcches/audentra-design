@@ -38,7 +38,7 @@ export const offices = {
   },
   'financial-services': {
     id: 'financial-services',
-    name: 'Student Financial Services',
+    name: 'Financial Aid Office',
     decides: 'Your aid package, your bill, and every payment on it.',
     hours: '9:00 AM–4:00 PM, Monday to Friday',
     location: 'Building A, ground floor',
@@ -57,7 +57,7 @@ export const offices = {
     // ENR-209 AC 8 asks for the full institutional name, so it is the name
     // everywhere rather than a longer one Health wears and a shorter one the
     // rest of the portal wears.
-    name: 'Aster University Health Services',
+    name: 'Student Health Services',
     decides: 'Immunization records, medical clearance, and health forms.',
     hours: '8:30 AM–4:30 PM, Monday to Friday',
     location: 'Building D, first floor',
@@ -230,8 +230,8 @@ const depositSplit = {
         'I can pay half of the $500 deposit now and the rest at the start of October. Is that something Aster allows, or does it have to be one payment?',
       ],
     },
-    { id: 'deposit-2', kind: 'event', when: '2026-08-18', text: 'Received by Student Financial Services' },
-    { id: 'deposit-3', kind: 'event', when: '2026-08-19', text: 'Student Financial Services is working on this' },
+    { id: 'deposit-2', kind: 'event', when: '2026-08-18', text: 'Received by the Financial Aid Office' },
+    { id: 'deposit-3', kind: 'event', when: '2026-08-19', text: 'The Financial Aid Office is working on this' },
   ],
 };
 

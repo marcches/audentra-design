@@ -1,48 +1,74 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import Icon from '../../design-system/Icon.jsx';
+import InfoModal from '../../design-system/patterns/InfoModal.jsx';
 import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
+import Card, { CardHead, CardRows } from '../../design-system/primitives/Card.jsx';
 import AppointmentDrawer from './AppointmentDrawer.jsx';
 import AppointmentRow from './AppointmentRow.jsx';
 import AppointmentsRail from './AppointmentsRail.jsx';
 import BookingDrawer from './BookingDrawer.jsx';
-import TypeRow from './TypeRow.jsx';
+import TopicRow from './TopicRow.jsx';
 import {
   bookedAppointments,
+  checklistCategories,
   conversationTypes,
   failedAppointment,
+  pendingRequest,
   publishedTimes,
   schedulingPublisher,
 } from './data.js';
 import { PORTAL_TODAY } from '../enrollment/data.js';
 import {
+  articled,
   availabilitySummary,
+  bandFor,
   daysFor,
   failedBookings,
-  nextConfirmed,
-  relativeDay,
   splitAppointments,
+  timeRequests,
+  topicsInCategoryOrder,
   typeById,
 } from './logic.js';
 
 /**
- * Appointments — ENR-183, behaviour from ENR-178.
+ * Appointments — ENR-183, behaviour from ENR-178, and the changes of 2026-08-21
+ * (`.scratch/ENR-183-appointments/appointments-changes-2026-08-21.md`, ADR 0005).
  *
  * The card is a change of register: a free date and time field becomes a picker over published
- * availability, so that booking means the conversation will happen. Everything on this page follows
- * from that one move.
+ * availability, so that booking means the conversation will happen. Since 2026-08-21 the picker has
+ * a second path: when none of the published times work, the student asks the team for one, and the
+ * request waits on the team, visibly, until they answer.
  *
- *   - A conversation type is chosen first, because the type decides which team receives it.
- *   - Only published times are selectable, and a team with none says so on its row before the
- *     picker can open on an empty calendar.
+ *   - A topic is chosen first, because the topic decides which team receives it. The list is the
+ *     checklist's categories, under the checklist's names (A9).
+ *   - Only published times are selectable; a team with none says so on its row before the picker
+ *     can open on an empty calendar, and offers the ask instead.
  *   - A booking is confirmed or it failed. There is no third state, no optimistic row, and a
- *     failure keeps a visible record instead of vanishing.
+ *     failure keeps a visible record instead of vanishing. A request is a fourth thing, and it is
+ *     never shown as booked.
  *
  * `loading` and `error` are the frame's and never reach this component — App renders PageSkeleton
  * and PageError before dispatching. What is left is what only this section can express: the two
- * different emptinesses the card asks us to tell apart, a half-loaded page, and a team whose
- * calendar cannot be reached.
+ * different emptinesses the card asks us to tell apart, a half-loaded page, a team whose calendar
+ * cannot be reached, and a request that is waiting.
+ *
+ * ## The band, and whose turn it is
+ *
+ * The page's one primary action band (`ActionBand`, A6) sits on the row it points at, and the rule
+ * that decides which is `bandFor` in `logic.js`: a booking that never reached its team, else the
+ * first topic with times when nothing is booked, else the team with no calendar while others have
+ * one, else nothing. What depends on the team — a request they have not answered — is the rail's
+ * conditional card instead, not the band.
+ *
+ * ## Two groups that close
+ *
+ * *Your conversations* and *Past and cancelled* are the product's disclosure (`CardHead` with a
+ * toggle). The first starts open — a group that changes without the student acting starts open,
+ * and a failed booking and a team's answer both land here — and the second starts closed, because
+ * it is history. Her choice is remembered the way My Enrollment remembers its groups; and when the
+ * band points at a booking inside *Your conversations*, the group opens whatever she chose, because
+ * a band pointing at something hidden makes no sense (A8).
  */
 
 /** The states this section adds to the frame's. Both emptinesses are here, deliberately apart. */
@@ -55,6 +81,7 @@ export const APPOINTMENT_PREVIEW_STATES = [
     'Team unreachable',
     'One booking never reached its team, and a new one will not either.',
   ],
+  ['requested', 'A time asked for', 'One request sent to a team, and no answer yet.'],
   ['loading', 'Loading', 'Before the published times arrive.'],
   ['partial', 'Partial data', 'Your conversations loaded; the published times did not.'],
   ['error', 'Error', 'Nothing on this page could be loaded.'],
@@ -62,9 +89,23 @@ export const APPOINTMENT_PREVIEW_STATES = [
 
 const NO_TIMES = { enrollment: [], 'financial-aid': [], academic: [] };
 
+const GROUPS_STORE = 'aster.appointments.groups';
+const GROUPS_DEFAULT = { conversations: true, record: false };
+
+function readGroups() {
+  try {
+    const raw = window.localStorage.getItem(GROUPS_STORE);
+    const parsed = raw ? JSON.parse(raw) : null;
+    return parsed && typeof parsed === 'object' ? { ...GROUPS_DEFAULT, ...parsed } : GROUPS_DEFAULT;
+  } catch {
+    return GROUPS_DEFAULT;
+  }
+}
+
 function seedFor(previewState) {
   if (previewState === 'empty' || previewState === 'no-times') return [];
   if (previewState === 'booking-fails') return [failedAppointment, ...bookedAppointments];
+  if (previewState === 'requested') return [pendingRequest, ...bookedAppointments];
   return bookedAppointments;
 }
 
@@ -78,6 +119,9 @@ export default function AppointmentsPage({
   const [appointments, setAppointments] = useState(() => seedFor(previewState));
   const [booking, setBooking] = useState(null);
   const [open, setOpen] = useState(null);
+  const [how, setHow] = useState(false);
+  const [groups, setGroups] = useState(readGroups);
+  const [notified, setNotified] = useState([]);
 
   const returnFocus = useRef(null);
 
@@ -87,13 +131,22 @@ export default function AppointmentsPage({
     setAppointments(seedFor(previewState));
     setBooking(null);
     setOpen(null);
+    setNotified([]);
   }, [previewState]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(GROUPS_STORE, JSON.stringify(groups));
+    } catch {
+      // A portal that cannot remember a preference still has to work.
+    }
+  }, [groups]);
 
   // "One overlay owns the screen at a time" needs App to hear about an overlay it does not itself
   // hold, so Edward can stand down for it — ENR-181.
   useEffect(() => {
-    onOverlay(Boolean(booking || open));
-  }, [onOverlay, booking, open]);
+    onOverlay(Boolean(booking || open || how));
+  }, [onOverlay, booking, open, how]);
 
   useEffect(() => () => onOverlay(false), [onOverlay]);
 
@@ -103,31 +156,25 @@ export default function AppointmentsPage({
   const teamFails = previewState === 'booking-fails';
   const times = timesFailed || previewState === 'no-times' ? NO_TIMES : publishedTimes;
 
+  const topics = useMemo(
+    () => topicsInCategoryOrder(conversationTypes, checklistCategories),
+    [],
+  );
   const { current, record } = splitAppointments(appointments, PORTAL_TODAY);
-  const next = nextConfirmed(current);
   const failed = failedBookings(current);
-  const nextType = next ? typeById(conversationTypes, next.typeId) : null;
+  const requests = timeRequests(current);
   const failedType = failed[0] ? typeById(conversationTypes, failed[0].typeId) : null;
 
-  const availability = useMemo(
-    () => availabilitySummary(times, conversationTypes),
-    [times],
-  );
+  const availability = useMemo(() => availabilitySummary(times, topics), [times, topics]);
+  const band = bandFor({ current, availability, timesFailed });
+  const firstWithTimes = availability.perType.find((entry) => entry.count > 0)?.type ?? null;
 
-  const hero = {
-    lede: next
-      ? `Your next conversation is ${relativeDay(next.date, PORTAL_TODAY)}, with ${
-          nextType.person.name
-        }. You choose from the times each team published. You can’t propose a different one.`
-      : availability.total > 0
-        ? 'Aster’s teams publish the times they can offer. You take one, and it lands on their calendar and yours at the same moment.'
-        : 'Aster’s teams publish the times they can offer here. None of them has opened a calendar yet, so there is nothing to book, and nothing waiting on you.',
-  };
+  const conversationsOpen = groups.conversations || band?.kind === 'failed';
 
-  function openBooking(type, node, replaceId) {
+  function openBooking(type, node, { tab = 'times', replaceId = null, prefill = null } = {}) {
     returnFocus.current = node ?? null;
     setOpen(null);
-    setBooking({ typeId: type.id, replaceId });
+    setBooking({ typeId: type.id, tab, replaceId, prefill });
   }
 
   function closeBooking() {
@@ -147,20 +194,42 @@ export default function AppointmentsPage({
 
   /**
    * One attempt, one record. A retry re-uses the id of the attempt it repeats, so a booking that
-   * failed twice is one unbooked conversation rather than two.
+   * failed twice is one unbooked conversation rather than two — and a reschedule re-uses the id of
+   * the conversation it replaces, so the old time is gone the moment the new one exists.
    */
   function book(appointment) {
+    const replaced = appointments.find((item) => item.id === appointment.id) ?? null;
     setAppointments((list) => [
       appointment,
       ...list.filter((item) => item.id !== appointment.id),
     ]);
-    if (appointment.state === 'confirmed') {
+    if (appointment.state !== 'confirmed') return;
+    const type = typeById(conversationTypes, appointment.typeId);
+    if (replaced?.state === 'confirmed') {
       onToast({
         tone: 'success',
-        title: 'Booked.',
-        body: `${typeById(conversationTypes, appointment.typeId).team} has it too.`,
+        title: 'Rescheduled.',
+        body: `The old time went back to ${articled(type.team)}’s calendar. The new one is on both.`,
       });
+    } else {
+      onToast({ tone: 'success', title: 'Booked.', body: `${articled(type.team, true)} has it too.` });
     }
+  }
+
+  function request(record) {
+    setAppointments((list) => [record, ...list]);
+    const type = typeById(conversationTypes, record.typeId);
+    onToast({
+      tone: 'success',
+      title: 'Sent.',
+      body: `${articled(type.team, true)} has your request. Their answer shows up here.`,
+    });
+  }
+
+  function cancelRequest(appointment) {
+    setAppointments((list) => list.filter((item) => item.id !== appointment.id));
+    setOpen(null);
+    onToast('Request cancelled. Nothing was booked, so nothing else changed.');
   }
 
   function cancel(appointment) {
@@ -175,24 +244,42 @@ export default function AppointmentsPage({
     onToast('Cancelled. The time went back to their calendar. Nothing else changed.');
   }
 
-  function rebook(type, appointment) {
-    setOpen(null);
-    setBooking({ typeId: type.id, replaceId: appointment.id });
+  function retry(appointment, node) {
+    const type = typeById(conversationTypes, appointment.typeId);
+    openBooking(type, node, { replaceId: appointment.id, prefill: { subject: appointment.subject } });
   }
 
+  function reschedule(appointment, node) {
+    const type = typeById(conversationTypes, appointment.typeId);
+    openBooking(type, node, { replaceId: appointment.id, prefill: { subject: appointment.subject } });
+  }
+
+  function bookAgain(appointment, node) {
+    const type = typeById(conversationTypes, appointment.typeId);
+    openBooking(type, node, { prefill: { subject: appointment.subject } });
+  }
+
+  function toggleGroup(id) {
+    setGroups((value) => ({ ...value, [id]: !value[id] }));
+  }
+
+  /** The rail's "See the request": open the group and put focus on the request itself. */
+  function seeRequest(id) {
+    setGroups((value) => ({ ...value, conversations: true }));
+    window.requestAnimationFrame(() => {
+      const row = document.querySelector(`[data-appointment="${id}"]`);
+      row?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      row?.querySelector('.row-link')?.focus({ preventScroll: true });
+    });
+  }
+
+  const bookingType = booking ? typeById(conversationTypes, booking.typeId) : null;
   const openAppointmentRecord = appointments.find((item) => item.id === open) ?? null;
 
-  // A booking that failed is a footnote to the figure above it: *this one is not it.* The shell
-  // rides it on the foot of the summary rather than stacking another band into the page.
   /**
-   * Two failures, two scopes, and they used to be two bands stacked on top of
-   * each other — the exact thing the Jam of 2026-08-21 asked us to stop.
-   *
-   * A booking that never reached its team is about her next conversation, which
-   * is the figure on the panel, so it takes the panel's foot. Times that would
-   * not load are about the card that books one, so they head that card and
-   * nothing else. Neither is a band, and neither has to be ranked against the
-   * other any more, because they are no longer competing for one place.
+   * Two failures, two scopes. A booking that never reached its team is about the student's own
+   * list, so it rides the page's notice line; times that would not load are about the card that
+   * books one, so they head that card and nothing else. Neither is a band of its own.
    */
   const alert =
     failed.length === 0 ? null : (
@@ -203,10 +290,10 @@ export default function AppointmentsPage({
         action={{
           label: 'Try again',
           icon: 'refresh',
-          onClick: () => openBooking(failedType, null, failed[0].id),
+          onClick: () => retry(failed[0], null),
         }}
       >
-        This never reached {failedType.team}, so nothing is scheduled. The time you chose may still
+        This never reached {articled(failedType.team)}, so nothing is scheduled. The time you chose may still
         be open.
       </Notice>
     );
@@ -223,64 +310,85 @@ export default function AppointmentsPage({
     </Notice>
   ) : null;
 
+  const rowHandlers = {
+    today: PORTAL_TODAY,
+    onOpen: openAppointment,
+    onCalendar: () =>
+      onToast('This would download an invite for your own calendar. Nothing is sent.'),
+    onReschedule: reschedule,
+    onRetry: retry,
+    onBookAgain: bookAgain,
+    onCancelRequest: cancelRequest,
+  };
+
   return (
     <PageShell
       destination={destination}
-      hero={hero}
-      /* No summary panel, since the Jam of 2026-08-21. The panel is for a
-         section's *standing* — one figure that changes, and the person who owns
-         the subject — and this section's was neither: `Fri 12 Sep · 10:00` is
-         the first row of `Your conversations` a few hundred pixels below, and
-         the person beside it is the person in that row. Everything the panel
-         said is already somewhere it belongs: the booking in the list, the
-         count of open times in the rail, `Nothing booked yet` in the list's
-         empty state, and the times that would not load on the booking card. */
+      /* No summary panel, since the Jam of 2026-08-21: the figure it would hold is the first row
+         of `Your conversations`, and the person beside it is the person in that row. */
       notice={alert}
       rail={
         <AppointmentsRail
-          availability={availability}
           publisher={schedulingPublisher}
           unavailable={timesFailed}
-          onToast={onToast}
+          requests={requests.map((appointment) => ({
+            appointment,
+            type: typeById(conversationTypes, appointment.typeId),
+          }))}
+          onOpenHow={() => setHow(true)}
+          onSeeRequest={seeRequest}
         />
       }
     >
-      <section className="section-card" aria-labelledby="book-heading">
-        <div className="card-heading">
-          <span className="card-icon" aria-hidden="true">
-            <Icon name="calendar" size={19} />
-          </span>
-          <div>
-            <h2 id="book-heading">Book a conversation</h2>
-            <p>What it’s about decides which team receives it.</p>
-          </div>
-        </div>
+      {/* The task of the screen. It never collapses. */}
+      <Card aria-labelledby="book-heading">
+        <CardHead
+          kind="status"
+          icon="calendar"
+          tone="accent"
+          title="Book a conversation"
+          titleId="book-heading"
+          note="What it’s about"
+          aside={
+            <button type="button" className="text-button" onClick={() => setHow(true)}>
+              How booking works
+            </button>
+          }
+        />
 
         {bookingNotice}
 
-        <div className="card-rows type-list">
-          {conversationTypes.map((type) => (
-            <TypeRow
+        <CardRows className="topic-list">
+          {topics.map((type) => (
+            <TopicRow
               key={type.id}
               type={type}
               days={daysFor(times, type.id)}
               unavailable={timesFailed}
-              onOpen={openBooking}
+              band={band && band.typeId === type.id ? band.kind : null}
+              notified={notified.includes(type.id)}
+              onChoose={(entry, node) => openBooking(entry, node)}
+              onAsk={(entry, node) => openBooking(entry, node, { tab: 'ask' })}
+              onNotify={(entry) => setNotified((list) => [...list, entry.id])}
             />
           ))}
-        </div>
-      </section>
+        </CardRows>
+      </Card>
 
-      <section className="section-card" aria-labelledby="conversations-heading">
-        <div className="card-heading">
-          <span className="card-icon" aria-hidden="true">
-            <Icon name="check" size={19} />
-          </span>
-          <div>
-            <h2 id="conversations-heading">Your conversations</h2>
-            <p>What is booked, and anything that did not reach a team.</p>
-          </div>
-        </div>
+      <Card
+        className={current.length > 0 && !conversationsOpen ? 'collapsed' : ''}
+        aria-labelledby="conversations-heading"
+      >
+        <CardHead
+          kind="status"
+          icon="users"
+          title="Your conversations"
+          titleId="conversations-heading"
+          count={current.length > 0 ? current.length : undefined}
+          open={conversationsOpen}
+          onToggle={current.length > 0 ? () => toggleGroup('conversations') : undefined}
+          controls="appointments-conversations"
+        />
 
         {current.length === 0 ? (
           availability.total > 0 ? (
@@ -290,81 +398,85 @@ export default function AppointmentsPage({
               action={{
                 label: 'Book a conversation',
                 icon: 'arrow',
-                onClick: () => openBooking(conversationTypes[0]),
+                onClick: (event) => openBooking(firstWithTimes, event.currentTarget),
               }}
             >
-              You have not taken any of the {availability.total} times Aster’s teams have published.
-              Booking one is a single choice. There is no request to wait on afterwards.
+              You haven’t taken any of the {availability.total} times Aster’s teams have published.
+              Picking one books it straight away. If none of them fit, asking a team for a different
+              time is the other way, and that one you wait on.
             </StateCard>
           ) : (
             <StateCard
               icon="clock"
               title="No team has published times yet"
               action={{
-                label: conversationTypes[0].otherRoute,
-                icon: 'mail',
-                onClick: () =>
-                  onToast(
-                    `${conversationTypes[0].otherRoute} would open here. Nothing is sent yet.`,
-                  ),
+                label: 'Ask a team for a time',
+                icon: 'send',
+                onClick: (event) => openBooking(topics[0], event.currentTarget, { tab: 'ask' }),
               }}
             >
-              This is a different kind of empty: nothing is booked because there is nothing to book.
-              Each team opens its calendar when it is ready, and the times appear here on their own.
-              If something cannot wait for that, the office is still the route.
+              Nothing is booked because there’s nothing to pick from yet. Each team opens its
+              calendar when it’s ready, and the times show up here on their own. If what you need
+              can’t wait, ask a team for a time and they’ll come back to you.
             </StateCard>
           )
         ) : (
-          <div className="card-rows appointment-list">
+          <CardRows
+            className="appointment-list"
+            id="appointments-conversations"
+            hidden={!conversationsOpen}
+          >
             {current.map((appointment) => (
               <AppointmentRow
                 key={appointment.id}
                 appointment={appointment}
                 type={typeById(conversationTypes, appointment.typeId)}
-                today={PORTAL_TODAY}
-                onOpen={openAppointment}
+                band={band?.kind === 'failed' && band.appointmentId === appointment.id}
+                {...rowHandlers}
               />
             ))}
-          </div>
+          </CardRows>
         )}
-      </section>
+      </Card>
 
       {record.length > 0 && (
-        <section className="section-card" aria-labelledby="record-heading">
-          <div className="card-heading">
-            <span className="card-icon" aria-hidden="true">
-              <Icon name="clock" size={19} />
-            </span>
-            <div>
-              <h2 id="record-heading">Past and cancelled</h2>
-              <p>Kept so you can see who you’ve already spoken to.</p>
-            </div>
-          </div>
-
-          <div className="card-rows appointment-list">
+        <Card className={groups.record ? '' : 'collapsed'} aria-labelledby="record-heading">
+          <CardHead
+            kind="status"
+            icon="clock"
+            tone="locked"
+            title="Past and cancelled"
+            titleId="record-heading"
+            count={record.length}
+            open={groups.record}
+            onToggle={() => toggleGroup('record')}
+            controls="appointments-record"
+          />
+          <CardRows className="appointment-list" id="appointments-record" hidden={!groups.record}>
             {record.map((appointment) => (
               <AppointmentRow
                 key={appointment.id}
                 appointment={appointment}
                 type={typeById(conversationTypes, appointment.typeId)}
-                today={PORTAL_TODAY}
-                onOpen={openAppointment}
+                {...rowHandlers}
               />
             ))}
-          </div>
-        </section>
+          </CardRows>
+        </Card>
       )}
 
       {booking && (
         <BookingDrawer
-          types={conversationTypes}
-          published={times}
-          initialTypeId={booking.typeId}
+          type={bookingType}
+          days={daysFor(times, booking.typeId)}
+          initialTab={booking.tab}
           replaceId={booking.replaceId}
+          prefill={booking.prefill}
           teamFails={teamFails}
+          today={PORTAL_TODAY}
           onBook={book}
+          onRequest={request}
           onClose={closeBooking}
-          onToast={onToast}
         />
       )}
 
@@ -375,10 +487,15 @@ export default function AppointmentsPage({
           today={PORTAL_TODAY}
           onClose={closeAppointment}
           onCancel={cancel}
-          onRebook={rebook}
+          onRebook={(type, appointment) => retry(appointment, null)}
+          onReschedule={(appointment) => reschedule(appointment, null)}
+          onBookAgain={(appointment) => bookAgain(appointment, null)}
+          onCancelRequest={cancelRequest}
           onToast={onToast}
         />
       )}
+
+      {how && <InfoModal variant="booking" onClose={() => setHow(false)} />}
     </PageShell>
   );
 }

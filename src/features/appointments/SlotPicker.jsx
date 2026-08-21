@@ -1,6 +1,6 @@
 import Icon from '../../design-system/Icon.jsx';
 import { dateTile } from '../campus/logic.js';
-import { slotParts, weekdayShort } from './logic.js';
+import { formatNote, slotParts, weekdayShort } from './logic.js';
 
 /**
  * The change the card is about: a free date and time field becomes a picker over what the
@@ -11,9 +11,11 @@ import { slotParts, weekdayShort } from './logic.js';
  * that has none** ([Square](https://mobbin.com/screens/5c191789-20a8-4f82-8ee5-2f0be71714b4)). The
  * absence is stated in place; it never appears as a gap the student has to interpret.
  *
- * There is no free field anywhere in here, and that is the point (ENR-178 Scenario 2).
+ * Selecting a time books nothing — it only marks. The note under the list says the format of the
+ * time that is marked (9.5 of the changes of 2026-08-21): in person and where, or a video call. It
+ * reserves its line before a time is chosen so the list does not jump when one is.
  */
-export default function SlotPicker({ days, day, slotId, team, onDay, onSlot }) {
+export default function SlotPicker({ type, days, day, slot, onDay, onSlot }) {
   return (
     <>
       <div className="day-strip" role="group" aria-label="Days this team has published">
@@ -23,6 +25,7 @@ export default function SlotPicker({ days, day, slotId, team, onDay, onSlot }) {
           return (
             <button
               key={entry.date}
+              type="button"
               className={`day-chip ${active ? 'selected' : ''}`}
               aria-pressed={active}
               onClick={() => onDay(entry.date)}
@@ -45,15 +48,16 @@ export default function SlotPicker({ days, day, slotId, team, onDay, onSlot }) {
               <p className="no-slots">No availability</p>
             ) : (
               <div className="slot-grid" role="group" aria-label={`${part} times`}>
-                {slots.map((slot) => (
+                {slots.map((entry) => (
                   <button
-                    key={slot.id}
-                    className={`slot-chip ${slot.id === slotId ? 'selected' : ''}`}
-                    aria-pressed={slot.id === slotId}
-                    onClick={() => onSlot(slot)}
+                    key={entry.id}
+                    type="button"
+                    className={`slot-chip ${entry.id === slot?.id ? 'selected' : ''}`}
+                    aria-pressed={entry.id === slot?.id}
+                    onClick={() => onSlot(entry)}
                   >
-                    {slot.time}
-                    {slot.format === 'video' && <Icon name="video" size={13} />}
+                    {entry.time}
+                    {entry.format === 'video' && <Icon name="video" size={13} />}
                   </button>
                 ))}
               </div>
@@ -62,10 +66,13 @@ export default function SlotPicker({ days, day, slotId, team, onDay, onSlot }) {
         ))}
       </div>
 
-      <p className="picker-note">
-        <Icon name="lock" size={13} />
-        These are the times {team} has published. You can’t propose another one here. If none of
-        them work, ask them for more.
+      <p className="picker-note" aria-live="polite">
+        {slot ? (
+          <>
+            <Icon name={slot.format === 'video' ? 'video' : 'pin'} size={13} />
+            {formatNote(type, slot.format)}
+          </>
+        ) : null}
       </p>
     </>
   );

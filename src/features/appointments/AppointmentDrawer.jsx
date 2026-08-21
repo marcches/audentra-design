@@ -1,20 +1,22 @@
 import { useState } from 'react';
 import Drawer from '../../design-system/primitives/Drawer.jsx';
+import Button from '../../design-system/primitives/Button.jsx';
 import Icon from '../../design-system/Icon.jsx';
 import { longDate } from '../campus/logic.js';
-import { placeOf, relativeDay, stateOf, timeRange } from './logic.js';
+import { articled, placeOf, relativeDay, stateOf, teamName, timeRange } from './logic.js';
 
 /**
  * One conversation, in full — what it is, whether it exists, and what the student can still do
  * about it.
  *
  * The state banner is the first thing in the sheet, because it is the question the student came
- * with. A failed booking says so before it says anything else, and offers the only two moves that
- * are honest: try the same time again, or reach the team another way.
+ * with. A failed booking says so before it says anything else, and offers the one move that is
+ * honest: try the same time again. A time request (ADR 0005) says it is waiting, and on whom.
  *
- * Cancelling asks once, here, rather than through a browser dialog, and then leaves the
- * conversation in the record labelled `Cancelled` — ENR-178 AC 5. Rescheduling is out of scope on
- * the epic, so nothing on this sheet offers it.
+ * The actions here are the row's actions, at full width: add to calendar, reschedule, and cancel —
+ * which asks once, here, rather than through a browser dialog, and then leaves the conversation in
+ * the record labelled `Cancelled` (ENR-178 AC 5). Rescheduling is the same picker, opened from the
+ * conversation; what it books replaces this record (changes of 2026-08-21, A3).
  */
 export default function AppointmentDrawer({
   appointment,
@@ -23,26 +25,35 @@ export default function AppointmentDrawer({
   onClose,
   onCancel,
   onRebook,
+  onReschedule,
+  onBookAgain,
+  onCancelRequest,
   onToast,
 }) {
   const [confirming, setConfirming] = useState(false);
 
-
   const state = stateOf(appointment, today);
   const place = placeOf(type, appointment.format);
+  const team = teamName(type);
 
   const banner = {
     confirmed: {
       tone: 'ok',
       icon: 'check',
       title: `Confirmed · ${relativeDay(appointment.date, today)}`,
-      body: `This is on your calendar and on ${type.team}’s. ${type.person.name} has what you wrote it is about.`,
+      body: `This is on your calendar and on ${articled(type.team)}’s. ${type.person.name} has what you wrote it is about.`,
     },
     failed: {
       tone: 'failed',
       icon: 'alert',
       title: 'Not booked',
-      body: `This never reached ${type.team}, so nothing is scheduled. The time may still be open. Trying again is the fastest way to find out.`,
+      body: `This never reached ${articled(type.team)}, so nothing is scheduled. The time may still be open. Trying again is the fastest way to find out.`,
+    },
+    requested: {
+      tone: 'quiet',
+      icon: 'send',
+      title: `Requested · sent ${appointment.requestedOn}`,
+      body: 'Waiting on the team. Their answer shows up here. Nothing is booked until they do.',
     },
     cancelled: {
       tone: 'quiet',
@@ -60,19 +71,25 @@ export default function AppointmentDrawer({
     },
   }[state.tone];
 
+  const requested = state.tone === 'requested';
+
   return (
     <Drawer
       variant="appointment"
-      label={[type.label, longDate(appointment.date)]}
+      label={[type.category, requested ? `Sent ${appointment.requestedOn}` : longDate(appointment.date)]}
       titleId="appointment-drawer-title"
-      closeLabel="Close conversation"
+      closeLabel="Close"
       onClose={onClose}
     >
-      <div className={`drawer-icon appointment ${state.tone}`}>
-        <Icon weight="duotone" name={appointment.format === 'video' ? 'video' : 'calendar'} size={25} />
+      <div className={`drawer-icon appointment ${state.tone}`} aria-hidden="true">
+        <Icon
+          weight="duotone"
+          name={requested ? 'clock' : appointment.format === 'video' ? 'video' : 'calendar'}
+          size={25}
+        />
       </div>
       <h2 id="appointment-drawer-title">
-        {type.label} with {type.person.name}
+        {requested ? `${type.label} · ${team}` : `${type.label} with ${type.person.name}`}
       </h2>
       <p className="drawer-description">{type.blurb}</p>
 
@@ -94,7 +111,9 @@ export default function AppointmentDrawer({
             <Icon name="clock" size={15} /> When
           </dt>
           <dd>
-            {longDate(appointment.date)}, {timeRange(appointment)}
+            {requested
+              ? `Not set yet. You asked for: “${appointment.window}”`
+              : `${longDate(appointment.date)}, ${timeRange(appointment)}`}
           </dd>
         </div>
         <div>
@@ -102,17 +121,15 @@ export default function AppointmentDrawer({
             <Icon name={appointment.format === 'video' ? 'video' : 'pin'} size={15} /> Where
           </dt>
           <dd>
-            {place}
+            {requested ? type.place : place}
             {appointment.format === 'video' && ` · ${type.videoNote}`}
           </dd>
         </div>
         <div>
           <dt>
-            <Icon name="profile" size={15} /> Who
+            <Icon name={requested ? 'users' : 'profile'} size={15} /> Who
           </dt>
-          <dd>
-            {type.person.name}, {type.person.office}
-          </dd>
+          <dd>{requested ? team : `${type.person.name}, ${type.person.office}`}</dd>
         </div>
       </dl>
 
@@ -127,47 +144,56 @@ export default function AppointmentDrawer({
         </p>
         <small className="prototype-note">
           {state.tone === 'failed'
-            ? `This has not been sent to anyone. The booking never reached ${type.team}.`
-            : `${type.team} received this with the booking, so nobody has to be caught up on the day.`}
+            ? `This has not been sent to anyone. The booking never reached ${articled(type.team)}.`
+            : requested
+              ? `${articled(type.team, true)} has this with your request.`
+              : `${articled(type.team, true)} received this with the booking, so nobody has to be caught up on the day.`}
         </small>
       </div>
 
       {state.tone === 'failed' && (
         <div className="drawer-actions">
-          <button className="primary-button full" onClick={() => onRebook(type, appointment)}>
-            Try this booking again <Icon name="refresh" size={17} />
-          </button>
+          <Button kind="primary" full icon="refresh" onClick={() => onRebook(type, appointment)}>
+            Try this booking again
+          </Button>
+        </div>
+      )}
+
+      {state.tone === 'cancelled' && (
+        <div className="drawer-actions">
+          <Button kind="primary" full icon="arrow" onClick={() => onBookAgain(appointment)}>
+            Book this again
+          </Button>
+        </div>
+      )}
+
+      {requested && (
+        <div className="drawer-actions">
           <button
-            className="secondary-button"
-            onClick={() =>
-              onToast(`${type.otherRoute} would open here. Nothing is sent in this preview.`)
-            }
+            type="button"
+            className="text-button danger"
+            onClick={() => onCancelRequest(appointment)}
           >
-            <Icon name="mail" size={16} /> {type.otherRoute}
+            Cancel request
           </button>
         </div>
       )}
 
       {state.tone === 'confirmed' && (
         <div className="drawer-actions">
-          <button
-            className="primary-button full"
+          <Button
+            kind="primary"
+            full
+            icon="calendar"
             onClick={() =>
               onToast('This would download an invite for your own calendar. Nothing is sent.')
             }
           >
-            Add to my calendar <Icon name="calendar" size={17} />
-          </button>
-          <button
-            className="secondary-button"
-            onClick={() =>
-              onToast(
-                `A message to ${type.person.name} would open here. Nothing is sent in this preview.`,
-              )
-            }
-          >
-            <Icon name="message" size={16} /> Message {type.person.name}
-          </button>
+            Add to calendar
+          </Button>
+          <Button kind="secondary" full icon="arrow" onClick={() => onReschedule(appointment)}>
+            Reschedule
+          </Button>
 
           {confirming ? (
             <div className="cancel-confirm" role="group" aria-label="Cancel this conversation">
@@ -176,16 +202,16 @@ export default function AppointmentDrawer({
                 in your list marked <strong>Cancelled</strong>. Nothing reschedules it for you.
               </p>
               <div>
-                <button className="text-button danger" onClick={() => onCancel(appointment)}>
+                <button type="button" className="text-button danger" onClick={() => onCancel(appointment)}>
                   Yes, cancel it
                 </button>
-                <button className="text-button" onClick={() => setConfirming(false)}>
+                <button type="button" className="text-button" onClick={() => setConfirming(false)}>
                   Keep it
                 </button>
               </div>
             </div>
           ) : (
-            <button className="text-button danger" onClick={() => setConfirming(true)}>
+            <button type="button" className="text-button danger" onClick={() => setConfirming(true)}>
               Cancel this conversation
             </button>
           )}
@@ -193,10 +219,10 @@ export default function AppointmentDrawer({
       )}
 
       <p className="published-note">
-        {appointment.bookedOn && state.tone !== 'failed'
+        {appointment.bookedOn && state.tone !== 'failed' && !requested
           ? `You booked this ${appointment.bookedOn}. `
           : ''}
-        Aster’s teams publish the times; the portal only books one of them.
+        Aster’s teams publish the times; the portal books one of them, or asks them for another.
       </p>
     </Drawer>
   );

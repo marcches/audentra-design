@@ -34,7 +34,7 @@ export default function DocumentList({ documents, unavailable, onOpen, onRetry }
         </StateCard>
       ) : documents.length === 0 ? (
         <StateCard variant="empty" icon="check" title="Nothing is waiting on you">
-          Student Financial Services has everything it needs for now. If that changes, the request
+          The Financial Aid Office has everything it needs for now. If that changes, the request
           appears here and on your enrollment checklist at the same time.
         </StateCard>
       ) : (

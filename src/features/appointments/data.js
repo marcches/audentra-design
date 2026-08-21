@@ -1,21 +1,25 @@
-// Appointments — ENR-183, behaviour from ENR-178.
+// Appointments — ENR-183, behaviour from ENR-178, and the changes of 2026-08-21
+// (`.scratch/ENR-183-appointments/appointments-changes-2026-08-21.md`).
 //
-// Two kinds of thing live here and they must not be confused. **Availability** is published by a
-// team: the portal reads it and never writes it. **Appointments** are the student's, created only
-// by taking one of those published times. There is deliberately no shape in this file that could
-// hold a time the student invented, because the whole point of the card is that they cannot.
+// Three kinds of thing live here and they must not be confused. **Availability** is published by a
+// team: the portal reads it and never writes it. **Appointments** are the student's, created by
+// taking one of those published times. A **time request** is the second path, added 2026-08-21
+// (ADR 0005): when none of the published times work, the student asks the team for one, and what
+// she sends is a sentence about when she could meet — never a time on a calendar. The request waits
+// on the team; nothing is booked until they answer.
 //
 // The people are the ones the student already knows — Tomás from My Enrollment, Amara from My
-// Financials — so booking a conversation is booking time with a name, not with an office.
+// Financials — so a booked conversation is time with a name. A request, by contrast, is with the
+// team, because nobody has been assigned to it yet.
 
-import { enrollmentAdvisor, financialAidAdvisor } from '../enrollment/data.js';
+import { enrollmentAdvisor, financialAidAdvisor, initialTasks, lockedTasks } from '../enrollment/data.js';
 
 /** The course advisor. Only this section knows her, so she is declared here. */
 export const courseAdvisor = {
   name: 'Ines Barros',
   initials: 'IB',
   photo: '/people/ines-barros.webp',
-  office: 'Academic Advising, Computer Science',
+  office: 'Academic Advising Office, Computer Science',
   label: 'Your course advisor',
   intro:
     'Ines advises Computer Science students on which courses satisfy which requirement, and on what a term should look like.',
@@ -24,49 +28,68 @@ export const courseAdvisor = {
 };
 
 /**
- * The three conversations a student can book. The type is what decides which team receives the
- * booking — ENR-178 AC 2 — so the team is a property of the type, never something the student
- * picks separately and could get wrong.
+ * The conversations a student can book, and where each one sits.
+ *
+ * The type is what decides which team receives the booking — ENR-178 AC 2 — so the team is a
+ * property of the type, never something the student picks separately and could get wrong. Since
+ * 2026-08-21 (A9) the list is organised by the **checklist's categories** rather than by a grouping of
+ * this screen's own: `category` names a category that exists, under the same name, on My Enrollment,
+ * and the list renders in the checklist's category order (`topicsInCategoryOrder`). A team that has
+ * no checklist category does not appear here; a category the checklist gains appears here the moment
+ * a team under it publishes conversations.
+ *
+ * `team` is the office, in the portal-wide name (8.11); `department` is the part of it that handles
+ * this student, printed after the office where the name is read in full.
  */
 export const conversationTypes = [
   {
     id: 'enrollment',
+    category: 'Your offer',
     label: 'Enrollment step',
     blurb: 'A step on your checklist that is blocked, unclear, or that you would rather do with someone.',
     team: 'Admissions Office',
     person: enrollmentAdvisor,
-    duration: '30 minutes',
+    minutes: 30,
     place: 'Building C, ground floor',
     videoNote: 'A link reaches your Aster address the morning of the conversation.',
     publishes: 'Tomás publishes his times every Monday, two weeks ahead.',
-    otherRoute: 'Email the Admissions Office',
   },
   {
     id: 'financial-aid',
+    category: 'Money and aid',
     label: 'Financial aid',
     blurb: 'Your package, what a figure means, or what happens to it if something changes.',
-    team: 'Student Financial Services',
+    team: 'Financial Aid Office',
     person: financialAidAdvisor,
-    duration: '30 minutes',
+    minutes: 30,
     place: 'Building A, ground floor',
     videoNote: 'A link reaches your Aster address the morning of the conversation.',
-    publishes: 'Student Financial Services opens its calendar a fortnight ahead.',
-    otherRoute: 'Email Student Financial Services',
+    publishes: 'The Financial Aid Office opens its calendar a fortnight ahead.',
   },
   {
     id: 'academic',
+    category: 'Your degree',
     label: 'Academic advising',
     blurb: 'Which courses satisfy which requirement, and what your first term should hold.',
-    team: 'Academic Advising, Computer Science',
+    team: 'Academic Advising Office',
+    department: 'Computer Science',
     person: courseAdvisor,
-    duration: '45 minutes',
+    minutes: 45,
     place: 'Ferrand Building, second floor',
     videoNote: 'A link reaches your Aster address the morning of the conversation.',
     // The reason this team has published nothing. Without it the empty picker would be a shrug.
     publishes: 'Course advisors publish their times once course registration opens on September 1.',
-    otherRoute: 'Email Academic Advising',
   },
 ];
+
+/**
+ * The checklist's categories, in the checklist's order — read off the steps themselves rather than
+ * retyped, so the two screens cannot drift (A9: "no grouping is invented for this screen alone").
+ * A locked step counts: *Meet your academic adviser* is where academic advising gets its category.
+ */
+export const checklistCategories = [...initialTasks, ...lockedTasks]
+  .map((task) => task.category)
+  .filter((category, index, all) => category && all.indexOf(category) === index);
 
 /**
  * What each team has published, keyed by conversation type. A day that is not in the list is a day
@@ -148,8 +171,10 @@ export const publishedTimes = {
 /**
  * What the student has booked. `state` is the record of what happened when the booking was made,
  * never an assumption: `confirmed` means it reached the team's calendar, `failed` means it did not
- * and nothing is booked, `cancelled` means it was called off after being booked. What a confirmed
- * appointment in the past is called is derived from the date, not stored — see `lib/appointments.js`.
+ * and nothing is booked, `cancelled` means it was called off after being booked, `requested` means
+ * the student asked the team for a time and the team has not answered — it has no `date`, because
+ * there is no time until they do. What a confirmed appointment in the past is called is derived from
+ * the date, not stored — see `logic.js`.
  */
 export const bookedAppointments = [
   {
@@ -217,9 +242,24 @@ export const failedAppointment = {
   attemptedOn: 'yesterday',
 };
 
-/** Who stands behind the times on this page, for the rail. */
+/**
+ * A time request, sent and not yet answered — A7. It carries what was asked (`window`, in the
+ * student's words), what it is about, and the day it was sent; it has no time, because the team
+ * has not given one. The `requested` preview state seeds it so the badge, the row and the rail's
+ * waiting card can be looked at without sending one.
+ */
+export const pendingRequest = {
+  id: 'req-academic',
+  typeId: 'academic',
+  state: 'requested',
+  date: null,
+  window: 'Any weekday afternoon after Sep 1, ideally a Tuesday or a Wednesday.',
+  subject: 'Which courses I should take first if I might switch to a double major.',
+  requestedOn: 'Aug 19',
+};
+
+/** Who stands behind the times on this page, for the rail's permanent card. */
 export const schedulingPublisher = {
   system: 'Aster scheduling',
   updated: '20 minutes ago',
-  note: 'Each team publishes its own times. Nothing here is offered on a team’s behalf.',
 };

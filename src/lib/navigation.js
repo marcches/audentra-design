@@ -90,7 +90,9 @@ export const DESTINATIONS = [
     hero: {
       kicker: 'Appointments · Times published by Aster teams',
       title: 'Book time with the people who can help.',
-      lede: 'Time with the offices that own a step, booked, confirmed, and in one calendar.',
+      // One sentence in every state since 2026-08-21 (appointments changes, 8.1):
+      // what is booked lives in the list, not in the band.
+      lede: 'Each team publishes the times it can offer. Pick one, or ask for a time that works better.',
     },
     appears: 'Appointments you book with Aster staff appear here.',
     produces: 'Booking opens as each team publishes its availability.',
