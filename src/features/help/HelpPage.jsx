@@ -7,7 +7,6 @@ import GuideList from './GuideList.jsx';
 import HelpRail from './HelpRail.jsx';
 import RequestDrawer from './RequestDrawer.jsx';
 import RequestList from './RequestList.jsx';
-import RequestStanding from './RequestStanding.jsx';
 import { PORTAL_TODAY } from '../enrollment/data.js';
 import { guideById, helpGuides, helpTopics, requestsFor, topicById } from './data.js';
 import {
@@ -17,10 +16,8 @@ import {
   officeOf,
   openRequests,
   sortRequests,
-  unreadCount,
   waitingOnYou,
 } from './logic.js';
-import { shortDate } from '../campus/logic.js';
 
 /**
  * Help — ENR-182, behaviour from ENR-177.
@@ -103,7 +100,6 @@ export default function HelpPage({
   const visible = unavailable ? [] : sortRequests(requests);
   const open = openRequests(visible);
   const waiting = unavailable ? null : waitingOnYou(visible);
-  const unread = unreadCount(visible);
   const openRequest = visible.find((item) => item.id === openId) ?? null;
 
   const hero = { lede: heroLede({ unavailable, open: open.length, waiting }) };
@@ -192,9 +188,11 @@ export default function HelpPage({
   const requestList = (
     <RequestList
       requests={visible}
+      open={open.length}
       today={PORTAL_TODAY}
       unavailable={unavailable}
       onOpen={openDetail}
+      onAsk={focusAsk}
       onRetry={() => onToast('Retrying would reload your requests from Aster.')}
     />
   );
@@ -232,15 +230,14 @@ export default function HelpPage({
     <PageShell
       destination={destination}
       hero={hero}
-      summaryLabel="Your requests"
-      summary={
-        <RequestStanding
-          open={open.length}
-          unavailable={unavailable}
-          line={standingLine({ unavailable, requests: visible, open: open.length, unread, waiting })}
-          onAsk={focusAsk}
-        />
-      }
+      /* No summary panel, since the Jam of 2026-08-21. This section could never
+         satisfy the panel's contract: its right cell is the person who owns the
+         subject, and ENR-177 AC 3 forbids this screen to name one — a face
+         beside a list of requests reads as *the person handling them*. So the
+         panel ran with a button in that cell instead, which is why it was the
+         odd one out. The figure and the button move to the list they are about:
+         `Your requests` heads with how many are open and the way to raise one.
+         The sentence under the figure was the band's lede said twice. */
       notice={
         waiting ? (
           <Notice
@@ -309,25 +306,3 @@ function heroLede({ unavailable, open, waiting }) {
   return `${open === 1 ? 'One question is' : `${open} questions are`} with Aster, and every answer lands on this page. Below are Aster’s guides, and a way to reach the office that owns a step.`;
 }
 
-/** The sentence under the figure: what the number means today. */
-function standingLine({ unavailable, requests, open, unread, waiting }) {
-  if (unavailable) {
-    return 'Nothing you have already sent is affected. This is the list that failed to load, not your requests.';
-  }
-  if (requests.length === 0) {
-    return 'Nothing is with Aster right now. Raise one when a step is blocked and you need a person on it.';
-  }
-  if (waiting) {
-    return open > 1
-      ? 'One of them is waiting on you; the rest are with Aster.'
-      : 'Your open request is waiting on you. It stops moving until you reply.';
-  }
-  if (unread > 0) {
-    const answered = requests.find((item) => item.unread);
-    return `An answer arrived on ${shortDate(answered.updated)} and you have not read it yet.`;
-  }
-  if (open === 0) {
-    return 'Everything you have asked has been answered. Reply to any of them if it is not settled.';
-  }
-  return 'Every answer lands on this page, and stays here.';
-}

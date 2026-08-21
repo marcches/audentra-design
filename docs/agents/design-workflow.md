@@ -84,7 +84,7 @@ passes slots, never markup sequence, so it cannot arrange them wrongly.
 | Slot | What belongs in it | Always? |
 | --- | --- | --- |
 | `hero` | The purple band. Eyebrow (mono — who owns this record, as of when), one sentence, the section's icon. Copy lives in `navigation.js`; a page overrides only what it must compute. | Always |
-| `summary` | **The section's one figure, and the person who owns the subject.** The progress ring, the balance, the degree count — plus the advisor. Tucks into the band. In a group it is the *group's* figure, filled by the group shell. | When the section has a standing |
+| `summary` | **The section's one figure, and the person who owns the subject.** The progress ring, the balance, the degree count — plus the advisor. Tucks into the band. In a group it is the *group's* figure, filled by the group shell. | Four sections only — see below |
 | `notice` | **One `<Notice>`, true of the whole section.** The shell docks it: to the foot of the summary panel when there is one, and to a single line above the tab row when there is not. In a group, it is true of every leaf or it does not belong here. | When there is one |
 | `tabs` | `<GroupTabs>` — which leaf of the group you are reading. | Groups with 2+ built leaves |
 | `rail` | The insight column. `PageShell` renders the `<aside>`; rail components must not carry their own. | When the section has one |
@@ -140,6 +140,28 @@ The check, on any group: open each leaf and confirm the band, the summary, the n
 are pixel-identical, **in every preview state**, including the empty and partial ones. The rail and
 the main column are below the tabs and are what the tab switches, so those may and should differ.
 
+### Most sections do not get a summary panel
+
+Four do: My Enrollment, My Documents, My Classrooms, My Financials. The test is
+that **both cells are true of the section** — a figure that is its standing, and a
+person who owns the subject. Nine sections had a panel before the Jam of
+2026-08-21 and five of them failed it:
+
+| Section | Why it lost the panel |
+| --- | --- |
+| Appointments | `Fri 12 Sep · 10:00` is the first row of `Your conversations` below it, and the person beside it is the person in that row. |
+| My Housing | the figure was the plan she chose, which is what `PlanPanel` is. |
+| Health | the figure, the label and the line were `RecordCard`'s heading, state chip and gate chip — the only card on the page. |
+| My Profile | `12 of 20 details are yours` is a legend, not a standing: nothing in it moves and nothing in it is pending. |
+| Help | ENR-177 AC 3 forbids this screen to name a person, so its right cell held a button instead. A section that cannot fill the second cell does not have a panel. |
+
+**A panel summarises a page of things. Where the page *is* the one thing, the
+panel is that thing read twice** — and it costs the top of every screen to say
+it. When a panel goes, its content does not: it moves to the thing it was
+describing. The open-request count and `Ask an office` are the head of `Your
+requests`; the ownership count leads My Profile's legend; the rest was already
+below.
+
 ### The summary panel: two cells, one height
 
 `summary` is two cells and only two — **the figure, and the advisor** — and they are the same height
@@ -168,8 +190,12 @@ beside it.
   credit-match caveat made its panel 139px against everyone else's 123 and pushed the advisor
   off-centre beside it.
 
-The check: on every section that has this slot, the two cells report the same height, and the
-advisor bar reports the same height and width on all of them.
+The check: on every section that has this slot, the two cells report the same height, the advisor bar
+reports the same height and width on all of them, **and `.summary-main` reports the same height on
+all four sections**. It is fixed by construction, not by the copy happening to be the same length:
+the label is one line, the figure is centred in a line the height of the money figure whatever size
+it is, and the line under it reserves two lines and is drawn even when a section passes nothing into
+it. Measured on 2026-08-21 before that rule, the panels were 119, 119, 119 and 129.
 
 ### Hierarchy
 

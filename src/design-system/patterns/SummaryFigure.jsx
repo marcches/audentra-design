@@ -3,8 +3,31 @@ import { InfoTip } from '../primitives/Tooltip.jsx';
 /**
  * The left half of the summary panel: the section's one figure.
  *
- * Five sections fill this slot — My Enrollment, My Classrooms, My Financials,
- * Appointments, My Profile — and every one of them had built its own cell.
+ * ## Which sections get a panel at all — Jam of 2026-08-21
+ *
+ * Four: My Enrollment, My Documents, My Classrooms, My Financials. A section
+ * qualifies when **both** cells are true of it — a figure that is the section's
+ * standing, and a person who owns the subject — and five of the nine that had
+ * one failed that test:
+ *
+ *   Appointments   `Fri 12 Sep · 10:00` is the first row of the list below it,
+ *                  and the person beside it is the person in that row.
+ *   My Housing     the figure was the plan, which is the first card below it.
+ *   Health         the figure, the label and the line were the heading, the
+ *                  state chip and the gate chip of the one card on the page.
+ *   My Profile     `12 of 20 details are yours` is a legend, not a standing —
+ *                  nothing in it moves and nothing in it is pending.
+ *   Help           its right cell may not name a person at all (ENR-177 AC 3),
+ *                  so it ran a button there and was the odd one out by
+ *                  construction.
+ *
+ * A panel summarises a page of things. Where the page *is* the one thing, the
+ * panel is that thing read twice, and it costs the top of every screen.
+ *
+ * ## The cell
+ *
+ * Five sections used to fill this slot, and every one of them had built its own
+ * cell.
  * Four class names (`.progress-summary`, `.balance-summary`,
  * `.next-appointment`, `.profile-standing`), two different internal structures,
  * and one of them, `.balance-panel .balance-summary`, addressed a class that
@@ -20,9 +43,15 @@ import { InfoTip } from '../primitives/Tooltip.jsx';
  *
  * The mark is what differs between sections — a progress ring, an avatar, or
  * nothing — not the arrangement. Anything that qualifies the figure rather than
- * stating it goes to the foot of the panel, in `PageShell`'s `alert` slot, and
+ * stating it goes to the foot of the panel, in `PageShell`'s `notice` slot, and
  * never becomes a fourth line here: that is what made My Classrooms taller than
  * every other section and pushed its advisor off-centre.
+ *
+ * The three lines are fixed, so the four panels come out the same height by
+ * construction rather than by luck: the label is one line, the figure is
+ * centred in a line the height of the *money* figure whatever size it is, and
+ * the line under it reserves two lines and is drawn even when the section
+ * passes nothing into it. Before that they measured 119, 119, 119 and 129.
  *
  * `explain` is the one thing that may sit *in* the label: the rule behind the
  * count. "2 of 11 requirements met" is a number a student can read and cannot
@@ -44,11 +73,11 @@ export default function SummaryFigure({ mark, label, explain, figure, money, chi
             <InfoTip title={explain.title ?? label}>{explain.body ?? explain}</InfoTip>
           ) : null}
         </span>
-        {/* Always rendered, like the band's lede: the cell reserves two lines
-            here whether the section fills them or not, so no two sections'
-            panels come out different heights. */}
         <strong>{figure}</strong>
-        <p>{children}</p>
+        {/* A section with nothing to say here says nothing, and the line is not
+            drawn. Padding it to a fixed number of lines is how the panel ended
+            up with a blank line under every short sentence. */}
+        {children ? <p>{children}</p> : null}
       </div>
     </div>
   );

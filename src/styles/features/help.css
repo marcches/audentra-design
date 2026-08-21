@@ -11,40 +11,17 @@
    survives a flattened list without fighting the card holding it.
    ───────────────────────────────────────────────────────────── */
 
-/* The figure: how many questions are with Aster. The other side of the summary
-   is the action rather than a person — a face next to a list of requests reads
-   as the person handling them, which ENR-177 AC 3 forbids the page to imply. */
-.request-figure {
-  letter-spacing: var(--ls-tight);
-  align-items: baseline;
-  gap: var(--space-4);
-  font-size: var(--fs-display);
-  font-weight: var(--fw-bold);
-  line-height: var(--lh-tight);
+/* The section's standing, and the way to add to it, at the head of the list
+   both are about. This was a summary panel above the page until the Jam of
+   2026-08-21 — a count beside a button standing in for the person every other
+   section shows, and this is the one section that may not name one (ENR-177
+   AC 3). A section that cannot fill the panel's second cell does not have a
+   panel; it has a card head. */
+.requests-standing {
+  align-items: center;
+  gap: var(--space-6);
   display: flex;
 }
-
-.request-figure-unit {
-  color: var(--muted);
-  letter-spacing: 0;
-  font-size: var(--fs-body);
-  font-weight: var(--fw-semi);
-}
-
-.request-figure.unknown {
-  color: var(--muted);
-  font-size: var(--fs-h2);
-}
-
-.request-standing p {
-  color: var(--muted);
-  max-width: 44ch;
-  margin: var(--space-2) 0 0;
-  font-size: var(--fs-meta);
-  line-height: var(--lh-body);
-}
-
-/* --- the request row --- */
 
 .request-row {
   cursor: pointer;

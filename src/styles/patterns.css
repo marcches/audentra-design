@@ -90,25 +90,20 @@
   line-height: var(--lh-tight);
 }
 
-/* The lede, and the reason the band is the same height on every route — Jam of
-   2026-08-21.
- *
- * `min-height` is two lines of this element's own line-height, so a lede that
- * runs to one line keeps the second line's space rather than pulling the band
- * up around it. Moving between My Documents ("Everything you have sent Aster…",
- * one line) and My Classrooms ("Every requirement your program sets… not the
- * record itself.", two) used to shift the whole page below by the difference.
- *
- * Two is the ceiling as well as the floor: a lede that needs three lines is a
- * lede that is doing the page's job, and `navigation.js` is where it gets
- * shortened — not here, by letting the band grow.
- *
- * `pretty` keeps the last line from orphaning a word — "…can change / it." */
+/* The lede. It is not padded to a fixed number of lines: `--hero-min` holds the
+   band itself at one height on every route, the copy is centred in it, and a
+   section with one line's worth to say says one line. Reserving the second line
+   inside the copy put a blank line under every short lede — standardising the
+   frame is the point, filling it is not (Jam of 2026-08-21).
+
+   A lede that needs three lines is still too long, and `navigation.js` is where
+   that gets shortened rather than here.
+
+   `pretty` keeps the last line from orphaning a word — "…can change / it." */
 .hero-lede {
   color: var(--line-strong);
   text-wrap: pretty;
   max-width: 620px;
-  min-height: calc(2 * var(--lh-body) * 1em);
   margin: var(--space-6) 0 0;
   font-size: var(--fs-h4);
   line-height: var(--lh-body);
@@ -211,7 +206,12 @@
   /* Same rule as the band, and measured on this cell alone: the panel's foot
      is a notice, which is there on some sections and not on others, so folding
      it into the minimum would make the sections that have one *shorter* than
-     the sections that do not. */
+     the sections that do not.
+   *
+     With the label, the figure's line and the two reserved copy lines all fixed
+     above, the four sections that carry a panel come to this height by
+     construction. It stays a floor rather than a `height` so that a container
+     query narrowing the grid to one column can still stack the two cells. */
   min-height: var(--panel-min);
   padding: var(--space-9) var(--panel-pad);
   display: grid;
@@ -514,10 +514,9 @@
   display: flex;
 }
 
-/* The markless form — a figure with nothing to its left. `.next-appointment`
-   is ENR-183's, still in flight, and is named here so it gets the same
-   treatment without that card having to land first. */
-.summary-figure.bare .summary-figure-copy, .next-appointment {
+/* The markless form — a figure with nothing to its left. My Financials is the
+   only section that uses it: money is its own mark. */
+.summary-figure.bare .summary-figure-copy {
   gap: var(--space-1);
   min-width: 0;
   display: flex;
@@ -559,15 +558,25 @@
   font-weight: var(--fw-heavy);
 }
 
-/* The section's figure — 21px, or 34px when it is money. The scale is in
-   `docs/agents/design-workflow.md` and this is the only place it is set. */
+/* The section's figure — 21px, or 27px when it is money. The scale is in
+   `docs/agents/design-workflow.md` and this is the only place it is set.
+ *
+ * The line it sits on is the *money* line's height whatever the size, which is
+ * the last of the three things that were letting copy decide the panel's height
+ * — measured on 2026-08-21, My Financials' panel came out 129px against My
+ * Enrollment's 119 for no reason other than a six-pixel difference in one word,
+ * and the balance's estimate chip pushed it further. A figure is centred in a
+ * fixed line rather than setting one. */
 .summary-figure-copy strong,
 .progress-summary strong {
   letter-spacing: var(--ls-tight);
+  align-items: center;
+  min-height: calc(var(--fs-figure) * var(--lh-tight));
   margin-top: var(--space-1);
   font-size: var(--fs-display);
   font-weight: var(--fw-bold);
   line-height: var(--lh-tight);
+  display: flex;
 }
 
 .summary-figure.money .summary-figure-copy strong {
@@ -576,16 +585,10 @@
   line-height: var(--lh-tight);
 }
 
-/* The line under the figure, and the panel's half of the same rule. Two lines
-   reserved, always, so the panel does not change height between a section that
-   says "You're right on track. Your next task takes about 4 minutes." and one
-   that says "Nothing is waiting on you right now." — `SummaryFigure` renders
-   the element even when the section passes nothing into it. */
 .summary-figure-copy p,
 .progress-summary p {
   color: var(--muted);
   max-width: 46ch;
-  min-height: calc(2 * var(--lh-body) * 1em);
   margin: var(--space-2) 0 0;
   font-size: var(--fs-copy);
   line-height: var(--lh-body);
@@ -2147,15 +2150,6 @@ footer a {
     padding-top: 31px;
     padding-bottom: 31px;
   }
-  /* Below this the lede is squeezed twice — `.hero-copy` gives 145px to the
-     motif from 1060px down, and the window keeps shrinking — so the longest
-     ledes reach a third line somewhere under 700px. The reservation goes up to
-     three here rather than at the exact width each sentence happens to break,
-     because the point is that every route is the same height at any one width,
-     not that no line is ever left empty. */
-  .hero-lede {
-    min-height: calc(3 * var(--lh-body) * 1em);
-  }
   .task-action .text-button {
     display: none;
   }
@@ -2189,12 +2183,8 @@ footer a {
     max-width: 315px;
     font-size: var(--fs-figure);
   }
-  /* Three lines at this width, and the same rule: the space is reserved whether
-     or not the sentence fills it. `--hero-min` above is the floor the band keeps
-     when even three lines do not reach it. */
   .hero-lede {
     max-width: 315px;
-    min-height: calc(3 * var(--lh-body) * 1em);
     font-size: var(--fs-body);
   }
   .hero-motif {

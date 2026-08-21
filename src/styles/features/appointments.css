@@ -16,53 +16,6 @@
  * failed booking tints its tile and its chip. Nothing paints an edge.
  * ------------------------------------------------------------------ */
 
-/* The section's one figure: when the next conversation is. 21px — the band
-   greets, the figure informs, and money is the only thing that gets 34px. */
-.next-appointment {
-  flex-direction: column;
-  gap: var(--space-1);
-  min-width: 0;
-  display: flex;
-}
-
-.next-figure {
-  letter-spacing: var(--ls-tight);
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-5);
-  font-size: var(--fs-display);
-  font-weight: var(--fw-bold);
-  line-height: var(--lh-tight);
-  display: flex;
-}
-
-.next-figure.none {
-  color: var(--muted);
-}
-
-.when-chip {
-  color: var(--purple-dark);
-  background: var(--purple-soft);
-  border-radius: var(--radius-pill);
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-  white-space: nowrap;
-  padding: var(--space-1) var(--space-4);
-  font-size: var(--fs-small);
-  font-weight: var(--fw-heavy);
-}
-
-.next-appointment p {
-  color: var(--muted);
-  max-width: 46ch;
-  margin: var(--space-2) 0 0;
-  font-size: var(--fs-meta);
-  line-height: var(--lh-body);
-}
-
-/* What you can book. The trailing edge is the load-bearing part: a team with
-   nothing published says so there, before the picker can open on an empty
-   calendar. */
 .type-row {
   text-align: left;
   cursor: pointer;

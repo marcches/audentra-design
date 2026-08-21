@@ -7,7 +7,6 @@ import AppointmentDrawer from './AppointmentDrawer.jsx';
 import AppointmentRow from './AppointmentRow.jsx';
 import AppointmentsRail from './AppointmentsRail.jsx';
 import BookingDrawer from './BookingDrawer.jsx';
-import NextAppointment from './NextAppointment.jsx';
 import TypeRow from './TypeRow.jsx';
 import {
   bookedAppointments,
@@ -16,7 +15,7 @@ import {
   publishedTimes,
   schedulingPublisher,
 } from './data.js';
-import { PORTAL_TODAY, enrollmentAdvisor } from '../enrollment/data.js';
+import { PORTAL_TODAY } from '../enrollment/data.js';
 import {
   availabilitySummary,
   daysFor,
@@ -228,24 +227,14 @@ export default function AppointmentsPage({
     <PageShell
       destination={destination}
       hero={hero}
-      summaryLabel="Your next conversation"
-      summary={
-        <NextAppointment
-          next={next}
-          type={nextType}
-          today={PORTAL_TODAY}
-          advisor={nextType ? nextType.person : enrollmentAdvisor}
-          openTimes={availability.total}
-          unavailable={timesFailed}
-          onContact={(channel) =>
-            onToast(
-              `${channel === 'email' ? 'An email' : 'A message'} to ${
-                (nextType ?? { person: enrollmentAdvisor }).person.name
-              } would open here. Nothing is sent yet.`,
-            )
-          }
-        />
-      }
+      /* No summary panel, since the Jam of 2026-08-21. The panel is for a
+         section's *standing* — one figure that changes, and the person who owns
+         the subject — and this section's was neither: `Fri 12 Sep · 10:00` is
+         the first row of `Your conversations` a few hundred pixels below, and
+         the person beside it is the person in that row. Everything the panel
+         said is already somewhere it belongs: the booking in the list, the
+         count of open times in the rail, `Nothing booked yet` in the list's
+         empty state, and the times that would not load on the booking card. */
       notice={alert}
       rail={
         <AppointmentsRail

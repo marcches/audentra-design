@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
-import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
 import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
-import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
 import AssignmentCard from './AssignmentCard.jsx';
 import Catalogue from './Catalogue.jsx';
 import HousingRail from './HousingRail.jsx';
@@ -13,7 +11,6 @@ import PlanPanel from './PlanPanel.jsx';
 import ResidenceDrawer from './ResidenceDrawer.jsx';
 import ShortlistPanel from './ShortlistPanel.jsx';
 import { housingFor, housingOffice, responseDeadline } from './data.js';
-import { enrollmentAdvisor } from '../enrollment/data.js';
 import {
   SHORTLIST_MAX,
   opensShortlist,
@@ -88,7 +85,6 @@ export default function HousingPage({
 
   const { catalogue, deadlinePassed, assignment, failure } = record;
   const locked = deadlinePassed;
-  const chosen = planById(plan);
   const ranks = shortlistState(shortlist);
 
   function openResidence(residence, node) {
@@ -160,25 +156,6 @@ export default function HousingPage({
     });
   }
 
-  // The section's one figure is the plan itself — the standing this section reports. Days left and
-  // how much of the shortlist is written qualify that figure, so they go on the line beneath it and
-  // never become a second figure.
-  const figure = deadlinePassed && assignment
-    ? 'Room assigned'
-    : chosen
-      ? chosen.label
-      : 'Not answered yet';
-
-  const summaryLine = deadlinePassed
-    ? assignment
-      ? `${housingOffice} assigned your room on ${assignment.assignedOn}. Move in ${assignment.moveIn}.`
-      : `${housingOffice} is assigning rooms from the shortlists submitted by ${responseDeadline.label}.`
-    : !planIsAnswered(plan)
-      ? `Answer by ${responseDeadline.full}. It’s what opens your move-in time.`
-      : opensShortlist(plan)
-        ? `${shortlist.length} of ${SHORTLIST_MAX} residences ranked · yours to change until ${responseDeadline.label}.`
-        : `Recorded, and complete. Yours to change until ${responseDeadline.label}.`;
-
   const hero = {
     lede: deadlinePassed
       ? `${housingOffice} is assigning rooms now, from the answers submitted before ${responseDeadline.label}. This page shows what you submitted.`
@@ -189,18 +166,11 @@ export default function HousingPage({
     <PageShell
       destination={destination}
       hero={hero}
-      summary={
-        <>
-          <SummaryFigure label="Your housing plan" figure={figure}>
-            {summaryLine}
-          </SummaryFigure>
-          <AdvisorBar
-            advisor={enrollmentAdvisor}
-            onContact={() => onToast('Opening a message to your advisor.')}
-          />
-        </>
-      }
-      summaryLabel="Your housing plan"
+      /* No summary panel, since the Jam of 2026-08-21. Its figure was the plan
+         she chose, which is what `PlanPanel` is; its line was the deadline,
+         which the band already gives; and the office beside it is the whole of
+         `HousingRail`. A panel that restates the card under it is a second
+         reading of the same page, not a summary of it. */
       /* A save that did not land is a footnote to the plan above it, not a
          full-size `StateCard` band between the panel and the cards — the Jam of
          2026-08-21. A `StateCard` is an empty state: it is what a region shows

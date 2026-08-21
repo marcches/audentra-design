@@ -1,3 +1,4 @@
+import Icon from '../../design-system/Icon.jsx';
 import RequestRow from './RequestRow.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 
@@ -9,7 +10,7 @@ import StateCard from '../../design-system/patterns/StateCard.jsx';
  * third is the one that is easy to get wrong — an unreachable list drawn as an
  * empty one tells a student that nothing is open when something might be.
  */
-export default function RequestList({ requests, today, unavailable, onOpen, onRetry }) {
+export default function RequestList({ requests, open, today, unavailable, onOpen, onAsk, onRetry }) {
   return (
     <section className="section-card" aria-labelledby="requests-heading">
       <div className="section-heading">
@@ -17,11 +18,25 @@ export default function RequestList({ requests, today, unavailable, onOpen, onRe
           <p className="eyebrow muted">What you have asked</p>
           <h2 id="requests-heading">Your requests</h2>
         </div>
-        {!unavailable && requests.length > 0 && (
-          <span className="result-count">
-            {requests.length} {requests.length === 1 ? 'request' : 'requests'}
-          </span>
-        )}
+        {/* The section's standing, and the way to add to it. Both were in a
+            summary panel above the page until the Jam of 2026-08-21, where the
+            count sat beside a button standing in for the person every other
+            section shows — and this is the one section that may not name one
+            (ENR-177 AC 3). Here the count is about the list under it and the
+            button is next to what it produces.
+
+            How many are *open* is the number that means something. How many
+            exist in total is the length of the list, which is visible. */}
+        <div className="requests-standing">
+          {!unavailable && requests.length > 0 && (
+            <span className="result-count">
+              {open > 0 ? `${open} open` : 'All answered'}
+            </span>
+          )}
+          <button className="secondary-button" onClick={onAsk}>
+            <Icon name="pen" size={15} /> Ask an office
+          </button>
+        </div>
       </div>
 
       {unavailable ? (

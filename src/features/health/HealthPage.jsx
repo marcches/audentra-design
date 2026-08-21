@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
-import { enrollmentAdvisor } from '../enrollment/data.js';
 import EntryCard from '../../design-system/patterns/EntryCard.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
-import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
 import { destinationById } from '../../lib/navigation.js';
-import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
 import RecordCard from './RecordCard.jsx';
 import HealthRail from './HealthRail.jsx';
 import DocumentDrawer from '../documents/DocumentDrawer.jsx';
 import { filesLabel } from '../documents/logic.js';
 import { healthStanding } from './logic.js';
-import { registration } from '../registration/data.js';
 
 /**
  * Health — ENR-206, behaviour from ENR-205, ENR-208 and ENR-209.
@@ -83,33 +79,13 @@ export default function HealthPage({
   return (
     <PageShell
       destination={destination}
-      summaryLabel="Your health section"
-      summary={
-        <>
-          <SummaryFigure
-            label={standing.label}
-            explain={{
-              title: 'Your immunization record',
-              body: `The one health record Aster must hold before term. ${registration.label[0].toUpperCase()}${registration.label.slice(1)} stays shut until an office has accepted it. Sending it is not the same as it being accepted.`,
-            }}
-            // `partial`: no figure at all rather than a zero or a "not sent",
-            // either of which would be a claim about a record we could not read
-            // (ENR-205 Scenario 5).
-            figure={standing.figure ?? 'Not available'}
-          >
-            {standing.line ??
-              'Your record could not be read just now, so nothing here is shown as done or as outstanding.'}
-          </SummaryFigure>
-          <AdvisorBar
-            advisor={enrollmentAdvisor}
-            onContact={(channel) =>
-              onToast(
-                `${channel === 'email' ? 'An email' : 'A message'} about your record would open here. Nothing is sent yet.`,
-              )
-            }
-          />
-        </>
-      }
+      /* No summary panel, since the Jam of 2026-08-21, and this was the clearest
+         case of the four: the panel said `Immunization record / In review / you
+         need this before you can register`, and `RecordCard` — the only card on
+         the page, immediately below — says the same three things as its
+         heading, its state chip and its gate chip. A panel is the section's
+         standing where the content below is a list of things; where the content
+         *is* the one thing, the panel is that thing read twice. */
       rail={<HealthRail unavailable={unavailable} onToast={onToast} />}
     >
       <RecordCard

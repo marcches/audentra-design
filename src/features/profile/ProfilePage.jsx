@@ -1,10 +1,8 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
-import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
 import EntryCard from '../../design-system/patterns/EntryCard.jsx';
 import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
-import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import { destinationById } from '../../lib/navigation.js';
 import { checkingOne, needsYou, standing, standingLede } from '../documents/logic.js';
@@ -15,7 +13,6 @@ import {
   RECORD_CATEGORIES,
   channelOptions,
   elsewhere,
-  registrarContact,
 } from './data.js';
 import { buildProfile, grantsFor, identityFor, runsFor } from './logic.js';
 
@@ -158,37 +155,11 @@ export default function ProfilePage({ destination, state, record, onToast }) {
     title: 'What Aster knows about you.',
   };
 
-  const summary = (
-    <>
-      {/* The shared figure cell, not a fifth arrangement of the same three
-          lines. The mark is the only part a section chooses. */}
-      <SummaryFigure
-        mark={
-          <span className="profile-avatar" aria-hidden="true">
-            {identity.initials}
-          </span>
-        }
-        label="What you control"
-        figure={`${ownership.yours} of ${ownership.total} details are yours`}
-      >
-        {blanks > 0 ? `${blanks} of them are still blank. ` : ''}
-        The other {ownership.total - ownership.yours} belong to an office, named on the row.
-      </SummaryFigure>
-      <AdvisorBar
-        advisor={registrarContact}
-        onContact={(way) =>
-          onToast(
-            `${way === 'email' ? 'An email' : 'A message'} to ${registrarContact.name} at the Registrar would open here. Nothing is sent yet.`,
-          )
-        }
-      />
-    </>
-  );
-
   /**
-   * The legend for the two groups below, on the foot of the panel whose figure
-   * counts them. It was a full-width band above the cards until the Jam of
-   * 2026-08-21; the sentence has not changed, only where it is drawn.
+   * The legend for the two groups below, and now the only thing above them —
+   * the Jam of 2026-08-21 took the summary panel off this page, and the panel's
+   * figure was this same sentence counted rather than said. The count leads it
+   * now, so nothing was lost when the panel went.
    *
    * Its tone is `quiet` on purpose even when a check has failed: nothing in it
    * is hers to act on, and a colour that says otherwise would be a false alarm
@@ -196,9 +167,11 @@ export default function ProfilePage({ destination, state, record, onToast }) {
    */
   const note = (
     <Notice tone="quiet" icon="shield">
-      Everything under <strong>Yours to change</strong> you can change here, and the change takes
-      effect at once. Everything under <strong>Aster’s record</strong> belongs to the office named
-      beside it. Each of those rows shows how to reach them.
+      <strong>{ownership.yours} of {ownership.total} details are yours.</strong> Everything under{' '}
+      <strong>Yours to change</strong> you can change here, and the change takes effect at once.
+      Everything under <strong>Aster’s record</strong> belongs to the office named beside it. Each of
+      those rows shows how to reach them.
+      {blanks > 0 && <em> {blanks} of yours are still blank.</em>}
       {unchecked && (
         <em> Verification couldn’t be checked just now, so no row on this page claims to be verified.</em>
       )}
@@ -212,8 +185,12 @@ export default function ProfilePage({ destination, state, record, onToast }) {
     <PageShell
       destination={destination}
       hero={hero}
-      summaryLabel="What you control"
-      summary={summary}
+      /* No summary panel, since the Jam of 2026-08-21. "12 of 20 details are
+         yours" is not a standing — nothing about it moves, nothing is pending
+         in it, and no student arrives asking it. It is the legend for the two
+         groups below, which is what the note already was, so the two are now
+         one sentence in the one place a legend belongs: above the thing it
+         explains. */
       notice={note}
       rail={
         <ProfileRail
