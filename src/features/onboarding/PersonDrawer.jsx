@@ -68,7 +68,21 @@ export default function PersonDrawer({ grant, onSave, onClose }) {
   function submit() {
     const found = grantProblem(draft);
     setProblem(found);
-    if (found) return;
+    if (found) {
+      // The field says what is wrong; the submit's job is to take her to it.
+      // Focus is what makes the message reachable — it is wired to the input
+      // through `aria-describedby`, so landing there reads it out.
+      requestAnimationFrame(() => {
+        const target = document.querySelector(
+          found.field === 'categories'
+            ? '.person-drawer .permission-set input'
+            : '.person-drawer .field.invalid input',
+        );
+        target?.focus();
+        target?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      });
+      return;
+    }
     onSave({
       id: grant?.id ?? `grant-${draft.name.trim().toLowerCase().replace(/\s+/g, '-')}`,
       person: {
@@ -91,7 +105,11 @@ export default function PersonDrawer({ grant, onSave, onClose }) {
       onClose={onClose}
       foot={
         <div className="person-foot">
-          {problem && (
+          {/* Only for the problem with nowhere else to go. The three text
+              fields now carry their own message under themselves, and printing
+              the same sentence twice on one screen taught a student to read
+              neither. */}
+          {problem?.field === 'categories' && (
             <p className="drawer-problem" role="alert">
               <Icon name="alert" size={15} />
               <span>{problem.reason}</span>

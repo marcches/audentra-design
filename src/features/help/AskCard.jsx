@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import Button from '../../design-system/primitives/Button.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import { offices } from './data.js';
 import { shortDate } from '../campus/logic.js';
@@ -211,20 +212,17 @@ export default function AskCard({
         )}
 
         <div className="ask-send">
-          <button
-            className="primary-button"
+          <Button
+            kind="primary"
             type="submit"
-            disabled={!ready || sending}
+            leadingIcon="send"
+            iconSize={16}
+            disabled={!ready}
+            pending={sending}
             aria-describedby="ask-channel-note"
           >
-            {sending ? (
-              'Sending…'
-            ) : (
-              <>
-                <Icon name="send" size={16} /> {failed ? 'Try sending again' : `Send to ${office ? office.name : 'an office'}`}
-              </>
-            )}
-          </button>
+            {failed ? 'Try sending again' : `Send to ${office ? office.name : 'an office'}`}
+          </Button>
           <p className="ask-channel-note" id="ask-channel-note">
             Aster answers here, in the portal. Emails from Aster only tell you that something has
             landed — there is no address on them that reaches a person.

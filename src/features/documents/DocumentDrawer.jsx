@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import Drawer from '../../design-system/primitives/Drawer.jsx';
 import Icon from '../../design-system/Icon.jsx';
-import { IconButton } from '../../design-system/primitives/Button.jsx';
+import Button, { IconButton } from '../../design-system/primitives/Button.jsx';
 import ExtractReview from './ExtractReview.jsx';
 import {
   doorOf,
@@ -307,13 +307,15 @@ export default function DocumentDrawer({
               </div>
             </div>
           ) : (
-            <button
-              className="primary-button"
+            <Button
+              kind="primary"
+              icon="arrow"
               disabled={!ready}
+              pending={sending}
               onClick={() => onSubmit(requirement, files)}
             >
-              {sending ? 'Sending…' : 'Send to Aster'} <Icon name="arrow" size={17} />
-            </button>
+              Send to Aster
+            </Button>
           )}
 
           {extract && files.length > 0 && undecided > 0 && (

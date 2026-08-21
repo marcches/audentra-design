@@ -1,5 +1,5 @@
 Jira: (none — asked for directly, 2026-08-21)
-Status: spec
+Status: built (2026-08-21)
 Labels: design-system, screen-all
 Jam: (none)
 
@@ -244,3 +244,56 @@ get undo.
 - [ ] `npm run build` clean; checked at 1440 and 390, with Edward open, with a drawer open, and on
       the keyboard alone.
 - [ ] `prefers-reduced-motion` honoured by the spinner, the toast entrance and the timer bar.
+
+---
+
+## What was built, and what was not
+
+Built and verified in the browser at 1440 and at 390, on the keyboard, with Edward open:
+
+- `patterns/Toast.jsx` + `lib/toast.js` — three tones, a stack of three, a duration derived from
+  the sentence, a timer that pauses on hover and on focus, at most one action. `critical` takes
+  `role="alert"` and does not auto-dismiss; the other two take `role="status"` and do.
+- `Button pending` — footprint held to the pixel (measured: 232px before, 232px during),
+  `aria-busy` and `disabled` set together, and `.primary-button.pending:disabled` wins over the
+  faded disabled surface **by rule**, not by position.
+- `primitives/Field.jsx` — `error` is a string and there is no boolean beside it. Verified in the
+  real app: `aria-invalid="true"`, `aria-describedby` resolving to the message, crimson label and
+  edge, and only the invalid field touched.
+- All 58 call sites classified. Nine became `success` with the outcome and its consequence on
+  separate lines; two got `Undo`; the rest were already `info` and keep their sentence — which is
+  the point of the default landing on `info` rather than on a green tick.
+- Adopters for `pending`: `AskCard` and `DocumentDrawer`, which had each hand-typed a
+  `{sending ? 'Sending…' : …}` label swap on a raw `<button className="primary-button">`.
+- A **Feedback** section on `#/styleguide`, firing real toasts through the real queue.
+
+### Three decisions taken during the build
+
+1. **Revoking a permission got `Undo`, not a confirm.** The spec listed it as a confirm; reading
+   `revokeGrant` changed the answer, and the ladder's own rule is what decided it — the whole grant
+   object is in hand, so restoring it costs nothing, while rebuilding it by hand costs a name, an
+   email and six checkboxes. Asking a student to confirm twice before *reducing* what she shares is
+   friction pointed the wrong way. Verified: revoke → toast → `Undo` → the grant is back.
+2. **`PersonDrawer` stopped printing its error twice.** With the field carrying its own message, the
+   pinned `.drawer-problem` strip was repeating the same eight words on the same screen. It now
+   appears only for the one problem with no field to sit under — the category set — and submitting
+   moves focus to the offending control instead.
+3. **Cancelling an appointment is still not a confirm.** It is the one action here that is genuinely
+   irreversible from the student's side: the time goes back to a calendar someone else can take. It
+   needs a `ConfirmDialog`, which is a new pattern with its own overlay and focus contract — and
+   **no Mobbin research was done on confirm dialogs**, so building one now would be designing a
+   shape from imagination. Next card, starting at the research step.
+
+### A bug found on the way, and fixed by rule
+
+`features/onboarding.css` and `features/profile.css` both defined a bare `.field-label`, meaning
+different things by it — 9.5px uppercase block in one, 10.5px semibold flex-with-a-glyph in the
+other. `onboarding.css` imports after `profile.css`, so **on My Profile every record label was
+rendering as the onboarding rule**: uppercase, `display: block`, and the verification glyph stripped
+of the flex row it was written for. Neither file would have failed a build; it is the third instance
+of the tie this repo has been bitten by.
+
+Fixed the way the contract says to fix one — by rule, not by position. The record row's label is now
+`.field-row-label`, its own name for its own thing, and `.field-label` is defined exactly once, in
+`patterns.css`. Verified on the live page: 10.5px, weight 600, `display: flex`, `gap: 4px`, no
+uppercase.
