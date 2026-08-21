@@ -547,3 +547,49 @@
     padding: var(--space-7);
   }
 }
+
+/* --- native controls demo — round two of the Jam of 2026-08-21 --- */
+
+.sg-native-row {
+  flex-direction: column;
+  gap: var(--space-5);
+  display: flex;
+}
+
+.sg-native-check {
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--fs-copy);
+  display: flex;
+}
+
+.sg-native-textarea {
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  width: 100%;
+  padding: var(--space-5) var(--space-6);
+  resize: vertical;
+}
+
+.sg-native-link {
+  color: var(--purple-dark);
+  font-size: var(--fs-copy);
+  text-decoration: underline;
+}
+
+.sg-native-scroll {
+  background: var(--surface-sunk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  max-height: 132px;
+  padding: var(--space-5) var(--space-6);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.sg-native-scroll p {
+  margin: 0 0 var(--space-4);
+  font-size: var(--fs-copy);
+}

@@ -971,6 +971,67 @@ export default function Styleguide({ onToast }) {
         </Section>
 
         <Section
+          id="sg-native"
+          title="Native controls — the browser’s furniture, ours"
+          rule="What the browser paints on its own is still on the page: the scrollbar, the selection, the focus ring, a checkbox. Each is set once, in base.css, in the product’s colours — a default nobody chose is a colour nobody chose."
+        >
+          <div className="sg-grid">
+            <Card>
+              <CardHead
+                kind="card"
+                icon="check"
+                title="Checkbox and radio"
+                note="Native, with the accent set once for every one of them — not per feature."
+              />
+              <div className="sg-native-row">
+                <label className="sg-native-check">
+                  <input type="checkbox" defaultChecked /> Share my grades with this person
+                </label>
+                <label className="sg-native-check">
+                  <input type="radio" name="sg-plan" defaultChecked /> Living on campus
+                </label>
+                <label className="sg-native-check">
+                  <input type="radio" name="sg-plan" /> Commuting
+                </label>
+              </div>
+            </Card>
+
+            <Card>
+              <CardHead
+                kind="card"
+                icon="pen"
+                title="Textarea, selection and the ring"
+                note="The type is inherited, the selection is purple-tinted, and anything without a ring of its own gets this one on keyboard focus."
+              />
+              <div className="sg-native-row">
+                <textarea
+                  className="sg-native-textarea"
+                  rows={3}
+                  defaultValue="Select a few words of this to see the selection colour. Tab into it to see the focus ring."
+                />
+                <a className="sg-native-link" href="#sg-native">
+                  A bare link in running text, with the one ring
+                </a>
+              </div>
+            </Card>
+
+            <Card>
+              <CardHead
+                kind="card"
+                icon="refresh"
+                title="The scrollbar"
+                note="Thin, in --scrollbar-thumb, on every scroll container — the sidebar’s list, a drawer, a table, the page. The gutter is reserved so nothing walks sideways when it appears."
+              />
+              <div className="sg-native-scroll" tabIndex={0}>
+                {Array.from({ length: 9 }, (_, i) => (
+                  <p key={i}>Row {i + 1} of a list that is taller than its box.</p>
+                ))}
+              </div>
+            </Card>
+          </div>
+        </Section>
+
+        <Section
           id="sg-states"
           title="States"
           rule="Every section answers four questions: what if it is loading, empty, unavailable, or broken. A screen without all four is a screen that has only been designed for the happy path."

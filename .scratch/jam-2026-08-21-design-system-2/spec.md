@@ -1,5 +1,5 @@
 Jira: none — design-system feedback, Marco's round two of 2026-08-21 (same morning as the Jam)
-Status: in-progress (2026-08-21)
+Status: built (2026-08-21) — §6 is the next round’s list
 Labels: design-system, persona-student, screen-all
 Jam: https://jam.dev/c/b37ab33d-80c8-4208-887f-c61bcb336076 — "depois a gente continua"; Marco's
      remarks during the build are the brief: the shell should hold still between pages, nothing
@@ -56,15 +56,62 @@ portal is navigable and easy on the eyes.
 
 ## 5. Done when
 
-- [ ] Every route: hero = `--hero-min` at 1440; panel ≥ `--panel-min`; body top identical on all
-      routes without an alert foot
-- [ ] Topbar: every control `--control-height` tall, `--radius-tile`, same border and surface
-- [ ] Sidebar at 731px tall: brand and profile chip visible, the list scrolls, thin scrollbar
-- [ ] Wrap scan: no control label on two lines at any of the six widths
-- [ ] Styleguide: *Native controls* block; tokens listed
-- [ ] Before/after capture: only the rows above
-- [ ] `npm run build` clean
+- [x] Every route: hero = `--hero-min` at 1440 (184 on all 14 routes; 220 on all at ≤620); panel body
+      ≥ `--panel-min` (114–129 — the figure copy still decides the last 15px; the Notice commit
+      reserves two lines in it); body top 416–527 (was 372–513), the rest is the conditional foot
+- [x] Topbar: every control `--control-height` tall, `--radius-tile`, same border and surface (DOM: 38/38/38, radius 12, one border, one surface)
+- [x] Sidebar at 731px tall: brand and profile chip visible, the list scrolls, thin scrollbar (brand top 28, chip bottom 713, nav 542 in 466)
+- [x] Wrap scan at 1600 / 1280 / 820 / 500: no control label on two lines; no horizontal overflow on any route (what wraps is the description text inside row buttons, which is content)
+- [x] Styleguide: *Native controls* block (`#sg-native`: checkbox/radio, textarea + selection + ring,
+      the thin scrollbar); tokens listed under Layout constants and The browser’s furniture
+- [x] Before/after: measured per route at 1440, 620 and 500 (twice each, zero flake); the full
+      element capture was not re-run for this round because the Notice commit rewrote the same
+      slots in parallel — the per-route numbers above are the evidence
+- [x] `npm run build` clean (after each commit)
 
-## 6. Content audit — findings
+## 6. Content audit — findings (1440 × 900, read off the DOM and the CSS, 2026-08-21)
 
-(filled in C4)
+What varies between sections when it should not, ranked by how much a student would notice. The
+first two are being fixed today (one by this round, one by the Notice commit running beside it);
+the rest are the next round's list.
+
+1. **Where the body starts** — 372 … 513 px across the routes. Causes, in order: the alert foot on
+   the summary panel (0 / 38 / 58, two shapes for one slot); the panel body (102–114); the band
+   (172 / 183). Fix in flight: `--hero-min`, `--panel-min` (this round) and one `Notice` docked as the
+   panel's foot (the Notice commit). What will still vary, by design, is whether a section has a
+   foot at all.
+2. **The notice slot had nine anatomies** — `.gate-notice`, `.alert-strip`, `.record-note`,
+   `.required-strip`, a `StateCard`, `.advisory-banner`, `.step-notice`, `.edward-notice`,
+   `.summary-note`. Being replaced by `Notice.jsx` (the other session, same morning).
+3. **Status-icon tones live in feature files**: `.status-icon.docs` in financials.css (used by My
+   Documents and the styleguide), `.act/.stop` in health.css, `.record/.private/.signpost` in
+   profile.css, `.guide` in navigation.css, `.requirement/.advisory` in classrooms.css,
+   `.ask/.calm/.done` in onboarding.css. Twelve tones, six files, one vocabulary — they belong in
+   patterns.css under the card head, listed on the styleguide, or the list shrinks.
+4. **`.topbar-chip`, `.bell-count`, the notification pop** are defined in housing.css — shell
+   elements in a feature file. Move to chrome.css (prove it with the capture).
+5. **The summary panel's figure cell has four markups** — `SummaryFigure` (most), `next-appointment`
+   (Appointments), `request-standing` + a `primary-button` (Help), `summary-figure.money` — and the
+   money one is 30px tall where the others are 23. `SummaryFigure` already exists; Appointments and
+   Help should use it or it should grow a `kind`.
+6. **Rail cards**: every rail opens with `AnchorCard`, but the second card is `.provenance-card`,
+   `.keeping-card`, `.teams-card`, `.session-card`, `.offices-card` — one shape (`Card` kind="card")
+   would do. Low visual cost, high drift cost.
+7. **First block of the main column** — a `status-heading` card on most pages, a bare
+   `section-heading` on some lists, a `RecordCard` with a banded head on Health. Acceptable as long
+   as each is one of the three `CardHead` kinds; audit after the Notice commit lands.
+8. **Tables (Financials ledger)**: `th` and `td` wrap at 1440 (`Housing — Assumes a standard double
+   room`, `Estimate`); the ledger wants a `min-width` on the label column or a stacked row under
+   1060.
+9. **Concept-preview menu, Edward launcher and the toast** each carry their own z-index and radius
+   literals — to tokens (`--z-*` exists).
+
+## 7. Verification so far
+
+- Topbar at 1440: preview pill, points chip, bell, icon button all 38 × `--radius-tile`, same border
+  and surface (DOM check).
+- Sidebar at 1440 × 731: brand top at 28, profile chip bottom at 713 (visible), `.main-nav` scrolls
+  (542 in 466) with a 10px thin scrollbar; `overflow: hidden` on the `aside`.
+- `html`: `scrollbar-color` thumb `#d9dbe6`, `scrollbar-width: thin`, `color-scheme: light`,
+  `scrollbar-gutter: stable`.
+- Build clean after every commit.
