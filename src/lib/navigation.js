@@ -303,6 +303,35 @@ export const DEFAULT_ROUTE = '#/my-enrollment';
 export const STYLEGUIDE_ROUTE = '#/styleguide';
 
 /**
+ * Onboarding — ENR-163. A route, and deliberately not a destination.
+ *
+ * It has no row in `NAV`, no entry in `DESTINATIONS` and no hero, because it is
+ * not a section of the portal: it is what a newly admitted student walks
+ * through once, before the portal exists for her. `App` checks the hash before
+ * it looks a destination up, the same way it does for the styleguide — except
+ * that onboarding replaces the chrome instead of rendering inside it, since a
+ * sidebar is a list of ways out of a flow that is required to refuse them
+ * (ENR-151 AC 1).
+ *
+ * The step is part of the route so a later one is *attemptable*: a refusal that
+ * cannot be attempted is a refusal nobody can verify.
+ */
+export const ONBOARDING_ROUTE = '#/onboarding';
+
+export function isOnboardingHash(hash) {
+  if (typeof hash !== 'string') return false;
+  return hash === ONBOARDING_ROUTE || hash.startsWith(`${ONBOARDING_ROUTE}/`);
+}
+
+/** The 1-based step in `#/onboarding/5`, or null for the bare route. */
+export function onboardingStepFrom(hash) {
+  if (!isOnboardingHash(hash)) return null;
+  const rest = hash.slice(ONBOARDING_ROUTE.length).replace(/^\//, '');
+  const step = Number(rest);
+  return Number.isInteger(step) && step >= 1 ? step : null;
+}
+
+/**
  * The sidebar, in order: what I must do, what I sent and who I talk to, then the
  * rest of my life at Aster.
  *

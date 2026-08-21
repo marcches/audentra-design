@@ -5,6 +5,7 @@ import AnchorCard from '../primitives/AnchorCard.jsx';
 import Button, { IconButton } from '../primitives/Button.jsx';
 import Drawer from '../primitives/Drawer.jsx';
 import StateCard from '../patterns/StateCard.jsx';
+import StepRail from '../patterns/StepRail.jsx';
 import SummaryFigure from '../patterns/SummaryFigure.jsx';
 import AdvisorBar from '../patterns/AdvisorBar.jsx';
 
@@ -617,6 +618,66 @@ export default function Styleguide() {
               Unavailable is not empty. The difference is whether there is nothing, or whether we
               cannot see it.
             </StateCard>
+          </div>
+        </Section>
+
+        <Section
+          id="sg-steps"
+          title="The step rail"
+          rule="A flow with steps says four things about each of them, and skipped is the one that has to be got right: a step set aside is not a failed step, so it is never amber, never dimmed and never crossed out. Locked is not a fifth state — it is an upcoming step that says why it is not open yet."
+        >
+          <div className="sg-rail-demo">
+            <StepRail
+              eyebrow="A flow · in progress"
+              greeting="The band, rotated."
+              label="This flow"
+              figure="2 of 6 saved"
+              note="1 skipped · 3 still to do"
+              meter={{ saved: 33, skipped: 17 }}
+              meterLabel="2 of 6 steps saved"
+              currentName="The step you are on"
+              steps={[
+                { id: 'a', name: 'A step that was saved', state: 'saved', reachable: true },
+                { id: 'b', name: 'Another one, saved', state: 'saved', reachable: true },
+                { id: 'c', name: 'The step you are on', state: 'current', meta: 'Step 3 of 6' },
+                {
+                  id: 'd',
+                  name: 'A step that was set aside',
+                  state: 'skipped',
+                  reachable: true,
+                },
+                { id: 'e', name: 'A step not reached yet', state: 'upcoming', meta: '2 min', faint: true },
+                {
+                  id: 'f',
+                  name: 'A step that is not open',
+                  state: 'locked',
+                  meta: 'Opens once the step before it is saved',
+                },
+              ]}
+              advisor={{
+                label: 'Stuck on something?',
+                initials: 'PR',
+                name: 'A named human',
+                office: 'The office that owns this',
+                email: 'someone@aster.edu',
+              }}
+              onOpen={() => {}}
+            />
+          </div>
+
+          <div className="sg-grid">
+            <Block
+              title="Saved, and skipped, are counted apart"
+              note="One figure that meant both would tell a student a step she set aside is done. The count is what is saved; the line under it carries what is not."
+            />
+            <Block
+              title="Reachable rows are buttons; the rest are not controls"
+              note="Not disabled buttons — a disabled control is an offer withdrawn, and no control is a stage that has not arrived. The same rule the housing plan follows after its deadline."
+            />
+            <Block
+              title="Below 1060 the band lies across the top"
+              note="Which is what a hero already is. The rows fold behind a disclosure that keeps the current step's name on its face, so folding never costs the position."
+            />
           </div>
         </Section>
 

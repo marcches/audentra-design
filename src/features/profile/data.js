@@ -77,51 +77,24 @@ export const registrarContact = {
 /**
  * AC 4. The channel is not a label on a record — it decides what Aster does, so
  * each option says what Aster will do, and the row restates it after a change.
+ *
+ * Defined in `features/onboarding/data.js` and re-exported here, for the same
+ * reason as the record categories below: it is chosen at onboarding, step 2,
+ * and this screen is where it is changed afterwards. The dependency runs one
+ * way — profile reads onboarding, never the reverse — so there is no cycle.
  */
-export const channelOptions = [
-  [
-    'portal',
-    'Portal messages',
-    'Aster writes to you in Messages and emails you that something is waiting.',
-  ],
-  ['email', 'Email', 'Aster writes to your personal email first, and keeps a copy in Messages.'],
-  ['text', 'Text message', 'Aster texts you first for anything time-critical. Needs a verified number.'],
-];
+export { channelOptions } from '../onboarding/data.js';
 
-/** The seven categories a student can grant, and what each one actually exposes. */
-export const RECORD_CATEGORIES = [
-  {
-    id: 'enrollment',
-    name: 'Enrollment status',
-    sees: 'Whether you are enrolled, and the steps you still owe Aster.',
-  },
-  {
-    id: 'academic',
-    name: 'Academic record',
-    sees: 'Your courses, your grades and your degree progress.',
-  },
-  {
-    id: 'billing',
-    name: 'Billing and payments',
-    sees: 'What Aster charges you, what is paid, and what is due next.',
-  },
-  {
-    id: 'aid',
-    name: 'Financial aid',
-    sees: 'The aid you were offered, what you accepted, and what it still needs.',
-  },
-  {
-    id: 'housing',
-    name: 'Housing and meals',
-    sees: 'Where you live on campus and which meal plan you hold.',
-  },
-  {
-    id: 'wellbeing',
-    name: 'Health and wellbeing',
-    sees: 'That you used a wellbeing service — never what was said in one.',
-  },
-  { id: 'conduct', name: 'Conduct', sees: 'Any conduct case Aster has opened about you.' },
-];
+/**
+ * The seven categories a student can grant, and what each one actually exposes.
+ *
+ * They are defined in `features/onboarding/data.js` and re-exported here. They
+ * are, in this file's own earlier words, "the words a student consented in" —
+ * and consent happens at onboarding, on step 4. The feature that owns a concept
+ * exports it and the others import, which is the rule `enrollment/data.js`
+ * already follows when it reads `responseDeadline` out of housing.
+ */
+export { RECORD_CATEGORIES } from '../onboarding/data.js';
 
 /**
  * What onboarding captured (ENR-144). This screen shows it, narrows it and ends

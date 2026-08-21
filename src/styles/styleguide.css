@@ -400,3 +400,25 @@
     flex-basis: 100%;
   }
 }
+
+/* The step rail, shown in a box. On a real flow it is the full height of the
+   frame and sticky; here it is one specimen among many, so it is boxed and the
+   sticky is cancelled — the states are what the page is showing, not the
+   layout. */
+.sg-rail-demo {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  max-width: 360px;
+  margin-bottom: var(--space-9);
+  overflow: hidden;
+}
+
+.sg-rail-demo .step-rail {
+  width: 100%;
+  max-height: none;
+  position: static;
+}
+
+.sg-rail-demo .rail-advisor {
+  margin-top: var(--space-9);
+}

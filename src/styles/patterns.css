@@ -2057,3 +2057,389 @@ footer a {
     padding: var(--space-11) var(--space-9);
   }
 }
+
+/* ============================================================================
+ * The step rail — `design-system/patterns/StepRail.jsx`.
+ *
+ * The band a multi-step flow is walked along. It lives in the shared layer
+ * rather than in the section that needed it first, because **what a step set
+ * aside looks like is a decision about the product**, not about one screen: the
+ * moment a second flow copies these classes by hand they drift, which is the
+ * failure `Drawer` was written to end.
+ *
+ * The band is the same saturated surface the page hero is — the only one in the
+ * product. A flow with no hero runs it down the left at wide widths and lies it
+ * across the top below 1060, which is what a hero already is. No new colour, no
+ * second saturated surface.
+ * ==========================================================================*/
+
+.step-rail {
+  background: var(--grad-purple);
+  color: var(--on-ink);
+  flex-direction: column;
+  flex: none;
+  gap: var(--space-10);
+  width: 322px;
+  padding: var(--space-12) var(--space-10);
+  display: flex;
+  position: sticky;
+  top: var(--flow-bar);
+  align-self: flex-start;
+  /* Pinned to the window's height in both directions: the band always reaches
+     the bottom edge, and a rail longer than the window scrolls inside itself
+     rather than pushing the page. */
+  min-height: calc(100vh - var(--flow-bar));
+  max-height: calc(100vh - var(--flow-bar));
+  overflow-y: auto;
+}
+
+.step-rail .eyebrow {
+  color: var(--on-ink-muted);
+}
+
+/* The greeting is 22px against a 21px figure, deliberately near-equal. A 45px
+   greeting over a 15px figure is the inversion that made the portal read as
+   decorated rather than built — the band greets, the figure informs, and the
+   greeting must never dwarf what it introduces. */
+.rail-greeting {
+  letter-spacing: var(--ls-hero);
+  text-wrap: pretty;
+  margin: var(--space-4) 0 0;
+  font-size: 22px;
+  font-weight: var(--fw-heavy);
+  line-height: var(--lh-tight);
+}
+
+.rail-figure {
+  margin-top: var(--space-10);
+}
+
+.rail-label {
+  color: var(--on-ink-muted);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  margin: 0;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+}
+
+.rail-count {
+  letter-spacing: var(--ls-tight);
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-display);
+  font-weight: var(--fw-heavy);
+  line-height: var(--lh-tight);
+}
+
+/* At most one line under the figure — the fourth line inside a figure cell is
+   what pushed My Classrooms' summary panel 16px taller than everyone else's. */
+.rail-note {
+  color: var(--on-ink-muted);
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+/* Two runs, not one. Skipped is progress through the flow and is not progress,
+   so it is drawn beside the saved run and never inside it. */
+.rail-meter {
+  background: #ffffff2e;
+  border-radius: var(--radius-pill);
+  height: 5px;
+  margin-top: var(--space-7);
+  display: flex;
+  overflow: hidden;
+}
+
+.meter-saved {
+  background: var(--green);
+  transition: width var(--dur-base) var(--ease);
+}
+
+.meter-skipped {
+  background: #ffffff6b;
+  transition: width var(--dur-base) var(--ease);
+}
+
+/* Only below 1060, where the eight rows fold behind it. */
+.rail-disclosure {
+  display: none;
+}
+
+/* --- the eight steps --- */
+
+.rail-steps ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+
+/* The spine. A stepper reads as a *path* because the marks are joined; this is
+   a connector between circles, not an accent painted down the edge of a
+   rounded row, which is a rule bar wearing a card's corners. */
+.rail-steps ol:before {
+  content: '';
+  background: #ffffff26;
+  width: 1px;
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 11px;
+}
+
+.step-row > button,
+.step-row > span {
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-row);
+  grid-template-columns: 23px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+  padding: var(--space-5) var(--space-5);
+  font: inherit;
+  display: grid;
+}
+
+.step-row > button {
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.step-row > button:hover {
+  background: #ffffff1f;
+}
+
+.step-row > button svg:last-child {
+  color: var(--on-ink-muted);
+}
+
+/* --- the four states, and the two conditions that are not states ---------- */
+
+.step-mark {
+  border-radius: var(--radius-round);
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  display: grid;
+  position: relative;
+  z-index: 1;
+}
+
+/* Saved. Green means exactly one thing in this product — covered, satisfied,
+   done — and this is that thing. */
+.step-mark.saved {
+  color: var(--on-ink);
+  background: var(--green);
+}
+
+/* In progress. Bright, hollow, with a filled centre: the only mark that is
+   drawn in two parts, because it is the only one that is still happening. */
+.step-mark.current {
+  box-shadow: inset 0 0 0 2px var(--on-ink);
+}
+
+.step-mark.current:after {
+  content: '';
+  background: var(--on-ink);
+  border-radius: var(--radius-round);
+  width: 8px;
+  height: 8px;
+}
+
+/* Skipped. Not amber — amber means someone still has to act, and inside the
+   flow she is walking that is a nag. Not dimmed, not crossed out, not crimson:
+   every one of those reads as failure, and the card is explicit that this one
+   must not. A half-filled circle in the band's own light: started, set down,
+   no alarm. */
+.step-mark.skipped {
+  color: var(--on-ink);
+  background: #ffffff33;
+  box-shadow: inset 0 0 0 1px var(--on-ink-line);
+}
+
+.step-mark.upcoming,
+.step-mark.locked,
+.step-mark.unknown {
+  color: var(--on-ink-muted);
+  box-shadow: inset 0 0 0 1px #ffffff3d;
+}
+
+.step-text {
+  flex-direction: column;
+  min-width: 0;
+  display: flex;
+}
+
+.step-name {
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+}
+
+.step-meta {
+  color: var(--on-ink-muted);
+  margin-top: var(--space-1);
+  font-size: var(--fs-small);
+}
+
+.step-meta.faint {
+  color: #ffffff8a;
+}
+
+/* The name carries the state as much as the mark does. Only the current step is
+   at full weight and full contrast; only the two unreached states are quiet. */
+.step-row.current .step-name {
+  font-weight: var(--fw-heavy);
+}
+
+.step-row.saved .step-name {
+  color: #ffffffdb;
+}
+
+.step-row.upcoming .step-name,
+.step-row.locked .step-name,
+.step-row.unknown .step-name {
+  color: #ffffff9e;
+}
+
+/* Skipped keeps full opacity. That is the whole point of it. */
+.step-row.skipped .step-name {
+  color: var(--on-ink);
+}
+
+.step-row.locked .step-meta {
+  color: #ffffffa8;
+}
+
+/* --- the advisor, at the foot: Edward is not here, and this keeps his promise
+       that a named human is reachable --- */
+
+.rail-advisor {
+  border-top: 1px solid var(--on-ink-line);
+  margin-top: auto;
+  padding-top: var(--space-8);
+}
+
+.advisor-who {
+  align-items: center;
+  gap: var(--space-5);
+  margin: var(--space-5) 0 0;
+  display: flex;
+}
+
+.advisor-mark {
+  color: var(--on-ink);
+  background: #ffffff2e;
+  border-radius: var(--radius-round);
+  flex: none;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
+  display: grid;
+}
+
+.advisor-who strong {
+  font-size: var(--fs-body);
+  display: block;
+}
+
+.advisor-who small {
+  color: var(--on-ink-muted);
+  font-size: var(--fs-small);
+}
+
+.advisor-reach {
+  margin: var(--space-5) 0 0;
+}
+
+.advisor-reach a {
+  color: var(--on-ink-muted);
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-copy);
+  text-decoration: none;
+  display: inline-flex;
+}
+
+.advisor-reach a:hover {
+  color: var(--on-ink);
+  text-decoration: underline;
+}
+
+@media (width<=1060px) {
+  .step-rail {
+    gap: var(--space-8);
+    width: auto;
+    min-height: 0;
+    max-height: none;
+    padding: var(--space-10) var(--space-11) var(--space-9);
+    /* The base rule pins the rail to the top of a row; in a column it would
+       shrink the band to its content and leave canvas beside it. */
+    align-self: stretch;
+    position: static;
+    overflow: visible;
+  }
+
+  /* `width: 100%` is load-bearing: `margin: 0 auto` on a column flex item
+     overrides `stretch` and centres the band at its own content width. */
+  .rail-band {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .rail-figure {
+    margin-top: var(--space-8);
+  }
+
+  .rail-disclosure {
+    color: var(--on-ink);
+    cursor: pointer;
+    background: #ffffff1f;
+    border: 1px solid var(--on-ink-line);
+    border-radius: var(--radius-pill);
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-6);
+    width: 100%;
+    margin-top: var(--space-8);
+    padding: var(--space-5) var(--space-7);
+    font-family: inherit;
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semi);
+    display: flex;
+  }
+
+  .rail-disclosure[aria-expanded='true'] svg {
+    transform: rotate(180deg);
+  }
+
+  .rail-steps {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    display: none;
+  }
+
+  .rail-steps.open {
+    display: block;
+  }
+
+  .rail-advisor {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (width<=620px) {
+  .step-rail {
+    padding: var(--space-9) var(--space-8) var(--space-8);
+  }
+}

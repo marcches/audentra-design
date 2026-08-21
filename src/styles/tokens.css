@@ -276,6 +276,9 @@
   --panel-pad: 23px;
   --safe-bottom: 76px;
   --toast-bottom: 25px;
+  /* The bar a full-screen flow runs under, so the rail beside it can be sticky
+     and still reach the bottom edge of the window — ENR-163. */
+  --flow-bar: 53px;
 
   --font-geist-sans: 'Geist Variable', 'Geist', sans-serif;
   --font-geist-mono: 'Geist Mono Variable', 'Geist Mono', monospace;

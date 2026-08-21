@@ -49,6 +49,16 @@ export const PREVIEW_STATES = [
   ['onboarding-answered', 'Answered at onboarding', 'Living on campus, three residences already ranked.'],
   ['deadline-passed', 'After the housing deadline', 'The submitted shortlist, and Housing Services assigning.'],
   ['room-assigned', 'Room assigned', 'A room that is not the first preference — and is still valid.'],
+  // ENR-163. The five onboarding adds. `empty`, `partial`, `loading` and
+  // `error` mean something there too, but they already exist above; these are
+  // the ones with nowhere else to live, and they are listed here so a `?state=`
+  // link to any of them survives a reload — `readPreviewState` validates
+  // against this list and nothing else.
+  ['resume-skipped', 'Back after a skip', 'Onboarding resumed with one step set aside.'],
+  ['onboarding-permissions', 'Family permissions', 'Onboarding parked on the family permissions step.'],
+  ['onboarding-housing', 'Where you will live', 'Onboarding parked on the housing step, shortlist partial.'],
+  ['onboarding-complete', 'Onboarding resolved', 'Six steps saved, two set aside, and the flow says so.'],
+  ['save-fails', 'A save that fails', 'A step that does not reach Aster, and does not pretend to.'],
   // ENR-167 second pass and ENR-214. Listed here too, so a `?state=` link to
   // either survives a reload — `readPreviewState` validates against this list.
   ['rewards-off', 'Rewards off', 'An institution that does not run a points programme.'],

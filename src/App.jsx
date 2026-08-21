@@ -10,6 +10,7 @@ import { campusEvents, requiredEventCount } from './features/campus/data.js';
 import PageShell from './design-system/patterns/PageShell.jsx';
 import PageSkeleton from './design-system/patterns/PageSkeleton.jsx';
 import Styleguide from './design-system/styleguide/Styleguide.jsx';
+import OnboardingPage from './features/onboarding/OnboardingPage.jsx';
 import PageError from './design-system/patterns/PageError.jsx';
 import SectionPlaceholder from './design-system/patterns/SectionPlaceholder.jsx';
 import OverviewPage from './features/financials/OverviewPage.jsx';
@@ -44,7 +45,14 @@ import { buildRecord } from './features/edward/logic.js';
 import { identityFor } from './features/profile/logic.js';
 import { sortTasks } from './features/enrollment/logic.js';
 import { buildLedger } from './features/financials/logic.js';
-import { DEFAULT_ROUTE, STYLEGUIDE_ROUTE, destinationByRoute, isRouteHash } from './lib/navigation.js';
+import {
+  DEFAULT_ROUTE,
+  STYLEGUIDE_ROUTE,
+  destinationByRoute,
+  isOnboardingHash,
+  isRouteHash,
+  onboardingStepFrom,
+} from './lib/navigation.js';
 import {
   FINANCIALS_STATES,
   PREVIEW_STATES,
@@ -732,6 +740,27 @@ export default function App() {
       <PageShell destination={current}>
         <SectionPlaceholder section={current} />
       </PageShell>
+    );
+  }
+
+  /**
+   * ENR-163. Onboarding is not a section of the portal — it is what a newly
+   * admitted student walks through once, before the portal exists for her. So
+   * it replaces the chrome rather than rendering inside it, which the
+   * styleguide does not: a sidebar is a list of ways out of a flow that ENR-151
+   * AC 1 requires to refuse them. What `App` owns here is the route and nothing
+   * else; the state is the page's, the way Housing's and Help's already are.
+   */
+  if (isOnboardingHash(hash)) {
+    return (
+      <OnboardingPage
+        requestedStep={onboardingStepFrom(hash)}
+        previewState={preview}
+        onPreviewState={choosePreview}
+        onRoute={(route) => {
+          window.location.hash = route;
+        }}
+      />
     );
   }
 
