@@ -55,8 +55,12 @@
   font-weight: var(--fw-semi);
 }
 
+/* The action column is as wide as its widest label and never narrower than
+   the button's resting width — a fixed 142px made "Upload documents" wrap to
+   two lines at 1600. Controls never wrap; the text column gives instead.
+   Round two of the Jam of 2026-08-21. */
 .task-card-body {
-  grid-template-columns: 40px minmax(0,1fr) 142px;
+  grid-template-columns: 40px minmax(0,1fr) minmax(142px, auto);
   gap: var(--space-6);
   padding: var(--space-9) var(--space-9) var(--space-8);
   display: grid;
@@ -494,7 +498,7 @@
   }
   .task-action {
     grid-column: 1/-1;
-    grid-template-columns: 1fr 145px;
+    grid-template-columns: 1fr minmax(145px, auto);
     margin-top: var(--space-1);
   }
   .recommended-banner {

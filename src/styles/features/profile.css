@@ -381,7 +381,6 @@
 }
 
 .permission-grid input {
-  accent-color: var(--purple);
   width: 15px;
   height: 15px;
   margin: var(--space-1) 0 0;

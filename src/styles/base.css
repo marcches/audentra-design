@@ -46,6 +46,21 @@ button, input, textarea, select {
   font: inherit;
 }
 
+/* The native controls that stay native — a checkbox, a radio, a progress bar —
+   take the accent once, here, instead of wherever someone last remembered. */
+input[type="checkbox"], input[type="radio"], progress {
+  accent-color: var(--purple);
+}
+
+/* The one focus ring, for anything that has not drawn its own. `:where()` has
+   no specificity, so every control with a ring of its own keeps it; what this
+   reaches is the element nobody styled — a bare link in running text, a
+   textarea — which used to show the browser's ring in the browser's colour. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}
+
 button, a {
   -webkit-tap-highlight-color: transparent;
 }
