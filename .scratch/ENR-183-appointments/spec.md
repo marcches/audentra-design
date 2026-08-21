@@ -240,3 +240,25 @@ the new surfaces are in `references.md`, Round 2.
   the campus row's quiet ink. Below 620px the conversation row's title now steps to `--fs-h3` with
   the task row's, so both row shapes on the page share one title size at every width. Verified
   with computed styles at 1440 and 390.
+
+## Pending — from the Health changes of 2026-08-21, §10.5–10.8
+
+Recorded here from `.scratch/ENR-206-health/health-changes-2026-08-21.md`; not built in the Health
+session, by Marco's decision (one card at a time). For whoever takes Appointments next:
+
+- **10.5** — T5 is already struck (above). What remains is the button inversion the document asks
+  for: rows *with* published times take `primary`, the row without takes `secondary`. It meets
+  `Button.jsx`'s rule of at most one primary per card and the band's rule that the primary is the
+  row the band points at — Marco to decide which rule yields.
+- **10.6** — "How booking works" appears three times (the header link in *Book a conversation*, the
+  anchor card's label, the anchor card's closing `learn-link`). The document removes the header
+  link and the card's closing link, keeps label, body and footer, and asks for the card to take the
+  light treatment of the other rail cards. **Not done.**
+- **10.7** — the section head is inverted against T4: today the title is *Book a conversation* and
+  the note *What it's about*; T4 wants the uppercase eyebrow *BOOK A CONVERSATION* over the `H2`
+  *What it's about*, with the eyebrow in `var(--muted)`, never an action colour. **Not done.**
+- **10.8** — the band anchored to the row it names (above the first row only when it names the
+  list) is adopted as deliberate. Already the behaviour; nothing to do.
+- **10.4** — the Health document's rule 10.1 ("the white card under the banner always carries an
+  advisor block") conflicts with this document's removal of the block from Appointments. Recorded
+  as an open conflict; Health did not resolve it.

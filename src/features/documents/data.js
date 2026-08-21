@@ -290,6 +290,12 @@ export function documentsFor(state) {
               // that a student is never told only that something is wrong.
               reason:
                 'The second photograph cuts off the dates beside the MMR and Tdap lines, so neither dose could be read. The first page is fine and is already on your record.',
+              // The reason says it and the list has to agree with it — CONTEXT.md,
+              // Decision, widened 2026-08-21: one page is on the record, one came back.
+              pages: {
+                'immunization_page_1.jpg': 'accepted',
+                'immunization_page_2.jpg': 'changes-requested',
+              },
               remedies: [
                 'Photograph the page flat, with all four edges of the sheet visible.',
                 'Make sure the date beside every vaccine is legible. That is the part Health Services reads.',

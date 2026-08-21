@@ -75,3 +75,19 @@ is on the other side` both named Accessibility Services, which the panel's own l
 office eyebrow inside the card, for the same reason. What it gained is the thing ADR-0001 was
 originally about: the question is now read *beside* the record it must not be mistaken for, without
 being filed under it.
+
+## Amended 2026-08-21, evening — the changes document for Health
+
+Health got its summary panel back (the page carries two things now, so the panel summarises two),
+and the brief asked for the question to be legible without opening it. So the **state of the
+question** now appears in two places it did not: as the **foot** of Health's panel (*Accessibility
+question: not answered · Optional. Nothing happens until you answer.* / *…: answered*) and on the
+face of the door row (`NOT ANSWERED` / `ANSWERED`, with *See the question* / *See your answer*),
+and once — only while the record needs nothing and the question was never answered — the page's
+action band points at it (*There's one optional question left*).
+
+What this ADR decided still holds, and these are read against it: the question is still not a
+figure (it is a foot line, not the panel's standing); there is still no badge and no count — the
+pill is a state, *not right now* reads `ANSWERED`, and nothing anywhere adds the question to a
+number; and the band fires only for *never answered*, which `CONTEXT.md` calls the one open
+condition. The answer still reaches no module but `App`. The panel it opens in is unchanged.

@@ -137,3 +137,25 @@ Mobile layout (the brief), course registration, any change to an academic outcom
   Appointments — and the two actions reach her. The match cards still ask the Registrar, who
   decides. The office variant of `AdvisorBar` (`kind: 'office'`, `.advisor-office-mark`) is
   removed; it was never on the styleguide.
+
+## 10. Pending — from the Health changes of 2026-08-21, §10.3 and §10.9–10.11
+
+Recorded here from `.scratch/ENR-206-health/health-changes-2026-08-21.md`; not built in the Health
+session, by Marco's decision. Additions to this document, not corrections of it:
+
+- **10.3** — eyebrow *YOUR ACADEMIC ADVISOR*; the match action routes to the Registrar (done, D15);
+  and a fallback while no academic advisor is assigned: the enrollment advisor plus *"Your academic
+  advisor is assigned with your program. Tomás covers this until then."* The premise is stale:
+  section 9 above (15:58) seats Ines Barros, the course advisor, in the bar. **Two options left
+  open for Marco:** (a) keep Ines and only rename the eyebrow, or (b) the document's fallback to
+  Tomás with the line, which `AdvisorBar`'s new `note` prop (Health, same evening) can carry.
+- **10.9** — inside each group, requirements ordered by standing (IN PROGRESS, then NOT STARTED;
+  fewest courses left first), each band labelled like the groups inside a requirement; groups
+  themselves not reordered.
+- **10.10** — a *Satisfied requirements* section after the last group, collapsed on load, one row
+  per satisfied requirement (name, group, credits, what closed it and when, the SATISFIED pill);
+  group heads count what is left (*4 requirements left*), the section its own (*2 satisfied*).
+- **10.11** — the plan's surface: a `.plan-drawer` (Drawer pattern) opened from a fourth rail card
+  *YOUR PLAN* and from a row's *In your plan* state, never automatically; courses by term, planned
+  credit figure, conflicts stated with `.picker-note`, a `Remove` link per row, one `Close` button;
+  the plan moves no counter and is sent nowhere. Copy in the document's §10.11.

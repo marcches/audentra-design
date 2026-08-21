@@ -28,7 +28,7 @@
  * Health; Marco finished the move the same afternoon — what has no row does not
  * get a page either, it opens the side panel, because that is the portal's one
  * way of opening what lives inside a page. They are declared in `PANELS` below,
- * which carries the copy an `EntryCard` needs and nothing else: no route, no
+ * which carries the copy an `EntryRow` needs and nothing else: no route, no
  * hero, no placeholder, because a panel has no address to land on.
  */
 
@@ -127,11 +127,14 @@ export const DESTINATIONS = [
     // No badge, deliberately. The record's open state is already counted on
     // My Documents — the same thing twice in one sidebar is a lie about how much
     // is outstanding.
-    lede: 'One record Health Services needs before you can register for classes.',
+    // Two things, named as two — the Health changes of 2026-08-21 (H4). The
+    // lede spoke only of the record from the UX writing pass until the question
+    // came back onto this page as a panel the same afternoon.
+    lede: 'Health Services needs your immunization record before you can register. Accessibility Services has a question you can answer whenever you want, or not at all.',
     hero: {
       kicker: 'Health',
-      title: 'One record, before you can register.',
-      lede: 'One record Health Services needs before you can register for classes.',
+      title: 'One record, and one question.',
+      lede: 'Health Services needs your immunization record before you can register. Accessibility Services has a question you can answer whenever you want, or not at all.',
       motif: 'shield',
     },
     appears: 'The health step from onboarding is finished here, whatever is left of it.',
@@ -279,8 +282,8 @@ export const DESTINATIONS = [
  * and the back button never lands in it; it has no hero, because a drawer says
  * where you are in its label; it has no placeholder, because there is no
  * address for a student to arrive at before it is built. What it has is the
- * copy the `EntryCard` on the parent page needs — the name the door carries,
- * and the one line saying what is behind it — declared here for the same reason
+ * copy the row on the parent page needs — the name the door carries,
+ * and the one line saying what is behind it, on the  that is the door —
  * every destination's copy is: a concept must not end up with two names on two
  * screens (ENR-174 AC4).
  *
@@ -303,7 +306,6 @@ export const PANELS = {
     label: 'My Documents',
     icon: 'file',
     lede: 'Everything you have sent Aster, and everything Aster has sent you.',
-    action: 'Open My Documents',
   },
   accessibility: {
     id: 'accessibility',
@@ -311,7 +313,6 @@ export const PANELS = {
     label: 'Accessibility',
     icon: 'accessibility',
     lede: 'One question that’s yours to answer, or not.',
-    action: 'Open Accessibility',
   },
 };
 

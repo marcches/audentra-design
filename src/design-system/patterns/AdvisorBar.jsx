@@ -26,7 +26,11 @@ import Avatar from '../primitives/Avatar.jsx';
  *
  * What is left is what the panel is for: who this person is to you, their name,
  * and the two ways to reach them, both one click away. One bar, one content,
- * every section — a section that shows more or less here is the drift.
+ * every section — a section that shows more or less here is the drift. The one
+ * line it may add is `note`, under the name, and only where the person is
+ * covering a subject that is not theirs (the Health changes of 2026-08-21, H2):
+ * it says what this person is *for* on this page, so that an advisor at the top
+ * of a page about health cannot read as part of the health record.
  *
  * The subject is always a person. For one afternoon — the My Degree brief of
  * 2026-08-21, D15 — the bar took an office, a glyph in a tile where the face
@@ -35,7 +39,7 @@ import Avatar from '../primitives/Avatar.jsx';
  * never gets a face, and so an office is named in the copy that needs it and
  * never seated here.
  */
-export default function AdvisorBar({ advisor, onContact }) {
+export default function AdvisorBar({ advisor, note, onContact }) {
   return (
     <div className="advisor-bar">
       <Avatar person={advisor} size="md" className="advisor-avatar" />
@@ -66,6 +70,14 @@ export default function AdvisorBar({ advisor, onContact }) {
           </button>
         </Tooltip>
       </div>
+      {/* The one line the bar may add, and only where the person is covering a
+          subject that is not theirs — Health (the enrollment advisor on a page
+          whose decisions are Health Services' and Accessibility Services')
+          and, while no academic advisor is assigned, My Degree. It runs under
+          the whole bar rather than in the copy column: in the column it wrapped
+          to two lines and the bar outgrew the figure cell beside it, which is
+          the one thing the panel's height must not depend on. */}
+      {note ? <span className="advisor-note">{note}</span> : null}
     </div>
   );
 }

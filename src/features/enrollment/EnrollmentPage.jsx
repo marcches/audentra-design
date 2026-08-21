@@ -7,6 +7,7 @@ import EnrollmentRail from './EnrollmentRail.jsx';
 import GateNotice from '../registration/GateNotice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import Tooltip from '../../design-system/primitives/Tooltip.jsx';
+import StatusPill from '../../design-system/primitives/StatusPill.jsx';
 import Card, { CardHead, CardRows } from '../../design-system/primitives/Card.jsx';
 import TaskCard from './TaskCard.jsx';
 import { kindIcon } from './logic.js';
@@ -215,9 +216,9 @@ export default function EnrollmentPage({
                       <span>{item.eta}</span>
                     </div>
                   </div>
-                  <div className="status-pill">
-                    <span className="pulse" /> In review
-                  </div>
+                  <StatusPill tone="wait" pulse>
+                    In review
+                  </StatusPill>
                 </article>
               ))}
             </CardRows>

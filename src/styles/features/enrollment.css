@@ -167,19 +167,9 @@
   display: flex;
 }
 
-.status-pill {
-  color: var(--amber);
-  background: var(--amber-tint);
-  border-radius: var(--radius-pill);
-  justify-content: center;
-  align-items: center;
-  gap: var(--space-3);
-  min-width: 83px;
-  height: 27px;
-  font-size: var(--fs-small);
-  font-weight: var(--fw-bold);
-  display: flex;
-}
+/* `.status-pill` lives in `patterns.css` since the evening of 2026-08-21 — it
+   is the product's one pill (`StatusPill`), and *In review* here is one use
+   of it. */
 
 .locked-due {
   color: var(--faint);

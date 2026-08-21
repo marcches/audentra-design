@@ -23,13 +23,20 @@ ask.
 One attempt to satisfy a document requirement, carrying one or more files. It is the unit that
 carries a state and a timestamp, and it is never deleted or overwritten — a replacement is a new
 submission beside the old one. The files inside one submission are one attempt, not several: an
-immunization record is physically several photographed pages, and they are accepted or sent back
-together.
+immunization record is physically several photographed pages, sent together. A decision may still
+fall page by page — one page accepted, another sent back — and the submission stands as *changes
+requested* until every page it carries is accepted; the replacement is a new submission carrying
+only the pages that came back, beside the old one, which keeps what was accepted. Widened
+2026-08-21 (Health changes, H9): until then the pages were said to be accepted or sent back
+together, and the reviewer's own reason on the fixture already contradicted it.
 _Avoid_: Upload (that is the act, not the record), attempt, file.
 
 **Decision**:
-A reviewer's outcome on one submission: *accepted*, or *changes requested* with a reason. Made by a
-person at Aster. The portal renders decisions and never produces one.
+A reviewer's outcome on one submission: *accepted*, or *changes requested* with a reason. When the
+submission carries several pages, the decision may name which page it is about — one accepted,
+another sent back — and the reason says which. Made by a person at Aster. The portal renders
+decisions and never produces one. To the student a *changes requested* decision *came back* or was
+*sent back*; those are the screen's words for it, not a third outcome.
 _Avoid_: Review (that is the period before a decision), approval, verdict, result.
 
 **Reason**:

@@ -19,7 +19,7 @@ import { registration } from './data.js';
  *
  * It is a mark, not a control: never focusable, never pressable.
  */
-export default function GateChip({ state = 'needed', since = null }) {
+export default function GateChip({ state = 'needed', since = null, detail: withDetail = true }) {
   // AC 6. Submitting did not lift the gate, so the chip stays and says where the
   // requirement actually is. Accepted is the only state with no chip at all —
   // the requirement is met and says so the ordinary way.
@@ -38,7 +38,9 @@ export default function GateChip({ state = 'needed', since = null }) {
     <span className="gate-chip">
       <Icon name="flag" size={13} />
       Blocks {registration.label}
-      {detail && <span className="gate-detail">· {detail}</span>}
+      {/* `detail={false}` where a pill beside the chip already says the state —
+          Health's record head (H8: "· Needs another try" duplicates CAME BACK). */}
+      {withDetail && detail && <span className="gate-detail">· {detail}</span>}
     </span>
   );
 }

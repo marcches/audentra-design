@@ -65,3 +65,42 @@ answer* · `web` · deep
 - [GoFundMe — Change visibility](https://mobbin.com/screens/ebc8fb49-6b1b-4f09-ba87-9401f7d61522) —
   the same two radios, in a modal. Opening a dialog to say "not right now" gives the question the
   weight of a form; the answer costs nothing, and the interaction has to cost nothing too.
+
+## Round 2 — the changes of 2026-08-21 (`health-changes-2026-08-21.md`)
+
+Two searches for the two parts the brief makes hard: a file list where one page came back and one
+did not, and a state surfaced on the face of a collapsed row.
+
+### 3. Per-page outcome in one upload
+
+Query: *document upload history list where one uploaded file was rejected and another accepted,
+each file row showing its own status and date, with a replace file button on the rejected row* ·
+`web` · deep
+
+- [AWS — Upload: status](https://mobbin.com/screens/0dc7a3c3-26ec-45a8-8a79-69bb9fce85e8) —
+  **the row we take.** One line per file, and the status is a column of its own on every row, so a
+  batch of four is read as four outcomes and not as one. We keep that: each page of the record
+  carries its own state and its own date (H9), never a shared line under the two of them.
+- [Confluence — Version history](https://mobbin.com/screens/77180b0e-6b84-4e30-803f-de6961d99349) —
+  the actions live on the row that can take them (*Restore · Delete*), and the current row has
+  none. Our `Replace this page` sits only on the page that came back; the accepted page has no
+  control, because there is nothing to do to it.
+- [Remote — Expenses upload history](https://mobbin.com/screens/3c17965b-915a-4b56-9bc8-c4e4483af5bd)
+  — **rejected.** A batch with a *CONTAINS ERRORS* chip and counts, which is the shape we had: the
+  student is told one of the two failed and has to open something to learn which.
+
+### 4. The state on the face of a collapsed row
+
+Query: *account overview card showing an optional questionnaire row with a "not answered" status
+label, a note that it is optional, and a "see question" link* · `web` · deep
+
+- [Vanta — Finish starter guide](https://mobbin.com/screens/d6c8a960-3253-4ca4-b4aa-06e902fa0e4e)
+  — **the position we take.** A closed group says its state on its own face — *0 of 3 complete* —
+  at the trailing end, so nothing has to be opened to learn it. Our door row carries the answer
+  state the same way (H3); what it adds is the word *optional*, which none of these sources need
+  and ours cannot do without.
+- [Langdock — Get started](https://mobbin.com/screens/c69db9e3-a938-4c5f-9c86-652c6efc28a7) — the
+  same: collapsed *Set-up workspace · 0 / 6 · 0% done*. Confirms the pattern across two products.
+- [Portrait — Points tasks](https://mobbin.com/screens/21e83614-0f58-429c-a84b-8e811abb64e8) —
+  **rejected.** The optional task reads exactly like the required ones — same row, same button
+  weight — which is the collapse this section exists to prevent.

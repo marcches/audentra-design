@@ -4,36 +4,18 @@
 
 /* ── Health — ENR-206 ──
    Two cards that must not read as one thing. The record above is a card in the
-   ordinary construction: banded head, state chip, rows. Everything below is the
+   ordinary construction: banded head, state pill, the page's band, a foot — and
+   since the changes of 2026-08-21 the pages she sent are a card of their own
+   under it, one row per page. Everything below is the
    other silhouette — a question with no band at all, opening in prose and
    closing on a foot. Nothing here paints an edge, and nothing here is washed:
    the one colour this page spends is on the record while it is the one asking. */
 
-.record-card .status-chip {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
+/* The state in the record's head is `StatusPill` since the changes of
+   2026-08-21 — the product's one pill, in `patterns.css`. The head's grid
+   centres it where the chip sat. */
+.immunization-card .status-heading > .status-pill {
   align-self: center;
-  padding: var(--space-2) var(--space-5);
-  font-size: var(--fs-micro);
-  font-weight: var(--fw-semi);
-  white-space: nowrap;
-}
-.record-card .status-chip.stop {
-  border-color: color-mix(in srgb, var(--crimson) 30%, transparent);
-  background: color-mix(in srgb, var(--crimson) 9%, var(--surface));
-  color: var(--crimson);
-}
-.record-card .status-chip.act,
-.record-card .status-chip.wait,
-.record-card .status-chip.progress {
-  border-color: color-mix(in srgb, var(--amber) 34%, transparent);
-  background: var(--amber-soft);
-  color: color-mix(in srgb, var(--amber) 72%, var(--ink));
-}
-.record-card .status-chip.done {
-  border-color: color-mix(in srgb, var(--green) 30%, transparent);
-  background: var(--green-soft);
-  color: color-mix(in srgb, var(--green) 68%, var(--ink));
 }
 
 .status-icon.act {
@@ -116,8 +98,13 @@
   font-size: var(--fs-micro);
 }
 
-.record-rows {
-  margin-top: var(--space-9);
+/* One row per page she sent, in `RecordHistory` — a card of its own under the
+   record since the changes of 2026-08-21. The returned page is the one row that
+   carries a control, at the row's trailing end. */
+.record-row > .secondary-button {
+  flex: none;
+  align-self: center;
+  margin-left: auto;
 }
 .record-row {
   align-items: flex-start;
@@ -145,22 +132,6 @@
   color: var(--muted);
   font-size: var(--fs-meta);
 }
-/* Every page she sent, named — so "did they all go?" is answerable. */
-.record-files {
-  flex-direction: column;
-  gap: var(--space-1);
-  margin-top: var(--space-3);
-  display: flex;
-}
-.record-files span {
-  color: var(--muted);
-  font-size: var(--fs-micro);
-}
-.record-files i {
-  font-style: normal;
-  opacity: .7;
-}
-
 .record-foot {
   display: flex;
   flex-wrap: wrap;
@@ -259,6 +230,16 @@
   }
   .record-foot .primary-button {
     justify-content: center;
+  }
+  /* The replace control drops under the page's name, full width, as the
+     foot's button does. */
+  .record-row {
+    flex-wrap: wrap;
+  }
+  .record-row > .secondary-button {
+    flex: 1 0 100%;
+    justify-content: center;
+    margin-left: 0;
   }
 }
 

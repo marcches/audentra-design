@@ -1,17 +1,29 @@
 import Icon from '../../design-system/Icon.jsx';
+import ActionBand from '../../design-system/patterns/ActionBand.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
+import StatusPill from '../../design-system/primitives/StatusPill.jsx';
 import GateChip from '../registration/GateChip.jsx';
 import { configFor, isGating } from '../registration/logic.js';
-import { filesLabel, officeOf, stateInfo, stateOf } from '../documents/logic.js';
+import { officeOf, stateInfo, stateOf } from '../documents/logic.js';
 
 /**
- * The immunization record, in the section that owns its door — ENR-209.
+ * The immunization record, in the section that owns its door — ENR-209, and
+ * the changes of 2026-08-21.
  *
  * It is the **same object** My Documents renders, read through the same helpers,
  * so the two screens cannot describe one record differently. What differs is the
  * depth: My Documents lists six requirements and says one line about each; this
  * card has one requirement and room to show what it is holding up, what is
- * accepted, and every file of every attempt.
+ * accepted, and what would fix what came back. The pages she sent have a card
+ * of their own under this one since the changes of 2026-08-21 — `RecordHistory`
+ * — because a returned page has to be identifiable from its row.
+ *
+ * The head says the state once, as a pill, and the line under it says the
+ * consequence — H8's order, the same order the panel uses. The band under the
+ * head is the page's pointer (H6): its label only; the button in the foot is
+ * the action, and a band does not carry a second button for the card's own
+ * action. The gate chip stays — ENR-214 AC 1, the same mark on every surface —
+ * without its detail, which the pill already says.
  *
  * `in review` never appears alone. It carries the office and how long that
  * office usually takes, because a wait with a duration reads as pending and a
@@ -33,6 +45,7 @@ export default function RecordCard({
   task,
   previewState = 'ready',
   unavailable,
+  band = null,
   onOpen,
   onRetry,
 }) {
@@ -64,12 +77,12 @@ export default function RecordCard({
   const office = officeOf(requirement);
   const state = stateOf(requirement);
   const info = stateInfo(requirement);
-  const submissions = [...(requirement.submissions ?? [])].reverse();
   const decision = requirement.submissions?.at(-1)?.decision ?? null;
   const asking = info.holder === 'you';
+  const gating = isGating(requirement.id, configFor(previewState));
 
   return (
-    <section className={`section-card record-card ${asking ? 'asking' : ''}`} aria-labelledby="record-title">
+    <section className={`section-card immunization-card ${asking ? 'asking' : ''}`} aria-labelledby="record-title">
       <div className="status-heading">
         <span className={`status-icon ${asking ? info.tone : 'docs'}`}>
           <Icon name={state === 'accepted' ? 'check' : 'file'} size={18} />
@@ -78,14 +91,19 @@ export default function RecordCard({
           <h2 id="record-title">{requirement.title}</h2>
           <p>Health Services reviews it and decides.</p>
         </div>
-        <span className={`status-chip ${info.tone}`}>{info.label}</span>
+        <StatusPill tone={info.tone} pulse={state === 'checking'}>
+          {info.label}
+        </StatusPill>
       </div>
+
+      {band ? <ActionBand icon={band.icon} label={band.label} /> : null}
 
       {/* ENR-214 AC 1. The record's own entry has said "Class registration opens
           once your record clears" since ENR-206 with nothing reading it; the
-          chip is that sentence, from configuration, on every surface at once. */}
-      {isGating(requirement.id, configFor(previewState)) && state !== 'accepted' && (
-        <GateChip state={state} since={requirement.submissions?.at(-1)?.sent ?? null} />
+          chip is that sentence, from configuration, on every surface at once.
+          Its detail is off here: the pill in the head already says the state. */}
+      {gating && state !== 'accepted' && (
+        <GateChip state={state} since={requirement.submissions?.at(-1)?.sent ?? null} detail={false} />
       )}
 
       <div className="record-state">
@@ -106,13 +124,15 @@ export default function RecordCard({
         </p>
 
         {/* The date the checklist carries, read live rather than copied, and
-            only where it means something: on the thing that is still asking. */}
+            only where it means something: on the thing that is still asking.
+            Date plus days remaining, the guide's format (H10) — the days are
+            the task's, so this line and My Enrollment's cannot disagree. */}
         {asking && task?.due && (
           <p className="record-due">
-            {/* The gate clause left this line when the chip above took it —
-                it was hard-coded here, and which requirements gate is
-                configuration (AC 7). */}
-            <Icon name="calendar" size={14} /> Health Services asks for it by {task.dueFull ?? task.due}
+            <Icon name="calendar" size={14} /> Health Services asks for it by {task.due}
+            {typeof task.daysLeft === 'number' ? (
+              <b>· {task.daysLeft} days</b>
+            ) : null}
           </p>
         )}
       </div>
@@ -134,43 +154,6 @@ export default function RecordCard({
           <p className="returned-by">
             {office.name} · {decision.on}
           </p>
-        </div>
-      )}
-
-      {submissions.length > 0 && (
-        <div className="card-rows record-rows">
-          <p className="rows-caption">Everything you have sent</p>
-          {submissions.map((submission) => (
-            <div className="record-row" key={submission.id}>
-              <span className="record-row-mark" aria-hidden="true">
-                <Icon name="file" size={16} />
-              </span>
-              <span className="record-row-body">
-                <strong>{filesLabel(submission)}</strong>
-                <span>
-                  Sent {submission.sent}
-                  {submission.decision
-                    ? submission.decision.outcome === 'accepted'
-                      ? ` · accepted ${submission.decision.on}`
-                      : ` · came back ${submission.decision.on}`
-                    : submission.checking
-                      ? ' · being checked'
-                      : ` · with ${office.name}`}
-                </span>
-                {/* Every page she sent, named. "Did they all go?" has to be
-                    answerable from the screen — ENR-209 Scenario 5. */}
-                {(submission.files?.length ?? 0) > 1 && (
-                  <span className="record-files">
-                    {submission.files.map((file) => (
-                      <span key={file.name}>
-                        {file.name} <i>{file.size}</i>
-                      </span>
-                    ))}
-                  </span>
-                )}
-              </span>
-            </div>
-          ))}
         </div>
       )}
 

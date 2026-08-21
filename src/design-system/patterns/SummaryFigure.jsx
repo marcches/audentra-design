@@ -5,8 +5,10 @@ import { InfoTip } from '../primitives/Tooltip.jsx';
  *
  * ## Which sections get a panel at all — Jam of 2026-08-21
  *
- * Four: My Enrollment, My Documents, My Classrooms, My Financials. A section
- * qualifies when **both** cells are true of it — a figure that is the section's
+ * Four, then five: My Enrollment, My Documents, My Classrooms, My Financials —
+ * and Health again since the evening of 2026-08-21, when the page became two
+ * things (a record and a question) and the panel stopped being the one card
+ * read twice. A section qualifies when **both** cells are true of it — a figure that is the section's
  * standing, and a person who owns the subject — and five of the nine that had
  * one failed that test:
  *

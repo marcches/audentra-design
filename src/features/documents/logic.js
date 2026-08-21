@@ -36,7 +36,9 @@ import { offices } from '../help/data.js';
 
 export const DOCUMENT_STATES = {
   needed: {
-    label: 'Not sent yet',
+    // The pill says the state in one word; the line under it says the
+    // consequence — the Health changes of 2026-08-21, H8, for every surface.
+    label: 'Not sent',
     tone: 'act',
     holder: 'you',
     // Names the office, so a card where every row is `needed` is not six
@@ -49,12 +51,14 @@ export const DOCUMENT_STATES = {
     label: 'Sent',
     tone: 'progress',
     holder: 'nobody',
+    consequence: 'Aster is checking it. Nothing for you to do.',
     line: () => 'Aster is checking it. You can close this page. It keeps going.',
   },
   'in-review': {
     label: 'In review',
     tone: 'wait',
     holder: 'aster',
+    consequence: 'Nothing for you to do while they have it',
     // ENR-158 AC 4: name who holds the next step, and how long it usually takes.
     line: (office) => `With ${office.name} · usually ${office.reply}`,
   },
@@ -65,7 +69,9 @@ export const DOCUMENT_STATES = {
     line: () => 'Accepted. Nothing more is needed here.',
   },
   'changes-requested': {
-    label: 'Changes requested',
+    // The student's word for a *changes requested* decision — CONTEXT.md,
+    // Decision. The domain term is unchanged; this is the screen's.
+    label: 'Came back',
     tone: 'stop',
     holder: 'you',
     line: (office) => `Sent back by ${office.name}`,
@@ -87,6 +93,26 @@ export function latestSubmission(requirement) {
 export function latestDecision(requirement) {
   const last = latestSubmission(requirement);
   return last?.decision ?? null;
+}
+
+/**
+ * What one page of a submission is in — CONTEXT.md, Decision, widened
+ * 2026-08-21 (Health changes, H9). A decision on a several-page submission may
+ * name its pages: `decision.pages` maps a file name to `accepted` or
+ * `changes-requested`, and a page it does not name takes the submission's
+ * outcome. Before any decision the page is wherever the submission is.
+ */
+export function fileOutcome(submission, file) {
+  const decision = submission?.decision;
+  if (!decision) return null;
+  return decision.pages?.[file.name] ?? decision.outcome;
+}
+
+/** The pages a decision sent back — the ones a replacement is for. */
+export function returnedFiles(submission) {
+  return (submission?.files ?? []).filter(
+    (file) => fileOutcome(submission, file) === 'changes-requested',
+  );
 }
 
 /**

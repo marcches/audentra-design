@@ -41,8 +41,15 @@ import Icon from '../Icon.jsx';
  * `count` is what stands behind the door today. It is optional and it is never
  * invented: a door with nothing outstanding shows no chip at all, because a
  * zero in a pill is an obligation drawn where there is none.
+ *
+ * `status` is the state of what stands behind the door, on the face of the row
+ * — a `StatusPill` and, after it, the consequence in words, in that order and
+ * in the same place the record card says its own (the Health changes of
+ * 2026-08-21, H3/H8). It is a line under the note, not a chip in the trailing
+ * cell, so the pill and its sentence are read together. A door with no state to
+ * say passes nothing and the line is not drawn.
  */
-export default function EntryRow({ icon, title, note, count = 0, where, href, onOpen }) {
+export default function EntryRow({ icon, title, note, status, count = 0, where, href, onOpen }) {
   const inside = (
     <>
       <span className="entry-icon" aria-hidden="true">
@@ -51,6 +58,7 @@ export default function EntryRow({ icon, title, note, count = 0, where, href, on
       <span className="entry-copy">
         <strong>{title}</strong>
         <small>{note}</small>
+        {status ? <span className="entry-status">{status}</span> : null}
       </span>
       <span className="entry-where">
         {count > 0 ? <span className="status-count">{count}</span> : null}

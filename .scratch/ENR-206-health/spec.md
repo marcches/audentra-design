@@ -182,3 +182,98 @@ printing the requirement's future-tense `unblocks` line about registration that 
 - [ ] A failed send creates nothing and says so.
 - [ ] Edward can speak about the record and cannot speak about the answer.
 - [ ] `npm run build` clean; checked wide, narrow and keyboard-only.
+
+---
+
+## Changes of 2026-08-21 — `health-changes-2026-08-21.md`
+
+A changes document arrived the evening of 2026-08-21 (archived beside this file), read off the
+deployed build of that afternoon — between 13:28 (the panel removal) and 15:36 (the office rename),
+so "Aster University Health Services" and "no card under the banner" are both what the author saw.
+Twelve items on Health (H1–H12), final copy (§7), and a §10 of changes to other screens. Grilled
+with Marco the same evening in two rounds; every recommendation below was accepted as written.
+
+### Read against the tree
+
+Six items met a decision taken the same day, and each was settled explicitly rather than by the
+brief's "My Enrollment wins" rule:
+
+| Brief | Same-day decision it met | Settled |
+| --- | --- | --- |
+| H1/10.1 white card on Health | Jam 13:28: four sections have a panel; Health lost it as "the page read twice" | **Panel returns to Health** — the page now carries two things, so the panel summarises two. Four becomes five; Appointments/Housing/Profile/Help stay without, and 10.4 is recorded as an open conflict, not resolved here. |
+| H3/H12 accessibility as an inline accordion | ADR-0003, 3rd amendment: the question opens the side panel, the portal's one way of opening what lives in a page | **Drawer stays.** The `EntryRow` carries the answer state on its face and the label *See the question* / *See your answer*. |
+| H6 case 2, a band pointing at the optional question | ADR-0001: no badge, no count | **Accepted as written.** The glossary says only *never answered* is an open question; case 2 fires only for it, once, with *optional* in its own label. Not a count. |
+| H8 vocabulary | `DOCUMENT_STATES` is shared with My Documents so one record cannot be described two ways | **Portal-wide, in the helper.** `NOT SENT · SENT · IN REVIEW · ACCEPTED · CAME BACK`; glossary term stays *changes requested*; `checking` (unseen by the brief) gets `SENT` + "Aster is checking it. Nothing for you to do." |
+| H9 per-file state | `CONTEXT.md`: the pages of one submission are accepted or sent back together | **Model widened** (CONTEXT.md, Submission/Decision): a decision may fall page by page; the replacement is a new submission carrying only the returned page. No ADR — small and reversible. |
+| H5 fourth rail card | ADR-0003, 3rd amendment took Accessibility out of the rail | **Card returns**, named from `offices.accessibility` (never "Aster University Accessibility Services" — one name per office). |
+
+Also settled: H7's history line would be false (onboarding's health step is the question, not the
+record — `HealthStep.jsx`), and `ready`/`empty` differ by the answer, which H3 now surfaces, so no
+line is added; H10's "7 days" was read on the 21st — `PORTAL_TODAY` is the 20th, the task says 8,
+and the live value is used; H12's "H3 at `--fs-h`, weight 400" is My Degree's D14 vocabulary —
+every card head is `CardHead` (h2, `--fs-h2`, semi) since 14:44 and Health keeps it.
+
+### How it is built
+
+- **Panel** (`SummaryFigure` + `AdvisorBar`): label *Immunization record*; figure = the state pill
+  + its consequence on one line (H8's order, in both places); line under = the deadline with days
+  while the record is hers, the helper's line while it is Aster's, nothing when accepted;
+  `partial` says the record couldn't be read and claims no state. **Foot** (`notice`): a quiet
+  `Notice`, no action — *Accessibility question: not answered · Optional. Nothing happens until you
+  answer.* / *Accessibility question: answered.* Not a figure, not a badge, not a count.
+- **Advisor**: Tomás Okafor, `Your enrollment advisor · Admissions Office`, and `AdvisorBar` gains
+  an optional `note` — the scope line from §7.1. The panel's height is checked against the other
+  four.
+- **Band** (`ActionBand`): label only, never a second button for the card's own action. Case 1 sits
+  under the record card's head; case 2 sits above the door row. The record's foot keeps the
+  primary; the returned page's row carries `Replace this page` (secondary). §7.5's "Replace that
+  page" has no slot and is not rendered.
+- **One pill**: `StatusPill` primitive (`patterns.css`, styleguide), uppercase, tones `act · wait ·
+  progress · done · stop · quiet`. Health's `.status-chip` and My Enrollment's `.status-pill` (*In
+  review*) migrate to it; My Degree's `.requirement-status` is the same shape and is left for its
+  own pass. The one visible change on My Enrollment is the pill's case.
+- **History**: *Everything you have sent* becomes its own `Card` under the record with a status
+  `CardHead` handle — the product's one disclosure — closed on load except when the record came
+  back; one row per page, each with its own state and date; the returned page's row carries the
+  replace action; not rendered while nothing has been sent.
+- **Rail**: *How long a record review takes*, *Who reviews your record*, *What counts as proof*,
+  and a fourth, *Who handles accessibility*, from `offices.accessibility`, in every state.
+- **Copy**: §7 as written, with the three exceptions above (days live, no history line, office
+  name from data).
+- **A class-name collision, found on screen**: `classrooms.css` (My Degree, the same day) styles a
+  generic `.record-card` — green-washed gradient, green border, its own padding — for the rail's
+  official-record card, and Health's record card carried the same class since ENR-206, so the
+  immunization card came out green-washed under a purple band ("cor tá com contraste estranho" —
+  Marco, on the live screen). Health's card is `.immunization-card` now; the generic name in
+  `classrooms.css` is left for the My Degree session to rename (`.official-record-card`), and is
+  the kind of feature-file rule the design workflow warns about.
+- **The band under a head** had no rule of its own outside `.card-rows` — the docblock promised
+  one and the styleguide's own sample floated the band inside the card's padding. `patterns.css`
+  now tucks it under the head, gives content after it (not rows) the card's breathing room, and
+  lets a band that opens a headless card take the card's top corners.
+- **The advisor's scope line runs under the whole bar**, not in the copy column: in the column it
+  wrapped to two lines and the bar outgrew the figure cell (89 against 78), so Health's panel was
+  125px against everyone's 114. Under the bar it is one line, the wrapped bar's row gap is two
+  pixels, and the panel measures 114 on Health like the other four.
+
+### Not shipped here — §10
+
+Recorded in the other screens' specs as pending, for their own sessions: 10.3 (its premise —
+no academic advisor — was reverted at 15:58: the bar seats Ines Barros, the course advisor; two
+options left open there), 10.5 (T5 already struck; the button inversion meets *at most one primary
+per card*), 10.6 and 10.7 (real, not done), 10.9–10.11 (new My Degree work). 10.8 is already the
+behaviour. 10.1/10.2 are what this card implements.
+
+### Done when
+
+- [ ] Panel present in every state, stating the record's state and the question's state; advisor with the scope line; height equal to the other four panels.
+- [ ] `EntryRow` shows the answer state and *See the question* / *See your answer*; a student who never opens it knows the question exists and whether she answered.
+- [ ] Banner names both things; no sentence implies one item.
+- [ ] Rail: four cards, each about one of the two things; card 4 in every state.
+- [ ] Band: case 1 in `ready`, `empty`, `health-returned`; none in `health-settled`; case 2 only after a send from `empty` lands in review; never a second button.
+- [ ] Pills from H8's table everywhere the record or the answer shows a state; My Enrollment's *In review* is the same primitive.
+- [ ] `health-returned`: the page that came back is identifiable from its row, with its own date and *Replace this page*.
+- [ ] Deadline reads *Aug 28 · 8 days* in the panel and on the record.
+- [ ] History card closed on load except when the record came back; Enter/Space toggle; `aria-expanded`/`aria-controls`.
+- [ ] `send-fails`, `partial`, `loading`, `error` checked, not assumed.
+- [ ] `npm run build` clean; My Enrollment before/after capture at 1440 and 390 differs only in the pill's case; every state at 1440 and 390; keyboard.

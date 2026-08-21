@@ -691,6 +691,7 @@ export default function App() {
           onToast={pushToast}
           onOverlay={setSectionOverlay}
           onRetry={() => choosePreview('ready')}
+          onContact={contactAdvisor}
         />
       );
     }
