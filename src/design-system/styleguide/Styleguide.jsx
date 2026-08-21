@@ -41,7 +41,8 @@ const COLOUR_GROUPS = [
   {
     title: 'On the ink plane',
     note: 'What an anchor card is allowed to use. Eight rails each worked these out again before they had names.',
-    tokens: ['on-ink', 'on-ink-muted'],
+    tokens: ['on-ink', 'on-ink-muted', 'on-ink-line'],
+    over: 'ink',
   },
   {
     title: 'Lines',
@@ -83,6 +84,12 @@ const COLOUR_GROUPS = [
     note: 'One icon tile uses this and nothing else does. It is on this page so it can be decided on rather than quietly spread. Nothing new may use it.',
     tokens: ['teal', 'teal-line', 'teal-soft'],
   },
+  {
+    title: 'Translucent — the two glass surfaces and the scrim',
+    note: 'The only tokens with alpha, so each swatch sits half on paper and half on ink: an alpha you cannot judge against both is an alpha nobody can judge. `--glass` was being retyped as a raw #ffffffeb for as long as it had no swatch here.',
+    tokens: ['glass', 'scrim'],
+    alpha: true,
+  },
 ];
 
 const SPACE = [
@@ -110,6 +117,68 @@ const RADIUS = [
   ['radius-panel', 'a drawer, a modal, a window'],
   ['radius-pill', 'a pill'],
   ['radius-round', 'a circle: an avatar, an orbit ring, a dot'],
+];
+
+const WEIGHT = [
+  ['fw-regular', 'running copy, and everything not asking to be read first'],
+  ['fw-medium', 'a link, and the label on a control'],
+  ['fw-semi', 'a text button, a count beside a heading'],
+  ['fw-bold', 'the answer in a row, a figure, the page’s h1'],
+  ['fw-heavy', 'exists because 9px uppercase needs more than bold to hold its colour — not a sixth heading level'],
+];
+
+const TRACKING = [
+  ['ls-hero', 'the h1, and only the h1'],
+  ['ls-tight', 'a figure, and the heading that names a page section'],
+  ['ls-snug', 'a card’s heading, and the answer in a row'],
+  ['ls-caps', 'every uppercase label — uppercase always opens up'],
+  ['ls-wide', 'the mono eyebrow on the hero band, and nothing else'],
+];
+
+const LEADING = [
+  ['lh-tight', 'figures, and the h1'],
+  ['lh-heading', 'a heading that runs to two lines'],
+  ['lh-body', 'everything you actually read'],
+];
+
+const FAMILY = [
+  ['font-geist-sans', 'the product'],
+  ['font-geist-mono', 'a token name, a figure that must not shift, the hero eyebrow'],
+];
+
+const CONSTANT = [
+  ['hero-gap', 'what every section gets under the hero band'],
+  ['hero-tuck', 'the extra the summary panel eats into the band, and only when it follows it directly'],
+  ['band-outdent', 'how far the band reaches past the shared column on each side'],
+  ['panel-pad', 'the summary panel’s own padding'],
+  ['safe-bottom', 'the corner Edward owns. No page may put a primary action inside it'],
+  ['toast-bottom', 'where a toast sits'],
+];
+
+const DEPTH = [
+  ['shadow-soft', 'a panel that floats over the page rather than sitting on it'],
+  ['shadow-card', 'a card raised off the canvas — the one every card uses'],
+  ['shadow-float', 'a window: the info modal, and Edward'],
+];
+
+const MOTION = [
+  ['dur-fast', 'a control answering a pointer'],
+  ['dur-base', 'a panel arriving or leaving'],
+  ['ease', 'the one curve, and everything that moves uses it'],
+];
+
+const LAYER = [
+  ['z-topbar', 'the bar at the top of the page'],
+  ['z-nav-scrim', 'what dims the page under the nav drawer'],
+  ['z-sidebar', 'the nav itself'],
+  ['z-tooltip', 'a term’s bubble'],
+  ['z-popover-scrim', 'what closes a popover when you click past it'],
+  ['z-popover', 'the topbar’s popovers'],
+  ['z-edward', 'the assistant: over the page, under anything modal'],
+  ['z-scrim', 'what dims the page under a drawer'],
+  ['z-panel', 'the drawer itself'],
+  ['z-modal', 'a modal, which owns the screen'],
+  ['z-toast', 'the one thing allowed over a modal'],
 ];
 
 const TYPE = [
@@ -157,32 +226,67 @@ function Section({ id, title, children, rule }) {
   );
 }
 
-function Swatches({ group }) {
-  const values = useTokens(group.tokens);
+const bar = (token) => (
+  <span className="sg-bar" style={{ width: `var(--${token})` }} aria-hidden="true" />
+);
+
+function Block({ title, note, children }) {
   return (
     <div className="sg-block">
-      <h3>{group.title}</h3>
-      <p className="sg-note">{group.note}</p>
-      <ul className="sg-swatches">
+      <h3>{title}</h3>
+      {note ? <p className="sg-note">{note}</p> : null}
+      {children}
+    </div>
+  );
+}
+
+/**
+ * A token, its live value, a specimen, and what it is for.
+ *
+ * Space was the only scale that had this, so it was the only scale anyone
+ * could read. Weight, tracking, leading, the frame constants, depth, motion
+ * and the layers are the same four things and now say them the same way.
+ */
+function ScaleList({ rows, specimen, className }) {
+  const values = useTokens(rows.map(([token]) => token));
+  return (
+    <ul className={['sg-scale', className].filter(Boolean).join(' ')}>
+      {rows.map(([token, note]) => (
+        <li key={token}>
+          <code>--{token}</code>
+          <small>{values[token] || '—'}</small>
+          {specimen ? specimen(token) : null}
+          <p>{note}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Swatches({ group }) {
+  const values = useTokens(group.tokens);
+  const classes = ['sg-swatches', group.over === 'ink' && 'over-ink', group.alpha && 'alpha']
+    .filter(Boolean)
+    .join(' ');
+  return (
+    <Block title={group.title} note={group.note}>
+      <ul className={classes}>
         {group.tokens.map((token) => (
           <li key={token}>
-            <span
-              className="sg-chip-colour"
-              style={{ background: `var(--${token})` }}
-              aria-hidden="true"
-            />
+            <span className="sg-chip-frame" aria-hidden="true">
+              <span className="sg-chip-colour" style={{ background: `var(--${token})` }} />
+            </span>
             <code>--{token}</code>
             <small>{values[token] || '—'}</small>
           </li>
         ))}
       </ul>
-    </div>
+    </Block>
   );
 }
 
 export default function Styleguide() {
   const [drawer, setDrawer] = useState(false);
-  const spaceValues = useTokens(SPACE.map(([t]) => t));
   const radiusValues = useTokens(RADIUS.map(([t]) => t));
   const typeValues = useTokens(TYPE.map(([t]) => t));
 
@@ -211,6 +315,16 @@ export default function Styleguide() {
           {COLOUR_GROUPS.map((group) => (
             <Swatches key={group.title} group={group} />
           ))}
+
+          <Block
+            title="The one gradient"
+            note="The primary action’s surface. Name this; never the two stops. It was written out three times — the primary button, the student’s bubble and the send control — which is how a “same” button ends up not being one."
+          >
+            <div className="sg-gradient" aria-hidden="true" />
+            <p className="sg-gradient-name">
+              <code>--grad-purple</code>
+            </p>
+          </Block>
         </Section>
 
         <Section
@@ -218,16 +332,14 @@ export default function Styleguide() {
           title="Space"
           rule="Thirteen steps. The audit found every whole pixel from 1 to 20 in use as a gap — a flat distribution over twenty values, which is the absence of a scale rather than a scale with exceptions."
         >
-          <ul className="sg-scale">
-            {SPACE.map(([token, note]) => (
-              <li key={token}>
-                <code>--{token}</code>
-                <small>{spaceValues[token] || '—'}</small>
-                <span className="sg-bar" style={{ width: `var(--${token})` }} aria-hidden="true" />
-                <p>{note}</p>
-              </li>
-            ))}
-          </ul>
+          <ScaleList rows={SPACE} specimen={bar} />
+
+          <Block
+            title="Layout constants — not steps on the scale"
+            note="Facts about the page frame rather than a step you may pick from. A section that needs a gap reaches for a step above; nothing new should reach for one of these."
+          >
+            <ScaleList rows={CONSTANT} specimen={bar} className="wide" />
+          </Block>
         </Section>
 
         <Section
@@ -250,7 +362,7 @@ export default function Styleguide() {
         <Section
           id="sg-type"
           title="Type"
-          rule="Sizes carry a role, not a number. Pick by what the text is. The greeting must never be larger than the figure it introduces."
+          rule="Sizes carry a role, not a number. Pick by what the text is. The greeting must never be larger than the figure it introduces. Weight, tracking and leading are chosen the same way — and there is no sixth of any of them."
         >
           <ul className="sg-type">
             {TYPE.map(([token, note]) => (
@@ -262,6 +374,98 @@ export default function Styleguide() {
               </li>
             ))}
           </ul>
+
+          <Block title="Weight" note="Five. The fifth exists because 9px uppercase needs more than bold to hold its colour.">
+            <ScaleList
+              rows={WEIGHT}
+              className="wide"
+              specimen={(token) => (
+                <span className="sg-weight-demo" style={{ fontWeight: `var(--${token})` }}>
+                  The answer
+                </span>
+              )}
+            />
+          </Block>
+
+          <Block title="Tracking" note="It follows size: the bigger the type the tighter it sets, and uppercase always opens up.">
+            <ScaleList
+              rows={TRACKING}
+              className="wide"
+              specimen={(token) => (
+                <span className="sg-tracking-demo" style={{ letterSpacing: `var(--${token})` }}>
+                  The year ahead
+                </span>
+              )}
+            />
+          </Block>
+
+          <Block title="Leading" note="Three: figures, headings, and everything you read.">
+            <ScaleList
+              rows={LEADING}
+              className="wide"
+              specimen={(token) => (
+                <span className="sg-leading-demo" style={{ lineHeight: `var(--${token})` }}>
+                  Two lines, so that the leading is something you can actually see
+                </span>
+              )}
+            />
+          </Block>
+
+          <Block title="Families" note="Two, and no external font request. The mono is for what must not shift under you.">
+            <ScaleList
+              rows={FAMILY}
+              className="wide"
+              specimen={(token) => (
+                <span className="sg-family-demo" style={{ fontFamily: `var(--${token})` }}>
+                  The year, and what still needs you
+                </span>
+              )}
+            />
+          </Block>
+        </Section>
+
+        <Section
+          id="sg-depth"
+          title="Depth"
+          rule="Three planes, so three shadows. A raw shadow in a rule is a decision about the whole product taken locally — the same bug as a raw hex, and harder to see."
+        >
+          <ScaleList
+            rows={DEPTH}
+            className="sg-depth wide"
+            specimen={(token) => (
+              <span className="sg-depth-tile" style={{ boxShadow: `var(--${token})` }} aria-hidden="true" />
+            )}
+          />
+        </Section>
+
+        <Section
+          id="sg-motion"
+          title="Motion"
+          rule="Two durations and one curve. Hover a row to watch it: fast is a control answering a pointer, base is a panel arriving. A third duration is one nobody decided on."
+        >
+          <ScaleList
+            rows={MOTION}
+            className="sg-motion wide"
+            specimen={(token) => (
+              <span
+                className="sg-motion-demo"
+                style={
+                  token === 'ease'
+                    ? { transitionTimingFunction: `var(--ease)` }
+                    : { transitionDuration: `var(--${token})` }
+                }
+                aria-hidden="true"
+              />
+            )}
+          />
+        </Section>
+
+        <Section
+          id="sg-layers"
+          title="Layers"
+          rule="The product’s stacking order, named. A raw z-index in a rule is the same bug as a raw hex, and the only way to sit between two of these is to add a name to the list."
+        >
+          <ScaleList rows={LAYER} className="sg-layers wide" />
         </Section>
 
         <Section

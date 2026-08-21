@@ -90,12 +90,39 @@
   display: flex;
 }
 
-.sg-chip-colour {
-  border: 1px solid var(--line-strong);
+/* The chip sits in a frame so a translucent token can be read: `--glass` over
+   paper is paper, and `--scrim` over ink is ink. Half of each, and both. */
+.sg-chip-frame {
   border-radius: var(--radius-chip);
   flex: none;
   width: var(--space-11);
   height: var(--space-11);
+}
+
+.sg-swatches.over-ink .sg-chip-frame {
+  background: var(--surface-ink);
+}
+
+.sg-swatches.alpha .sg-chip-frame {
+  background: linear-gradient(90deg, var(--surface) 50%, var(--surface-ink) 50%);
+}
+
+.sg-chip-colour {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-chip);
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sg-gradient {
+  background: var(--grad-purple);
+  border-radius: var(--radius-tile);
+  height: var(--space-12);
+}
+
+.sg-gradient-name {
+  margin: var(--space-3) 0 0;
 }
 
 .sg-swatches code {
@@ -150,6 +177,61 @@
   border-radius: var(--radius-xs);
   flex: none;
   height: var(--space-5);
+}
+
+/* `--z-popover-scrim` is seventeen characters; nine were only ever enough for
+   `--space-nn`. */
+.sg-scale.wide code {
+  width: 19ch;
+}
+
+.sg-scale.wide small {
+  width: 24ch;
+}
+
+.sg-weight-demo,
+.sg-tracking-demo,
+.sg-family-demo {
+  flex: none;
+  width: 17rem;
+  font-size: var(--fs-h4);
+}
+
+.sg-leading-demo {
+  color: var(--ink-2);
+  flex: none;
+  width: 17rem;
+  font-size: var(--fs-copy);
+}
+
+.sg-depth li {
+  padding: var(--space-6) 0;
+}
+
+/* Card-shaped on purpose. `--radius-card` on anything near-square rounds to a
+   disc — 18px of radius leaves 8px of straight edge on a 44px box — and a
+   specimen for depth that is the wrong shape teaches the wrong thing. */
+.sg-depth-tile {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  flex: none;
+  width: 17rem;
+  height: var(--space-13);
+}
+
+/* The token is the specimen: hover the row and the dot runs on that duration,
+   on the one curve. */
+.sg-motion-demo {
+  background: var(--purple);
+  border-radius: var(--radius-pill);
+  flex: none;
+  width: var(--space-11);
+  height: var(--space-5);
+  transition: transform var(--dur-base) var(--ease);
+}
+
+.sg-motion li:hover .sg-motion-demo {
+  transform: translateX(var(--space-13));
 }
 
 .sg-scale p,
