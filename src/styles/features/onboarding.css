@@ -5,82 +5,86 @@
  * is what a newly admitted student walks through once, before the portal
  * exists for her.
  *
- * The rail is **the band**. The system's rule is that the purple band is the
- * only saturated surface in the product; onboarding has no hero, so its band
- * runs down the left at wide widths and lies across the top below 1060 — which
- * is what a hero already is. Same gradient, same ink roles, no second saturated
- * surface, no new colour.
+ * The frame, since 2026-08-21, is the approved surface's: a paper rail
+ * (`StepRail`, in `patterns.css`) beside a main column that reads at
+ * `--flow-column`, with a step panel riding beside the cards when the column
+ * is wide enough for both. There is no top bar — the preview control and the
+ * one way out sit in a line above the question — and nothing here is
+ * saturated but the primary button. What this file holds is the composition;
+ * every shape in it is the design system's.
  * ==========================================================================*/
 
 .onboarding {
   background: var(--canvas);
-  flex-direction: column;
+  align-items: stretch;
   min-height: 100vh;
   display: flex;
 }
 
-/* --- the top bar: a mark, the demo control, and one way out --- */
-
-.onboarding-bar {
-  border-bottom: 1px solid var(--line);
-  background: var(--surface);
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-6);
-  padding: var(--space-6) var(--space-11);
-  display: flex;
-  position: sticky;
-  top: 0;
-  z-index: var(--z-topbar);
-}
-
-.onboarding-mark {
-  color: var(--ink);
-  letter-spacing: var(--ls-snug);
-  align-items: center;
-  gap: var(--space-4);
-  margin: 0;
-  font-size: var(--fs-body);
-  font-weight: var(--fw-bold);
-  display: flex;
-}
-
-.onboarding-mark svg {
-  color: var(--purple);
-}
-
-.onboarding-bar-end {
-  align-items: center;
-  gap: var(--space-8);
-  display: flex;
-}
-
-.onboarding-body {
-  flex: 1;
-  align-items: stretch;
-  display: flex;
-}
-
 /* ============================================================================
- * The step column — one question at a time.
+ * The main column — one question at a time, and the panel that reads it back.
  * ==========================================================================*/
 
-.step-column {
+/* The column is the container the grid is measured against: two columns when
+   the content column, the gap and the panel's minimum fit side by side, one
+   column below that. A container query, not a fifth viewport breakpoint — the
+   summary panel's 940 is the precedent. */
+.flow-page {
+  container: flow / inline-size;
   flex: 1;
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: var(--space-12) var(--space-11) var(--space-13);
+  min-width: 0;
+  padding: var(--space-12) var(--space-13) var(--space-13);
 }
 
+.flow-measure {
+  max-width: calc(var(--flow-column) + var(--space-10) + var(--flow-aside));
+  margin: 0 auto;
+}
+
+/* --- the line above the question: the demo control, and one way out --- */
+
+.flow-topline {
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--space-8);
+  margin-bottom: var(--space-10);
+  display: flex;
+}
+
+/* `.text-button` is a bare button in `patterns.css`; anything in this flow that
+   carries an icon has to say how the icon sits beside the word. */
+.onboarding .text-button {
+  align-items: center;
+  gap: var(--space-3);
+  display: inline-flex;
+}
+
+/* A sentence about the flow, and the card that stands for a frame that could
+   not be read, both read at the content column's width — not across the panel's
+   too, which put the dismiss forty characters from the sentence it dismisses. */
+.flow-measure > .notice,
+.flow-measure > .state-card,
+.flow-measure > .step-skeleton {
+  max-width: var(--flow-column);
+}
+
+/* --- the question --- */
+
 .step-head {
+  max-width: var(--flow-column);
   margin-bottom: var(--space-10);
 }
 
 /* ENR-151 AC 5 — the position is here as well as in the rail, because the rail
-   folds away below 1060 and "at all times" means at all times. */
+   folds away below 1060 and "at all times" means at all times. Set the way the
+   band's eyebrow is: mono, tracked, small. */
 .step-head .eyebrow {
+  color: var(--muted);
+  letter-spacing: var(--ls-wide);
   margin: 0;
+  font-family: var(--font-geist-mono);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
 }
 
 .step-head h1 {
@@ -94,7 +98,7 @@
 
 .step-head h1:focus-visible {
   outline: 2px solid var(--purple);
-  outline-offset: 6px;
+  outline-offset: var(--space-3);
   border-radius: var(--radius-xs);
 }
 
@@ -103,7 +107,58 @@
   text-wrap: pretty;
   max-width: 54ch;
   margin: var(--space-6) 0 0;
-  font-size: 13.5px;
+  font-size: var(--fs-h4);
+  line-height: var(--lh-body);
+}
+
+/* --- the grid: the cards, the panel beside them, the action bar under them --- */
+
+.flow-grid {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-10);
+  display: grid;
+}
+
+.flow-content,
+.flow-aside {
+  min-width: 0;
+}
+
+/* The last card's own margin would add to the grid's gap. */
+.flow-content > :last-child {
+  margin-bottom: 0;
+}
+
+/* 1032px is `--flow-column` + `--space-10` + `--flow-aside-min`, the width at
+   which the two columns fit; a container query cannot read a custom property,
+   so the sum is written out and named here. */
+@container flow (min-width: 1032px) {
+  .flow-grid {
+    grid-template-columns: minmax(0, var(--flow-column)) minmax(var(--flow-aside-min), var(--flow-aside));
+  }
+
+  .flow-aside {
+    grid-area: 1 / 2 / span 2 / 3;
+    position: sticky;
+    top: var(--space-12);
+  }
+
+  .flow-grid > .step-actions {
+    grid-column: 1;
+  }
+}
+
+/* The panel: a card that reads the step back. Its rows are stated facts; its
+   foot is the one sentence that qualifies them. */
+.step-panel {
+  margin-bottom: 0;
+}
+
+.step-panel .card-foot p {
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--fs-copy);
   line-height: var(--lh-body);
 }
 
@@ -116,7 +171,7 @@
   border-radius: var(--radius-row);
   align-items: flex-start;
   gap: var(--space-5);
-  margin: 0 0 var(--space-8);
+  margin: var(--space-8) 0 0;
   padding: var(--space-7);
   font-size: var(--fs-copy);
   line-height: var(--lh-body);
@@ -126,7 +181,7 @@
 .step-failed svg {
   color: var(--crimson);
   flex: none;
-  margin-top: 1px;
+  margin-top: var(--space-1);
 }
 
 .step-failed strong {
@@ -140,17 +195,8 @@
   justify-content: space-between;
   align-items: center;
   gap: var(--space-8);
-  margin-top: var(--space-10);
   padding-top: var(--space-9);
   display: flex;
-}
-
-/* `.text-button` is a bare button in `patterns.css`; anything in this flow that
-   carries an icon has to say how the icon sits beside the word. */
-.onboarding .text-button {
-  align-items: center;
-  gap: var(--space-3);
-  display: inline-flex;
 }
 
 .step-back {
@@ -222,28 +268,12 @@
    all draw it, and while it lived here its `.field-label` was silently
    overriding My Profile's rule of the same name. */
 
-/* A fact Aster holds and she does not change. No control at all — a read-only
-   input is a control that refuses, and this product keeps deciding not to ship
-   one. The label is small and muted, the value carries the weight, and the eye
-   runs down the column of values without reading a label. */
-.stated-field {
-  padding-top: var(--space-7);
-  padding-bottom: var(--space-7);
-}
-
-.stated-field strong {
-  letter-spacing: var(--ls-snug);
-  font-size: var(--fs-body);
-  display: block;
-}
-
-.stated-field small {
-  color: var(--faint);
-  align-items: center;
-  gap: var(--space-3);
-  margin-top: var(--space-3);
-  font-size: var(--fs-small);
-  display: flex;
+/* The Registrar's three facts, two up. `StatedField` is the design system's;
+   the grid is this step's. */
+.stated-grid {
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  display: grid;
 }
 
 /* --- the card that asks, and the card that only states -------------------- */
@@ -601,61 +631,9 @@
 }
 
 /* ============================================================================
- * Step 7 — the photo.
+ * Step 7 — the photo. The zone is `Dropzone`, the design system's; what is
+ * here is the list of rules under it.
  * ==========================================================================*/
-
-.photo-zone {
-  background: var(--canvas);
-  border: 1px dashed var(--line-strong);
-  border-radius: var(--radius-row);
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-6);
-  padding: var(--space-12) var(--space-9);
-  text-align: center;
-  display: flex;
-}
-
-.photo-zone.has-file {
-  background: var(--green-wash);
-  border-style: solid;
-  border-color: var(--green-line);
-}
-
-.photo-mark {
-  color: var(--purple-dark);
-  background: var(--purple-tint);
-  border-radius: var(--radius-round);
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  display: grid;
-}
-
-.photo-zone.has-file .photo-mark {
-  color: var(--green-ink);
-  background: var(--green-tint);
-}
-
-.photo-zone p {
-  margin: 0;
-}
-
-.photo-zone strong {
-  font-size: var(--fs-body);
-  display: block;
-}
-
-.photo-zone small {
-  color: var(--muted);
-  margin-top: var(--space-2);
-  font-size: var(--fs-small);
-  display: block;
-}
-
-.photo-prototype {
-  color: var(--faint);
-}
 
 .photo-rules {
   margin: var(--space-9) 0 0;
@@ -761,26 +739,28 @@
  * ==========================================================================*/
 
 @media (width<=1060px) {
-  .onboarding-body {
+  .onboarding {
     flex-direction: column;
   }
 
-  .step-column {
+  .flow-page {
     padding: var(--space-11) var(--space-11) var(--space-13);
+  }
+
+  .stated-grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (width<=620px) {
-  .onboarding-bar {
-    padding: var(--space-5) var(--space-8);
+  /* The bottom clearance is the fixed action bar's: the corner Edward owns
+     plus one outer step. */
+  .flow-page {
+    padding: var(--space-9) var(--space-8) calc(var(--safe-bottom) + var(--space-13));
   }
 
-  .onboarding-bar-end {
+  .flow-topline {
     gap: var(--space-5);
-  }
-
-  .step-column {
-    padding: var(--space-9) var(--space-8) 120px;
   }
 
   .grant-top {

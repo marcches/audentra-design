@@ -171,6 +171,21 @@ completes. Added 2026-08-21, when the groups were made one shape.
 _Avoid_: Task (the code's word for the same object), to-do, item, requirement. For the standings:
 pending, in progress, blocked, done.
 
+**Setup step**:
+One of the eight screens a newly admitted student walks through once, before the portal exists for
+her — *Confirm your details*, *How Aster reaches you*, *Emergency contact*, *Family permissions*,
+*Where you will live*, *Health and accessibility*, *Your student photo*, *Choose your orientation
+session* — in the order the institution published them. It is not a checklist *Step*: a setup step
+is walked, a checklist Step is tracked, and a setup step may produce what a checklist Step later
+watches (the housing plan, the accommodation answer, an authorization). It is always in exactly one
+of four states — *saved*, *skipped*, *current*, *upcoming* — and two conditions that are not states:
+*locked* (an upcoming step that says which step has to be saved first) and *unknown* (the record
+could not be read, so nothing is claimed). **Skipped is not failure**: it is resolved, it is never
+counted as saved, and the student can come back to it from the flow and from the portal. Only the
+server ever makes a step saved or skipped. Added 2026-08-21, when the flow's surface was aligned to
+the approved prototype and "Step 3 of 8" and "Your next steps" turned out to share a word.
+_Avoid_: Step, unqualified, where a checklist Step could be meant; screen; page; task; section.
+
 **Wellness**:
 The product's one word for the category of health services a student may use — the Events filter,
 the Profile sharing category, the checklist section *Health and wellness*.

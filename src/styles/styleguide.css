@@ -414,9 +414,23 @@
 }
 
 .sg-rail-demo .step-rail {
+  border-right: 0;
   width: 100%;
-  max-height: none;
+  height: auto;
   position: static;
+}
+
+/* In the box the human does not need to be pushed to the floor. */
+.sg-rail-demo .rail-advisor {
+  margin-top: var(--space-10);
+}
+
+/* Three stated facts side by side, each at its own height. */
+.sg-stated-demo {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-8);
+  display: grid;
 }
 
 .sg-rail-demo .rail-advisor {

@@ -80,10 +80,11 @@ src/
   design-system/             # the product's vocabulary. Knows no domain, imports no data.
     Icon.jsx  icon-paths.js (generated)
     marks/                 # AsterMark, AudentraMark
-    primitives/              # Drawer, AnchorCard, Card (+CardHead/Rows/Foot), Button, Avatar
+    primitives/              # Drawer, AnchorCard, Card (+CardHead/Rows/Foot), Button, Avatar,
+                             # Field, StatedField
     patterns/                # PageShell, GroupTabs, Notice, StateCard, Spot, SummaryFigure,
                              # AdvisorBar, InfoModal, PageError, PageSkeleton,
-                             # SectionPlaceholder, Popover, EntryRow, ActionBand
+                             # SectionPlaceholder, Popover, EntryRow, ActionBand, StepRail, Dropzone
     styleguide/              # the page at #/styleguide
 
   app/                       # the shell every page renders inside

@@ -1,9 +1,11 @@
 import { useId, useState } from 'react';
 import Icon from '../Icon.jsx';
+import Avatar from '../primitives/Avatar.jsx';
+import AudentraMark from '../marks/AudentraMark.jsx';
 
 /**
- * The rail a multi-step flow is walked along — the band, the figure, and the
- * steps in four states.
+ * The rail a multi-step flow is walked along — the institution, the figure,
+ * the steps in four states, the human at the foot, the vendor under it.
  *
  * It lives here rather than in the section that needed it first, because the
  * four states are a *decision about the product*, not about onboarding: a step
@@ -11,19 +13,20 @@ import Icon from '../Icon.jsx';
  * moment a second flow copies these classes by hand they will drift. This is
  * the same fix `Drawer` was: seven hand-typed copies of one shell.
  *
- * It knows no domain. The caller supplies the words and a `state` per row; this
- * owns what each state *looks like* and what it is called.
+ * It knows no domain. The caller supplies the words, the institution's mark
+ * and a `state` per row; this owns what each state *looks like* and what it is
+ * called:
  *
- *   saved       filled disc, a check. Green means one thing in this product —
- *               covered, satisfied, done — and this is that thing.
- *   current     a bright ring with a filled centre. The only mark drawn in two
- *               parts, because it is the only one still happening.
- *   skipped     a half-filled circle in the band's own light. **Not amber** —
+ *   saved       a green disc with a check. Green means one thing in this
+ *               product — covered, satisfied, done — and this is that thing.
+ *   current     the product's one gradient, the step's number on it. The only
+ *               saturated mark, because it is the only one still happening.
+ *   skipped     a sunk disc with the half-filled circle on it. **Not amber** —
  *               amber means someone still has to act, and inside a flow the
  *               student is walking that is a nag. Not dimmed, not crossed out,
  *               not crimson: each of those reads as failure, and a step set
  *               aside is not a failed step.
- *   upcoming    a hollow ring, quiet.
+ *   upcoming    a hollow ring with the number in it, quiet.
  *
  * `locked` and `unknown` are deliberately **not** a fifth and sixth state. A
  * locked step is an upcoming step that states why it is not open yet; an
@@ -34,9 +37,14 @@ import Icon from '../Icon.jsx';
  * not *disabled* buttons either: a disabled control is an offer withdrawn, and
  * no control is a stage that has not arrived.
  *
- * Below 1060 the band lies across the top — which is what a hero already is —
- * and the rows fold behind a disclosure that keeps the current step's name on
- * its face, so folding the rail never costs the position.
+ * Below 1060 the rail is the compact header — the institution on the left,
+ * the count and a short meter on the right — and the rows fold behind a
+ * disclosure, so folding the rail never costs the position.
+ *
+ * Until 2026-08-21 it was the product's purple band turned on its side. The
+ * approved surface reads a flow as a light workspace with one saturated thing
+ * on it, the primary button; so the rail became paper and the colour moved to
+ * the marks.
  */
 
 const MARKS = {
@@ -49,7 +57,7 @@ const MARKS = {
 };
 
 export default function StepRail({
-  eyebrow,
+  brand,
   greeting,
   label,
   figure,
@@ -59,6 +67,7 @@ export default function StepRail({
   steps = [],
   currentName,
   advisor,
+  vendor = true,
   onOpen,
 }) {
   const [open, setOpen] = useState(false);
@@ -66,17 +75,30 @@ export default function StepRail({
 
   return (
     <div className="step-rail">
+      {brand ? (
+        <div className="rail-brand">
+          {brand.mark ? (
+            <span className="rail-mark" aria-hidden="true">
+              {brand.mark}
+            </span>
+          ) : null}
+          <div className="rail-brand-name">
+            <strong>{brand.name}</strong>
+            {brand.line ? <span>{brand.line}</span> : null}
+          </div>
+        </div>
+      ) : null}
+
       <div className="rail-band">
-        {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
         {greeting ? <p className="rail-greeting">{greeting}</p> : null}
 
         {/* Nothing here is drawn on a guess. A flow whose steps did not load
-            shows the band and the human at the bottom of it, and no figure, no
+            shows the institution and the human at the bottom, and no figure, no
             meter and no rows — a count beside "your steps could not be loaded"
             is the interface contradicting itself in one screen. */}
         {figure ? (
           <div className="rail-figure">
-            <p className="rail-label">{label}</p>
+            {label ? <p className="rail-label">{label}</p> : null}
             <p className="rail-count">{figure}</p>
             {/* At most one line under the figure. The fourth line inside a
                 figure cell is what pushed My Classrooms' summary panel 16px
@@ -99,6 +121,7 @@ export default function StepRail({
             className="rail-disclosure"
             aria-expanded={open}
             aria-controls={listId}
+            aria-label={`Steps in this flow${currentName ? ` — on ${currentName}` : ''}`}
             onClick={() => setOpen((value) => !value)}
           >
             <span>{currentName ?? 'Steps'}</span>
@@ -113,14 +136,14 @@ export default function StepRail({
         aria-label="Steps in this flow"
       >
         <ol>
-          {steps.map((step) => {
+          {steps.map((step, index) => {
             const mark = MARKS[step.state] ?? MARKS.upcoming;
             const meta = step.meta ?? mark.meta;
 
             const inside = (
               <>
                 <span className={`step-mark ${step.state}`} aria-hidden="true">
-                  {mark.icon ? <Icon name={mark.icon} size={13} /> : null}
+                  {mark.icon ? <Icon name={mark.icon} size={13} /> : index + 1}
                 </span>
                 <span className="step-text">
                   <span className="step-name">{step.name}</span>
@@ -155,9 +178,7 @@ export default function StepRail({
         <div className="rail-advisor">
           <p className="rail-label">{advisor.label}</p>
           <p className="advisor-who">
-            <span className="advisor-mark" aria-hidden="true">
-              {advisor.initials}
-            </span>
+            <Avatar person={advisor} size="md" />
             <span>
               <strong>{advisor.name}</strong>
               <small>{advisor.office}</small>
@@ -167,6 +188,14 @@ export default function StepRail({
             <a href={`mailto:${advisor.email}`}>
               <Icon name="mail" size={14} /> {advisor.email}
             </a>
+          </p>
+        </div>
+      ) : null}
+
+      {vendor ? (
+        <div className="rail-vendor">
+          <p className="powered-by">
+            Powered by <AudentraMark height={13} /> <strong>Audentra</strong>
           </p>
         </div>
       ) : null}

@@ -1,7 +1,7 @@
-import Card, { CardHead, CardRows } from '../../design-system/primitives/Card.jsx';
+import Card, { CardHead } from '../../design-system/primitives/Card.jsx';
 import Icon from '../../design-system/Icon.jsx';
 import Field from '../../design-system/primitives/Field.jsx';
-import StatedField from './StatedField.jsx';
+import StatedField from '../../design-system/primitives/StatedField.jsx';
 import { PRONOUNS } from './data.js';
 
 /**
@@ -23,11 +23,13 @@ export default function DetailsStep({ draft, onChange }) {
           title="What Aster has"
           note="From your application. The Registrar keeps this half."
         />
-        <CardRows>
-          <StatedField label="Legal name" value={draft.legalName} office="The Registrar" />
-          <StatedField label="Date of birth" value={draft.birthDate} office="The Registrar" />
-          <StatedField label="Student number" value={draft.studentId} office="The Registrar" />
-        </CardRows>
+        <div className="card-body">
+          <div className="stated-grid">
+            <StatedField label="Legal name" value={draft.legalName} office="The Registrar" />
+            <StatedField label="Date of birth" value={draft.birthDate} office="The Registrar" />
+            <StatedField label="Student number" value={draft.studentId} office="The Registrar" />
+          </div>
+        </div>
       </Card>
 
       <Card className="asking">

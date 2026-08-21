@@ -407,6 +407,9 @@ guess, and guessing is what produced 436 hand-typed colours and eight hand-typed
 | A group of rows that can close | `<CardHead kind="status" count open onToggle controls>` | a `details`, a hand-made toggle, a box of its own |
 | The one thing to do next, on a card | `<ActionBand label aside\|action>` — under the head, above the first row; each screen's own rule fills it, and it never shows a placeholder | a hand-typed `.recommended-banner`, a `Notice` dressed as a strip |
 | A picture on a state | `<StateCard>` (it draws its own `<Spot>`) | an imported illustration set |
+| A fact Aster holds, or a value read back | `<StatedField label value office?>` — `office` draws the locked box and names whose desk the change is on; `quiet` for a value not there yet | a disabled `<input>`, a `<dl>` styled by hand |
+| A place to put a file | `<Dropzone title line filed?>` | a hand-typed dashed `div` |
+| The rail of a flow with steps | `<StepRail brand greeting figure meter steps advisor>` — paper, numbered, five drawings | a list of links styled per flow |
 | The institution's or the vendor's mark | `<AsterMark>` / `<AudentraMark>` | a letter in a tile, an icon from the set |
 
 `CardHead` is the one way a card opens — a bare outline glyph, the name, one line under it, a

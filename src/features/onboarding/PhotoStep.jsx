@@ -1,6 +1,7 @@
 import Card, { CardFoot, CardHead } from '../../design-system/primitives/Card.jsx';
 import Button from '../../design-system/primitives/Button.jsx';
 import Icon from '../../design-system/Icon.jsx';
+import Dropzone from '../../design-system/patterns/Dropzone.jsx';
 import { PHOTO_RULES, PHOTO_USE } from './data.js';
 
 /**
@@ -25,39 +26,28 @@ export default function PhotoStep({ draft, onChange }) {
         note={PHOTO_USE}
       />
       <div className="card-body">
-        <div className={chosen ? 'photo-zone has-file' : 'photo-zone'}>
-          <span className="photo-mark" aria-hidden="true">
-            <Icon name={chosen ? 'check' : 'upload'} size={22} weight="duotone" />
-          </span>
-          {chosen ? (
-            <>
-              <p>
-                <strong>{draft.photo}</strong>
-                <small>Ready to send with this step.</small>
-              </p>
-              <Button kind="text" onClick={() => onChange({ photo: null })}>
-                Choose a different one
-              </Button>
-            </>
-          ) : (
-            <>
-              <p>
-                <strong>Choose a photo</strong>
-                <small>JPG or PNG · up to 10 MB</small>
-              </p>
-              <Button
-                kind="secondary"
-                leadingIcon="upload"
-                onClick={() => onChange({ photo: 'maya_card_photo.jpg' })}
-              >
-                Choose a photo
-              </Button>
-              <small className="photo-prototype">
-                Prototype: this button stands in for your file picker.
-              </small>
-            </>
-          )}
-        </div>
+        {chosen ? (
+          <Dropzone filed title={draft.photo} line="Ready to send with this step.">
+            <Button kind="text" onClick={() => onChange({ photo: null })}>
+              Choose a different one
+            </Button>
+          </Dropzone>
+        ) : (
+          <Dropzone
+            icon="upload"
+            title="Choose a photo"
+            line="JPG or PNG · up to 10 MB"
+            note="Prototype: this button stands in for your file picker."
+          >
+            <Button
+              kind="secondary"
+              leadingIcon="upload"
+              onClick={() => onChange({ photo: 'maya_card_photo.jpg' })}
+            >
+              Choose a photo
+            </Button>
+          </Dropzone>
+        )}
 
         <ul className="photo-rules">
           {PHOTO_RULES.map((rule) => (

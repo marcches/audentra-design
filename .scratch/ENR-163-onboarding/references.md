@@ -101,3 +101,28 @@ not. That is the shape of the problem this card names: a skipped step is neither
 "not done" is precisely the failure reading the card forbids. So the mark is ours: `half`, the
 half-filled circle already in `Icon.jsx`, in the rail's own light ink — not amber, because amber in
 this product means someone still has to act, and during the flow that is a nag.
+
+## The surface — 2026-08-21, aligning the look to the approved prototype
+
+Two searches, one for the frame and one for the hard part (a section that states and asks in one
+card, with facts the student cannot change).
+
+- [Mercury — company info](https://mobbin.com/screens/8b12e7b5-4bd6-4eea-9a61-7ebbcfa4f855) — a
+  white rail with the step list at the left, a `1 / 6` figure above it, the form in a single reading
+  column. **Taken:** the rail is paper, not a band; the figure sits above the list.
+- [Remote — add a contractor](https://mobbin.com/screens/d3fc987a-6b85-4de9-8d95-617d7d6f8b5e) — a
+  numbered list with a connector, the current step at full weight, a progress line at the top of
+  the content column. **Taken:** numbered 24px marks joined by a connector; a compact progress
+  line survives on a phone.
+- [Melio — complete details](https://mobbin.com/screens/03ef6cc6-505c-4277-bfe2-b0c068a141c1) —
+  done steps wear a filled check, the current an outline; no dimming of the future. **Taken:**
+  green is done and nothing else; upcoming is an outline, not a fade.
+- [Deel — select services](https://mobbin.com/screens/02ef5851-4bac-42c2-a1f8-75f05f44ac79) —
+  sections as cards with a light head; the section head says what the section holds. **Taken:**
+  the card's head says what the card is; the tinted tile stays on content, not on the head
+  (the product's own rule).
+
+**Rejected:** [Airwallex — verification](https://mobbin.com/screens/bbbd8705-870b-41f0-ae2c-78404bcba206)
+— a nested tree of sub-steps in the rail with a crimson active bar painted down the left edge. The
+one thing this product never does to a rounded row. [Whop — activate payouts](https://mobbin.com/screens/b9b10212-57f8-48af-b245-991e2005ce37)
+— the flow inside a modal over the product; onboarding here replaces the chrome (ENR-151 AC 1).

@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
+import AsterMark from '../../design-system/marks/AsterMark.jsx';
 import Notice from '../../design-system/patterns/Notice.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import PreviewStateMenu from '../../app/PreviewStateMenu.jsx';
 import StepRail from '../../design-system/patterns/StepRail.jsx';
 import StepHead from './StepHead.jsx';
 import StepActions from './StepActions.jsx';
+import StepPanel from './StepPanel.jsx';
 import DetailsStep from './DetailsStep.jsx';
 import ContactStep from './ContactStep.jsx';
 import EmergencyStep from './EmergencyStep.jsx';
@@ -47,6 +49,14 @@ import {
  *   3. `PageShell` owns hero → summary → notice → tabs → rail. Onboarding has
  *      one question, one rail and one action bar; four of the five slots would
  *      be empty and the fifth would mean something else.
+ *
+ * **The frame, since 2026-08-21.** The surface was aligned to the approved
+ * prototype while the flow stayed exactly as it was: the rail is paper, with
+ * the institution at its head; there is no top bar (the preview control and
+ * the one way out sit in a line above the question); and the question's cards
+ * share the column with a *step panel* — a card that reads back, as a column
+ * of facts, what this step already holds. The panel mirrors and never
+ * controls: nothing on it is a button, and every value on it is the draft's.
  *
  * **Why the state lives here and not in `App`.** The repo's default is that
  * state lives in `App.jsx`, and the sections that own a self-contained subject
@@ -280,49 +290,51 @@ export default function OnboardingPage({ requestedStep, previewState, onPreviewS
     }
   }
 
+  // The panel and the action bar exist while there is a step to read back and
+  // to move on from — not on the finish, and not while the record is unknown,
+  // where nothing can be saved and nothing should be claimed.
+  const working = frameState === 'ready' && !finished && Boolean(step) && !unknown;
+
   return (
     <div className="onboarding">
-      <header className="onboarding-bar">
-        <p className="onboarding-mark">
-          <Icon name="spark" size={18} />
-          <span>Aster University</span>
-        </p>
-        <div className="onboarding-bar-end">
-          <PreviewStateMenu
-            state={previewState}
-            states={ONBOARDING_PREVIEW_STATES}
-            onChange={onPreviewState}
-          />
-          <button className="text-button" onClick={() => onRoute('#/my-enrollment')}>
-            Save and finish later
-          </button>
-        </div>
-      </header>
+      <StepRail
+        brand={{
+          mark: <AsterMark size={40} tile />,
+          name: 'Aster University',
+          line: 'Class of 2031 · Offer accepted',
+        }}
+        greeting={finished ? 'You’re all set, Maya.' : 'Let’s get you set up, Maya.'}
+        figure={
+          frameState !== 'ready'
+            ? null
+            : unknown
+              ? 'Couldn’t be checked'
+              : `${savedCount(record)} of ${TOTAL_STEPS} saved`
+        }
+        note={unknown ? 'Your answers are on Aster’s side and did not load.' : progressLine(record)}
+        meter={unknown || frameState !== 'ready' ? null : meter(record)}
+        meterLabel={`${savedCount(record)} of ${TOTAL_STEPS} steps saved`}
+        steps={frameState === 'ready' ? railSteps(record, finished ? null : stepId) : []}
+        currentName={finished ? 'All eight resolved' : step?.name}
+        advisor={advisor}
+        onOpen={goTo}
+      />
 
-      <div className="onboarding-body">
-        <StepRail
-          eyebrow="Class of 2031 · Offer accepted"
-          greeting={finished ? 'You’re all set, Maya.' : 'Let’s get you set up, Maya.'}
-          label="Your setup"
-          figure={
-            frameState !== 'ready'
-              ? null
-              : unknown
-                ? 'Couldn’t be checked'
-                : `${savedCount(record)} of ${TOTAL_STEPS} saved`
-          }
-          note={
-            unknown ? 'Your answers are on Aster’s side and did not load.' : progressLine(record)
-          }
-          meter={unknown || frameState !== 'ready' ? null : meter(record)}
-          meterLabel={`${savedCount(record)} of ${TOTAL_STEPS} steps saved`}
-          steps={frameState === 'ready' ? railSteps(record, finished ? null : stepId) : []}
-          currentName={finished ? 'All eight resolved' : step?.name}
-          advisor={advisor}
-          onOpen={goTo}
-        />
+      <main className="flow-page" id="onboarding-main" aria-live="polite">
+        <div className="flow-measure">
+          {/* No top bar: the demo control and the one way out sit in a line
+              above the question, the way the approved surface draws them. */}
+          <div className="flow-topline">
+            <PreviewStateMenu
+              state={previewState}
+              states={ONBOARDING_PREVIEW_STATES}
+              onChange={onPreviewState}
+            />
+            <button className="text-button" onClick={() => onRoute('#/my-enrollment')}>
+              Save and finish later
+            </button>
+          </div>
 
-        <main className="step-column" id="onboarding-main" aria-live="polite">
           {frameState === 'loading' && (
             <div className="step-skeleton" aria-hidden="true">
               <span className="skeleton-line short" />
@@ -397,35 +409,49 @@ export default function OnboardingPage({ requestedStep, previewState, onPreviewS
                 </p>
               )}
 
-              {body()}
+              <div className="flow-grid">
+                <div className="flow-content">
+                  {body()}
 
-              {/* ENR-149 AC 4. The step stays in progress, the count does not
-                  move, and the failure names itself. */}
-              {failed && (
-                <p className="step-failed" role="alert">
-                  <Icon name="alert" size={16} />
-                  <span>
-                    <strong>That didn’t reach Aster.</strong>
-                    {failed}
-                  </span>
-                </p>
-              )}
+                  {/* ENR-149 AC 4. The step stays in progress, the count does
+                      not move, and the failure names itself. */}
+                  {failed && (
+                    <p className="step-failed" role="alert">
+                      <Icon name="alert" size={16} />
+                      <span>
+                        <strong>That didn’t reach Aster.</strong>
+                        {failed}
+                      </span>
+                    </p>
+                  )}
+                </div>
 
-              {!finished && step && !unknown && (
-                <StepActions
-                  step={step}
-                  first={stepNumber(step.id) === 1}
-                  saving={Boolean(saving)}
-                  saveLabel={failed ? 'Try again' : 'Save and continue'}
-                  onBack={() => goTo(STEPS[stepNumber(step.id) - 2].id)}
-                  onSkip={() => commit('skip')}
-                  onSave={() => commit('save')}
-                />
-              )}
+                {/* The panel is `aria-live="off"` inside a polite `main`: it
+                    mirrors the draft on every keystroke, and a screen reader
+                    that re-read it on every keystroke would be narrating the
+                    typing. The fields announce themselves. */}
+                {working && (
+                  <aside className="flow-aside" aria-label="This step, at a glance" aria-live="off">
+                    <StepPanel stepId={step.id} draft={draft} grants={grants} />
+                  </aside>
+                )}
+
+                {working && (
+                  <StepActions
+                    step={step}
+                    first={stepNumber(step.id) === 1}
+                    saving={Boolean(saving)}
+                    saveLabel={failed ? 'Try again' : 'Save and continue'}
+                    onBack={() => goTo(STEPS[stepNumber(step.id) - 2].id)}
+                    onSkip={() => commit('skip')}
+                    onSave={() => commit('save')}
+                  />
+                )}
+              </div>
             </>
           )}
-        </main>
-      </div>
+        </div>
+      </main>
 
       {person && (
         <PersonDrawer

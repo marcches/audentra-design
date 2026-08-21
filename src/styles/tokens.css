@@ -320,9 +320,16 @@
   --tip-gap: 8px;      /* bubble to the control it points at                  */
   --tip-edge: 12px;    /* the closest a bubble may come to the window's edge  */
   --tip-measure: 264px; /* an explainer's measure — about 40 characters       */
-  /* The bar a full-screen flow runs under, so the rail beside it can be sticky
-     and still reach the bottom edge of the window — ENR-163. */
-  --flow-bar: 53px;
+  /* A full-screen flow's frame — ENR-163, its surface aligned to the approved
+     prototype on 2026-08-21. The rail is `--flow-rail` wide; the main column
+     reads at `--flow-column`, with the step panel beside it between
+     `--flow-aside-min` and `--flow-aside` when the two fit — decided by a
+     container query on the column at column + gap + aside-min (1032px), not by
+     a fifth viewport breakpoint. */
+  --flow-rail: 304px;
+  --flow-column: 736px;
+  --flow-aside: 384px;
+  --flow-aside-min: 272px;
   /* The anchored panel a topbar control opens — `Popover`. Wide enough for a
      40px tile, a two-line title and a trailing cell; as tall as the window
      allows before it scrolls under its own head. */

@@ -7,6 +7,8 @@ import AnchorCard from '../primitives/AnchorCard.jsx';
 import Button, { IconButton } from '../primitives/Button.jsx';
 import Drawer from '../primitives/Drawer.jsx';
 import Field from '../primitives/Field.jsx';
+import StatedField from '../primitives/StatedField.jsx';
+import Dropzone from '../patterns/Dropzone.jsx';
 import Tooltip, { InfoTip } from '../primitives/Tooltip.jsx';
 import Notice from '../patterns/Notice.jsx';
 import StateCard from '../patterns/StateCard.jsx';
@@ -1460,14 +1462,17 @@ export default function Styleguide({ onToast }) {
 
         <Section
           id="sg-steps"
-          title="The step rail"
-          rule="A flow with steps says four things about each of them, and skipped is the one that has to be got right: a step set aside is not a failed step, so it is never amber, never dimmed and never crossed out. Locked is not a fifth state — it is an upcoming step that says why it is not open yet."
+          title="A flow: the step rail, and what a step is built from"
+          rule="A flow with steps says four things about each of them, and skipped is the one that has to be got right: a step set aside is not a failed step, so it is never amber, never dimmed and never crossed out. Locked is not a fifth state — it is an upcoming step that says why it is not open yet. The rail is paper: the colour goes on the marks, and the one saturated thing on the screen is the primary button."
         >
           <div className="sg-rail-demo">
             <StepRail
-              eyebrow="A flow · in progress"
-              greeting="The band, rotated."
-              label="This flow"
+              brand={{
+                mark: <AsterMark size={40} tile />,
+                name: 'Aster University',
+                line: 'A flow · in progress',
+              }}
+              greeting="The rail, on paper."
               figure="2 of 6 saved"
               note="1 skipped · 3 still to do"
               meter={{ saved: 33, skipped: 17 }}
@@ -1505,16 +1510,44 @@ export default function Styleguide({ onToast }) {
           <div className="sg-grid">
             <Block
               title="Saved, and skipped, are counted apart"
-              note="One figure that meant both would tell a student a step she set aside is done. The count is what is saved; the line under it carries what is not."
+              note="One figure that meant both would tell a student a step she set aside is done. The count is what is saved; the line under it carries what is not, and the meter draws them as two runs."
             />
             <Block
               title="Reachable rows are buttons; the rest are not controls"
               note="Not disabled buttons — a disabled control is an offer withdrawn, and no control is a stage that has not arrived. The same rule the housing plan follows after its deadline."
             />
             <Block
-              title="Below 1060 the band lies across the top"
-              note="Which is what a hero already is. The rows fold behind a disclosure that keeps the current step's name on its face, so folding never costs the position."
+              title="Below 1060 the rail is the header"
+              note="The institution on the left, the count and a short meter on the right, and the rows behind a disclosure that opens the list under it. Folding never costs the position: the count stays, and the step head says “Step n of 8”."
             />
+          </div>
+
+          <div className="sg-grid">
+            <Block
+              title="A fact, stated — StatedField"
+              note="The pair to Field: the label small and muted above, the value carrying the weight. With an office it is a fact Aster holds — a dashed, sunk box behind a lock, and the line names whose desk the change happens on. Without one it is a plain fact; quiet is for a value that is not there yet."
+            >
+              <div className="sg-stated-demo">
+                <StatedField label="Legal name" value="Maya Johnson" office="The Registrar" />
+                <StatedField label="Writes first" value="Email" />
+                <StatedField label="Pronouns" value="Not set" quiet />
+              </div>
+            </Block>
+            <Block
+              title="A place to put a file — Dropzone"
+              note="A dashed, sunk area with a tinted tile in it; the tile wears the duotone glyph, because a tile is content’s shape. Filed is the same area turned green, because green means one thing here — done."
+            >
+              <div className="sg-controls block">
+                <Dropzone title="Choose a photo" line="JPG or PNG · up to 10 MB">
+                  <Button kind="secondary" leadingIcon="upload">
+                    Choose a photo
+                  </Button>
+                </Dropzone>
+                <Dropzone filed title="maya_card_photo.jpg" line="Ready to send with this step.">
+                  <Button kind="text">Choose a different one</Button>
+                </Dropzone>
+              </div>
+            </Block>
           </div>
         </Section>
 
