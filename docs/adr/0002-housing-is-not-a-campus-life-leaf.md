@@ -46,3 +46,11 @@ mandatory on the same day, not later.
 The cost is one more top-level row in a sidebar that already carries eleven destinations. We accept
 it. The alternative was a section whose deadline is either a lie about two other sections or invisible
 behind a tab, and both of those are worse than a longer list.
+
+## Amended 2026-08-21
+
+The Jam of 2026-08-21 moved Housing up the sidebar, to sit directly after Health and Accessibility
+and before the My Financials group — Laura's order, read off the recording at 1:34. "Last in the
+sidebar" therefore stops being a consequence of this decision. Everything else here still holds, and
+it is what the ADR is for: Housing is a destination of its own, not a leaf of My Campus Life, for the
+reasons above — the position in the list was never the argument.

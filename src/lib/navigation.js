@@ -349,8 +349,9 @@ export function onboardingStepFrom(hash) {
 }
 
 /**
- * The sidebar, in order: what I must do, what I sent and who I talk to, then the
- * rest of my life at Aster.
+ * The sidebar, in order — Laura's, from the Jam of 2026-08-21: what I must do,
+ * what I sent and who I talk to, my degree, my health and the question beside it,
+ * where I will live, then the money and the rest of my life at Aster.
  *
  * Messages is gone. It was never a card: it arrived in the product base as a
  * decorative row and ENR-180 kept it because the topbar bell needed somewhere to
@@ -374,6 +375,11 @@ export const NAV = [
   { kind: 'link', id: 'my-classrooms' },
   { kind: 'link', id: 'health' },
   { kind: 'link', id: 'accessibility' },
+  // After Health and Accessibility, before the money: the Jam of 2026-08-21 put
+  // it here, among the sections about the student herself. It used to sit last,
+  // under My Campus Life. It is a link, not a leaf of the group below it —
+  // ADR 0002, amended the same day.
+  { kind: 'link', id: 'housing' },
   {
     kind: 'group',
     id: 'financials',
@@ -381,10 +387,6 @@ export const NAV = [
     items: ['financials-overview', 'financials-aid', 'financials-payments'],
   },
   { kind: 'group', id: 'campus', label: GROUPS.campus, items: ['events', 'clubs'] },
-  // Last, because Housing belongs to the block about a life at Aster rather than
-  // to the academic or the money block — and it is a link, not a leaf of the
-  // group above it. ADR 0002.
-  { kind: 'link', id: 'housing' },
 ];
 
 /** Reachable from the foot of the sidebar, not from the section list. */
