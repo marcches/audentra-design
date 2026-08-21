@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import Drawer from '../../design-system/primitives/Drawer.jsx';
 import Icon from '../../design-system/Icon.jsx';
+import { IconButton } from '../../design-system/primitives/Button.jsx';
 import ExtractReview from './ExtractReview.jsx';
 import {
   doorOf,
@@ -221,13 +222,13 @@ export default function DocumentDrawer({
               {files.length === 0 ? 'Browse' : maxFiles > 1 ? 'Add more' : 'Choose another'}
             </button>
             {files.length === 1 && (
-              <button
-                className="icon-button"
-                aria-label={`Remove ${files[0].name}`}
+              <IconButton
+                name="close"
+                size={18}
+                label={`Remove ${files[0].name}`}
+                tip="Remove"
                 onClick={() => removeFile(files[0].name)}
-              >
-                <Icon name="close" size={18} />
-              </button>
+              />
             )}
           </div>
 
@@ -241,13 +242,13 @@ export default function DocumentDrawer({
                   <Icon name="file" size={15} />
                   <span className="upload-file-name">{item.name}</span>
                   <span className="upload-file-size">{item.size}</span>
-                  <button
-                    className="icon-button"
-                    aria-label={`Remove ${item.name}`}
+                  <IconButton
+                    name="close"
+                    size={16}
+                    label={`Remove ${item.name}`}
+                    tip="Remove"
                     onClick={() => removeFile(item.name)}
-                  >
-                    <Icon name="close" size={16} />
-                  </button>
+                  />
                 </li>
               ))}
             </ul>

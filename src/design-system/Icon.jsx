@@ -156,6 +156,14 @@ const paths = {
       <path d="M20 4v4.5h-4.5" />
     </>
   ),
+  /* A track and a quarter of it. The quarter is what turns; the track is what
+     makes it read as a proportion of something rather than as a stray mark. */
+  spinner: (
+    <>
+      <circle cx="12" cy="12" r="9" opacity=".28" />
+      <path d="M21 12a9 9 0 0 0-9-9" />
+    </>
+  ),
   progress: (
     <>
       <path d="M4 4v15a1 1 0 0 0 1 1h15" />

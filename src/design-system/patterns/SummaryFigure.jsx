@@ -1,3 +1,5 @@
+import { InfoTip } from '../primitives/Tooltip.jsx';
+
 /**
  * The left half of the summary panel: the section's one figure.
  *
@@ -21,13 +23,27 @@
  * stating it goes to the foot of the panel, in `PageShell`'s `alert` slot, and
  * never becomes a fourth line here: that is what made My Classrooms taller than
  * every other section and pushed its advisor off-centre.
+ *
+ * `explain` is the one thing that may sit *in* the label: the rule behind the
+ * count. "2 of 11 requirements met" is a number a student can read and cannot
+ * check — what makes a requirement met, and what is deliberately not counted
+ * yet, is the question the figure provokes and the panel has no line for. It
+ * takes a sentence, or `{ title, body }` when the term is not the label, and it
+ * is an `InfoTip` rather than a hint because none of that is said anywhere
+ * else. Sections whose line under the figure already answers it pass nothing:
+ * an explainer on every label is an explainer that means nothing.
  */
-export default function SummaryFigure({ mark, label, figure, money, children }) {
+export default function SummaryFigure({ mark, label, explain, figure, money, children }) {
   return (
     <div className={`summary-figure ${money ? 'money' : ''} ${mark ? '' : 'bare'}`}>
       {mark}
       <div className="summary-figure-copy">
-        <span className="panel-label">{label}</span>
+        <span className="panel-label">
+          {label}
+          {explain ? (
+            <InfoTip title={explain.title ?? label}>{explain.body ?? explain}</InfoTip>
+          ) : null}
+        </span>
         <strong>{figure}</strong>
         {children ? <p>{children}</p> : null}
       </div>

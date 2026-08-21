@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import Tooltip from '../../design-system/primitives/Tooltip.jsx';
 import { STANDING_CAUTION, VOICE_NOTE } from './data.js';
 
 /**
@@ -36,9 +37,11 @@ export default function EdwardComposer({
           <span className="edward-context-chip">
             <Icon name="pin" size={12} />
             {context}
-            <button aria-label={`Stop asking about ${context}`} onClick={onDropContext}>
-              <Icon name="close" size={12} />
-            </button>
+            <Tooltip tip="Stop asking about this">
+              <button aria-label={`Stop asking about ${context}`} onClick={onDropContext}>
+                <Icon name="close" size={12} />
+              </button>
+            </Tooltip>
           </span>
         </div>
       )}
@@ -57,33 +60,37 @@ export default function EdwardComposer({
           onKeyDown={onKeyDown}
         />
 
-        <button
-          className={`edward-mic${listening ? ' listening' : ''}`}
-          aria-label={listening ? 'Stop listening' : 'Ask by voice'}
-          aria-pressed={listening}
-          disabled={disabled || voice === 'denied'}
-          onClick={onMic}
-        >
-          {listening ? (
-            <span className="edward-wave" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-              <i />
-            </span>
-          ) : (
-            <Icon name="mic" size={16} />
-          )}
-        </button>
+        <Tooltip tip={listening ? 'Stop listening' : 'Ask by voice'} placement="top">
+          <button
+            className={`edward-mic${listening ? ' listening' : ''}`}
+            aria-label={listening ? 'Stop listening' : 'Ask by voice'}
+            aria-pressed={listening}
+            disabled={disabled || voice === 'denied'}
+            onClick={onMic}
+          >
+            {listening ? (
+              <span className="edward-wave" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+                <i />
+              </span>
+            ) : (
+              <Icon name="mic" size={16} />
+            )}
+          </button>
+        </Tooltip>
 
-        <button
-          className="edward-send"
-          aria-label="Send question"
-          disabled={disabled || !draft.trim()}
-          onClick={() => onSend(draft)}
-        >
-          <Icon name="send" size={16} />
-        </button>
+        <Tooltip tip="Send" placement="top">
+          <button
+            className="edward-send"
+            aria-label="Send question"
+            disabled={disabled || !draft.trim()}
+            onClick={() => onSend(draft)}
+          >
+            <Icon name="send" size={16} />
+          </button>
+        </Tooltip>
       </div>
 
       {voice === 'denied' && (

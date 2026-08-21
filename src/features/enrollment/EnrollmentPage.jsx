@@ -5,6 +5,7 @@ import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
 import EnrollmentRail from './EnrollmentRail.jsx';
 import GateNotice from '../registration/GateNotice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
+import Tooltip from '../../design-system/primitives/Tooltip.jsx';
 import TaskCard from './TaskCard.jsx';
 
 /**
@@ -53,6 +54,10 @@ export default function EnrollmentPage({
               </div>
             }
             label="Your enrollment progress"
+            explain={{
+              title: 'Steps complete',
+              body: `${totalSteps} steps make up enrolling. One counts here once you have finished it — a step Aster is still reading is with Aster, and is not counted until it comes back.`,
+            }}
             figure={`${completed.length} of ${totalSteps} steps complete`}
           >
             {tasks.length > 0
@@ -103,9 +108,11 @@ export default function EnrollmentPage({
             <button className={sort === 'quick' ? 'selected' : ''} onClick={() => onSort('quick')}>
               Quick wins
             </button>
-            <button className="sort-info" aria-label="How smart order works" onClick={onOpenSmart}>
-              <Icon name="info" size={17} />
-            </button>
+            <Tooltip tip="How smart order works">
+              <button className="sort-info" aria-label="How smart order works" onClick={onOpenSmart}>
+                <Icon name="info" size={17} />
+              </button>
+            </Tooltip>
           </div>
         </div>
 

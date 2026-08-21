@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
+import { IconButton } from '../../design-system/primitives/Button.jsx';
 import { EDWARD, seededConversations } from './data.js';
 import { answerFor, suggestionsFor } from './logic.js';
 import { GROUPS } from '../../lib/navigation.js';
@@ -246,13 +247,13 @@ export default function Edward({
     >
       <header className="edward-head">
         {showHistory && !twoPane && (
-          <button
-            className="icon-button"
-            aria-label="Back to the conversation"
+          <IconButton
+            name="back"
+            size={18}
+            label="Back to the conversation"
+            tip="Back"
             onClick={() => setView('conversation')}
-          >
-            <Icon name="back" size={18} />
-          </button>
+          />
         )}
         <span className="edward-mark small" aria-hidden="true">
           {EDWARD.mark}
@@ -264,21 +265,23 @@ export default function Edward({
         {/* One control per job: where the list replaces the conversation, back
             is the way out, so the toggle stands down rather than doubling it. */}
         {showThread && (
-          <button
-            className={`icon-button${showHistory ? ' active' : ''}`}
-            aria-label="Your conversations"
+          <IconButton
+            className={showHistory ? 'active' : undefined}
+            name="clock"
+            size={18}
+            label="Your conversations"
             aria-pressed={showHistory}
             onClick={() => setView(showHistory ? 'conversation' : 'history')}
-          >
-            <Icon name="clock" size={18} />
-          </button>
+          />
         )}
-        <button className="icon-button" aria-label="New conversation" onClick={startConversation}>
-          <Icon name="pen" size={18} />
-        </button>
-        <button className="icon-button" aria-label="Close Edward" onClick={() => setOpen(false)}>
-          <Icon name="close" size={18} />
-        </button>
+        <IconButton name="pen" size={18} label="New conversation" onClick={startConversation} />
+        <IconButton
+          name="close"
+          size={18}
+          label="Close Edward"
+          tip="Close"
+          onClick={() => setOpen(false)}
+        />
       </header>
 
       <div className="edward-body">

@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import Icon from '../Icon.jsx';
+import { IconButton } from '../primitives/Button.jsx';
 import { useOverlay } from '../../lib/overlay.js';
 
 const SIGNALS = [
@@ -44,9 +45,7 @@ export default function InfoModal({ variant, onClose }) {
     <div className="center-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="info-title">
       <button className="modal-scrim" aria-label="Close" onClick={onClose} />
       <div className="info-modal" ref={panel}>
-        <button className="icon-button modal-close" aria-label="Close" onClick={onClose}>
-          <Icon name="close" />
-        </button>
+        <IconButton className="modal-close" name="close" label="Close" onClick={onClose} />
 
         {variant === 'smart' ? (
           <>

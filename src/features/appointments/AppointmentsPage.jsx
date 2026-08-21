@@ -155,7 +155,11 @@ export default function AppointmentsPage({
       ...list.filter((item) => item.id !== appointment.id),
     ]);
     if (appointment.state === 'confirmed') {
-      onToast(`Booked — ${typeById(conversationTypes, appointment.typeId).team} has it too.`);
+      onToast({
+        tone: 'success',
+        title: 'Booked.',
+        body: `${typeById(conversationTypes, appointment.typeId).team} has it too.`,
+      });
     }
   }
 

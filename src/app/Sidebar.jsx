@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '../design-system/Icon.jsx';
+import { IconButton } from '../design-system/primitives/Button.jsx';
 import { NAV, PROFILE_ID, UTILITY_ID, destinationById } from '../lib/navigation.js';
 import { FOCUSABLE } from '../lib/overlay.js';
 
@@ -159,9 +160,14 @@ export default function Sidebar({
           <strong>Aster</strong>
           <span>New Student Portal</span>
         </div>
-        <button className="icon-button nav-close" aria-label="Close navigation" onClick={onClose}>
-          <Icon name="close" size={18} />
-        </button>
+        <IconButton
+          className="nav-close"
+          name="close"
+          size={18}
+          label="Close navigation"
+          tip="Close"
+          onClick={onClose}
+        />
       </div>
 
       {state === 'loading' && <NavSkeleton />}

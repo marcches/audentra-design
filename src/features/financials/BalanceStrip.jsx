@@ -1,7 +1,6 @@
 import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
 import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
-import TermTip from './TermTip.jsx';
-import { financialAidAdvisor } from '../enrollment/data.js';
+import { financialAidAdvisor, financialTerms } from '../enrollment/data.js';
 import { formatMoney } from './logic.js';
 
 /**
@@ -17,12 +16,8 @@ export default function BalanceStrip({ ledger, year, unknown, onContact }) {
     <>
       <SummaryFigure
         money
-        label={
-          <>
-            Estimated remaining balance
-            <TermTip term="balance" label="estimated remaining balance" />
-          </>
-        }
+        label="Estimated remaining balance"
+        explain={financialTerms.balance}
         figure={
           unknown ? (
             <span className="balance-figure unknown">Not available yet</span>

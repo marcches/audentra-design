@@ -45,6 +45,9 @@ screens needed had no names and no components, so each screen invented its own f
 - **Reach for a primitive before writing markup.** A drawer is `<Drawer>`, a rail's first card is
   `<AnchorCard>`, a card is `<Card>` + `<CardHead>` + `<CardRows>`. If you are typing `modal-scrim`
   or `anchor-card` by hand, stop — you are re-creating something that exists.
+- **An icon-only control is `<IconButton name label>`**, which shows its `label` on hover and on
+  keyboard focus. A hint may only repeat that name; anything a student can read nowhere else is an
+  `<InfoTip>`, which is a button, because hover reaches neither a phone nor a keyboard.
 - **Icons are ours** — add to `src/design-system/Icon.jsx`, 24×24, stroke 1.9, `currentColor`.
 - **Accessibility and responsive behaviour are part of done**, not a follow-up.
 

@@ -1,6 +1,6 @@
 import Card, { CardFoot, CardHead } from '../../design-system/primitives/Card.jsx';
 import Icon from '../../design-system/Icon.jsx';
-import { Field } from './Field.jsx';
+import Field from '../../design-system/primitives/Field.jsx';
 import { channelOptions } from './data.js';
 
 /**

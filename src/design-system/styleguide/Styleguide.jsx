@@ -4,6 +4,8 @@ import Card, { CardFoot, CardHead, CardRows } from '../primitives/Card.jsx';
 import AnchorCard from '../primitives/AnchorCard.jsx';
 import Button, { IconButton } from '../primitives/Button.jsx';
 import Drawer from '../primitives/Drawer.jsx';
+import Field from '../primitives/Field.jsx';
+import Tooltip, { InfoTip } from '../primitives/Tooltip.jsx';
 import StateCard from '../patterns/StateCard.jsx';
 import StepRail from '../patterns/StepRail.jsx';
 import SummaryFigure from '../patterns/SummaryFigure.jsx';
@@ -154,6 +156,9 @@ const CONSTANT = [
   ['panel-pad', 'the summary panel’s own padding'],
   ['safe-bottom', 'the corner Edward owns. No page may put a primary action inside it'],
   ['toast-bottom', 'where a toast sits'],
+  ['tip-gap', 'a tooltip to the control it points at'],
+  ['tip-edge', 'the closest a tooltip may come to the window’s edge'],
+  ['tip-measure', 'an explainer’s measure — about 40 characters'],
 ];
 
 const DEPTH = [
@@ -166,19 +171,20 @@ const MOTION = [
   ['dur-fast', 'a control answering a pointer'],
   ['dur-base', 'a panel arriving or leaving'],
   ['ease', 'the one curve, and everything that moves uses it'],
+  ['delay-tip', 'the wait before a hint names the control under the pointer'],
 ];
 
 const LAYER = [
   ['z-topbar', 'the bar at the top of the page'],
   ['z-nav-scrim', 'what dims the page under the nav drawer'],
   ['z-sidebar', 'the nav itself'],
-  ['z-tooltip', 'a term’s bubble'],
   ['z-popover-scrim', 'what closes a popover when you click past it'],
   ['z-popover', 'the topbar’s popovers'],
   ['z-edward', 'the assistant: over the page, under anything modal'],
   ['z-scrim', 'what dims the page under a drawer'],
   ['z-panel', 'the drawer itself'],
   ['z-modal', 'a modal, which owns the screen'],
+  ['z-tooltip', 'a tooltip — above all of it, because you are pointing at whatever is on top'],
   ['z-toast', 'the one thing allowed over a modal'],
 ];
 
@@ -286,8 +292,9 @@ function Swatches({ group }) {
   );
 }
 
-export default function Styleguide() {
+export default function Styleguide({ onToast }) {
   const [drawer, setDrawer] = useState(false);
+  const [postcode, setPostcode] = useState('0213');
   const radiusValues = useTokens(RADIUS.map(([t]) => t));
   const typeValues = useTokens(TYPE.map(([t]) => t));
 
@@ -593,6 +600,206 @@ export default function Styleguide() {
             <Button kind="primary" full icon="arrow">
               Full — what a drawer’s action does, and a card’s rarely should
             </Button>
+          </div>
+        </Section>
+
+        <Section
+          id="sg-tooltip"
+          title="Tooltips"
+          rule="Two of them, and what separates them is not size. A hint may only repeat the control’s own accessible name, because hover exists on neither a phone nor a keyboard — the moment a bubble carries something said nowhere else it is an explainer, which is a button, and is reachable by tap and by Tab."
+        >
+          <div className="sg-grid">
+            <div className="sg-block">
+              <h3>The hint — “what is this control?”</h3>
+              <p className="sg-note">
+                Comes with <code>IconButton</code>, from the <code>label</code> it already requires:
+                the name a screen reader hears is the name everyone else sees, without an author
+                deciding to show it. Pass <code>tip</code> to say it in fewer words than the label —
+                “Remove”, where the label has to name the file.
+              </p>
+              <div className="sg-controls">
+                <IconButton name="close" label="Close" />
+                <IconButton name="chevron" label="Collapse" />
+                <IconButton name="mail" label="Email Amara Nwosu" tip="Email" />
+                <Tooltip tip="Above, when there is no room below" placement="top">
+                  <Button kind="secondary" leadingIcon="refresh">
+                    Anything, not only a button
+                  </Button>
+                </Tooltip>
+              </div>
+              <p className="sg-note">
+                Hover after <code>--delay-tip</code>, keyboard focus at once, and never on a tap:
+                the tap is already doing the thing. It flips, it is pulled in from the window’s edge,
+                and it keeps pointing at what it belongs to through both.
+              </p>
+            </div>
+
+            <div className="sg-block">
+              <h3>The explainer — “what does this word mean?”</h3>
+              <p className="sg-note">
+                Its own control, inline with the word it explains rather than at the end of the row,
+                so what it belongs to is never in question. A title and one or two sentences; longer
+                than that is an <code>InfoModal</code>.
+              </p>
+              <ul className="sg-tip-demo">
+                <li>
+                  <span className="panel-label">
+                    Estimated remaining balance
+                    <InfoTip title="Estimated remaining balance">
+                      What is left after the aid you have accepted and the payments Aster has
+                      recorded. It is an estimate: it changes when aid is finalised.
+                    </InfoTip>
+                  </span>
+                  <strong>$32,400</strong>
+                </li>
+                <li>
+                  <span>
+                    Cost of attendance
+                    <InfoTip title="Cost of attendance" placement="top">
+                      Everything the year is expected to cost — what Aster bills you, and what you
+                      spend elsewhere.
+                    </InfoTip>
+                  </span>
+                  <strong>$66,000</strong>
+                </li>
+              </ul>
+              <p className="sg-note">
+                A tap pins it open; only a tap outside or <code>Esc</code> closes it, and{' '}
+                <code>Esc</code> stops there — an explainer inside a drawer does not take the drawer
+                with it.
+              </p>
+            </div>
+          </div>
+        </Section>
+
+        <Section
+          id="sg-feedback"
+          title="Feedback"
+          rule="Three rungs, and one rule for choosing between them: a toast may never be the only place something is said. Anything a student may need after it has vanished — an error, an obligation, a change she did not watch happen — has a permanent home, and the toast is a pointer to it."
+        >
+          <div className="sg-grid">
+            <div className="sg-block">
+              <h3>In place — “this control, right now”</h3>
+              <p className="sg-note">
+                The default, and the rung that makes the other two smaller. A control that can say
+                “working” does not need to be followed by something that says “done”.{' '}
+                <code>pending</code> holds the button’s exact footprint, sets <code>aria-busy</code>{' '}
+                and <code>disabled</code> together, and deliberately refuses the faded surface{' '}
+                <code>:disabled</code> would otherwise give it: a control that greys out while it
+                works reads as a control that failed.
+              </p>
+              <div className="sg-controls">
+                <Button kind="primary" pending>
+                  Submitting
+                </Button>
+                <Button kind="secondary" pending>
+                  Checking
+                </Button>
+                <Button kind="text" pending>
+                  Sending
+                </Button>
+              </div>
+
+              <p className="sg-note">
+                A field is wrong in exactly one way. <code>error</code> is a string and there is no
+                boolean beside it, because a boolean is how you ship a field that is red to the eye
+                and silent to a screen reader — which is the state this product was in, with{' '}
+                <code>aria-invalid</code> written once in the whole repository.
+              </p>
+              <div className="sg-controls block">
+                <Field
+                  label="Postal code"
+                  hint="The one Aster has on your application."
+                  value={postcode}
+                  onChange={setPostcode}
+                />
+                <Field
+                  label="Postal code"
+                  hint="The one Aster has on your application."
+                  error="Enter a five-digit code."
+                  value={postcode}
+                  onChange={setPostcode}
+                />
+              </div>
+              <p className="sg-note">
+                Never validate while typing; on blur once the field has been touched; on submit for
+                everything; and once a field <em>is</em> showing an error, on every change, so it
+                clears the moment it is fixed. The submit button stays live — a disabled submit
+                refuses without saying why, and on a form of ten fields without saying which.
+              </p>
+            </div>
+
+            <div className="sg-block">
+              <h3>Toast — “something happened, and you were not looking”</h3>
+              <p className="sg-note">
+                Three tones. <code>critical</code> is not a red one: it takes{' '}
+                <code>role=&quot;alert&quot;</code> and it does not disappear on its own, because a
+                failure a student did not see is a failure she meets again later, somewhere worse.
+                The other two live for as long as their own sentence takes to read — four seconds at
+                the least, ten at the most — and the clock stops while a pointer or the keyboard is
+                on them.
+              </p>
+              <div className="sg-controls">
+                <Button
+                  kind="secondary"
+                  onClick={() =>
+                    onToast?.({
+                      tone: 'success',
+                      title: 'Sent to the Registrar’s Office.',
+                      body: 'You can close this page — the check keeps going.',
+                    })
+                  }
+                >
+                  Success
+                </Button>
+                <Button
+                  kind="secondary"
+                  onClick={() =>
+                    onToast?.('Aster’s billing portal would open here — nothing is sent yet.')
+                  }
+                >
+                  Info — the bare string
+                </Button>
+                <Button
+                  kind="secondary"
+                  onClick={() =>
+                    onToast?.({
+                      tone: 'critical',
+                      title: 'That payment did not go through.',
+                      body: 'Nothing was charged. The balance on this page is unchanged.',
+                      action: { label: 'Try again', onAct: () => {} },
+                    })
+                  }
+                >
+                  Critical
+                </Button>
+                <Button
+                  kind="secondary"
+                  onClick={() =>
+                    onToast?.({
+                      tone: 'success',
+                      title: 'Rowan House removed.',
+                      body: 'Your order saved on its own.',
+                      action: { label: 'Undo', onAct: () => {} },
+                    })
+                  }
+                >
+                  With an action
+                </Button>
+              </div>
+              <p className="sg-note">
+                At most one action, because a second action is a decision and a decision is a modal.
+                A toast that carries one grows the bar across its top: it is the picture of the
+                window, and it is the only place in this product where a countdown is shown, because
+                it is the only place where missing one costs something. Three on screen at a time;
+                the fourth pushes the oldest out.
+              </p>
+              <p className="sg-note">
+                Reversible and cheap to reverse: do it, offer <code>Undo</code>, and leave a
+                permanent way back. Irreversible, or carrying a consequence she cannot see: confirm
+                first and name the consequence. Never both.
+              </p>
+            </div>
           </div>
         </Section>
 

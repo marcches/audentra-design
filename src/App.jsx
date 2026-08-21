@@ -9,7 +9,9 @@ import CampusPage, { CAMPUS_PREVIEW_STATES } from './features/campus/CampusPage.
 import { campusEvents, requiredEventCount } from './features/campus/data.js';
 import PageShell from './design-system/patterns/PageShell.jsx';
 import PageSkeleton from './design-system/patterns/PageSkeleton.jsx';
+import ToastStack from './design-system/patterns/Toast.jsx';
 import Styleguide from './design-system/styleguide/Styleguide.jsx';
+import { useToasts } from './lib/toast.js';
 import OnboardingPage from './features/onboarding/OnboardingPage.jsx';
 import PageError from './design-system/patterns/PageError.jsx';
 import SectionPlaceholder from './design-system/patterns/SectionPlaceholder.jsx';
@@ -100,7 +102,7 @@ export default function App() {
   const [progressModal, setProgressModal] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [fileReady, setFileReady] = useState(false);
-  const [toast, setToast] = useState(null);
+  const { toasts, push: pushToast, dismiss: dismissToast } = useToasts();
   const [hash, setHash] = useState(() => window.location.hash || DEFAULT_ROUTE);
   const [preview, setPreview] = useState(readPreviewState);
   // A section that owns its own drawer reports it, so the rule "one overlay owns
@@ -271,12 +273,6 @@ export default function App() {
     navWasOpen.current = navOpen;
   }, [navOpen]);
 
-  useEffect(() => {
-    if (!toast) return undefined;
-    const timer = window.setTimeout(() => setToast(null), 3600);
-    return () => window.clearTimeout(timer);
-  }, [toast]);
-
   // A preview state is a different student, so the record and the answer are
   // re-read rather than carried across.
   useEffect(() => {
@@ -357,9 +353,11 @@ export default function App() {
         requirements: addSubmission(current.requirements, requirement.id, files),
       }));
       onSent();
-      setToast(
-        `Sent to ${officeOf(requirement).name}. You can close this page — the check keeps going.`,
-      );
+      pushToast({
+        tone: 'success',
+        title: `Sent to ${officeOf(requirement).name}.`,
+        body: 'You can close this page — the check keeps going.',
+      });
     }, SEND_MS);
   }
 
@@ -409,7 +407,7 @@ export default function App() {
       }
 
       setAnswer({ value, on: 'just now', where: null });
-      setToast(answerToast(value, offices.accessibility.name));
+      pushToast({ tone: 'success', ...answerToast(value, offices.accessibility.name) });
     }, SEND_MS);
   }
 
@@ -444,20 +442,24 @@ export default function App() {
         },
         ...currentReviewing,
       ]);
-      setToast('Record submitted — your points are reserved while Aster reviews it.');
+      pushToast({
+        tone: 'success',
+        title: 'Record submitted.',
+        body: 'Your points are reserved while Aster reviews it.',
+      });
     } else {
       setCompleted((currentCompleted) => [
         { title: task.title, date: 'Just now', points: task.points },
         ...currentCompleted,
       ]);
-      setToast(`Nice work — ${task.points} Momentum points added.`);
+      pushToast({ tone: 'success', title: `Nice work — ${task.points} Momentum points added.` });
     }
 
     setActiveTask(null);
   }
 
   function contactAid(channel) {
-    setToast(
+    pushToast(
       `${channel === 'email' ? 'An email' : 'A message'} to ${
         financialAidAdvisor.name
       } would open here—nothing is sent yet.`,
@@ -465,15 +467,15 @@ export default function App() {
   }
 
   function payHandoff() {
-    setToast('Aster’s secure payment page would open here — nothing is sent yet.');
+    pushToast('Aster’s secure payment page would open here — nothing is sent yet.');
   }
 
   function changePlan() {
-    setToast('Payment plans are changed in Aster’s billing portal — nothing is changed here.');
+    pushToast('Payment plans are changed in Aster’s billing portal — nothing is changed here.');
   }
 
   function contactAdvisor(channel) {
-    setToast(
+    pushToast(
       `${channel === 'email' ? 'An email' : 'A message'} to ${
         enrollmentAdvisor.name
       } would open here—nothing is sent yet.`,
@@ -494,7 +496,7 @@ export default function App() {
   }
 
   function edwardContact(person) {
-    setToast(`A message to ${person.name} would open here — nothing is sent yet.`);
+    pushToast(`A message to ${person.name} would open here — nothing is sent yet.`);
   }
 
   function renderPage() {
@@ -503,7 +505,7 @@ export default function App() {
     // preview states, because it is the reference the product is built from
     // rather than a part of the product. It renders inside the real shell so
     // every specimen is sitting in the frame it will actually live in.
-    if (hash === STYLEGUIDE_ROUTE) return <Styleguide />;
+    if (hash === STYLEGUIDE_ROUTE) return <Styleguide onToast={pushToast} />;
 
     if (state === 'loading') return <PageSkeleton />;
 
@@ -569,7 +571,7 @@ export default function App() {
         <ClassroomsPage
           destination={current}
           state={preview}
-          onToast={setToast}
+          onToast={pushToast}
           onOverlay={setSectionOverlay}
         />
       );
@@ -578,7 +580,7 @@ export default function App() {
     // ENR-184. `empty` means a record opened today rather than a section with
     // nothing in it, so this page reads the raw preview value too.
     if (current.id === 'profile') {
-      return <ProfilePage destination={current} state={preview} onToast={setToast} />;
+      return <ProfilePage destination={current} state={preview} onToast={pushToast} />;
     }
 
     // ENR-183. Two of this page's states are its own — a student with nothing
@@ -589,7 +591,7 @@ export default function App() {
         <AppointmentsPage
           destination={current}
           previewState={preview}
-          onToast={setToast}
+          onToast={pushToast}
           onOverlay={setSectionOverlay}
           onRetry={() => choosePreview('ready')}
         />
@@ -604,7 +606,7 @@ export default function App() {
         <HelpPage
           destination={current}
           previewState={preview}
-          onToast={setToast}
+          onToast={pushToast}
           onOverlay={setSectionOverlay}
         />
       );
@@ -624,7 +626,7 @@ export default function App() {
           tasks={viewTasks}
           onSubmit={submitDocument}
           onMarkRead={markDocumentRead}
-          onToast={setToast}
+          onToast={pushToast}
           onOverlay={setSectionOverlay}
           onOpenTask={openTaskFromSummary}
           onRetry={() => choosePreview('ready')}
@@ -649,7 +651,7 @@ export default function App() {
           failedId={failedId}
           onAnswer={answerAccommodation}
           onSubmit={submitDocument}
-          onToast={setToast}
+          onToast={pushToast}
           onOverlay={setSectionOverlay}
           onRetry={() => choosePreview('ready')}
         />
@@ -665,7 +667,7 @@ export default function App() {
         <HousingPage
           destination={current}
           previewState={preview}
-          onToast={setToast}
+          onToast={pushToast}
           onOverlay={setSectionOverlay}
         />
       );
@@ -679,7 +681,7 @@ export default function App() {
           destination={current}
           previewState={preview}
           tab={current.id}
-          onToast={setToast}
+          onToast={pushToast}
           onOverlay={setSectionOverlay}
         />
       );
@@ -853,7 +855,7 @@ export default function App() {
           onComplete={completeTask}
           rewardsOn={rewardsOn}
           onOpenPoints={() => setPointsModal(true)}
-          onToast={setToast}
+          onToast={pushToast}
           fileReady={fileReady}
           onPickFile={() => setFileReady(true)}
         />
@@ -870,14 +872,7 @@ export default function App() {
         />
       )}
 
-      {toast && (
-        <div className="toast" role="status">
-          <span>
-            <Icon name="check" size={17} />
-          </span>
-          {toast}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={dismissToast} />
 
       {/* No route, no navigation entry, every page — ENR-175 AC 1 and AC 2. */}
       <Edward

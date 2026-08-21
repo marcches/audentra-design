@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import Tooltip from '../design-system/primitives/Tooltip.jsx';
 
 /**
  * The two things the topbar can open — ENR-167, second pass.
@@ -22,6 +23,7 @@ export default function TopbarPopover({
   children,
   onOpen,
   trigger,
+  tip,
 }) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef(null);
@@ -46,20 +48,24 @@ export default function TopbarPopover({
 
   return (
     <div className="topbar-pop">
-      <button
-        className={className}
-        ref={triggerRef}
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        aria-label={ariaLabel}
-        onClick={() => {
-          if (!open) onOpen?.();
-          setOpen((value) => !value);
-        }}
-      >
-        {trigger}
-        {badge}
-      </button>
+      {/* The hint stands down while the panel is open: the panel has already
+          answered the question the hint was going to answer. */}
+      <Tooltip tip={open ? null : tip}>
+        <button
+          className={className}
+          ref={triggerRef}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          aria-label={ariaLabel}
+          onClick={() => {
+            if (!open) onOpen?.();
+            setOpen((value) => !value);
+          }}
+        >
+          {trigger}
+          {badge}
+        </button>
+      </Tooltip>
 
       {open && (
         <>

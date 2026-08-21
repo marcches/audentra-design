@@ -252,9 +252,45 @@ guess, and guessing is what produced 436 hand-typed colours and eight hand-typed
 | A rail's first card | `<AnchorCard variant label figure>` | `<div className="anchor-card …">` |
 | A block of the main column | `<Card>` + `<CardHead>` + `<CardRows>` + `<CardFoot>` | `<section className="section-card">` |
 | A button | `<Button kind>` / `<IconButton name label>` | `<button className="primary-button">` |
+| A hint on a control | `<IconButton>` (built in) or `<Tooltip tip>` | `::after { content: attr(data-tip) }` |
+| A word the student may not know | `<InfoTip title>` | a bubble only a mouse can reach |
 
 `CardHead` takes `kind="status" | "card" | "section"` — the three, and only three, ways a card may
 open. `IconButton` takes `label`, not `aria-label`, so an icon-only control cannot ship unnamed.
+
+### Tooltips: two of them, and the line between them is not style
+
+Everything about them is in `design-system/primitives/Tooltip.jsx` and rendered at
+`#/styleguide`. What is not negotiable is which one you are reaching for.
+
+| | `Tooltip` — the hint | `InfoTip` — the explainer |
+| --- | --- | --- |
+| Answers | "what is this control?" | "what does this word mean?" |
+| Trigger | the control itself | its own button, inline with the word |
+| Content | one to three words | a title and one or two sentences |
+| Opens on | hover (mouse only), keyboard focus | hover, focus, **and tap** |
+| Screen reader | nothing — it repeats the control's own name | `role="tooltip"` + `aria-describedby` |
+| May carry | only what is already the accessible name | something printed nowhere else |
+
+**A hint may only repeat something a screen reader already says.** Hover does not exist on a phone
+and does not exist on a keyboard, so the moment a bubble carries information the student has no
+other way to reach, it is an `InfoTip` — a real button, reachable by tap and by `Tab`. That is the
+whole rule, and it is why `IconButton` shows its `label` by default: the name a screen reader hears
+is the name everyone else sees, and it costs the author nothing to remember.
+
+Four more things it is worth not re-deciding:
+
+- **An explainer is the exception.** If the card already says it in a line under the figure, do not
+  add a bubble — an info marker on every label is an info marker that means nothing. The same rule
+  the rest of this document sets for chips and for colour.
+- **A row that is itself a button cannot hold one.** A button inside a button is invalid, and the
+  answer is the drawer that row opens, which has room for the sentence anyway.
+- **Longer than two sentences is not a tooltip.** That is `InfoModal`.
+- **The bubble is not the author's to place.** It portals to `document.body`, flips when the window
+  is short, is pulled in from the edge when the trigger is near one, and keeps its arrow on the
+  trigger through both. Nothing about a tooltip should ever need an `overflow` rule or a
+  `position: relative` to be added somewhere else — that it did is why `.summary-alert` still
+  carries the summary panel's bottom corners.
 
 ### Tokens only
 

@@ -144,7 +144,11 @@ export default function HelpPage({
       setSubject('');
       setMessage('');
       setAskGuideOpen(false);
-      onToast(`${officeOf(created).name} has your question — the answer lands on this page.`);
+      onToast({
+        tone: 'success',
+        title: `${officeOf(created).name} has your question.`,
+        body: 'The answer lands on this page.',
+      });
     }, SEND_MS);
   }
 

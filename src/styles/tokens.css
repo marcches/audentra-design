@@ -242,19 +242,30 @@
   --dur-fast: .22s;
   --dur-base: .26s;
   --ease: cubic-bezier(.22, .61, .36, 1);
+  /* The wait before a hint names the control under the pointer. Long enough
+     that crossing a row of icon buttons does not flash three labels; short
+     enough that stopping on one feels like an answer. Keyboard focus and tap
+     ignore it — those are deliberate, and a deliberate act gets an answer at
+     once. */
+  --delay-tip: .3s;
 
   /* Layers, named — ENR-181. A raw z-index in a new rule is a bug the same way
      a raw hex is: it is a decision about the whole product taken locally. */
   --z-topbar: 20;
   --z-nav-scrim: 29;
   --z-sidebar: 30;
-  --z-tooltip: 40;
   --z-popover-scrim: 40;
   --z-popover: 50;
   --z-edward: 60;
   --z-scrim: 70;
   --z-panel: 71;
   --z-modal: 90;
+  /* Above everything but a toast, and it is not an exception: a tooltip is
+     attached to the thing you are pointing at, and the thing you are pointing
+     at is whatever is on top. At 40 — where it sat while it was drawn inside
+     its own parent — a hint on a drawer's close button rendered under the
+     drawer. */
+  --z-tooltip: 110;
   --z-toast: 120;
 
   /* Layout constants — facts about the page frame, not steps on a scale.
@@ -276,6 +287,13 @@
   --panel-pad: 23px;
   --safe-bottom: 76px;
   --toast-bottom: 25px;
+  /* The tooltip's three measurements. They are constants rather than steps
+     because the bubble is positioned in JavaScript, against the window rather
+     than against a parent — `Tooltip.jsx` reads these three off the cascade so
+     the numbers are still decided here and not retyped there. */
+  --tip-gap: 8px;      /* bubble to the control it points at                  */
+  --tip-edge: 12px;    /* the closest a bubble may come to the window's edge  */
+  --tip-measure: 264px; /* an explainer's measure — about 40 characters       */
   /* The bar a full-screen flow runs under, so the rail beside it can be sticky
      and still reach the bottom edge of the window — ENR-163. */
   --flow-bar: 53px;

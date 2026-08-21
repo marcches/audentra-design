@@ -441,11 +441,13 @@
    growing to 153px tall beside a 63px figure. That is the whole of the
    overflow, and it is why they are icons.
  *
- * The word is not lost: it is still the button's accessible name, and it comes
- * back as a bubble on hover and on keyboard focus — the ink bubble `TermTip`
- * already uses, so the portal has one tooltip and not two. They stay side by
- * side rather than stacking: a column of two would give the width back and take
- * it out of the height instead, and height is what was breaking the panel. */
+ * The word is not lost: it is still the button's accessible name, and `Tooltip`
+ * gives it back as a bubble on hover and on keyboard focus. It used to be drawn
+ * here, as `::after { content: attr(data-tip) }` — no keyboard, no touch, and
+ * clipped by any panel with a corner to protect, which is why `.summary-alert`
+ * had to take the panel's bottom radius itself. They stay side by side rather
+ * than stacking: a column of two would give the width back and take it out of
+ * the height instead, and height is what was breaking the panel. */
 .advisor-action {
   color: var(--purple-dark);
   cursor: pointer;
@@ -458,7 +460,6 @@
   height: 34px;
   transition: color .18s, background .18s, border-color .18s;
   display: grid;
-  position: relative;
 }
 
 .advisor-action:hover, .advisor-action:focus-visible {
@@ -467,32 +468,8 @@
   border-color: var(--purple);
 }
 
-.advisor-action::after {
-  content: attr(data-tip);
-  color: var(--purple-tint);
-  z-index: var(--z-tooltip);
-  background: var(--surface-ink);
-  border-radius: var(--radius-chip);
-  width: max-content;
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--fs-small);
-  font-weight: var(--fw-semi);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity .14s;
-  position: absolute;
-  top: calc(100% + 7px);
-  left: 50%;
-  translate: -50%;
-  box-shadow: 0 10px 22px #12172740;
-}
-
-.advisor-action:hover::after, .advisor-action:focus-visible::after {
-  opacity: 1;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .advisor-action, .advisor-action::after {
+  .advisor-action {
     transition: none;
   }
 }
@@ -672,6 +649,178 @@
   border: 0;
   font-size: var(--fs-small);
   font-weight: var(--fw-semi);
+}
+
+/* --- a control that is working --------------------------------------------
+ *
+ * The label is not removed and not replaced: the button goes transparent and
+ * the spinner is laid over it, so the footprint is exactly what it was and
+ * nothing measures anything. A button that resized itself while it worked
+ * would reflow the card holding it, every time, on every action.
+ */
+.pending {
+  cursor: progress;
+  color: transparent;
+  position: relative;
+}
+
+.button-spinner {
+  place-items: center;
+  display: grid;
+  position: absolute;
+  inset: 0;
+}
+
+.button-spinner svg {
+  animation: .9s linear infinite spin;
+}
+
+/* `disabled` is set with `aria-busy`, so the primary button would otherwise
+   take the faded surface it wears when it is refusing. It is not refusing. A
+   control that greys out while it works reads as a control that failed, so
+   this names three classes and wins over `:disabled` by rule. */
+.primary-button.pending:disabled {
+  background: var(--grad-purple);
+  box-shadow: none;
+}
+
+.primary-button.pending .button-spinner {
+  color: var(--on-ink);
+}
+
+.secondary-button.pending .button-spinner {
+  color: var(--purple-dark);
+}
+
+.text-button.pending .button-spinner {
+  color: var(--muted);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* The one animation this product keeps under reduced motion. Everything else
+   here decorates; this one *is* the message. Frozen at 360°, a spinner does
+   not read as "still working", it reads as "stopped working" — so it steps
+   instead of sweeping, and it has to out-shout the blanket rule further down
+   this file to do it. */
+@media (prefers-reduced-motion: reduce) {
+  .button-spinner svg {
+    animation-duration: 1.2s !important;
+    animation-timing-function: steps(8, end) !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+/* --- a field, and the only way this product says one is wrong --------------
+ *
+ * Lifted out of `features/onboarding.css`, where a shape used by four steps, a
+ * drawer and now the styleguide had been written as if it belonged to one
+ * section. It did not, and the proof is that `features/profile.css` had grown
+ * its own `.field-label` meaning something else entirely — different size,
+ * different weight, `display: flex` so a verification glyph could sit beside
+ * it. Both were bare `.field-label`, and `onboarding.css` imports after
+ * `profile.css`, so on My Profile the onboarding rule was quietly winning:
+ * every record label there rendered 9.5px uppercase and `display: block`,
+ * which is not what either file asked for.
+ *
+ * That is the tie this repo has been bitten by twice. It is fixed the way the
+ * contract says to fix one — by rule, not by position: the record row's label
+ * is now `.field-row-label`, which is its own name for its own thing, and
+ * `.field-label` is defined exactly once, here.
+ */
+.field {
+  margin-bottom: var(--space-8);
+  display: block;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.field-label {
+  color: var(--muted);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  margin: 0 0 var(--space-4);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+  display: block;
+}
+
+.field-label.spaced {
+  margin-top: var(--space-9);
+}
+
+.field-control {
+  display: block;
+  position: relative;
+}
+
+.field input {
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-tile);
+  width: 100%;
+  padding: var(--space-6) var(--space-7);
+  font-family: var(--font-geist-sans);
+  font-size: var(--fs-body);
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.field input:focus-visible {
+  border-color: var(--purple);
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--purple-tint);
+}
+
+/* The label turns with the edge. It is the cheapest way to make an error
+   findable on a form that has been scrolled past its own message. */
+.field.invalid .field-label {
+  color: var(--crimson-ink);
+}
+
+.field.invalid input {
+  border-color: var(--crimson);
+  padding-right: var(--space-10);
+  box-shadow: 0 0 0 3px var(--crimson-soft);
+}
+
+.field.invalid .field-control > svg {
+  color: var(--crimson);
+  position: absolute;
+  top: 50%;
+  right: var(--space-6);
+  transform: translateY(-50%);
+}
+
+/* Led by a glyph, because crimson on its own is not a signal on a screen that
+   is not being read in colour. */
+.field-error {
+  color: var(--crimson-ink);
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semi);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.field-error svg {
+  flex: none;
+}
+
+.field-hint {
+  color: var(--muted);
+  margin-top: var(--space-4);
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  display: block;
 }
 
 .status-section {
@@ -1533,45 +1682,161 @@ footer a {
   display: grid;
 }
 
-.toast {
+/* --- the toast, and the two hexes it used to hand-type ----------------------
+ *
+ * The middle rung of the feedback ladder. Three tones, not one — the glyph and
+ * its tint are the tone's, so a sentence that is not good news stops arriving
+ * with a green tick on it.
+ *
+ * The stack is what is positioned, not the toast. The toast used to centre
+ * itself with `translate(-50%)`, which is why its entrance keyframe had to
+ * repeat that transform in both stops: the animation and the layout were
+ * fighting over the same property. With the stack holding the position, the
+ * toast animates on its own axis and a second toast can sit above the first —
+ * which is the whole point, because until now the second one deleted it.
+ */
+.toast-stack {
   z-index: var(--z-toast);
-  color: var(--on-ink);
-  background: var(--surface-ink);
-  border-radius: var(--radius-tile);
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-5);
-  max-width: min(430px,100vw - 30px);
-  min-height: 48px;
-  padding: var(--space-5) var(--space-8) var(--space-5) var(--space-5);
-  font-size: var(--fs-meta);
-  font-weight: var(--fw-semi);
-  animation: var(--dur-fast) both toastIn;
+  gap: var(--space-4);
+  width: min(430px,100vw - 30px);
   display: flex;
   position: fixed;
   bottom: var(--toast-bottom);
   left: 50%;
   transform: translate(-50%);
-  box-shadow: 0 13px 33px #161a2f47;
+  /* The gaps between toasts are not a shield laid over the page. */
+  pointer-events: none;
 }
 
-.toast span {
-  color: var(--green-line);
-  background: #85d5b121;
+.toast {
+  color: var(--on-ink);
+  background: var(--surface-ink);
+  border-radius: var(--radius-tile);
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-5);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+  animation: var(--dur-fast) both toastIn;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  pointer-events: auto;
+  box-shadow: var(--shadow-float);
+}
+
+.toast-glyph {
   border-radius: var(--radius-chip);
+  flex: none;
   place-items: center;
   width: 28px;
   height: 28px;
   display: grid;
 }
 
+.toast.success .toast-glyph {
+  color: var(--green-line);
+  background: color-mix(in srgb, var(--green-line) 14%, transparent);
+}
+
+.toast.info .toast-glyph {
+  color: var(--on-ink-muted);
+  background: color-mix(in srgb, var(--on-ink) 12%, transparent);
+}
+
+.toast.critical .toast-glyph {
+  color: var(--crimson-line);
+  background: color-mix(in srgb, var(--crimson-line) 16%, transparent);
+}
+
+.toast-copy {
+  gap: var(--space-2);
+  min-width: 0;
+  flex: 1;
+  display: grid;
+}
+
+.toast-copy strong {
+  font-weight: var(--fw-heavy);
+}
+
+.toast-copy span {
+  color: var(--on-ink-muted);
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+}
+
+/* At most one, because a second action is a decision and a decision is a
+   modal. It wins over `.text-button` by naming two classes, not by sitting
+   further down the file. */
+.toast .toast-action {
+  color: var(--on-ink);
+  border: 1px solid var(--on-ink-line);
+  border-radius: var(--radius-chip);
+  flex: none;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
+}
+
+.toast .toast-action:hover {
+  background: color-mix(in srgb, var(--on-ink) 10%, transparent);
+}
+
+.toast .toast-close {
+  color: var(--on-ink-muted);
+  flex: none;
+}
+
+.toast .toast-close:hover {
+  color: var(--on-ink);
+  transform: none;
+  box-shadow: none;
+}
+
+/* The picture of the timer, never the timer — the countdown itself is in
+   JavaScript, because a dismissal that lives in a stylesheet is a dismissal a
+   media query can cancel. `animation-duration` and `animation-play-state` are
+   set on the element: the first is the sentence's own reading time, the second
+   is how a pointer or a keyboard on the toast stops the clock. */
+.toast-life {
+  background: var(--on-ink-line);
+  width: 100%;
+  height: 2px;
+  animation-name: toastLife;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0;
+}
+
+.toast.success .toast-life {
+  background: var(--green-line);
+}
+
+@keyframes toastLife {
+  0% {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
 @keyframes toastIn {
   0% {
     opacity: 0;
-    transform: translate(-50%,10px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translate(-50%);
+    transform: none;
   }
 }
 
@@ -2441,5 +2706,148 @@ footer a {
 @media (width<=620px) {
   .step-rail {
     padding: var(--space-9) var(--space-8) var(--space-8);
+  }
+}
+
+/* ── The tooltip ────────────────────────────────────────────────────────────
+ *
+ * One bubble, two variants, drawn into `document.body` and positioned against
+ * the window by `Tooltip.jsx`. It used to be drawn twice — once as
+ * `.term-tip-bubble` in the financials file and once as `.advisor-action::after`
+ * here — and both were absolutely positioned inside their own parent, so both
+ * were one `overflow: hidden` away from being invisible. That is not a bug that
+ * gets fixed; it is a bug that gets designed out, by taking the bubble out of
+ * the box it was drawn in.
+ *
+ * `hint` names a control and may only repeat its accessible name. `info`
+ * explains a word and carries what is printed nowhere else, which is why it is
+ * bigger, has a title, and is opened by a button rather than by a hover. */
+.tip-bubble {
+  z-index: var(--z-tooltip);
+  background: var(--surface-ink);
+  box-shadow: var(--shadow-float);
+  border-radius: var(--radius-chip);
+  width: max-content;
+  max-width: min(var(--tip-measure), calc(100vw - var(--tip-edge) * 2));
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/* Until it has been measured it is at 0,0, which is not where it belongs. */
+.tip-bubble:not([data-placed]) {
+  visibility: hidden;
+}
+
+.tip-bubble[data-placed] {
+  animation: tip-in var(--dur-fast) var(--ease);
+}
+
+/* The arrow is placed against the control's centre, not the bubble's, so a
+   bubble that had to be pulled in from the window's edge still points at what
+   it belongs to. */
+.tip-bubble:before {
+  content: '';
+  background: var(--surface-ink);
+  border-radius: 1px;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  left: var(--tip-arrow);
+  rotate: 45deg;
+  translate: -50%;
+}
+
+.tip-bubble[data-side="bottom"] {
+  transform-origin: 50% 0;
+}
+
+.tip-bubble[data-side="bottom"]:before {
+  top: -3px;
+}
+
+.tip-bubble[data-side="top"] {
+  transform-origin: 50% 100%;
+}
+
+.tip-bubble[data-side="top"]:before {
+  bottom: -3px;
+}
+
+.tip-bubble.hint {
+  color: var(--purple-tint);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+  pointer-events: none;
+}
+
+.tip-bubble.info {
+  color: var(--purple-tint);
+  border-radius: var(--radius-tile);
+  padding: var(--space-5) var(--space-6);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-body);
+  text-wrap: pretty;
+}
+
+.tip-bubble.info strong {
+  color: var(--on-ink);
+  margin-bottom: var(--space-1);
+  font-size: var(--fs-copy);
+  display: block;
+}
+
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    scale: .97;
+  }
+}
+
+/* The explainer's own control: quiet enough that a heading carrying one is
+   still read as a heading, and `cursor: help` because it is not an action. */
+.info-tip {
+  color: var(--muted);
+  cursor: help;
+  background: 0 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  flex: none;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  display: inline-grid;
+  vertical-align: middle;
+}
+
+.info-tip:hover, .info-tip:focus-visible, .info-tip[aria-expanded="true"] {
+  color: var(--purple-dark);
+}
+
+/* The explainer follows the word it explains, so it owns the space between
+   them rather than depending on a space character surviving in the JSX. */
+.info-tip {
+  margin-inline-start: var(--space-1);
+}
+
+/* On the ink plane — a rail's anchor card. Written once here rather than per
+   rail: eight rails re-deriving what a control looks like on ink is the bug
+   `AnchorCard` exists to close. */
+.anchor-card .info-tip {
+  color: var(--on-ink-muted);
+}
+
+.anchor-card .info-tip:hover,
+.anchor-card .info-tip:focus-visible,
+.anchor-card .info-tip[aria-expanded="true"] {
+  color: var(--on-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tip-bubble[data-placed] {
+    animation: none;
   }
 }

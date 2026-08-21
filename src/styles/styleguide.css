@@ -422,3 +422,39 @@
 .sg-rail-demo .rail-advisor {
   margin-top: var(--space-9);
 }
+
+/* --- the tooltip demo: two rows that look like the rows the explainer lives on --- */
+
+.sg-tip-demo {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-row);
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.sg-tip-demo li {
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+}
+
+.sg-tip-demo li + li {
+  border-top: 1px solid var(--line-soft);
+}
+
+.sg-tip-demo span {
+  align-items: center;
+  display: inline-flex;
+}
+
+.sg-tip-demo strong {
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-h3);
+}

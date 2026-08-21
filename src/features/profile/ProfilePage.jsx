@@ -80,7 +80,11 @@ export default function ProfilePage({ destination, state, onToast }) {
   function chooseChannel(id) {
     setChannel(id);
     const [, label] = channelOptions.find(([value]) => value === id);
-    onToast(`Aster will reach you by ${label.toLowerCase()} first. That takes effect now.`);
+    onToast({
+      tone: 'success',
+      title: `Aster will reach you by ${label.toLowerCase()} first.`,
+      body: 'That takes effect now.',
+    });
   }
 
   function toggleCategory(grant, category) {
@@ -106,8 +110,28 @@ export default function ProfilePage({ destination, state, onToast }) {
   }
 
   function revokeGrant(grant) {
+    const rank = grants.findIndex((item) => item.id === grant.id);
     setGrants((current) => current.filter((item) => item.id !== grant.id));
-    onToast(`${grant.person.name} can no longer see anything in your record. That took effect now.`);
+    // Undo rather than a confirm, and the ladder's own rule is what decides it:
+    // the whole grant is in hand, so putting it back costs nothing, while
+    // rebuilding it by hand would cost a name, an email and six checkboxes.
+    // Asking a student to confirm twice before *reducing* what she shares is
+    // friction pointed the wrong way.
+    onToast({
+      tone: 'success',
+      title: `${grant.person.name} can no longer see anything in your record.`,
+      body: 'That took effect now.',
+      action: {
+        label: 'Undo',
+        onAct: () =>
+          setGrants((current) => {
+            if (current.some((item) => item.id === grant.id)) return current;
+            const next = [...current];
+            next.splice(rank < 0 ? next.length : rank, 0, grant);
+            return next;
+          }),
+      },
+    });
   }
 
   const hero = {

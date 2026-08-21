@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Drawer from '../../design-system/primitives/Drawer.jsx';
 import Button from '../../design-system/primitives/Button.jsx';
 import Icon from '../../design-system/Icon.jsx';
-import { Field } from './Field.jsx';
+import Field from '../../design-system/primitives/Field.jsx';
 import { DEFAULT_END, RECORD_CATEGORIES } from './data.js';
 import { grantProblem } from './logic.js';
 
@@ -111,7 +111,7 @@ export default function PersonDrawer({ grant, onSave, onClose }) {
         label="Their name"
         autoComplete="name"
         value={draft.name}
-        invalid={problem?.field === 'name'}
+        error={problem?.field === 'name' ? problem.reason : null}
         onChange={(value) => set({ name: value })}
       />
 
@@ -131,7 +131,7 @@ export default function PersonDrawer({ grant, onSave, onClose }) {
         autoComplete="email"
         value={draft.email}
         hint="Aster uses this to tell them what they have been given, and nothing else."
-        invalid={problem?.field === 'email'}
+        error={problem?.field === 'email' ? problem.reason : null}
         onChange={(value) => set({ email: value })}
       />
 

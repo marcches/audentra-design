@@ -1,4 +1,5 @@
 import Icon from '../Icon.jsx';
+import Tooltip from '../primitives/Tooltip.jsx';
 
 /**
  * The right half of the summary panel: the person who owns the subject.
@@ -16,7 +17,7 @@ import Icon from '../Icon.jsx';
  *     61px figure. Stacked they fit the width but not the height: two discs in
  *     a column are 73px on their own. Side by side they are 34px tall and cost
  *     the bar nothing. The word is still each button's accessible name and
- *     comes back as a bubble on hover and on keyboard focus.
+ *     `Tooltip` gives it back on hover and on keyboard focus.
  *   - **The building and the office hours are not here.** Two more lines is
  *     40px the panel does not have. They are not lost: Edward's person card
  *     prints the office and the hours, which is where they are read — while
@@ -39,22 +40,24 @@ export default function AdvisorBar({ advisor, onContact }) {
         </strong>
       </div>
       <div className="advisor-actions">
-        <button
-          className="advisor-action"
-          data-tip="Email"
-          aria-label={`Email ${advisor.name}`}
-          onClick={() => onContact('email')}
-        >
-          <Icon name="mail" size={16} />
-        </button>
-        <button
-          className="advisor-action"
-          data-tip="Message"
-          aria-label={`Message ${advisor.name}`}
-          onClick={() => onContact('message')}
-        >
-          <Icon name="message" size={16} />
-        </button>
+        <Tooltip tip="Email">
+          <button
+            className="advisor-action"
+            aria-label={`Email ${advisor.name}`}
+            onClick={() => onContact('email')}
+          >
+            <Icon name="mail" size={16} />
+          </button>
+        </Tooltip>
+        <Tooltip tip="Message">
+          <button
+            className="advisor-action"
+            aria-label={`Message ${advisor.name}`}
+            onClick={() => onContact('message')}
+          >
+            <Icon name="message" size={16} />
+          </button>
+        </Tooltip>
       </div>
     </div>
   );

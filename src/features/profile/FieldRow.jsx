@@ -56,7 +56,7 @@ export default function FieldRow({
   return (
     <div className={`field-row${office ? ' owned' : ''}${needsYou(field) ? ' needs-you' : ''}`}>
       <div className="field-head">
-        <span className="field-label">
+        <span className="field-row-label">
           {office && <Icon name="lock" size={11} />}
           {field.label}
         </span>

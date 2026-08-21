@@ -1,4 +1,5 @@
 import Icon from '../design-system/Icon.jsx';
+import { IconButton } from '../design-system/primitives/Button.jsx';
 import PreviewStateMenu from './PreviewStateMenu.jsx';
 import TopbarPopover from './TopbarPopover.jsx';
 import NotificationPanel from '../features/notifications/NotificationPanel.jsx';
@@ -37,14 +38,14 @@ export default function Topbar({
 
   return (
     <header className="topbar">
-      <button
-        className="icon-button mobile-menu"
+      <IconButton
+        className="mobile-menu"
+        name="menu"
         ref={menuRef}
-        aria-label="Open navigation"
+        label="Open navigation"
+        tip="Menu"
         onClick={onOpenNav}
-      >
-        <Icon name="menu" />
-      </button>
+      />
       <div className="topbar-title">
         <span className="mobile-school">Aster</span>
       </div>
@@ -60,6 +61,7 @@ export default function Topbar({
         {points && (
           <TopbarPopover
             className="topbar-chip points-chip"
+            tip="Your momentum"
             ariaLabel={
               points.unavailable
                 ? 'Your momentum, balance unavailable'
@@ -99,6 +101,7 @@ export default function Topbar({
 
         <TopbarPopover
           className="topbar-chip bell-chip"
+          tip="What changed"
           ariaLabel={
             unread?.total ? `What changed, ${unread.total} unread` : 'What changed'
           }

@@ -9,6 +9,7 @@ import HealthRail from './HealthRail.jsx';
 import DocumentDrawer from '../documents/DocumentDrawer.jsx';
 import { filesLabel } from '../documents/logic.js';
 import { healthStanding } from './logic.js';
+import { registration } from '../registration/data.js';
 
 /**
  * Health — ENR-206, behaviour from ENR-205, ENR-208 and ENR-209.
@@ -91,6 +92,10 @@ export default function HealthPage({
         <>
           <SummaryFigure
             label={standing.label}
+            explain={{
+              title: 'Your immunization record',
+              body: `The one health record Aster must hold before term. ${registration.label[0].toUpperCase()}${registration.label.slice(1)} stays shut until an office has accepted it — sending it is not the same as it being accepted.`,
+            }}
             // `partial`: no figure at all rather than a zero or a "not sent",
             // either of which would be a claim about a record we could not read
             // (ENR-205 Scenario 5).
@@ -154,6 +159,9 @@ export default function HealthPage({
 /** Named for the toast the page raises when an answer lands. */
 export function answerToast(answer, office) {
   return answer === 'yes'
-    ? `${office} has your name. They will reach out before term starts.`
-    : 'Saved as your current answer. Nothing is pending, and you can change it whenever you like.';
+    ? { title: `${office} has your name.`, body: 'They will reach out before term starts.' }
+    : {
+        title: 'Saved as your current answer.',
+        body: 'Nothing is pending, and you can change it whenever you like.',
+      };
 }

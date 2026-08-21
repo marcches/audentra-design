@@ -105,23 +105,44 @@ export default function HousingPage({
     const option = planById(next);
     // Changing away from living on campus keeps the shortlist rather than discarding it: a plan
     // change is not a deletion, and a student who comes back to on-campus should find her order.
-    onToast(
-      option.complete
-        ? `Saved. ${option.consequence}`
-        : `Saved as still deciding. ${housingOffice} will come back to you.`,
-    );
+    onToast({
+      tone: 'success',
+      title: option.complete ? 'Saved.' : 'Saved as still deciding.',
+      body: option.complete ? option.consequence : `${housingOffice} will come back to you.`,
+    });
   }
 
   function addResidence(id) {
     if (shortlist.length >= SHORTLIST_MAX || shortlist.includes(id)) return;
     const next = [...shortlist, id];
     setShortlist(next);
-    onToast(`Saved as your ${ordinal(next.length - 1)}.`);
+    onToast({ tone: 'success', title: `Saved as your ${ordinal(next.length - 1)}.` });
   }
 
   function removeResidence(id) {
+    const rank = shortlist.indexOf(id);
+    if (rank < 0) return;
     setShortlist(shortlist.filter((item) => item !== id));
-    onToast('Removed. Your order saved on its own.');
+    // Undo restores the rank, not just the row: this whole panel is about the
+    // order, so putting a residence back at the bottom would be a different
+    // answer wearing the word "undo". The toast is not the only way back —
+    // the residence is still in the catalogue — which is what makes offering
+    // a window this short honest.
+    onToast({
+      tone: 'success',
+      title: `${residenceById(id).name} removed.`,
+      body: 'Your order saved on its own.',
+      action: {
+        label: 'Undo',
+        onAct: () =>
+          setShortlist((current) => {
+            if (current.includes(id)) return current;
+            const next = [...current];
+            next.splice(rank, 0, id);
+            return next.slice(0, SHORTLIST_MAX);
+          }),
+      },
+    });
   }
 
   function moveResidence(index, direction) {
@@ -131,7 +152,11 @@ export default function HousingPage({
     [next[index], next[target]] = [next[target], next[index]];
     setShortlist(next);
     const moved = next[target];
-    onToast(`Saved. ${residenceById(moved).name} is now your ${ordinal(target)}.`);
+    onToast({
+      tone: 'success',
+      title: 'Saved.',
+      body: `${residenceById(moved).name} is now your ${ordinal(target)}.`,
+    });
   }
 
   // The section's one figure is the plan itself — the standing this section reports. Days left and

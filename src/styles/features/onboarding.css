@@ -274,61 +274,11 @@
   display: inline-flex;
 }
 
-/* --- fields --- */
-
-.field {
-  margin-bottom: var(--space-8);
-  display: block;
-}
-
-.field:last-child {
-  margin-bottom: 0;
-}
-
-.field-label {
-  color: var(--muted);
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-  margin: 0 0 var(--space-4);
-  font-size: var(--fs-small);
-  font-weight: var(--fw-heavy);
-  display: block;
-}
-
-.field-label.spaced {
-  margin-top: var(--space-9);
-}
-
-.field input {
-  color: var(--ink);
-  background: var(--surface);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-tile);
-  width: 100%;
-  padding: var(--space-6) var(--space-7);
-  font-family: var(--font-geist-sans);
-  font-size: var(--fs-body);
-  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
-}
-
-.field input:focus-visible {
-  border-color: var(--purple);
-  outline: 0;
-  box-shadow: 0 0 0 3px var(--purple-tint);
-}
-
-.field.invalid input {
-  border-color: var(--crimson);
-  box-shadow: 0 0 0 3px var(--crimson-soft);
-}
-
-.field-hint {
-  color: var(--muted);
-  margin-top: var(--space-4);
-  font-size: var(--fs-small);
-  line-height: var(--lh-body);
-  display: block;
-}
+/* --- fields ---
+   `.field` and everything under it moved to `patterns.css`. It is the design
+   system's shape, not this section's: four steps, a drawer and the styleguide
+   all draw it, and while it lived here its `.field-label` was silently
+   overriding My Profile's rule of the same name. */
 
 /* A fact Aster holds and she does not change. No control at all — a read-only
    input is a control that refuses, and this product keeps deciding not to ship

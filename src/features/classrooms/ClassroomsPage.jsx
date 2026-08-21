@@ -108,6 +108,10 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
           </div>
         }
         label="Your degree progress"
+        explain={{
+          title: 'Requirements met',
+          body: 'A requirement is met when the Registrar has approved enough credit for it. Credit still being matched is reported in the rail and is deliberately not counted here.',
+        }}
         figure={`${totals.met} of ${totals.total} requirements met`}
       >
         {totals.approved} of {program.creditsToGraduate} credits approved

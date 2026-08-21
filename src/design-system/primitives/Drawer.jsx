@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import Icon from '../Icon.jsx';
+import { IconButton } from './Button.jsx';
 import { useOverlay } from '../../lib/overlay.js';
 
 /**
@@ -68,9 +68,7 @@ export default function Drawer({
             {lead ? <span>{lead}</span> : null}
             {trail ? <span>{trail}</span> : null}
           </div>
-          <button className="icon-button" aria-label="Close" onClick={onClose}>
-            <Icon name="close" />
-          </button>
+          <IconButton name="close" label={closeLabel} tip="Close" onClick={onClose} />
         </div>
 
         <div className="drawer-content">{children}</div>

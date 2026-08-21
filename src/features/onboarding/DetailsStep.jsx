@@ -1,6 +1,7 @@
 import Card, { CardHead, CardRows } from '../../design-system/primitives/Card.jsx';
 import Icon from '../../design-system/Icon.jsx';
-import { Field, StatedField } from './Field.jsx';
+import Field from '../../design-system/primitives/Field.jsx';
+import StatedField from './StatedField.jsx';
 import { PRONOUNS } from './data.js';
 
 /**

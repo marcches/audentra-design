@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import { IconButton } from '../../design-system/primitives/Button.jsx';
 import { housingOffice, responseDeadline } from './data.js';
 import { formatMoney } from '../financials/logic.js';
 import {
@@ -91,29 +92,30 @@ export default function ShortlistPanel({ shortlist, locked, onMove, onRemove, on
               {!locked && (
                 <span className="rank-controls">
                   {/* `chevron` points down, so it is the *up* control that turns. */}
-                  <button
-                    className="icon-button up"
-                    aria-label={`Move ${residence.name} up`}
+                  <IconButton
+                    className="up"
+                    name="chevron"
+                    size={16}
+                    label={`Move ${residence.name} up`}
+                    tip="Move up"
                     disabled={index === 0}
                     onClick={() => onMove(index, -1)}
-                  >
-                    <Icon name="chevron" size={16} />
-                  </button>
-                  <button
-                    className="icon-button"
-                    aria-label={`Move ${residence.name} down`}
+                  />
+                  <IconButton
+                    name="chevron"
+                    size={16}
+                    label={`Move ${residence.name} down`}
+                    tip="Move down"
                     disabled={index === rows.length - 1}
                     onClick={() => onMove(index, 1)}
-                  >
-                    <Icon name="chevron" size={16} />
-                  </button>
-                  <button
-                    className="icon-button"
-                    aria-label={`Remove ${residence.name} from your shortlist`}
+                  />
+                  <IconButton
+                    name="close"
+                    size={16}
+                    label={`Remove ${residence.name} from your shortlist`}
+                    tip="Remove"
                     onClick={() => onRemove(residence.id)}
-                  >
-                    <Icon name="close" size={16} />
-                  </button>
+                  />
                 </span>
               )}
             </li>

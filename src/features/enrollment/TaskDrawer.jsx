@@ -1,5 +1,6 @@
 import Icon from '../../design-system/Icon.jsx';
 import Drawer from '../../design-system/primitives/Drawer.jsx';
+import Tooltip from '../../design-system/primitives/Tooltip.jsx';
 import { kindIcon } from './logic.js';
 
 export default function TaskDrawer({
@@ -42,9 +43,11 @@ export default function TaskDrawer({
               <small>That becomes {task.tomorrow} tomorrow</small>
             </span>
           </div>
-          <button onClick={onOpenPoints} aria-label="Learn how points work">
-            <Icon name="info" size={17} />
-          </button>
+          <Tooltip tip="How points work">
+            <button onClick={onOpenPoints} aria-label="Learn how points work">
+              <Icon name="info" size={17} />
+            </button>
+          </Tooltip>
         </div>
       )}
 
@@ -200,7 +203,11 @@ export default function TaskDrawer({
                 className="skip-link"
                 onClick={() => {
                   onClose();
-                  onToast('Saved for later — you can come back whenever you’re ready.');
+                  onToast({
+                    tone: 'success',
+                    title: 'Saved for later.',
+                    body: 'You can come back whenever you’re ready.',
+                  });
                 }}
               >
                 Skip for now

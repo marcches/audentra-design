@@ -130,6 +130,7 @@ export default function DocumentsPage({
               </div>
             }
             label="What Aster has accepted"
+            explain="Only what an office has checked and accepted is counted. Something you have sent stays outside the count until it clears review, and its row says who is holding it."
             figure={
               unavailable ? 'Not available' : `${figures.accepted} of ${figures.total} accepted`
             }
