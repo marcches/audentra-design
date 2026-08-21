@@ -1,0 +1,509 @@
+/* ==========================================================================
+ * My Enrollment — the section this design system was extracted out of.
+ * 
+ * It was built first, so every shared shape in the product was lifted from it
+ * in place and the two lived interleaved in `patterns.css`, run by run, for as
+ * long as the file existed. What is here is what turned out to be nobody
+ * else's: every rule whose classes no other feature, and not the design
+ * system, ever renders.
+ * 
+ * What stayed behind in `patterns.css` stayed on purpose. A shape My
+ * Enrollment shares with My Classrooms or My Financials is shared, whatever it
+ * is called and whichever screen it was written for first.
+ * ==========================================================================*/
+
+.task-card {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-card);
+  transition: all .2s;
+  overflow: hidden;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px #1f253a16;
+}
+
+.task-card.recommended {
+  border-color: #a99cee;
+  box-shadow: 0 12px 30px #4e3bb31d,0 0 0 1px #6854d90f;
+}
+
+.recommended-banner {
+  color: var(--on-ink);
+  letter-spacing: var(--ls-caps);
+  background: linear-gradient(90deg,var(--purple-hover),#7462df);
+  justify-content: space-between;
+  align-items: center;
+  height: 31px;
+  padding: 0 var(--space-7);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  display: flex;
+}
+
+.recommended-banner span {
+  align-items: center;
+  gap: var(--space-3);
+  display: flex;
+}
+
+.recommended-banner span:last-child {
+  color: var(--purple-tint);
+  font-weight: var(--fw-semi);
+}
+
+.task-card-body {
+  grid-template-columns: 40px minmax(0,1fr) 142px;
+  gap: var(--space-6);
+  padding: var(--space-9) var(--space-9) var(--space-8);
+  display: grid;
+}
+
+.task-type-icon {
+  border-radius: var(--radius-tile);
+  width: 40px;
+  height: 40px;
+}
+
+.task-meta-row {
+  color: var(--faint);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 20px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+  display: flex;
+}
+
+.priority-badge {
+  letter-spacing: var(--ls-caps);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1) var(--space-3);
+}
+
+.priority-badge.critical {
+  color: var(--crimson);
+  background: var(--crimson-soft);
+}
+
+.priority-badge.normal {
+  color: var(--ink-2);
+  background: var(--line-soft);
+}
+
+.task-main h3 {
+  letter-spacing: var(--ls-tight);
+  margin: var(--space-2) 0 var(--space-3);
+  font-size: var(--fs-h2);
+}
+
+.task-main>p {
+  color: var(--muted);
+  max-width: 550px;
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.task-facts {
+  color: var(--muted);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+  font-size: var(--fs-small);
+  display: flex;
+}
+
+.task-facts span {
+  align-items: center;
+  gap: var(--space-2);
+  display: flex;
+}
+
+.task-facts b {
+  color: var(--ink-2);
+  font-weight: var(--fw-semi);
+}
+
+.task-action {
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--space-3);
+  display: flex;
+}
+
+.point-reward {
+  color: var(--purple-hover);
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  column-gap: var(--space-2);
+  min-height: 26px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+  display: flex;
+}
+
+.point-reward span {
+  align-items: center;
+  gap: var(--space-2);
+  display: flex;
+}
+
+.point-reward small {
+  color: var(--faint);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semi);
+}
+
+.all-done-card {
+  text-align: center;
+  background: var(--green-wash);
+  border: 1px solid var(--green-tint);
+  border-radius: var(--radius-card);
+  padding: var(--space-13) var(--space-11);
+}
+
+.all-done-card>div {
+  color: var(--green);
+  background: var(--green-tint);
+  border-radius: var(--radius-card);
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto var(--space-6);
+  display: grid;
+}
+
+.all-done-card h3 {
+  margin: 0 0 var(--space-3);
+}
+
+.all-done-card p {
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--fs-body);
+}
+
+/* The tint this used to declare had never once been drawn. `.locked-task` only
+   ever appears as a child of `.card-rows`, and the row reset — "a row gives up
+   its own background" — is the same specificity and came later in the file, so
+   it won every time. Moving these rules into their own stylesheet put them
+   after the reset and the tint appeared for the first time, on a screen nobody
+   had changed. Removed rather than kept: a locked step is already marked, by
+   being dimmed and by the lock, and the doctrine says a row lives on the card's
+   own white. */
+.locked-task {
+  opacity: .72;
+}
+
+.compact-meta {
+  color: var(--faint);
+  gap: var(--space-6);
+  margin-top: var(--space-3);
+  font-size: var(--fs-small);
+  display: flex;
+}
+
+.status-pill {
+  color: var(--amber);
+  background: var(--amber-tint);
+  border-radius: var(--radius-pill);
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 83px;
+  height: 27px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  display: flex;
+}
+
+.locked-due {
+  color: var(--faint);
+  font-size: var(--fs-small);
+}
+
+.completed-section {
+  background: var(--green-wash);
+  border: 1px solid #d9e7e1;
+  border-radius: var(--radius-row);
+  margin-top: 25px;
+  overflow: hidden;
+}
+
+.completed-toggle {
+  text-align: left;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  grid-template-columns: 35px minmax(0,1fr) 25px;
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+  min-height: 68px;
+  padding: var(--space-6) var(--space-8);
+  display: grid;
+}
+
+.completed-mark, .mini-check {
+  color: var(--green);
+  background: var(--green-tint);
+  border-radius: var(--radius-round);
+  place-items: center;
+  display: grid;
+}
+
+.completed-mark {
+  width: 35px;
+  height: 35px;
+}
+
+.completed-toggle>div:nth-child(2) {
+  flex-direction: column;
+  gap: var(--space-1);
+  display: flex;
+}
+
+.completed-toggle strong {
+  font-size: var(--fs-body);
+}
+
+.completed-toggle span {
+  color: #6d7c74;
+  font-size: var(--fs-small);
+}
+
+.completed-toggle>svg {
+  transition: transform .2s;
+}
+
+.completed-list {
+  background: var(--surface);
+  border-top: 1px solid var(--green-tint);
+}
+
+.completed-row {
+  border-bottom: 1px solid var(--line-soft);
+  grid-template-columns: 25px minmax(0,1fr) 65px 55px;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 47px;
+  padding: var(--space-3) var(--space-8);
+  font-size: var(--fs-meta);
+  display: grid;
+}
+
+.completed-row:last-child {
+  border-bottom: 0;
+}
+
+.mini-check {
+  width: 23px;
+  height: 23px;
+}
+
+.completed-row>span:nth-child(3) {
+  color: var(--faint);
+}
+
+.skipped-top {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.tiny-avatar {
+  color: var(--purple-ink);
+  background: var(--purple-tint);
+  border-radius: var(--radius-round);
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
+  display: grid;
+}
+
+.drawer-reward {
+  color: var(--purple-hover);
+  background: var(--purple-wash);
+  border: 1px solid var(--purple-tint);
+  border-radius: var(--radius-tile);
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-9);
+  padding: var(--space-6) var(--space-7);
+  display: flex;
+}
+
+.drawer-reward>div {
+  align-items: center;
+  gap: var(--space-4);
+  display: flex;
+}
+
+.drawer-reward span {
+  flex-direction: column;
+  display: flex;
+}
+
+.drawer-reward strong {
+  font-size: var(--fs-copy);
+}
+
+.drawer-reward small {
+  color: #847d9e;
+  margin-top: var(--space-1);
+  font-size: var(--fs-small);
+}
+
+.drawer-reward button {
+  color: #7768c4;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+}
+
+.external-panel {
+  margin-top: var(--space-8);
+}
+
+.external-destination {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-7);
+  display: flex;
+}
+
+.external-destination>div:nth-child(2) {
+  flex-direction: column;
+  flex: 1;
+  display: flex;
+}
+
+.external-destination strong {
+  font-size: var(--fs-meta);
+}
+
+.external-destination span {
+  color: var(--muted);
+  margin-top: var(--space-1);
+  font-size: var(--fs-small);
+}
+
+.external-destination>svg {
+  color: var(--green);
+}
+
+.external-panel>p {
+  color: var(--muted);
+  margin: var(--space-6) var(--space-1);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+}
+
+.upload-panel {
+  margin-top: var(--space-8);
+}
+
+.privacy-line {
+  color: var(--muted);
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-5) 0 0;
+  font-size: var(--fs-micro);
+  display: flex;
+}
+
+.skip-link {
+  color: var(--muted);
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  width: 100%;
+  margin-top: var(--space-6);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semi);
+}
+
+.form-panel label {
+  color: var(--ink-2);
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  display: flex;
+}
+
+.form-panel input {
+  height: 43px;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  outline: none;
+  padding: 0 var(--space-6);
+  font-size: var(--fs-copy);
+}
+
+.form-panel input:focus {
+  border-color: #7868d1;
+  box-shadow: 0 0 0 3px var(--purple-soft);
+}
+
+@media (width<=820px) {
+  .task-card-body {
+    grid-template-columns: 39px minmax(0,1fr);
+  }
+  .task-action {
+    grid-column: 2;
+    grid-template-columns: 1fr auto;
+    display: grid;
+  }
+  .task-action .point-reward {
+    justify-content: flex-start;
+  }
+}
+
+@media (width<=620px) {
+  .task-card-body {
+    gap: var(--space-5);
+    padding: var(--space-8);
+  }
+  .task-main h3 {
+    font-size: var(--fs-h3);
+  }
+  .task-main>p {
+    font-size: var(--fs-copy);
+  }
+  .task-facts {
+    gap: var(--space-4);
+  }
+  .task-facts span:last-child {
+    display: none;
+  }
+  .task-action {
+    grid-column: 1/-1;
+    grid-template-columns: 1fr 145px;
+    margin-top: var(--space-1);
+  }
+  .recommended-banner {
+    padding: 0 var(--space-6);
+  }
+  .recommended-banner span:last-child {
+    font-size: var(--fs-micro);
+  }
+  .locked-due {
+    margin-top: -7px;
+  }
+}

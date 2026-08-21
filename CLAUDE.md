@@ -124,14 +124,25 @@ Card → **Mobbin research (mandatory)** → spec → build → verify → Jam f
 a screen from imagination; search Mobbin (`mcp__mobbin__search_screens` / `search_flows` /
 `search_sections`) and record the references before writing JSX. See `docs/agents/design-workflow.md`.
 
-## Known, and deliberately left visible
+## Moving CSS: prove it, don't eyeball it
 
-Neither is a bug you will trip over; both are work someone has to do on purpose, with the screens
-open. Don't fix them as a side effect of another card.
+Two rules of equal specificity are decided by position, so **moving a rule between files can change
+what it does without changing a character of it.** It has happened twice here, and neither would
+have failed a build: `.task-card` took back the border and shadow `.card-rows` strips from a row,
+and `.locked-task` drew a tint that had never once appeared.
 
-- **`patterns.css` still holds My Enrollment.** It was built first and every shared shape was
-  extracted out of it in place, so the two interleave rule by rule. Separating them means reordering
-  ~40 fragments, which can change which of two equal-specificity rules wins.
-- **My Financials named four variants of one card** — `.ledger-card`, `.schedule-card`,
-  `.progress-preview`, `.billed-split` all ride in `.section-card`'s selector. They should collapse
-  into `.section-card`, which is a markup change on three pages.
+So when you move, split or reorder CSS, prove the rendering did not change:
+
+1. Capture, via the browser, the bounding box and computed style of **every** element on **every**
+   route, at 1440 and at 390.
+2. Capture twice before touching anything — if the two differ, your capture is flaky and the
+   comparison is worthless. `GroupTabs`' active state needs ~900ms and two animation frames to
+   settle.
+3. Make the change, capture again, diff element by element. 3,984 elements, and the answer you want
+   is zero.
+
+When a diff does appear, it names the tie. Fix it by making the winner win **by rule** rather than
+by position — the row reset in `patterns.css` names `.campus-row`, `.requirement-card` and
+`.task-card` for exactly that reason, and a new row component that paints itself belongs in that
+list. Don't reach for a doubled class or `!important`: raising a shared rule above everything
+breaks the feature overrides that were legitimately winning.

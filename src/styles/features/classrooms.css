@@ -84,9 +84,6 @@
 
 /* --- the requirement --- */
 
-.requirement-list {
-}
-
 .requirement-card {
   border: 1px solid var(--line);
   background: var(--surface);
@@ -856,4 +853,28 @@
     gap: var(--space-4);
     flex-direction: column;
   }
+}
+
+/* ------------------------------------------------------------------------
+ * Lifted out of `patterns.css`, where it had been sitting among the shared
+ * vocabulary because this section's rules and the shared ones were written
+ * interleaved. Nothing here is referenced by any other feature.
+ * ------------------------------------------------------------------------*/
+
+
+/* The other thing that rides the foot: one line qualifying the figure above
+   it. My Classrooms had this as a fourth line *inside* the figure cell, which
+   is what made its panel 139px tall against everyone else's 123 and pushed the
+   advisor off-centre beside it. Same job as the escalation strip, so the same
+   place. Amber means someone still has to act; a caveat that asks nothing of
+   the student is muted, and a panel that failed is crimson. */
+.summary-note {
+  color: var(--amber);
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-5) var(--panel-pad);
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
+  display: flex;
 }

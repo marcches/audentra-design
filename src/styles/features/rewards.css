@@ -270,3 +270,87 @@
 .document-row .gate-chip, .requirement-card .gate-chip {
   margin: var(--space-3) 0 0;
 }
+
+/* ------------------------------------------------------------------------
+ * Lifted out of `patterns.css`, where it had been sitting among the shared
+ * vocabulary because this section's rules and the shared ones were written
+ * interleaved. Nothing here is referenced by any other feature.
+ * ------------------------------------------------------------------------*/
+
+
+.momentum-header {
+  align-items: center;
+  gap: var(--space-5);
+  display: flex;
+}
+
+.momentum-header>div:last-child {
+  flex-direction: column;
+  flex: 1;
+  display: flex;
+}
+
+.momentum-header span {
+  color: var(--purple-line);
+  font-size: var(--fs-small);
+}
+
+.momentum-header strong {
+  margin-top: var(--space-1);
+  font-size: var(--fs-h2);
+}
+
+.level-track {
+  background: #ffffff21;
+  border-radius: var(--radius-pill);
+  height: 7px;
+  margin: var(--space-8) 0 var(--space-3);
+  overflow: hidden;
+}
+
+.level-track span {
+  border-radius: inherit;
+  background: linear-gradient(90deg,#a993ff,var(--green-line));
+  height: 100%;
+  display: block;
+  box-shadow: 0 0 14px #a993ff80;
+}
+
+.level-labels {
+  color: var(--faint);
+  justify-content: space-between;
+  font-size: var(--fs-micro);
+  display: flex;
+}
+
+.today-reward {
+  background: #ffffff13;
+  border-radius: var(--radius-tile);
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+  padding: var(--space-6);
+  display: flex;
+}
+
+.today-reward>span {
+  color: #d4caff;
+  background: #b8a5ff26;
+  border-radius: var(--radius-chip);
+  flex: none;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  display: grid;
+}
+
+.today-reward strong {
+  font-size: var(--fs-meta);
+  line-height: var(--lh-heading);
+  display: block;
+}
+
+.today-reward p {
+  color: var(--faint);
+  margin: var(--space-1) 0 0;
+  font-size: var(--fs-micro);
+}

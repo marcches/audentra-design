@@ -15,6 +15,7 @@
 @import './base.css';
 @import './chrome.css';
 @import './patterns.css';
+@import './features/enrollment.css';
 @import './navigation.css';
 
 @import './features/campus.css';
