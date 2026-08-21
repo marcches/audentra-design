@@ -12,6 +12,7 @@ import PlanPanel from './PlanPanel.jsx';
 import ResidenceDrawer from './ResidenceDrawer.jsx';
 import ShortlistPanel from './ShortlistPanel.jsx';
 import { housingFor, housingOffice, responseDeadline } from './data.js';
+import { enrollmentAdvisor } from '../enrollment/data.js';
 import {
   SHORTLIST_MAX,
   opensShortlist,
@@ -167,7 +168,10 @@ export default function HousingPage({
           <SummaryFigure label="Your housing plan" figure={figure}>
             {summaryLine}
           </SummaryFigure>
-          <AdvisorBar onContact={() => onToast('Opening a message to your advisor.')} />
+          <AdvisorBar
+            advisor={enrollmentAdvisor}
+            onContact={() => onToast('Opening a message to your advisor.')}
+          />
         </>
       }
       summaryLabel="Your housing plan"

@@ -293,6 +293,16 @@ export const DESTINATIONS = [
 export const DEFAULT_ROUTE = '#/my-enrollment';
 
 /**
+ * The design system, rendered — `src/design-system/styleguide/Styleguide.jsx`.
+ *
+ * It is a route and not a destination: it has no place in a student's
+ * navigation, no preview states, and no entry in `DESTINATIONS`. `isRouteHash`
+ * already accepts it, so nothing else has to know about it — `App` checks the
+ * hash before it looks a destination up.
+ */
+export const STYLEGUIDE_ROUTE = '#/styleguide';
+
+/**
  * The sidebar, in order: what I must do, what I sent and who I talk to, then the
  * rest of my life at Aster.
  *

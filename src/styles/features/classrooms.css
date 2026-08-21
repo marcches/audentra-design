@@ -1,0 +1,859 @@
+/* ==========================================================================
+ * My Classrooms — ENR-188.
+ * ==========================================================================*/
+
+/* ------------------------------------------------------------------ *
+ * My Classrooms — ENR-188
+ * A requirement is the organising unit, so it gets the card. A course is
+ * how a requirement is satisfied, so it gets a row inside it. A credit
+ * match is neither, so it is tinted amber and kept out of the ledger.
+ * ------------------------------------------------------------------ */
+
+.catalog-bar {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-7);
+  margin: 0 0 var(--space-9);
+  display: flex;
+}
+
+.catalog-chip {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+  border-radius: var(--radius-pill);
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
+  display: inline-flex;
+}
+
+.catalog-bar.pending .catalog-chip {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.catalog-meta {
+  color: var(--muted);
+  font-size: var(--fs-copy);
+}
+
+.record-note {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin: -12px 0 var(--space-10);
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.record-note svg {
+  color: var(--green);
+  flex: none;
+  margin-top: var(--space-1);
+}
+
+.record-note em {
+  color: var(--amber);
+  font-style: normal;
+}
+
+.status-icon.requirement {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+}
+
+.status-icon.advisory {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.advisory-badge {
+  color: var(--amber);
+  background: var(--amber-soft);
+  border: 1px solid var(--amber-line);
+  border-radius: var(--radius-pill);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+}
+
+/* --- the requirement --- */
+
+.requirement-list {
+}
+
+.requirement-card {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--radius-tile);
+  transition: border-color .2s;
+  overflow: hidden;
+}
+
+.requirement-card.open {
+  border-color: var(--purple-line);
+}
+
+.requirement-head {
+  cursor: pointer;
+  text-align: left;
+  background: 0 0;
+  border: 0;
+  grid-template-columns: 30px minmax(0,1fr) auto 18px;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+  padding: var(--space-7) var(--space-8);
+  display: grid;
+}
+
+.requirement-head:hover {
+  background: var(--card-zone);
+}
+
+.requirement-mark {
+  border-radius: var(--radius-chip);
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  display: grid;
+}
+
+.requirement-mark.satisfied {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.requirement-mark.in-progress {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+}
+
+.requirement-mark.not-started {
+  color: var(--faint);
+  background: var(--surface-sunk);
+}
+
+.requirement-mark.pending {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.requirement-identity {
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--space-1);
+  display: flex;
+}
+
+.requirement-identity strong {
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-h3);
+}
+
+.requirement-identity>span {
+  color: var(--muted);
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.requirement-meters {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  display: flex;
+}
+
+.requirement-credits {
+  white-space: nowrap;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
+}
+
+.requirement-status {
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-radius: var(--radius-pill);
+  padding: var(--space-1) var(--space-4);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+}
+
+.requirement-status.satisfied {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.requirement-status.in-progress {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+}
+
+.requirement-status.not-started {
+  color: var(--muted);
+  background: var(--surface-sunk);
+}
+
+.requirement-status.pending {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.requirement-chevron {
+  color: var(--muted);
+  transition: transform .2s;
+  display: grid;
+}
+
+.requirement-card.open .requirement-chevron {
+  transform: rotate(180deg);
+}
+
+.match-flag {
+  color: var(--amber);
+  cursor: pointer;
+  background: var(--amber-soft);
+  border: 0;
+  border-top: 1px solid var(--amber-line);
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
+  display: flex;
+}
+
+.match-flag:hover {
+  background: var(--amber-tint);
+}
+
+/* --- the courses inside it --- */
+
+/* One level in from the requirement row, and flat there too: the tint is what
+   says "inside", not a border around every course. */
+.requirement-courses {
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+  padding: var(--space-3) var(--space-6) var(--space-5);
+}
+
+.requirement-courses .course-row {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  padding-left: var(--space-1);
+  padding-right: var(--space-1);
+}
+
+.requirement-courses .course-row + .course-row {
+  border-top: 1px solid var(--line);
+}
+
+.requirement-courses-label {
+  color: var(--muted);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  margin: var(--space-1) var(--space-2) var(--space-4);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+}
+
+.course-row {
+  cursor: pointer;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  grid-template-columns: 26px minmax(0,1fr) auto;
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+  margin-bottom: var(--space-3);
+  padding: var(--space-5) var(--space-6);
+  display: grid;
+}
+
+.course-row:last-of-type {
+  margin-bottom: 0;
+}
+
+.course-row:hover {
+  border-color: var(--purple-line);
+}
+
+.course-row.locked {
+  background: var(--card-zone);
+}
+
+.course-mark {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+  border-radius: var(--radius-chip);
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  display: grid;
+}
+
+.course-mark.approved {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.course-mark.locked {
+  color: var(--faint);
+  background: var(--line-soft);
+}
+
+.course-identity {
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--space-1);
+  display: flex;
+}
+
+.course-identity strong {
+  font-size: var(--fs-body);
+}
+
+.course-meta {
+  color: var(--muted);
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+  font-size: var(--fs-meta);
+  display: flex;
+}
+
+.course-meta .met {
+  color: var(--green);
+}
+
+.course-meta .unmet {
+  color: var(--amber);
+}
+
+.course-state {
+  text-align: right;
+  white-space: nowrap;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+}
+
+.course-approved {
+  color: var(--green);
+}
+
+.course-locked {
+  color: var(--faint);
+}
+
+.course-open {
+  color: var(--muted);
+}
+
+.requirement-empty {
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-tile);
+  padding: var(--space-6);
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.requirement-decided {
+  color: var(--green);
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-4) var(--space-2) var(--space-1);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+  display: flex;
+}
+
+/* --- the credit match: evidence, not an award --- */
+
+.match-section {
+  margin-top: var(--space-11);
+}
+
+.match-list {
+  flex-direction: column;
+  gap: var(--space-5);
+  display: flex;
+}
+
+.match-card {
+  background: linear-gradient(150deg,var(--amber-wash),var(--surface));
+  border: 1px solid var(--amber-line);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-row);
+  padding: var(--space-8);
+}
+
+.match-route {
+  align-items: center;
+  gap: var(--space-6);
+  display: flex;
+}
+
+.match-from, .match-to {
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-1);
+  display: flex;
+}
+
+.match-from small, .match-to small {
+  color: var(--muted);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+}
+
+.match-from strong, .match-to strong {
+  font-size: var(--fs-body);
+  line-height: var(--lh-heading);
+}
+
+.match-from>span, .match-to>span {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+.match-arrow {
+  color: var(--amber);
+  flex: none;
+  display: grid;
+}
+
+.match-meta {
+  color: var(--muted);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-6);
+  margin-top: var(--space-6);
+  font-size: var(--fs-meta);
+  display: flex;
+}
+
+.confidence-chip {
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+}
+
+.confidence-chip.likely {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+}
+
+.confidence-chip.needs-review {
+  color: var(--crimson);
+  background: var(--crimson-soft);
+}
+
+.match-standing {
+  color: var(--amber-ink);
+  background: var(--amber-wash);
+  border-radius: var(--radius-tile);
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 0;
+  padding: var(--space-5) var(--space-6);
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.match-standing svg {
+  flex: none;
+  margin-top: var(--space-1);
+}
+
+.match-actions {
+  align-items: center;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+  display: flex;
+}
+
+.match-empty {
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed #e2d9c4;
+  border-radius: var(--radius-row);
+  padding: var(--space-11) var(--space-9);
+}
+
+.match-empty h3 {
+  margin: var(--space-6) 0 var(--space-3);
+  font-size: var(--fs-h3);
+}
+
+.match-empty>p {
+  color: var(--muted);
+  max-width: 420px;
+  margin: 0 auto var(--space-7);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.match-empty ul {
+  text-align: left;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 340px;
+  margin: 0 auto var(--space-8);
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.match-empty li {
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--fs-copy);
+  display: flex;
+}
+
+.match-empty li span {
+  color: var(--green);
+  background: var(--green-soft);
+  border-radius: var(--radius-pill);
+  flex: none;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  display: grid;
+}
+
+/* --- the academic rail --- */
+
+.program-card, .record-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-card);
+  padding: var(--space-9);
+}
+
+.counts-figure {
+  letter-spacing: var(--ls-tight);
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+  font-size: var(--fs-figure);
+  display: flex;
+}
+
+.counts-figure small {
+  color: var(--muted);
+  letter-spacing: 0;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
+}
+
+.counts-divider {
+  background: var(--line);
+  height: 1px;
+  margin: var(--space-7) 0 var(--space-6);
+}
+
+.counts-review {
+  color: var(--amber);
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.counts-review svg {
+  flex: none;
+  margin-top: var(--space-1);
+}
+
+.program-card strong {
+  margin-top: var(--space-4);
+  font-size: var(--fs-h3);
+  display: block;
+}
+
+.program-facts {
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 0;
+  display: flex;
+}
+
+.program-facts>div {
+  justify-content: space-between;
+  gap: var(--space-5);
+  display: flex;
+}
+
+.program-facts dt {
+  color: var(--muted);
+  font-size: var(--fs-copy);
+}
+
+.program-facts dd {
+  margin: 0;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
+}
+
+.record-card {
+  background: linear-gradient(150deg,var(--green-wash),var(--surface));
+  border-color: var(--green-tint);
+}
+
+.record-icon {
+  color: var(--green);
+  background: var(--green-soft);
+  border-radius: var(--radius-tile);
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: var(--space-5);
+  display: grid;
+}
+
+.record-card p {
+  color: var(--muted);
+  margin: var(--space-4) 0 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.record-card p.record-where {
+  color: var(--ink);
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: var(--fw-semi);
+  display: flex;
+}
+
+.record-card .learn-link {
+  color: var(--green);
+}
+
+/* --- the drawer --- */
+
+.drawer-icon.course {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+}
+
+.drawer-icon.course.approved {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.drawer-icon.match {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.advisory-banner {
+  color: var(--amber-ink);
+  background: var(--amber-wash);
+  border: 1px solid var(--amber-line);
+  border-radius: var(--radius-tile);
+  gap: var(--space-5);
+  margin-bottom: var(--space-8);
+  padding: var(--space-6) var(--space-7);
+  display: flex;
+}
+
+.advisory-banner svg {
+  flex: none;
+  margin-top: var(--space-1);
+}
+
+.advisory-banner strong {
+  color: var(--ink);
+  font-size: var(--fs-body);
+  display: block;
+}
+
+.advisory-banner p {
+  margin: var(--space-2) 0 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.evidence-panel, .match-target-panel {
+  background: var(--canvas);
+  border-radius: var(--radius-tile);
+  margin-bottom: var(--space-5);
+  padding: var(--space-6) var(--space-7);
+}
+
+.evidence-panel.approved {
+  background: var(--green-soft);
+}
+
+.evidence-panel.locked {
+  background: var(--surface-sunk);
+}
+
+.evidence-kicker {
+  color: var(--muted);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-heavy);
+  display: flex;
+}
+
+.evidence-panel p, .match-target-panel p {
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.evidence-panel p strong, .match-target-panel p strong {
+  font-size: var(--fs-h4);
+}
+
+.evidence-panel p.evidence-when {
+  color: var(--muted);
+  font-size: var(--fs-copy);
+}
+
+.confidence-panel {
+  align-items: flex-start;
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+  display: flex;
+}
+
+.confidence-panel p {
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.rule-card {
+  background: var(--canvas);
+  border-left: 3px solid var(--purple);
+  border-radius: 0 var(--radius-tile) var(--radius-tile) 0;
+  margin-bottom: var(--space-7);
+  padding: var(--space-6) var(--space-7);
+}
+
+.rule-code {
+  color: var(--purple-dark);
+  font-family: var(--font-geist-mono);
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
+}
+
+.rule-card p {
+  margin: var(--space-3) 0 var(--space-4);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.rule-source {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+.drawer-note {
+  color: var(--muted);
+  margin: -4px 0 var(--space-6);
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.help-note.warn {
+  color: var(--crimson-ink);
+  background: var(--crimson-soft);
+}
+
+.text-button.full {
+  justify-content: center;
+  width: 100%;
+  margin-top: var(--space-7);
+}
+
+.modal-kicker.credit {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+@media (width<=620px) {
+  .catalog-bar {
+    gap: var(--space-3) var(--space-5);
+  }
+
+  .record-note {
+    margin: -8px var(--space-1) var(--space-9);
+  }
+
+  .requirement-head {
+    grid-template-columns: 26px minmax(0,1fr) 18px;
+    gap: var(--space-5);
+    padding: var(--space-6);
+  }
+
+  .requirement-meters {
+    flex-direction: row;
+    grid-area: 2/2/3/3;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+  }
+
+  .requirement-mark {
+    width: 26px;
+    height: 26px;
+  }
+
+  .course-row {
+    grid-template-columns: 24px minmax(0,1fr);
+  }
+
+  .course-state {
+    text-align: left;
+    grid-column: 2;
+    margin-top: -2px;
+  }
+
+  .match-route {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-4);
+  }
+
+  .match-arrow {
+    align-self: flex-start;
+    transform: rotate(90deg);
+  }
+
+  .match-actions {
+    align-items: stretch;
+    gap: var(--space-4);
+    flex-direction: column;
+  }
+}

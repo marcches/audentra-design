@@ -208,7 +208,8 @@
   --space-9: 18px;   /* a card's own padding                                   */
   --space-10: 22px;  /* a page region to the next — this is `--hero-gap`       */
   --space-11: 28px;  /* the top and the bottom of a page                       */
-  --space-12: 36px;  /* the widest gap the product uses                        */
+  --space-12: 36px;  /* a page's own top and bottom on a wide screen           */
+  --space-13: 44px;  /* the widest step: the padding on a page's outer frame   */
 
   /* Radius. Fifteen values were in use; these seven cover them, and the ladder
      is the point — the bigger the thing, the rounder it is, so a row inside a

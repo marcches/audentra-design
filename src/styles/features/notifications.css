@@ -1,0 +1,105 @@
+/* ==========================================================================
+ * What changed — ENR-161.
+ * ==========================================================================*/
+
+/* --- What changed — ENR-161 ------------------------------------------------
+   Two groups rather than three equal tabs. AC 4 categories are the data; the
+   split is the ranking, so the reader is not asked to sort a feed the product
+   could have sorted. A group with no items renders no heading. */
+
+.note-group h3 {
+  color: var(--muted);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  margin: 0;
+  padding: var(--space-7) var(--space-7) var(--space-3);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-bold);
+}
+
+.note-list {
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.note-row a, .note-row.note-gone {
+  color: inherit;
+  border-radius: var(--radius-tile);
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin: 0 var(--space-3);
+  padding: var(--space-4) var(--space-4);
+  text-decoration: none;
+  display: flex;
+}
+
+.note-row a:hover {
+  background: var(--canvas);
+}
+
+.note-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.note-body strong {
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  display: block;
+}
+
+.note-body small {
+  color: var(--muted);
+  margin-top: var(--space-1);
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  display: block;
+}
+
+.note-row svg {
+  color: var(--muted);
+  flex: none;
+  margin-top: var(--space-1);
+}
+
+/* The unread mark. It never carries the category as well: one surface saying
+   two things in one colour is why the tinted-row pattern was rejected. */
+.note-dot {
+  background: var(--ink);
+  border-radius: var(--radius-pill);
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: var(--space-3);
+}
+
+/* AC 6. It stays in the feed, because deleting it would answer what changed
+   with silence — but it is text, and it leads nowhere because there is nowhere. */
+.note-gone {
+  cursor: default;
+}
+
+.note-gone .note-body strong {
+  color: var(--muted);
+  font-weight: var(--fw-regular);
+}
+
+.note-skeleton .note-body i {
+  background: var(--canvas);
+  border-radius: var(--radius-xs);
+  height: 11px;
+  display: block;
+}
+
+.note-skeleton .note-body i:first-child {
+  width: 78%;
+}
+
+.note-skeleton .note-body i:last-child {
+  width: 44%;
+  margin-top: var(--space-3);
+}

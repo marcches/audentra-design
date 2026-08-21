@@ -1,5 +1,4 @@
 import Icon from '../Icon.jsx';
-import { enrollmentAdvisor } from '../../features/enrollment/data.js';
 
 /**
  * The right half of the summary panel: the person who owns the subject.
@@ -27,7 +26,7 @@ import { enrollmentAdvisor } from '../../features/enrollment/data.js';
  * and the two ways to reach them, both one click away. One bar, one content,
  * every section — a section that shows more or less here is the drift.
  */
-export default function AdvisorBar({ advisor = enrollmentAdvisor, onContact }) {
+export default function AdvisorBar({ advisor, onContact }) {
   return (
     <div className="advisor-bar">
       <span className="advisor-avatar" aria-hidden="true">

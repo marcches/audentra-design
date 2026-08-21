@@ -9,6 +9,7 @@ import CampusPage, { CAMPUS_PREVIEW_STATES } from './features/campus/CampusPage.
 import { campusEvents, requiredEventCount } from './features/campus/data.js';
 import PageShell from './design-system/patterns/PageShell.jsx';
 import PageSkeleton from './design-system/patterns/PageSkeleton.jsx';
+import Styleguide from './design-system/styleguide/Styleguide.jsx';
 import PageError from './design-system/patterns/PageError.jsx';
 import SectionPlaceholder from './design-system/patterns/SectionPlaceholder.jsx';
 import OverviewPage from './features/financials/OverviewPage.jsx';
@@ -43,7 +44,7 @@ import { buildRecord } from './features/edward/logic.js';
 import { identityFor } from './features/profile/logic.js';
 import { sortTasks } from './features/enrollment/logic.js';
 import { buildLedger } from './features/financials/logic.js';
-import { DEFAULT_ROUTE, destinationByRoute, isRouteHash } from './lib/navigation.js';
+import { DEFAULT_ROUTE, STYLEGUIDE_ROUTE, destinationByRoute, isRouteHash } from './lib/navigation.js';
 import {
   FINANCIALS_STATES,
   PREVIEW_STATES,
@@ -489,6 +490,13 @@ export default function App() {
   }
 
   function renderPage() {
+    // The design system, rendered — `#/styleguide`. It is deliberately not a
+    // destination: it does not belong in a student's navigation and it has no
+    // preview states, because it is the reference the product is built from
+    // rather than a part of the product. It renders inside the real shell so
+    // every specimen is sitting in the frame it will actually live in.
+    if (hash === STYLEGUIDE_ROUTE) return <Styleguide />;
+
     if (state === 'loading') return <PageSkeleton />;
 
     if (!current) {

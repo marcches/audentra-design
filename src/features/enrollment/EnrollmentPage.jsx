@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import { enrollmentAdvisor } from './data.js';
 import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
 import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
 import EnrollmentRail from './EnrollmentRail.jsx';
@@ -58,7 +59,7 @@ export default function EnrollmentPage({
               ? 'You’re right on track. Your next task takes about 4 minutes.'
               : 'Nothing is waiting on you right now.'}
           </SummaryFigure>
-          <AdvisorBar onContact={onContact} />
+          <AdvisorBar advisor={enrollmentAdvisor} onContact={onContact} />
         </>
       }
       /* ENR-214 AC 2. One line true of the whole section, above the cards:

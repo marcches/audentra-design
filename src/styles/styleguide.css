@@ -1,0 +1,320 @@
+/* ==========================================================================
+ * The styleguide page — `#/styleguide`.
+ *
+ * This is the one stylesheet in the repo that is not part of the product. It
+ * still obeys every rule the product obeys, on purpose: if the design system
+ * cannot render its own reference page out of its own tokens, it is not a
+ * design system. There is not a raw hex or a raw pixel below.
+ * ==========================================================================*/
+
+.sg-page {
+  flex-direction: column;
+  gap: var(--space-11);
+  padding-bottom: var(--safe-bottom);
+  display: flex;
+}
+
+.sg-section {
+  flex-direction: column;
+  gap: var(--space-8);
+  display: flex;
+}
+
+.sg-section-head {
+  border-bottom: 1px solid var(--line);
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-bottom: var(--space-6);
+  display: flex;
+}
+
+.sg-section-head h2 {
+  letter-spacing: var(--ls-tight);
+  font-size: var(--fs-display);
+  margin: 0;
+}
+
+.sg-section-head p {
+  color: var(--muted);
+  max-width: 74ch;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  text-wrap: pretty;
+  margin: 0;
+}
+
+.sg-block {
+  flex-direction: column;
+  gap: var(--space-4);
+  display: flex;
+}
+
+.sg-block h3 {
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-h3);
+  margin: 0;
+}
+
+.sg-note {
+  color: var(--muted);
+  max-width: 74ch;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  text-wrap: pretty;
+  margin: 0;
+}
+
+.sg-page code {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: var(--fs-small);
+}
+
+/* --- colour --- */
+
+.sg-swatches {
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.sg-swatches li {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+}
+
+.sg-chip-colour {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-chip);
+  flex: none;
+  width: var(--space-11);
+  height: var(--space-11);
+}
+
+.sg-swatches code {
+  color: var(--ink);
+  flex: 1;
+  min-width: 0;
+}
+
+.sg-swatches small {
+  color: var(--faint);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: var(--fs-micro);
+}
+
+/* --- the space scale --- */
+
+.sg-scale {
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.sg-scale li {
+  border-bottom: 1px solid var(--line-soft);
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-3) 0;
+  display: flex;
+}
+
+.sg-scale code {
+  color: var(--ink);
+  flex: none;
+  width: 9ch;
+}
+
+.sg-scale small,
+.sg-radii small,
+.sg-type small {
+  color: var(--faint);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: var(--fs-micro);
+  flex: none;
+  width: 6ch;
+}
+
+.sg-bar {
+  background: var(--purple);
+  border-radius: var(--radius-xs);
+  flex: none;
+  height: var(--space-5);
+}
+
+.sg-scale p,
+.sg-radii p {
+  color: var(--muted);
+  font-size: var(--fs-copy);
+  margin: 0;
+}
+
+/* --- the radius scale --- */
+
+.sg-radii {
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.sg-radii li {
+  align-items: center;
+  gap: var(--space-4);
+  display: flex;
+}
+
+.sg-radius-box {
+  background: var(--purple-soft);
+  border: 1px solid var(--purple-line);
+  flex: none;
+  width: var(--space-12);
+  height: var(--space-12);
+}
+
+.sg-radii code {
+  color: var(--ink);
+  flex: none;
+}
+
+.sg-radii p {
+  flex-basis: 100%;
+  font-size: var(--fs-small);
+}
+
+/* --- the type ramp --- */
+
+.sg-type {
+  flex-direction: column;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.sg-type li {
+  border-bottom: 1px solid var(--line-soft);
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding-bottom: var(--space-6);
+  display: flex;
+}
+
+.sg-type li > p:first-child {
+  letter-spacing: var(--ls-snug);
+  flex: 1;
+  min-width: 18rem;
+  margin: 0;
+}
+
+.sg-type code {
+  color: var(--ink);
+}
+
+.sg-type .sg-note {
+  flex-basis: 100%;
+  font-size: var(--fs-small);
+}
+
+/* --- specimens --- */
+
+.sg-grid {
+  grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
+  align-items: start;
+  gap: var(--space-8);
+  display: grid;
+}
+
+.sg-row {
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-5);
+  display: flex;
+}
+
+.sg-row span {
+  color: var(--muted);
+  font-size: var(--fs-copy);
+}
+
+.sg-row strong {
+  letter-spacing: var(--ls-snug);
+  font-size: var(--fs-h4);
+}
+
+.sg-rail-demo {
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  align-items: start;
+  gap: var(--space-8);
+  display: grid;
+}
+
+.sg-controls {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  display: flex;
+}
+
+.sg-controls.block {
+  max-width: 26rem;
+  margin-top: var(--space-6);
+}
+
+/* --- the written rules --- */
+
+.sg-rules {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  flex-direction: column;
+  gap: var(--space-6);
+  margin: 0;
+  padding: var(--space-9);
+  list-style: none;
+  display: flex;
+}
+
+.sg-rules li {
+  color: var(--muted);
+  border-left: 0;
+  max-width: 82ch;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  text-wrap: pretty;
+}
+
+.sg-rules strong {
+  color: var(--ink);
+}
+
+@media (width<=620px) {
+  .sg-swatches,
+  .sg-radii,
+  .sg-grid,
+  .sg-rail-demo {
+    grid-template-columns: 1fr;
+  }
+
+  .sg-scale li {
+    flex-wrap: wrap;
+  }
+
+  .sg-scale p {
+    flex-basis: 100%;
+  }
+}
