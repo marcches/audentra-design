@@ -405,6 +405,7 @@ guess, and guessing is what produced 436 hand-typed colours and eight hand-typed
 | A word the student may not know | `<InfoTip title>` | a bubble only a mouse can reach |
 | A person | `<Avatar person size>` | a `span` with initials, or an `img` with no rule about who gets one |
 | A group of rows that can close | `<CardHead kind="status" count open onToggle controls>` | a `details`, a hand-made toggle, a box of its own |
+| The one thing to do next, on a card | `<ActionBand label aside\|action>` — under the head, above the first row; each screen's own rule fills it, and it never shows a placeholder | a hand-typed `.recommended-banner`, a `Notice` dressed as a strip |
 | A picture on a state | `<StateCard>` (it draws its own `<Spot>`) | an imported illustration set |
 | The institution's or the vendor's mark | `<AsterMark>` / `<AudentraMark>` | a letter in a tile, an icon from the set |
 

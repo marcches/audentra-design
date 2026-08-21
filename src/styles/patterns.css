@@ -614,6 +614,18 @@
   flex: none;
 }
 
+/* When the subject is an office rather than a person: a glyph in a tinted tile
+   at the avatar's size, because a thing never gets a face. */
+.advisor-office-mark {
+  color: var(--purple-dark);
+  background: var(--purple-tint);
+  border-radius: var(--radius-tile);
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  display: grid;
+}
+
 .advisor-bar-copy {
   flex-direction: column;
   min-width: 0;
@@ -2528,11 +2540,96 @@ footer a {
   background: color-mix(in srgb, var(--purple) 4%, var(--surface));
 }
 
+/* --- the action band: the one thing to do next ---------------------------
+ *
+ * My Enrollment's *Start here* ribbon, named for what it is rather than for
+ * the row it happened to sit on (`.recommended-banner`, in `enrollment.css`
+ * until the My Degree brief of 2026-08-21 put the same band on a second
+ * screen). A short label with a glyph on the left; on the right either a
+ * consequence in words or one button. It is the product's one saturated strip
+ * below the hero, and it says one thing — `ActionBand.jsx` renders nothing
+ * when there is nothing to point at. */
+.action-band {
+  color: var(--on-ink);
+  letter-spacing: var(--ls-caps);
+  background: linear-gradient(90deg,var(--purple-hover),var(--purple-grad-to));
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-6);
+  height: 31px;
+  padding: 0 var(--space-7);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  display: flex;
+}
+
+.action-band-label,
+.action-band-aside {
+  align-items: center;
+  gap: var(--space-3);
+  white-space: nowrap;
+  display: flex;
+}
+
+.action-band-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.action-band-aside {
+  color: var(--purple-tint);
+  font-weight: var(--fw-semi);
+}
+
+/* The button, when the band is the way to get somewhere: a ghost pill in the
+   band's own ink, so it reads as part of the strip and not as a second primary
+   competing with the row under it. */
+.action-band-action {
+  color: var(--on-ink);
+  cursor: pointer;
+  letter-spacing: var(--ls-caps);
+  text-transform: inherit;
+  white-space: nowrap;
+  background: none;
+  border: 1px solid var(--on-ink-line);
+  border-radius: var(--radius-pill);
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+  height: 22px;
+  padding: 0 var(--space-5);
+  font: inherit;
+  font-weight: var(--fw-heavy);
+  transition: background-color var(--dur-fast) var(--ease);
+  display: inline-flex;
+}
+
+.action-band-action:hover {
+  background: var(--on-ink-line);
+}
+
+/* Under a card's head, above the first row: it bleeds to the card's edges the
+   way the head does, and closes the gap the head leaves under itself. The
+   rows that follow start straight under it. */
+.section-card > .action-band {
+  margin: calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad)) 0;
+}
+
 /* The ribbon runs the full width of the card like the row it heads. Left inside
    the row's padding it was a square bar floating in a rounded card. */
-.card-rows .recommended-banner {
+.card-rows .action-band {
   margin-left: calc(-1 * var(--card-pad));
   margin-right: calc(-1 * var(--card-pad));
+}
+
+@media (width<=620px) {
+  .action-band {
+    padding: 0 var(--space-6);
+  }
+  .action-band-aside {
+    font-size: var(--fs-micro);
+  }
 }
 
 /* --- the three zones of a card: head, content, foot --- */

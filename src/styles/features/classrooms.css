@@ -1,43 +1,14 @@
 /* ==========================================================================
- * My Classrooms — ENR-188.
+ * My Degree (the section the code calls `classrooms`) — ENR-188, and the
+ * brief of 2026-08-21.
  * ==========================================================================*/
 
 /* ------------------------------------------------------------------ *
- * My Classrooms — ENR-188
- * A requirement is the organising unit, so it gets the card. A course is
- * how a requirement is satisfied, so it gets a row inside it. A credit
- * match is neither, so it is tinted amber and kept out of the ledger.
+ * A requirement is the organising unit, so it gets the row. A course is
+ * how a requirement is satisfied, so it gets a row inside it, read by
+ * situation. A potential match is neither, so it is tinted amber and kept
+ * out of the ledger. The plan is the student's own and moves nothing.
  * ------------------------------------------------------------------ */
-
-.catalog-bar {
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-4) var(--space-7);
-  margin: 0 0 var(--space-9);
-  display: flex;
-}
-
-.catalog-chip {
-  color: var(--purple-dark);
-  background: var(--purple-soft);
-  border-radius: var(--radius-pill);
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-6);
-  font-size: var(--fs-copy);
-  font-weight: var(--fw-bold);
-  display: inline-flex;
-}
-
-.catalog-bar.pending .catalog-chip {
-  color: var(--amber);
-  background: var(--amber-soft);
-}
-
-.catalog-meta {
-  color: var(--muted);
-  font-size: var(--fs-copy);
-}
 
 .status-icon.requirement {
   color: var(--purple-dark);
@@ -45,6 +16,16 @@
 
 .status-icon.advisory {
   color: var(--amber);
+}
+
+/* "6 requirements" in a group head's trailing cell — a count said in words,
+   not the numeric pill a disclosure head wears, because these heads do not
+   collapse. */
+.group-count {
+  color: var(--muted);
+  white-space: nowrap;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
 }
 
 .advisory-badge {
@@ -73,21 +54,37 @@
   border-color: var(--purple-line);
 }
 
+/* The head: a div that toggles on a click anywhere in it, holding the one
+   control the keyboard reaches (the name, `h3 > button`) and, outside that
+   button, the action D6.2 adds. A button cannot hold a button, and the name
+   is a heading (D14). */
 .requirement-head {
   cursor: pointer;
-  text-align: left;
-  background: 0 0;
-  border: 0;
   grid-template-columns: 30px minmax(0,1fr) auto 18px;
   align-items: center;
   gap: var(--space-6);
   width: 100%;
   padding: var(--space-7) var(--space-8);
+  transition: background-color var(--dur-fast) var(--ease);
   display: grid;
 }
 
 .requirement-head:hover {
   background: var(--card-zone);
+}
+
+.requirement-toggle {
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  background: 0 0;
+  border: 0;
+  padding: 0;
+  font: inherit;
+}
+
+.requirement-head:hover .requirement-toggle {
+  color: var(--purple-dark);
 }
 
 .requirement-mark {
@@ -125,15 +122,39 @@
   display: flex;
 }
 
-.requirement-identity strong {
+/* D14: the requirement's name is an h3 at the card head's size and never
+   bold — the group head is 17 and semi, so the child stops outweighing the
+   parent. 15px was not a step on the scale. */
+.requirement-identity h3 {
   letter-spacing: var(--ls-snug);
-  font-size: var(--fs-h3);
+  margin: 0;
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-heading);
 }
 
-.requirement-identity>span {
+.requirement-summary {
   color: var(--muted);
+  margin: 0;
   font-size: var(--fs-copy);
   line-height: var(--lh-body);
+}
+
+/* D2: what is left, in courses — the answer on the row, so it takes the
+   second voice and a step of weight over the description above it. */
+.requirement-remaining {
+  color: var(--ink-2);
+  margin: 0;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
+  line-height: var(--lh-body);
+}
+
+/* D16: a closed head still says what is inside. */
+.requirement-count {
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--fs-meta);
 }
 
 .requirement-meters {
@@ -149,7 +170,11 @@
   font-weight: var(--fw-bold);
 }
 
-.requirement-status {
+/* The one status family that keeps a pill (D12): a requirement's standing is
+   a fact about her degree. The planned marker shares the shape, because a
+   course in her plan is a fact about her list — rare, and so worth a pill. */
+.requirement-status,
+.planned-pill {
   letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   white-space: nowrap;
@@ -179,6 +204,24 @@
   background: var(--amber-soft);
 }
 
+.planned-pill {
+  color: var(--purple-ink);
+  background: var(--purple-soft);
+}
+
+/* D6.2: the quiet link on an unfinished head. Muted at rest, the accent on
+   hover, the same as every quiet link in a row's action cell. */
+.requirement-action {
+  white-space: nowrap;
+  margin-top: var(--space-1);
+  padding: 0;
+}
+
+.requirement-action:hover {
+  color: var(--purple-dark);
+  text-decoration: underline;
+}
+
 .requirement-chevron {
   color: var(--muted);
   transition: transform .2s;
@@ -189,46 +232,49 @@
   transform: rotate(180deg);
 }
 
+/* D11: the pointer to a match waiting on this requirement carries no verdict
+   — the verdict is said on the match and in the rail. It is a route, in the
+   card's own paper, not an amber warning. */
 .match-flag {
-  color: var(--amber);
+  color: var(--ink-2);
   cursor: pointer;
-  background: var(--amber-soft);
+  background: var(--card-zone);
   border: 0;
-  border-top: 1px solid var(--amber-line);
+  border-top: 1px solid var(--line);
   align-items: center;
   gap: var(--space-3);
   width: 100%;
   padding: var(--space-4) var(--space-8);
   font-size: var(--fs-copy);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-semi);
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
   display: flex;
 }
 
 .match-flag:hover {
-  background: var(--amber-tint);
+  color: var(--purple-dark);
+  background: var(--surface-sunk);
 }
 
 /* --- the courses inside it --- */
 
 /* One level in from the requirement row, and flat there too: the tint is what
-   says "inside", not a border around every course. */
+   says "inside", not a border around every course. The body stays in the tree
+   when the requirement is closed (`hidden`), so the ids the links point at
+   always exist. */
 .requirement-courses {
   border-top: 1px solid var(--line);
   background: var(--surface);
-  padding: var(--space-3) var(--space-6) var(--space-5);
+  padding: var(--space-5) var(--space-6) var(--space-6);
 }
 
-.requirement-courses .course-row {
-  background: none;
-  border: 0;
-  border-radius: 0;
-  margin: 0;
-  padding-left: var(--space-1);
-  padding-right: var(--space-1);
+.requirement-courses[hidden] {
+  display: none;
 }
 
-.requirement-courses .course-row + .course-row {
-  border-top: 1px solid var(--line);
+/* D3: up to four groups, each labelled, each only when it has rows. */
+.course-group + .course-group {
+  margin-top: var(--space-7);
 }
 
 .requirement-courses-label {
@@ -240,27 +286,26 @@
   font-weight: var(--fw-heavy);
 }
 
+/* D6: what a planned course is, once per open requirement, under the first
+   label whose rows carry the button — read before the first click. */
+.plan-helper {
+  color: var(--muted);
+  margin: calc(-1 * var(--space-2)) var(--space-2) var(--space-4);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+}
+
 .course-row {
-  cursor: pointer;
-  text-align: left;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-tile);
   grid-template-columns: 26px minmax(0,1fr) auto;
-  align-items: center;
+  align-items: start;
   gap: var(--space-5);
   width: 100%;
-  margin-bottom: var(--space-3);
-  padding: var(--space-5) var(--space-6);
+  padding: var(--space-5) var(--space-1);
   display: grid;
 }
 
-.course-row:last-of-type {
-  margin-bottom: 0;
-}
-
-.course-row:hover {
-  border-color: var(--purple-line);
+.course-row + .course-row {
+  border-top: 1px solid var(--line);
 }
 
 .course-row.locked {
@@ -274,6 +319,7 @@
   place-items: center;
   width: 26px;
   height: 26px;
+  margin-top: calc(-1 * var(--space-2));
   display: grid;
 }
 
@@ -294,14 +340,24 @@
   display: flex;
 }
 
-.course-identity strong {
+/* D14: the course title stays at body size and drops to regular. The one
+   marker it may carry is the planned pill, beside it. */
+.course-name {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
   font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-heading);
+  display: flex;
 }
 
 .course-meta {
   color: var(--muted);
   flex-wrap: wrap;
   gap: var(--space-1) var(--space-5);
+  margin: 0;
   font-size: var(--fs-meta);
   display: flex;
 }
@@ -310,50 +366,96 @@
   color: var(--green);
 }
 
-.course-meta .unmet {
-  color: var(--amber);
+/* D1: which requirements this course counts toward — the direction the
+   screen never said. The second voice, because it is a fact the student
+   cannot change and reads after the name. */
+.course-counts {
+  color: var(--ink-2);
+  margin: 0;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
 }
 
-.course-state {
+/* D4: a course a match is waiting on says so, and links to the match. */
+.course-pending {
+  color: var(--purple-dark);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--fs-meta);
+  display: flex;
+}
+
+.course-pending svg {
+  flex: none;
+}
+
+/* The trailing cell: a fact about availability as plain metadata (D12), or
+   the plan action (D6), and the quiet link to the drawer. */
+.course-trailing {
+  flex-direction: column;
+  align-items: flex-end;
+  align-self: center;
+  gap: var(--space-2);
+  display: flex;
+}
+
+.course-status {
+  color: var(--muted);
   text-align: right;
   white-space: nowrap;
-  font-size: var(--fs-small);
-  font-weight: var(--fw-bold);
+  font-size: var(--fs-meta);
 }
 
-.course-approved {
+.course-status.approved {
   color: var(--green);
+  font-weight: var(--fw-semi);
 }
 
-.course-locked {
+.course-status.locked {
   color: var(--faint);
+  white-space: normal;
+  max-width: 200px;
 }
 
-.course-open {
-  color: var(--muted);
+.course-trailing .primary-button {
+  padding: 0 var(--space-6);
 }
 
-.requirement-empty {
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px dashed var(--line);
-  border-radius: var(--radius-tile);
-  padding: var(--space-6);
-  font-size: var(--fs-copy);
-  line-height: var(--lh-body);
+/* "In your plan · Remove" takes the button's height, so the row does not
+   move when the button is replaced in place. */
+.course-planned {
+  color: var(--purple-dark);
+  white-space: nowrap;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 36px;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+  display: flex;
+}
+
+.course-trailing .text-button {
+  padding: 0;
+}
+
+.course-trailing .text-button:hover {
+  color: var(--purple-dark);
+  text-decoration: underline;
 }
 
 .requirement-decided {
   color: var(--green);
   align-items: center;
   gap: var(--space-3);
-  margin: var(--space-4) var(--space-2) var(--space-1);
+  margin: var(--space-6) var(--space-2) var(--space-1);
   font-size: var(--fs-meta);
   font-weight: var(--fw-semi);
   display: flex;
 }
 
-/* --- the credit match: evidence, not an award --- */
+/* --- the potential match: evidence, not an award --- */
 
 .match-section {
   margin-top: var(--space-11);
@@ -365,15 +467,33 @@
   display: flex;
 }
 
+/* An accordion, closed by default (D16). The card carries the tint; the head
+   and the body carry the padding. */
 .match-card {
   background: linear-gradient(150deg,var(--amber-wash),var(--surface));
   border: 1px solid var(--amber-line);
   box-shadow: var(--shadow-card);
   border-radius: var(--radius-row);
+  overflow: hidden;
+}
+
+.match-head {
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  background: 0 0;
+  border: 0;
+  grid-template-columns: minmax(0,1fr) auto auto;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
   padding: var(--space-8);
+  font: inherit;
+  display: grid;
 }
 
 .match-route {
+  min-width: 0;
   align-items: center;
   gap: var(--space-6);
   display: flex;
@@ -411,23 +531,64 @@
   display: grid;
 }
 
+/* The handle looks like one: the same bordered disc the collapsible card head
+   wears, turning when open and answering the pointer. */
+.match-chevron {
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-round);
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  transition:
+    transform var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+  display: grid;
+}
+
+.match-head:hover .match-chevron {
+  color: var(--purple-dark);
+  background: var(--purple-wash);
+  border-color: var(--purple-line);
+}
+
+.match-card.open .match-chevron {
+  transform: rotate(180deg);
+}
+
+.match-body {
+  padding: 0 var(--space-8) var(--space-8);
+}
+
+.match-body[hidden] {
+  display: none;
+}
+
 .match-meta {
   color: var(--muted);
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3) var(--space-6);
-  margin-top: var(--space-6);
   font-size: var(--fs-meta);
   display: flex;
 }
 
+/* D12: the one status family expressing uncertainty, and so the one that
+   takes an icon. */
 .confidence-chip {
   letter-spacing: var(--ls-caps);
   text-transform: uppercase;
+  white-space: nowrap;
   border-radius: var(--radius-pill);
+  align-items: center;
+  gap: var(--space-2);
   padding: var(--space-2) var(--space-4);
   font-size: var(--fs-small);
   font-weight: var(--fw-heavy);
+  display: inline-flex;
 }
 
 .confidence-chip.likely {
@@ -438,6 +599,25 @@
 .confidence-chip.needs-review {
   color: var(--crimson);
   background: var(--crimson-soft);
+}
+
+/* D7: what would move if the Registrar approved it — in the conditional, in
+   the second voice, so it reads as stakes and never as a decision. */
+.match-effect {
+  color: var(--ink-2);
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin: var(--space-6) 0 0;
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-semi);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.match-effect svg {
+  color: var(--purple-dark);
+  flex: none;
+  margin-top: var(--space-1);
 }
 
 .match-standing {
@@ -459,16 +639,26 @@
 }
 
 .match-actions {
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-6);
+  gap: var(--space-4) var(--space-6);
   margin-top: var(--space-6);
   display: flex;
+}
+
+.match-actions .text-button {
+  padding: 0;
+}
+
+.match-actions .text-button:hover {
+  color: var(--purple-dark);
+  text-decoration: underline;
 }
 
 .match-empty {
   text-align: center;
   background: var(--surface);
-  border: 1px dashed #e2d9c4;
+  border: 1px dashed var(--amber-line);
   border-radius: var(--radius-row);
   padding: var(--space-11) var(--space-9);
 }
@@ -541,6 +731,8 @@
   font-weight: var(--fw-semi);
 }
 
+/* Shared by the Appointments and Profile rails as well; it stays here, and
+   keeps its shape, until it is moved with the capture protocol. */
 .counts-divider {
   background: var(--line);
   height: 1px;
@@ -560,6 +752,13 @@
 .counts-review svg {
   flex: none;
   margin-top: var(--space-1);
+}
+
+/* Under the under-review figure the sentence explains; it is not a warning.
+   Written with the anchor's own selector so it wins over the amber it sets. */
+.anchor-card .counts-figure + .counts-review.quiet {
+  color: var(--on-ink-muted);
+  margin-top: var(--space-5);
 }
 
 .program-card strong {
@@ -627,7 +826,7 @@
   color: var(--green);
 }
 
-/* --- the drawer --- */
+/* --- the drawers --- */
 
 .drawer-icon.course {
   color: var(--purple-dark);
@@ -685,11 +884,85 @@
   font-size: var(--fs-copy);
 }
 
+/* The evidence drawer (D8): the document, what was read from it as label and
+   value pairs, the rule, who decides — and no verdict control. `.evidence-drawer`
+   is the modifier by the convention of `.person-drawer` and `.document-drawer`;
+   what follows is the content's own shape. */
+.evidence-block {
+  margin-top: var(--space-10);
+}
+
+.evidence-block .evidence-kicker {
+  margin: 0 0 var(--space-5);
+}
+
+.evidence-block > p {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.evidence-facts {
+  grid-template-columns: max-content minmax(0,1fr);
+  gap: var(--space-4) var(--space-8);
+  margin: 0;
+  display: grid;
+}
+
+.evidence-facts > div {
+  display: contents;
+}
+
+.evidence-facts dt {
+  color: var(--muted);
+  padding-top: var(--space-1);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semi);
+}
+
+.evidence-facts dd {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-heading);
+}
+
+.evidence-block .evidence-meanwhile {
+  color: var(--amber-ink);
+  background: var(--amber-wash);
+  border-radius: var(--radius-tile);
+  margin-top: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  font-size: var(--fs-copy);
+}
+
+.evidence-meanwhile strong {
+  margin-bottom: var(--space-1);
+  display: block;
+}
+
+.evidence-block .text-button {
+  color: var(--purple-dark);
+  margin-top: var(--space-5);
+  padding: 0;
+}
+
+.evidence-block .text-button:hover {
+  text-decoration: underline;
+}
+
+.evidence-drawer .drawer-actions {
+  margin-top: var(--space-11);
+}
+
 .confidence-panel {
   align-items: flex-start;
   gap: var(--space-5);
   margin-bottom: var(--space-6);
   display: flex;
+}
+
+.evidence-block .confidence-panel {
+  margin-bottom: 0;
 }
 
 .confidence-panel p {
@@ -749,10 +1022,6 @@
 }
 
 @media (width<=620px) {
-  .catalog-bar {
-    gap: var(--space-3) var(--space-5);
-  }
-
   .requirement-head {
     grid-template-columns: 26px minmax(0,1fr) 18px;
     gap: var(--space-5);
@@ -761,6 +1030,7 @@
 
   .requirement-meters {
     flex-direction: row;
+    flex-wrap: wrap;
     grid-area: 2/2/3/3;
     align-items: center;
     gap: var(--space-4);
@@ -776,10 +1046,24 @@
     grid-template-columns: 24px minmax(0,1fr);
   }
 
-  .course-state {
-    text-align: left;
+  .course-trailing {
+    flex-direction: row;
+    flex-wrap: wrap;
     grid-column: 2;
-    margin-top: -2px;
+    align-items: center;
+    align-self: auto;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+
+  .course-status {
+    text-align: left;
+  }
+
+  .match-head {
+    grid-template-columns: minmax(0,1fr) auto auto;
+    gap: var(--space-4);
+    padding: var(--space-6);
   }
 
   .match-route {
@@ -793,15 +1077,13 @@
     transform: rotate(90deg);
   }
 
+  .match-body {
+    padding: 0 var(--space-6) var(--space-6);
+  }
+
   .match-actions {
     align-items: stretch;
     gap: var(--space-4);
     flex-direction: column;
   }
 }
-
-/* ------------------------------------------------------------------------
- * Lifted out of `patterns.css`, where it had been sitting among the shared
- * vocabulary because this section's rules and the shared ones were written
- * interleaved. Nothing here is referenced by any other feature.
- * ------------------------------------------------------------------------*/

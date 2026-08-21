@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
+import ActionBand from '../../design-system/patterns/ActionBand.jsx';
 import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
 import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
+import Card, { CardHead, CardRows } from '../../design-system/primitives/Card.jsx';
 import ClassroomsRail from './ClassroomsRail.jsx';
 import AcademicDrawer from './AcademicDrawer.jsx';
 import CreditMatchCard from './CreditMatchCard.jsx';
@@ -14,17 +16,48 @@ import {
   creditMatches,
   matchSources,
   program,
+  registrarOffice,
   requirements as publishedRequirements,
   unassignedProgram,
 } from './data.js';
 import {
+  bandFor,
+  courseSlug,
   creditTotals,
   creditsUnderReview,
   defaultOpenRequirements,
+  electiveRemaining,
   groupRequirements,
   matchesFor,
 } from './logic.js';
-import { enrollmentAdvisor } from '../enrollment/data.js';
+
+/**
+ * The plan is the student's own list (brief, rule 3). It is remembered the
+ * way the checklist's groups are — `localStorage`, one key, nothing else
+ * stored — so it survives a reload and never leaves the browser. It is not an
+ * input to anything in `logic.js`: no counter, no standing, no figure reads
+ * it, which is how "a plan never changes a credit total" is true by
+ * construction rather than by discipline.
+ */
+const PLAN_KEY = 'aster.degree.plan';
+
+function readPlan() {
+  try {
+    const raw = window.localStorage.getItem(PLAN_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(list) ? list : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function writePlan(plan) {
+  try {
+    window.localStorage.setItem(PLAN_KEY, JSON.stringify([...plan]));
+  } catch {
+    /* a browser that refuses storage still gets the plan for the session */
+  }
+}
 
 /**
  * `matches: null` means the transcript service could not be reached. That is not
@@ -46,13 +79,25 @@ function buildView(state) {
   return { requirements: publishedRequirements, matches: creditMatches };
 }
 
+function toggleIn(list, id) {
+  return list.includes(id) ? list.filter((item) => item !== id) : [...list, id];
+}
+
+function addTo(list, id) {
+  return list.includes(id) ? list : [...list, id];
+}
+
 export default function ClassroomsPage({ destination, state, onToast, onOverlay = () => {} }) {
   const { requirements, matches } = useMemo(() => buildView(state), [state]);
-  const [open, setOpen] = useState(() =>
-    defaultOpenRequirements(publishedRequirements, creditMatches),
-  );
+  const [open, setOpen] = useState(() => defaultOpenRequirements(publishedRequirements));
+  const [openMatches, setOpenMatches] = useState([]);
+  const [plan, setPlan] = useState(readPlan);
   const [drawerItem, setDrawerItem] = useState(null);
   const [creditModal, setCreditModal] = useState(false);
+  // Something on the page asked to be shown — a match a pointer named, a
+  // course a match named, a requirement the band named. It is opened in the
+  // same render and scrolled to after it, once the element is visible.
+  const [reveal, setReveal] = useState(null);
 
   // "One overlay owns the screen at a time" needs App to hear about an overlay
   // it does not itself hold, so Edward can stand down for it — ENR-181.
@@ -71,22 +116,85 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [creditModal]);
 
+  useEffect(() => {
+    if (!reveal) return;
+    const node = document.getElementById(reveal.id);
+    node?.scrollIntoView({ behavior: 'smooth', block: reveal.block ?? 'center' });
+    setReveal(null);
+  }, [reveal]);
+
   const totals = creditTotals(requirements);
   const underReview = creditsUnderReview(matches);
-  const percent = totals.total > 0 ? Math.round((totals.met / totals.total) * 100) : 0;
+  // D10: the ring tracks approved credit against what the program asks for,
+  // and nothing the student does on this screen can move it.
+  const percent = Math.round((totals.approved / program.creditsToGraduate) * 100);
   const groups = groupRequirements(requirements);
+  const elective = electiveRemaining(requirements);
 
   const unknownProgram = state === 'empty';
+  const band = unknownProgram ? null : bandFor({ matches, requirements });
 
   function toggle(id) {
-    setOpen((current) =>
-      current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+    setOpen((current) => toggleIn(current, id));
+  }
+
+  function toggleMatch(id) {
+    setOpenMatches((current) => toggleIn(current, id));
+  }
+
+  /** Open a requirement — even one she closed — and scroll to it, or to one of its groups. */
+  function revealRequirement(id, group) {
+    setOpen((current) => addTo(current, id));
+    setReveal({ id: group ? `requirement-${id}-${group}` : `requirement-${id}` });
+  }
+
+  /** Open a match card and scroll to it (D4, D5 case 1 from a requirement). */
+  function revealMatch(match) {
+    setOpenMatches((current) => addTo(current, match.id));
+    setReveal({ id: `match-${match.id}` });
+  }
+
+  /** From a match to the course it targets, inside its requirement (D4). */
+  function revealCourse(match) {
+    setOpen((current) => addTo(current, match.target.requirementId));
+    setReveal({ id: `course-${courseSlug(match.target.courseCode)}` });
+  }
+
+  function revealMatches() {
+    setReveal({ id: 'waiting-on-registrar', block: 'start' });
+  }
+
+  function addToPlan(code) {
+    setPlan((current) => {
+      const next = new Set(current);
+      next.add(code);
+      writePlan(next);
+      return next;
+    });
+  }
+
+  function removeFromPlan(code) {
+    setPlan((current) => {
+      const next = new Set(current);
+      next.delete(code);
+      writePlan(next);
+      return next;
+    });
+  }
+
+  // D15: every route to a person on this screen leads to the office that
+  // decides. The advisor is Admissions', and Admissions decides nothing here.
+  function askRegistrar(match) {
+    onToast(
+      `A message to the ${program.officialRecord.office} about ${match.target.courseCode} would open here. Nothing is sent yet.`,
     );
   }
 
-  function askAdvisor(match) {
+  function contactRegistrar(channel) {
     onToast(
-      `A message to ${enrollmentAdvisor.name} about ${match.target.courseCode} would open here. Nothing is sent yet.`,
+      `${channel === 'email' ? 'An email' : 'A message'} to the ${
+        program.officialRecord.office
+      } would open here. Nothing is sent yet.`,
     );
   }
 
@@ -100,6 +208,13 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
       : `Academic · ${program.name} · ${program.classOf}`,
   };
 
+  /**
+   * The white card after the brief (D9, D10, D15): the ring tracks credits and
+   * its caption names the unit; the requirement count is the supporting line,
+   * with the elective remainder beside it — a residual has no status, so it is
+   * a line here and never a row in the list; and the person block is the
+   * office that decides, not the advisor who cannot.
+   */
   const summary = unknownProgram ? null : (
     <>
       <SummaryFigure
@@ -108,53 +223,29 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
             <span>{percent}%</span>
           </div>
         }
-        label="Your degree progress"
+        label="Credits approved"
         explain={{
-          title: 'Requirements met',
-          body: 'A requirement is met when the Registrar has approved enough credit for it. Credit still being matched is reported in the rail and is deliberately not counted here.',
+          title: 'Credits approved',
+          body: `Credit the ${program.officialRecord.office} has approved, out of the ${program.creditsToGraduate} your program asks for. A potential match is reported in the rail and is deliberately not counted here, and nothing you add to your plan moves it.`,
         }}
-        figure={`${totals.met} of ${totals.total} requirements met`}
+        figure={`${totals.approved} of ${program.creditsToGraduate} credits approved${
+          totals.pending > 0 ? '*' : ''
+        }`}
       >
-        {totals.approved} of {program.creditsToGraduate} credits approved
-        {totals.pending > 0 ? '*' : ''}
+        {totals.met} of {totals.total} requirements met · {elective} elective credits remaining
       </SummaryFigure>
-      <AdvisorBar
-        advisor={enrollmentAdvisor}
-        onContact={(channel) =>
-          onToast(
-            `${channel === 'email' ? 'An email' : 'A message'} to ${
-              enrollmentAdvisor.name
-            } would open here. Nothing is sent yet.`,
-          )
-        }
-      />
+      <AdvisorBar advisor={registrarOffice} onContact={contactRegistrar} />
     </>
   );
 
-  // What credit matching has to say about the figure above — a footnote to it,
-  // not a fourth line of it. As a line inside the figure cell this made the
-  // panel 139px tall against every other section's 123 and left the advisor
-  // floating off-centre beside it; on the foot it qualifies the number without
-  // changing the shape of the panel. A failed check is crimson, a match still
-  // waiting is amber, and nothing waiting asks nothing of the student.
   /**
    * One caveat on the figure, on the panel's foot — the Jam of 2026-08-21.
    *
-   * This page used to spend two slots and two shapes here. `alert` held the
-   * line about matches, and `notice` held a full-width band of provenance:
-   * *catalog 2026 · published · read-only · this isn't your official academic
-   * record · the Registrar's Office holds your transcript.* Every clause of
-   * that band is already printed in the rail beside it — the catalog and the
-   * published date in `Your program`, the office and where to find it in
-   * `Your official record` — so the band was a row of the page spent saying a
-   * third time what the rail says once, at the top of the reading order.
-   *
-   * What was only in the band is the sync caveat, and it is not provenance: it
-   * is the reason the number above it is short. So it comes here, to the number,
-   * and the band goes.
-   *
    * Ranked, because the foot holds one line: a total that cannot be trusted
    * beats a check that did not run, which beats how many matches are waiting.
+   * The last is a neutral pointer since the brief (D11): it says where the
+   * matches are, and carries no verdict — the verdict is said on the match
+   * and in the rail, and saying it six times had stopped reading as care.
    */
   const caveat = unknownProgram ? null : totals.pending > 0 ? (
     <Notice tone="soon" icon="alert">
@@ -168,8 +259,8 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
     <Notice tone="quiet" icon="info">
       {matches.length > 0
         ? `${matches.length} potential ${
-            matches.length === 1 ? 'match isn’t' : 'matches aren’t'
-          } counted here`
+            matches.length === 1 ? 'match is' : 'matches are'
+          } waiting on the Registrar`
         : 'Nothing is waiting on a credit decision'}
     </Notice>
   );
@@ -184,7 +275,6 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
         notice={caveat}
         rail={
           <ClassroomsRail
-            approved={totals.approved}
             underReview={underReview}
             unavailable={matches === null}
             unknownProgram={unknownProgram}
@@ -209,51 +299,70 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
           </StateCard>
         ) : (
           <>
-            {groups.map((group) => (
-              <section className="section-card" key={group.id}>
-                <div className="status-heading">
-                  <span className="status-icon requirement">
-                    <Icon name="book" size={18} />
-                  </span>
-                  <div>
-                    <h2>{group.name}</h2>
-                    <p>{group.summary}</p>
-                  </div>
-                  <span className="status-count">{group.requirements.length}</span>
-                </div>
-                <div className="card-rows requirement-list">
+            {groups.map((group, index) => (
+              <Card key={group.id}>
+                <CardHead
+                  kind="status"
+                  icon="book"
+                  tone="requirement"
+                  title={group.name}
+                  note={group.summary}
+                  aside={
+                    <span className="group-count">{group.requirements.length} requirements</span>
+                  }
+                />
+
+                {/* D5: the reference screen's band, in the reference's place —
+                    under the head, above the first row — filled by this
+                    screen's own rule (`bandFor`). It points at what changed or
+                    at what is open, never at "finish your degree". */}
+                {index === 0 && band ? (
+                  <ActionBand
+                    icon={band.kind === 'matches' ? 'clock' : 'spark'}
+                    label={band.label}
+                    action={{
+                      label: band.action,
+                      onClick:
+                        band.kind === 'matches'
+                          ? revealMatches
+                          : () => revealRequirement(band.requirementId, 'now'),
+                    }}
+                  />
+                ) : null}
+
+                <CardRows className="requirement-list">
                   {group.requirements.map((requirement) => (
                     <RequirementCard
                       key={requirement.id}
                       requirement={requirement}
-                      matches={matchesFor(matches, requirement.id)}
+                      requirements={requirements}
+                      matches={matches}
+                      requirementMatches={matchesFor(matches, requirement.id)}
                       open={open.includes(requirement.id)}
                       onToggle={toggle}
+                      onReveal={revealRequirement}
+                      plan={plan}
+                      onPlan={addToPlan}
+                      onUnplan={removeFromPlan}
                       onOpenCourse={(course, parent) =>
-                        setDrawerItem({
-                          kind: 'course',
-                          course,
-                          requirement: parent,
-                        })
+                        setDrawerItem({ kind: 'course', course, requirement: parent })
                       }
-                      onOpenMatch={(match) => setDrawerItem({ kind: 'match', match })}
+                      onRevealMatch={revealMatch}
                     />
                   ))}
-                </div>
-              </section>
+                </CardRows>
+              </Card>
             ))}
 
-            <section className="section-card match-section">
-              <div className="status-heading">
-                <span className="status-icon advisory">
-                  <Icon name="alert" size={18} />
-                </span>
-                <div>
-                  <h2>Potential credit matches</h2>
-                  <p>Nothing here has been approved. None of it counts toward your degree yet.</p>
-                </div>
-                <span className="advisory-badge">Advisory</span>
-              </div>
+            <Card className="match-section" id="waiting-on-registrar">
+              <CardHead
+                kind="status"
+                icon="clock"
+                tone="advisory"
+                title="Waiting on the Registrar"
+                note="Nothing here has been approved. None of it counts toward your degree yet."
+                aside={<span className="advisory-badge">Advisory</span>}
+              />
 
               {matches === null && (
                 <StateCard
@@ -276,7 +385,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
                   <span className="state-icon" aria-hidden="true">
                     <Icon name="file" size={24} />
                   </span>
-                  <h3>No credit matches yet</h3>
+                  <h3>No potential matches yet</h3>
                   <p>
                     A match appears when a document you send Aster looks like it might cover a
                     course in your catalog. Any of these would produce one:
@@ -303,13 +412,17 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
                     <CreditMatchCard
                       key={match.id}
                       match={match}
+                      requirements={requirements}
+                      open={openMatches.includes(match.id)}
+                      onToggle={toggleMatch}
                       onOpen={(item) => setDrawerItem({ kind: 'match', match: item })}
-                      onAsk={askAdvisor}
+                      onAsk={askRegistrar}
+                      onRevealCourse={revealCourse}
                     />
                   ))}
                 </div>
               )}
-            </section>
+            </Card>
           </>
         )}
       </PageShell>
@@ -319,7 +432,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
           item={drawerItem}
           suspended={creditModal}
           onClose={() => setDrawerItem(null)}
-          onAsk={askAdvisor}
+          onAsk={askRegistrar}
           onOpenCredit={() => setCreditModal(true)}
         />
       )}

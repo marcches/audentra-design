@@ -1,10 +1,16 @@
 /* ------------------------------------------------------------------ *
- * My Classrooms — ENR-188
+ * My Degree (the section the code calls `classrooms`) — ENR-188, and the
+ * brief of 2026-08-21.
  *
  * A read model published by staff (ENR-185 AC 5). Nothing here is the
  * student's own record: the catalog is Aster's, the approved credit is the
- * Registrar's decision, and a credit match is a suggestion that has not been
- * decided by anyone yet.
+ * Registrar's decision, and a potential match is evidence that has not been
+ * decided by anyone yet. Four rules the brief rests on, and this file carries
+ * the data for each: the university decides what a course counts toward
+ * (`doubleCountRules`, and the requirement a course is listed under); double
+ * counting is per pair of requirements with a rule ID; the student's plan is
+ * hers alone and lives in the page, never here; and every route to a person
+ * leads to the Office of the Registrar (`registrarOffice`).
  * ------------------------------------------------------------------ */
 
 export const program = {
@@ -13,6 +19,14 @@ export const program = {
   catalog: '2026–27',
   publishedOn: 'Published by Aster on Aug 12',
   creditsToGraduate: 120,
+  /* Credit approved for courses that are not counted toward any requirement
+     above lands in the free-elective remainder. The remainder itself is not a
+     requirement and is never listed as one: 120 minus what the requirements
+     ask for, minus this (brief, D9). */
+  electiveCreditsApproved: 0,
+  /* The term the student is deciding about. A course is takeable this term
+     when it is offered in it and its prerequisite is met (brief, D3). */
+  currentTerm: 'Fall',
   officialRecord: {
     office: 'Office of the Registrar',
     where: 'Building A, second floor',
@@ -27,16 +41,55 @@ export const requirementGroups = [
     name: 'Computer Science major',
     summary: 'The sequence your program is built on.',
   },
-  { id: 'electives', name: 'Electives', summary: 'The part of the degree you choose.' },
+];
+
+/**
+ * The office that decides on credit, as the subject of the summary panel's
+ * person block (brief, D15). An office is a thing, not a person: it gets a
+ * glyph, never a face, and `AdvisorBar` draws it that way when `kind` says so.
+ * The student is told the name and where to find it; both contact actions
+ * route here, because this screen names the Registrar as the decider on every
+ * match and must not then route her to Admissions.
+ */
+export const registrarOffice = {
+  kind: 'office',
+  icon: 'bank',
+  label: 'Office of the Registrar',
+  name: 'Building A, second floor',
+  contact: 'the Office of the Registrar',
+};
+
+/**
+ * Rule 2 of the brief: double counting is decided per pair of requirements,
+ * by the university, and carries a rule ID in the same style a credit match
+ * does. A course listed under one side of a pair counts toward the other too.
+ * `between` names a requirement id or a group id. Everything not covered by a
+ * pair counts toward the one requirement it is listed under and is not
+ * elective credit.
+ */
+export const doubleCountRules = [
+  {
+    id: 'QR-03',
+    between: ['quantitative', 'major'],
+    text: 'A calculus sequence course taken for Quantitative Reasoning also counts toward the Computer Science major.',
+  },
 ];
 
 /**
  * `creditsApproved` is credit the Registrar has already granted. It is the only
- * input to a requirement's status — see `requirementStatus` in
- * `src/lib/academic-helpers.js`. A credit match never appears in this field.
+ * input to a requirement's standing — see `requirementStatus` in `logic.js`. A
+ * potential match never appears in this field, and neither does the plan.
+ *
+ * `remaining` is what is left, said in courses, the unit the student decides
+ * in (brief, D2) — "4 of 8 credits" made her divide. It is copy, not a number,
+ * because "one more lab course" and "two seminars" are not the same sentence;
+ * `remainingLine` in `logic.js` falls back to the credit gap when a requirement
+ * carries none, or when its courses carry different credit values.
  *
  * Course `state`: 'approved' (credit granted) · 'open' (you can take it) ·
- * 'locked' (a prerequisite is not met yet).
+ * 'locked' (a prerequisite is not met yet). Which group a course lands in when
+ * the requirement is open — counted, takeable this term, later, blocked — is
+ * read off `state`, `terms` and `prerequisiteMet` by `courseSituation`.
  */
 export const requirements = [
   {
@@ -44,6 +97,7 @@ export const requirements = [
     group: 'core',
     name: 'Writing & Rhetoric',
     summary: 'Two seminars that teach you to build an argument in writing, in any discipline.',
+    remaining: 'Two seminars finish this.',
     creditsRequired: 6,
     creditsApproved: 0,
     courses: [
@@ -97,6 +151,7 @@ export const requirements = [
     group: 'core',
     name: 'Natural Science',
     summary: 'Two laboratory courses. One is already covered by credit you brought with you.',
+    remaining: 'One more lab course finishes this.',
     creditsRequired: 8,
     creditsApproved: 4,
     courses: [
@@ -159,6 +214,7 @@ export const requirements = [
     group: 'core',
     name: 'Historical Inquiry',
     summary: 'One course that asks you to read a period on its own terms.',
+    remaining: 'One course finishes this.',
     creditsRequired: 3,
     creditsApproved: 0,
     courses: [
@@ -183,6 +239,7 @@ export const requirements = [
     group: 'core',
     name: 'Foreign Language',
     summary: 'Three courses in one language, or the level Aster places you into.',
+    remaining: 'Two more Spanish courses finish this.',
     creditsRequired: 9,
     creditsApproved: 3,
     courses: [
@@ -219,6 +276,7 @@ export const requirements = [
     group: 'major',
     name: 'Programming Foundations',
     summary: 'The three-course sequence every later Computer Science course assumes.',
+    remaining: 'Three courses finish this, taken in order.',
     creditsRequired: 12,
     creditsApproved: 0,
     courses: [
@@ -252,6 +310,7 @@ export const requirements = [
     group: 'major',
     name: 'Systems',
     summary: 'How a machine actually runs the programs you write.',
+    remaining: 'Three courses finish this.',
     creditsRequired: 12,
     creditsApproved: 0,
     courses: [
@@ -286,6 +345,7 @@ export const requirements = [
     group: 'major',
     name: 'Theory',
     summary: 'What can be computed, and what it costs to compute it.',
+    remaining: 'Three courses finish this.',
     creditsRequired: 12,
     creditsApproved: 0,
     courses: [
@@ -321,6 +381,7 @@ export const requirements = [
     group: 'major',
     name: 'Senior Capstone',
     summary: 'One project, carried for a year, that stands for the whole degree.',
+    remaining: 'One year-long project finishes this.',
     creditsRequired: 4,
     creditsApproved: 0,
     courses: [
@@ -334,23 +395,14 @@ export const requirements = [
       },
     ],
   },
-  {
-    id: 'electives',
-    group: 'electives',
-    name: 'Free Electives',
-    summary: 'Any Aster course that is not already counted toward a requirement above.',
-    creditsRequired: 46,
-    creditsApproved: 0,
-    courses: [],
-    emptyNote:
-      'Aster does not choose these for you. Courses you register for that are not already counted above land here.',
-  },
 ];
 
 /**
- * Advisory only. ENR-186: a match never changes a requirement status, a credit
- * total or a progress figure, and there is deliberately no control on the
- * screen that could accept, dismiss or apply one.
+ * Advisory only. ENR-186: a match never changes a requirement standing, a
+ * credit total or a progress figure, and there is deliberately no control on
+ * the screen that could accept, dismiss or apply one. What it *would* change
+ * if approved is computed by `matchEffect` from the target and its
+ * requirement, and said in the conditional (brief, D7).
  */
 export const creditMatches = [
   {

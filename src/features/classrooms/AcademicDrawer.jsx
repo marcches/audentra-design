@@ -1,37 +1,39 @@
-import { useState } from 'react';
 import Drawer from '../../design-system/primitives/Drawer.jsx';
+import Button from '../../design-system/primitives/Button.jsx';
 import Icon from '../../design-system/Icon.jsx';
-import Notice from '../../design-system/patterns/Notice.jsx';
-import { confidenceLabel, requirementStatus } from './logic.js';
+import { confidenceIcon, confidenceLabel, requirementStatus } from './logic.js';
 import { program } from './data.js';
-
-const NEXT_STEPS = [
-  'The Office of the Registrar compares your evidence against Aster’s credit policy.',
-  'A decision is recorded: approved, partly approved, or not approved.',
-  'Only then does your requirement change. You will see it here and in your official record.',
-];
 
 /**
  * One drawer, two kinds, the way `TaskDrawer` carries four. The frame, the
  * focus, the `Esc` and the tab trap come from `Drawer`. `suspended` is the
  * credit modal opening on top of this one: while it is there, `Esc` belongs
  * to it, and the primitive passes that through.
+ *
+ * The match kind is the **evidence drawer** of the brief of 2026-08-21 (D8):
+ * *See the evidence* had a class in the stylesheet and no defined surface.
+ * It has one now — `variant="evidence"`, the `.evidence-drawer` modifier by
+ * the convention of `.person-drawer` and `.document-drawer`.
  */
 export default function AcademicDrawer({ item, onClose, onAsk, onOpenCredit, suspended }) {
-  const [tab, setTab] = useState('evidence');
   const isMatch = item.kind === 'match';
 
   return (
     <Drawer
+      variant={isMatch ? 'evidence' : 'course'}
       label={[
-        isMatch ? 'Potential credit match' : item.requirement.name,
+        isMatch ? 'Potential match' : item.requirement.name,
         isMatch ? 'Advisory' : `Catalog ${program.catalog}`,
       ]}
       titleId="academic-drawer-title"
       onClose={onClose}
       suspended={suspended}
     >
-      {isMatch ? <MatchBody match={item.match} tab={tab} onTab={setTab} onAsk={onAsk} onOpenCredit={onOpenCredit} /> : <CourseBody course={item.course} requirement={item.requirement} />}
+      {isMatch ? (
+        <EvidenceBody match={item.match} onAsk={onAsk} onClose={onClose} onOpenCredit={onOpenCredit} />
+      ) : (
+        <CourseBody course={item.course} requirement={item.requirement} />
+      )}
     </Drawer>
   );
 }
@@ -120,7 +122,24 @@ function CourseBody({ course, requirement }) {
   );
 }
 
-function MatchBody({ match, tab, onTab, onAsk, onOpenCredit }) {
+/**
+ * The evidence drawer, top to bottom, as the brief defines it (D8): the
+ * target course; the source document exactly as the card states it, with the
+ * issuing institution; what was read from it, as label and value pairs; the
+ * rule, by ID and in one sentence; the deciding office and what happens next;
+ * and two secondary actions. There is no approve or reject control anywhere
+ * in it — the student is not a party to this decision (rule 4), and a control
+ * that looked like one would undo the quarantine R1 protects.
+ *
+ * Two things the brief does not list and does not remove are kept where they
+ * belong: the confidence note sits with the rule it qualifies, and the advice
+ * for meanwhile — *plan to register for CS 110 as if this match does not
+ * exist* — sits under *Who decides*, because it is the consequence of nobody
+ * having decided yet.
+ */
+function EvidenceBody({ match, onAsk, onClose, onOpenCredit }) {
+  const received = match.evidence.uploadedOn.replace('Uploaded ', '');
+
   return (
     <>
       <div className="drawer-icon match">
@@ -130,111 +149,76 @@ function MatchBody({ match, tab, onTab, onAsk, onOpenCredit }) {
         {match.target.courseCode} · {match.target.courseTitle}
       </h2>
       <p className="drawer-description">
-        Something in your documents looks like it might cover this course. Nobody has decided that
-        yet.
+        {match.evidence.document}, issued by {match.evidence.source}. {match.evidence.uploadedOn}.
       </p>
 
-      <Notice tone="soon" icon="info" title="Not approved. Nothing here counts">
-        Your requirement status, your credit total and your degree progress are exactly what they
-        were before this match existed. Only the {program.officialRecord.office} can change that.
-      </Notice>
+      <section className="evidence-block">
+        <h3 className="evidence-kicker">What Aster read</h3>
+        <dl className="evidence-facts">
+          <div>
+            <dt>Document</dt>
+            <dd>{match.evidence.document}</dd>
+          </div>
+          <div>
+            <dt>Issued by</dt>
+            <dd>{match.evidence.source}</dd>
+          </div>
+          <div>
+            <dt>Read</dt>
+            <dd>{match.evidence.detail}</dd>
+          </div>
+          <div>
+            <dt>Might cover</dt>
+            <dd>
+              {match.target.courseCode} · {match.target.credits} credits toward{' '}
+              {match.target.requirementName}
+            </dd>
+          </div>
+          <div>
+            <dt>Received</dt>
+            <dd>{received.charAt(0).toUpperCase() + received.slice(1)}</dd>
+          </div>
+        </dl>
+      </section>
 
-      <div className="drawer-tabs" role="tablist">
-        <button
-          className={tab === 'evidence' ? 'active' : ''}
-          onClick={() => onTab('evidence')}
-          role="tab"
-          aria-selected={tab === 'evidence'}
-        >
-          The evidence
+      <section className="evidence-block">
+        <h3 className="evidence-kicker">The rule that applies</h3>
+        <div className="rule-card">
+          <span className="rule-code">Rule {match.rule.code}</span>
+          <p>{match.rule.text}</p>
+          <span className="rule-source">Aster credit policy, published by the Registrar</span>
+        </div>
+        <div className="confidence-panel">
+          <span className={`confidence-chip ${match.confidence}`}>
+            <Icon name={confidenceIcon(match.confidence)} size={12} />
+            {confidenceLabel(match.confidence)}
+          </span>
+          <p>{match.confidenceNote}</p>
+        </div>
+      </section>
+
+      <section className="evidence-block">
+        <h3 className="evidence-kicker">Who decides</h3>
+        <p className="evidence-decision">
+          The {program.officialRecord.office} reviews this and decides. Nothing changes on your
+          degree until they do.
+        </p>
+        <p className="evidence-meanwhile">
+          <strong>Meanwhile.</strong> {match.advice}
+        </p>
+        <button type="button" className="text-button" onClick={onOpenCredit}>
+          How credit is approved
         </button>
-        <button
-          className={tab === 'rule' ? 'active' : ''}
-          onClick={() => onTab('rule')}
-          role="tab"
-          aria-selected={tab === 'rule'}
-        >
-          The rule
-        </button>
+      </section>
+
+      <div className="drawer-actions">
+        <Button kind="secondary" onClick={() => onAsk(match)}>
+          Ask the Registrar
+        </Button>
+        <Button kind="secondary" onClick={onClose}>
+          Close
+        </Button>
       </div>
-
-      {tab === 'rule' ? (
-        <div className="how-panel">
-          <div className="rule-card">
-            <span className="rule-code">Rule {match.rule.code}</span>
-            <p>{match.rule.text}</p>
-            <span className="rule-source">Aster credit policy, published by the Registrar</span>
-          </div>
-          <div className="confidence-panel">
-            <span className={`confidence-chip ${match.confidence}`}>
-              {confidenceLabel(match.confidence)}
-            </span>
-            <p>{match.confidenceNote}</p>
-          </div>
-          <h3>What happens next</h3>
-          <ol>
-            {NEXT_STEPS.map((step, index) => (
-              <li key={step}>
-                <span>{index + 1}</span>
-                <p>{step}</p>
-              </li>
-            ))}
-          </ol>
-          <button className="text-button full" onClick={onOpenCredit}>
-            How credit is approved
-          </button>
-        </div>
-      ) : (
-        <div className="action-panel">
-          <div className="evidence-panel">
-            <span className="evidence-kicker">
-              <Icon name="file" size={15} /> What this was drawn from
-            </span>
-            <p>
-              <strong>{match.evidence.detail}</strong>
-            </p>
-            <p>
-              {match.evidence.document} · {match.evidence.source}
-            </p>
-            <p className="evidence-when">{match.evidence.uploadedOn}</p>
-          </div>
-
-          <div className="match-target-panel">
-            <span className="evidence-kicker">
-              <Icon name="arrow" size={15} /> What it might cover
-            </span>
-            <p>
-              <strong>
-                {match.target.courseCode} · {match.target.courseTitle}
-              </strong>
-            </p>
-            <p>
-              {match.target.credits} credits toward {match.target.requirementName}
-            </p>
-          </div>
-
-          <div className="confidence-panel">
-            <span className={`confidence-chip ${match.confidence}`}>
-              {confidenceLabel(match.confidence)}
-            </span>
-            <p>{match.confidenceNote}</p>
-          </div>
-
-          <div className={`help-note ${match.confidence === 'needs-review' ? 'warn' : ''}`}>
-            <Icon name={match.confidence === 'needs-review' ? 'alert' : 'info'} size={18} />
-            <p>
-              <strong>What to do meanwhile.</strong> {match.advice}
-            </p>
-          </div>
-
-          <button className="primary-button full" onClick={() => onAsk(match)}>
-            Ask your advisor about this <Icon name="arrow" size={17} />
-          </button>
-          <small className="prototype-note">
-            Prototype: this raises a message instead of contacting anyone.
-          </small>
-        </div>
-      )}
     </>
   );
 }

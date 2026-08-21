@@ -77,28 +77,81 @@ In review never does.** Faking a decision on a timer would put words in a review
 
 **Degree requirement**:
 A rule of an academic program — a course, a credit count, a category — that My Degree tracks.
-Nothing to do with documents. When both are in the same sentence, qualify both.
-_Avoid_: Requirement, unqualified.
+Nothing to do with documents. When both are in the same sentence, qualify both. A requirement is
+satisfied *by* courses; a course counts *toward* requirements — the two directions are both said
+on the screen, and neither is the other. The free-elective figure is not a requirement: it is the
+remainder of the degree after the requirements, and it has no standing.
+_Avoid_: Requirement, unqualified. Free Electives as a requirement.
+
+**Requirement standing**:
+Where one degree requirement is, decided by approved credit alone: *not started*, *in progress*,
+*satisfied*. A potential match and a plan are not inputs to it. It is a fact about the student's
+degree, which is why it wears a pill; a course's availability and a match's confidence are not, and
+do not. Added 2026-08-21, with the My Degree brief.
+_Avoid_: Status (overloaded: the course had one, the match had one), state, progress.
+
+**Counts toward**:
+Which requirements one course is allocated to. The university decides it, the student never does,
+and the line on the row only reports it. A course counts toward one requirement and is then *not
+elective credit*; when it counts toward two at once, that is **double counting**, decided **per pair
+of requirements** and carried by a rule ID (*Rule QR-03*), the same way a credit match carries its
+rule.
+_Avoid_: Applies to, satisfies (that is the other direction — a requirement is satisfied by
+courses), maps to.
+
+**Potential match**:
+Evidence in a document the student sent that looks like it might cover a course — a transcript line,
+an examination result, a placement. It names its source, its target course, its rule, its confidence
+and its effect *if approved*, and it has changed nothing: no standing, no total, no progress figure.
+It is **waiting on the Registrar**; the student is not a party to the decision, so no control
+anywhere approves, dismisses or applies one.
+_Avoid_: Credit match (the section's old name — it read as credit), transfer credit, waiver,
+suggestion, recommendation.
+
+**Plan**:
+The student's own list of courses she intends to take — added from a requirement, removed at will.
+It is hers alone: it registers her for nothing, it changes no credit total, no standing and no
+progress figure, and a planned course is marked *planned* where it sits and nothing else moves. The
+same quarantine a potential match gets, applied to the student's own not-yet.
+_Avoid_: Schedule, cart, enrolment, registration, wishlist, saved courses.
 
 **Help request**:
 A question the student raised with an office through Help. It travels the other way from a document
 requirement: the student is waiting on Aster because they asked, not because Aster asked.
 _Avoid_: Request, unqualified; ticket; case.
 
+**Time request**:
+What a student sends from Appointments when none of a team's published times work: a sentence about
+when she could meet, and what it is about, addressed to the team that owns the topic. It is not a
+booking and never becomes a time on a calendar by itself — it waits on the team, and nothing is
+booked until they answer; while it waits it is shown as *Requested* among her conversations, and she
+can cancel it. It is the second path, and the screen says so: picking a published time books on the
+spot, a time request does not. Added 2026-08-21 (ADR 0005).
+_Avoid_: Request, unqualified (that is Help's word); booking request; proposed time; slot request.
+
 **Office**:
 The team at Aster that owns a document requirement and makes the decision on its submissions —
-Admissions, Student Financial Services, Housing Services, Aster University Health Services, the
+the Admissions Office, the Financial Aid Office, Housing Services, Student Health Services, the
 Office of the Registrar. The student is told which one holds their file, always by name, and each
 office has exactly one name: *Office of the Registrar* on first mention in a page and *the
-Registrar* after; *Aster University Health Services* first and *Health Services* after; *Student
-Financial Services* always.
+Registrar* after; *Student Health Services* first and *Health Services* after; *Financial Aid
+Office* always, with *the* before it in running text (*the Financial Aid Office needs…*). An office
+that publishes times for conversations — the Admissions Office, the Financial Aid Office, the
+Academic Advising Office — carries the same name on Appointments, with the department after a comma
+where one handles this student (*Academic Advising Office, Computer Science*). Two were renamed
+2026-08-21 (appointments changes, 8.11): *Student Financial Services* merged aid with billing, and
+the office the checklist names is the one that verifies income to release a federal loan, which is
+financial aid; *Student Health Services* is what a US student reads on every campus, and *Student
+Health Office* is not idiomatic.
 
 An office may also be a team that owns no requirement and decides nothing, and instead **receives
 what a section routes to it**: Accessibility Services receives an *accommodation answer* and
 contacts the student. It is still an office, because the student is owed the same thing either way —
 a name for whoever is on the other side.
 _Avoid_: Department, team, staff. Aster Registrar, the Registrar's Office (the name is the Office
-of the Registrar). Financial Aid office (the name is Student Financial Services).
+of the Registrar). Student Financial Services, Financial Services, financial aid office (the name is
+the Financial Aid Office). Aster University Health Services, Student Health Office (the name is
+Student Health Services).
 
 **Step**:
 One item on the My Enrollment checklist: something the student does, named as a verb phrase —

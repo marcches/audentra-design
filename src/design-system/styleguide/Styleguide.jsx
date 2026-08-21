@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Icon from '../Icon.jsx';
 import Card, { CardFoot, CardHead, CardRows } from '../primitives/Card.jsx';
 import EntryRow from '../patterns/EntryRow.jsx';
+import ActionBand from '../patterns/ActionBand.jsx';
 import AnchorCard from '../primitives/AnchorCard.jsx';
 import Button, { IconButton } from '../primitives/Button.jsx';
 import Drawer from '../primitives/Drawer.jsx';
@@ -722,6 +723,52 @@ export default function Styleguide({ onToast }) {
                 <p className="inline-empty">
                   Nothing is waiting on a prerequisite. An empty group is not a button.
                 </p>
+              </Card>
+            </div>
+          </Block>
+          <Block
+            title="The action band"
+            note="The one thing to do next, as a strip under the card’s head and above the first row. A short label with a glyph, and on the right either a consequence in words — the row under it carries the action — or one button, when the band is the way to get somewhere. Each screen decides what fills it; a band with nothing to point at is not rendered, and it never shows a placeholder."
+          >
+            <div className="sg-grid">
+              <Card>
+                <CardHead
+                  kind="status"
+                  icon="checklist"
+                  tone="accent"
+                  title="Your next steps"
+                  note="The reference: the consequence on the right, the action on the row."
+                />
+                <ActionBand icon="spark" label="Start here" aside="Unlocks 3 more steps" />
+                <CardRows>
+                  <div className="sg-row">
+                    <span>The row under the band</span>
+                    <strong>carries the primary</strong>
+                  </div>
+                </CardRows>
+              </Card>
+              <Card>
+                <CardHead
+                  kind="status"
+                  icon="book"
+                  tone="accent"
+                  title="Core curriculum"
+                  note="The same band with a button: it points at something elsewhere on the page."
+                />
+                <ActionBand
+                  icon="clock"
+                  label="2 potential matches are with the Registrar"
+                  action={{
+                    label: 'See what’s waiting',
+                    onClick: () => onToast('The band would scroll to what it points at.'),
+                  }}
+                />
+                <CardRows>
+                  <div className="sg-row">
+                    <span>The rows under it</span>
+                    <strong>are the list, unchanged</strong>
+                  </div>
+                </CardRows>
               </Card>
             </div>
           </Block>

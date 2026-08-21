@@ -83,7 +83,7 @@ src/
     primitives/              # Drawer, AnchorCard, Card (+CardHead/Rows/Foot), Button, Avatar
     patterns/                # PageShell, GroupTabs, Notice, StateCard, Spot, SummaryFigure,
                              # AdvisorBar, InfoModal, PageError, PageSkeleton,
-                             # SectionPlaceholder, Popover, EntryRow
+                             # SectionPlaceholder, Popover, EntryRow, ActionBand
     styleguide/              # the page at #/styleguide
 
   app/                       # the shell every page renders inside

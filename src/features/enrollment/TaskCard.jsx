@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import ActionBand from '../../design-system/patterns/ActionBand.jsx';
 import GateChip from '../registration/GateChip.jsx';
 import { kindIcon, priorityLabel } from './logic.js';
 
@@ -14,17 +15,16 @@ export default function TaskCard({
     <article
       className={`task-card ${recommended ? 'recommended' : ''} ${gates ? 'gating' : ''}`}
     >
+      {/* The band that points at the one thing to do next — `ActionBand` since
+          the My Degree brief of 2026-08-21 asked for the same band on a second
+          screen. Here the row under it carries the action, so the band carries
+          the consequence. */}
       {recommended && (
-        <div className="recommended-banner">
-          <span>
-            <Icon name="spark" size={14} /> Start here
-          </span>
-          {task.unlocks ? (
-            <span>Unlocks {task.unlocks} more steps</span>
-          ) : (
-            <span>Highest priority right now</span>
-          )}
-        </div>
+        <ActionBand
+          icon="spark"
+          label="Start here"
+          aside={task.unlocks ? `Unlocks ${task.unlocks} more steps` : 'Highest priority right now'}
+        />
       )}
 
       <div className="task-card-body">
