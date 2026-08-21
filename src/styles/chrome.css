@@ -12,7 +12,7 @@
   border-right: 1px solid var(--line);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
-  background: #ffffffeb;
+  background: var(--glass);
   flex-direction: column;
   width: 254px;
   padding: var(--space-11) var(--space-9) var(--space-9);

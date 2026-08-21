@@ -108,7 +108,7 @@
 }
 
 .orbit-ring {
-  border: 1px solid #ffffff2e;
+  border: 1px solid var(--on-ink-line);
   border-radius: var(--radius-round);
   position: absolute;
   inset: 20px;

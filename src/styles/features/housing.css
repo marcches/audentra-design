@@ -516,7 +516,7 @@
 }
 .stage-track li:not(:last-child):after {
   content: '';
-  background: #ffffff2e;
+  background: var(--on-ink-line);
   width: 1px;
   position: absolute;
   top: 17px;
