@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
+import Drawer from '../../design-system/primitives/Drawer.jsx';
 import Icon from '../../design-system/Icon.jsx';
 import { confidenceLabel, requirementStatus } from './logic.js';
-import { useOverlay } from '../../lib/overlay.js';
 import { program } from './data.js';
 
 const NEXT_STEPS = [
@@ -11,44 +11,27 @@ const NEXT_STEPS = [
 ];
 
 /**
- * One drawer, two kinds, the way `TaskDrawer` carries four. Focus, `Esc` and the
- * tab trap come from `useOverlay` — the pattern this repo owes every overlay,
- * and since ENR-181 the one it actually has. `suspended` is the credit modal
- * opening on top of this drawer: while it is there, `Esc` belongs to it.
+ * One drawer, two kinds, the way `TaskDrawer` carries four. The frame, the
+ * focus, the `Esc` and the tab trap come from `Drawer`. `suspended` is the
+ * credit modal opening on top of this one: while it is there, `Esc` belongs
+ * to it, and the primitive passes that through.
  */
 export default function AcademicDrawer({ item, onClose, onAsk, onOpenCredit, suspended }) {
-  const panel = useRef(null);
   const [tab, setTab] = useState('evidence');
-
-  useOverlay(panel, { onClose, suspended });
-
   const isMatch = item.kind === 'match';
 
   return (
-    <>
-      <button className="modal-scrim" aria-label="Close" onClick={onClose} />
-      <aside
-        className="task-drawer"
-        ref={panel}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="academic-drawer-title"
-      >
-        <div className="drawer-header">
-          <div className="drawer-label">
-            <span>{isMatch ? 'Potential credit match' : item.requirement.name}</span>
-            <span>{isMatch ? 'Advisory' : `Catalog ${program.catalog}`}</span>
-          </div>
-          <button className="icon-button" aria-label="Close" onClick={onClose}>
-            <Icon name="close" />
-          </button>
-        </div>
-
-        <div className="drawer-content">
-          {isMatch ? <MatchBody match={item.match} tab={tab} onTab={setTab} onAsk={onAsk} onOpenCredit={onOpenCredit} /> : <CourseBody course={item.course} requirement={item.requirement} />}
-        </div>
-      </aside>
-    </>
+    <Drawer
+      label={[
+        isMatch ? 'Potential credit match' : item.requirement.name,
+        isMatch ? 'Advisory' : `Catalog ${program.catalog}`,
+      ]}
+      titleId="academic-drawer-title"
+      onClose={onClose}
+      suspended={suspended}
+    >
+      {isMatch ? <MatchBody match={item.match} tab={tab} onTab={setTab} onAsk={onAsk} onOpenCredit={onOpenCredit} /> : <CourseBody course={item.course} requirement={item.requirement} />}
+    </Drawer>
   );
 }
 

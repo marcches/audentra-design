@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
 import { OFFICE_ORDER, TYPICAL_REPLY, offices } from './data.js';
 
 /**
@@ -16,9 +17,11 @@ import { OFFICE_ORDER, TYPICAL_REPLY, offices } from './data.js';
 export default function HelpRail({ onToast }) {
   return (
     <>
-      <div className="anchor-card reply-card">
-        <span className="panel-label">Typical reply</span>
-        <strong>{TYPICAL_REPLY}</strong>
+      <AnchorCard
+        variant="reply"
+        label="Typical reply"
+        figure={TYPICAL_REPLY}
+      >
         <p>
           Every answer lands on this page and stays here — that is the record. Some offices take
           longer than others, and each one tells you its own before you send.
@@ -27,7 +30,7 @@ export default function HelpRail({ onToast }) {
           <Icon name="mail" size={14} /> Aster’s emails only say that something has arrived here.
           Nothing you write back to one reaches a person.
         </p>
-      </div>
+      </AnchorCard>
 
       <div className="provenance-card office-card">
         <span className="panel-label">Who decides what</span>

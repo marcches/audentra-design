@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
 import TermTip from './TermTip.jsx';
 import { formatMoney } from './logic.js';
 
@@ -12,9 +13,12 @@ export default function NextPaymentCard({ ledger, dueInDays, onPay }) {
   if (!next) return null;
 
   return (
-    <div className="anchor-card next-payment-card">
-      <span className="panel-label">Next payment</span>
-      <strong className="next-payment-figure">{formatMoney(next.amount)}</strong>
+    <AnchorCard
+      variant="next-payment"
+      label="Next payment"
+      figure={formatMoney(next.amount)}
+      figureClass="next-payment-figure"
+    >
       <p className="next-payment-meta">
         {next.label} · due {next.date}
         {dueInDays ? ` · in ${dueInDays} days` : ''}
@@ -50,6 +54,6 @@ export default function NextPaymentCard({ ledger, dueInDays, onPay }) {
         year. Each one is an estimate and is recalculated if your aid changes.
         <TermTip term="schedule" label="how installments are worked out" />
       </p>
-    </div>
+    </AnchorCard>
   );
 }

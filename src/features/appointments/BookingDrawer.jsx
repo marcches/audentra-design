@@ -1,7 +1,7 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
+import Drawer from '../../design-system/primitives/Drawer.jsx';
 import SlotPicker from './SlotPicker.jsx';
-import { useOverlay } from '../../lib/overlay.js';
 import { longDate } from '../campus/logic.js';
 import { daysFor, placeOf, timeRange, typeById } from './logic.js';
 
@@ -32,7 +32,6 @@ export default function BookingDrawer({
   onClose,
   onToast,
 }) {
-  const panel = useRef(null);
   // A retry writes over the attempt it repeats rather than adding a second one:
   // one intention, one record, however many times the team's calendar refuses it.
   const attempt = useRef(replaceId ?? null);
@@ -43,7 +42,6 @@ export default function BookingDrawer({
   const [subject, setSubject] = useState('');
   const [result, setResult] = useState(null);
 
-  useOverlay(panel, { onClose });
 
   const type = typeById(types, typeId);
   const days = useMemo(() => daysFor(published, typeId), [published, typeId]);
@@ -82,27 +80,36 @@ export default function BookingDrawer({
   }
 
   return (
-    <>
-      <button className="modal-scrim" aria-label="Close booking" onClick={onClose} />
-      <aside
-        className="task-drawer booking-drawer"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="booking-drawer-title"
-        ref={panel}
-      >
-        <div className="drawer-header">
-          <div className="drawer-label">
-            <span>Book a conversation</span>
-            <span>{type.team}</span>
+    <Drawer
+      variant="booking"
+      label={['Book a conversation', type.team]}
+      titleId="booking-drawer-title"
+      closeLabel="Close booking"
+      onClose={onClose}
+      foot={
+        !result &&
+        day && (
+          <div className="booking-foot">
+            <div className="booking-chosen">
+              <span className="panel-label">You are booking</span>
+              <strong>
+                {slot
+                  ? `${longDate(day.date)} · ${timeRange({ time: slot.time, end: slot.end })}`
+                  : 'Pick one of the times above'}
+              </strong>
+              <span>
+                {slot ? `${place} · with ${type.person.name}` : `${type.team} · ${type.duration}`}
+              </span>
+            </div>
+            <button className="primary-button full" disabled={!slot} onClick={book}>
+              Book this time <Icon name="arrow" size={17} />
+            </button>
           </div>
-          <button className="icon-button" aria-label="Close" onClick={onClose}>
-            <Icon name="close" />
-          </button>
-        </div>
-
-        {result ? (
-          <div className="drawer-content">
+        )
+      }
+    >
+      {result ? (
+        <>
             <div className={`booking-result ${result === 'booked' ? 'ok' : 'failed'}`}>
               <span className="result-icon" aria-hidden="true">
                 <Icon name={result === 'booked' ? 'check' : 'alert'} size={24} />
@@ -176,10 +183,9 @@ export default function BookingDrawer({
                 anything on a team’s behalf.
               </small>
             </div>
-          </div>
-        ) : (
-          <>
-            <div className="drawer-content">
+        </>
+      ) : (
+        <>
               <h2 id="booking-drawer-title" className="sr-only">
                 Book a conversation with {type.team}
               </h2>
@@ -263,29 +269,8 @@ export default function BookingDrawer({
                   </p>
                 </div>
               )}
-            </div>
-
-            {day && (
-              <div className="booking-foot">
-                <div className="booking-chosen">
-                  <span className="panel-label">You are booking</span>
-                  <strong>
-                    {slot
-                      ? `${longDate(day.date)} · ${timeRange({ time: slot.time, end: slot.end })}`
-                      : 'Pick one of the times above'}
-                  </strong>
-                  <span>
-                    {slot ? `${place} · with ${type.person.name}` : `${type.team} · ${type.duration}`}
-                  </span>
-                </div>
-                <button className="primary-button full" disabled={!slot} onClick={book}>
-                  Book this time <Icon name="arrow" size={17} />
-                </button>
-              </div>
-            )}
-          </>
-        )}
-      </aside>
-    </>
+        </>
+      )}
+    </Drawer>
   );
 }

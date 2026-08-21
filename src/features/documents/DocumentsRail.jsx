@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
 import { officeOf, stateOf } from './logic.js';
 
 /**
@@ -22,9 +23,11 @@ export default function DocumentsRail({ requirements, unavailable, onToast }) {
 
   return (
     <>
-      <div className="anchor-card waiting-card">
-        <span className="panel-label">With Aster right now</span>
-        <strong>{unavailable ? '—' : waiting.length}</strong>
+      <AnchorCard
+        variant="waiting"
+        label="With Aster right now"
+        figure={unavailable ? '—' : waiting.length}
+      >
         {unavailable ? (
           <p>
             Your record loaded, but what Aster has decided could not be read. Nothing here is out of
@@ -56,7 +59,7 @@ export default function DocumentsRail({ requirements, unavailable, onToast }) {
             </ul>
           </>
         )}
-      </div>
+      </AnchorCard>
 
       <div className="provenance-card keeping-card">
         <span className="panel-label">What Aster keeps</span>

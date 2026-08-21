@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
 import { RECORD_CATEGORIES, offices, session } from './data.js';
 
 /**
@@ -17,8 +18,7 @@ export default function ProfileRail({ grants, onSignOut, onAsk }) {
 
   return (
     <>
-      <div className="anchor-card access-card">
-        <span className="panel-label">Who can see your record</span>
+      <AnchorCard variant="access" label="Who can see your record">
         <strong className="counts-figure">
           {grants === null ? '—' : people === 0 ? 'Only you' : `${people} person`}
           <small>
@@ -36,7 +36,7 @@ export default function ProfileRail({ grants, onSignOut, onAsk }) {
           <Icon name="lock" size={15} />
           Private by default. Nothing about you is shared unless you chose it, category by category.
         </p>
-      </div>
+      </AnchorCard>
 
       {/* AC 7. The reason comes before the control: a student on a library
           machine has to know what closing the tab does not do. */}

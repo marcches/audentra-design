@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
 import { program } from './data.js';
 
 /**
@@ -15,8 +16,7 @@ export default function ClassroomsRail({
 }) {
   return (
     <>
-      <div className="anchor-card counts-card">
-        <span className="panel-label">What counts right now</span>
+      <AnchorCard variant="counts" label="What counts right now">
         {/* Credit counts toward requirements. With no program there are no
             requirements, so there is no total to state — ENR-185 AC 5. */}
         <strong className="counts-figure">
@@ -39,7 +39,7 @@ export default function ClassroomsRail({
                 ? `${underReview} credits under review — not counted above`
                 : 'Nothing is under review right now'}
         </p>
-      </div>
+      </AnchorCard>
 
       <div className="program-card">
         <span className="panel-label">Your program</span>

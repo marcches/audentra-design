@@ -1,9 +1,10 @@
 import Icon from '../../design-system/Icon.jsx';
+import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
 
 export default function CampusRail({ interests, publisher, onToast }) {
   return (
     <>
-      <div className="anchor-card interests-card">
+      <AnchorCard variant="interests">
         <div className="interests-header">
           <span className="points-icon large">
             <Icon name="spark" size={20} />
@@ -28,7 +29,7 @@ export default function CampusRail({ interests, publisher, onToast }) {
         >
           Change them in your profile <Icon name="arrow" size={14} />
         </button>
-      </div>
+      </AnchorCard>
 
       <div className="provenance-card">
         <span className="panel-label">Where this comes from</span>

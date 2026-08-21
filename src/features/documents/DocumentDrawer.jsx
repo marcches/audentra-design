@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
+import Drawer from '../../design-system/primitives/Drawer.jsx';
 import Icon from '../../design-system/Icon.jsx';
 import ExtractReview from './ExtractReview.jsx';
-import { useOverlay } from '../../lib/overlay.js';
 import {
   doorOf,
   filesLabel,
@@ -45,9 +45,7 @@ export default function DocumentDrawer({
   onOriginal,
   onRetry,
 }) {
-  const panel = useRef(null);
   const picker = useRef(null);
-  useOverlay(panel, { onClose });
 
   const [files, setFiles] = useState([]);
   const [refusal, setRefusal] = useState(null);
@@ -108,281 +106,266 @@ export default function DocumentDrawer({
   }
 
   return (
-    <>
-      <button className="modal-scrim" aria-label="Close document" onClick={onClose} />
-      <aside
-        className="task-drawer document-drawer"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="document-drawer-title"
-        ref={panel}
-      >
-        <div className="drawer-header">
-          <div className="drawer-label">
-            <span>{office.name}</span>
-            <span>{info.label}</span>
-          </div>
-          <button className="icon-button" aria-label="Close" onClick={onClose}>
-            <Icon name="close" />
-          </button>
-        </div>
+    <Drawer
+      variant="document"
+      label={[office.name, info.label]}
+      titleId="document-drawer-title"
+      closeLabel="Close document"
+      onClose={onClose}
+    >
+      <div className="drawer-icon">
+        <Icon name="file" size={25} />
+      </div>
+      <h2 id="document-drawer-title">{requirement.title}</h2>
+      <p className="document-lede" role="status">
+        {info.line(office)}
+      </p>
 
-        <div className="drawer-content">
-          <div className="drawer-icon">
-            <Icon name="file" size={25} />
-          </div>
-          <h2 id="document-drawer-title">{requirement.title}</h2>
-          <p className="document-lede" role="status">
-            {info.line(office)}
+      {/* 1 — the reason, and what would satisfy it. The only tinted block
+          in the drawer: spend colour once, on the thing that is asking. */}
+      {state === 'changes-requested' && decision && (
+        <section className="reject-panel" aria-labelledby="reject-title">
+          <h3 id="reject-title">
+            <Icon name="alert" size={17} /> Why it came back
+          </h3>
+          <p className="reject-reason">{decision.reason}</p>
+          <p className="reject-lead">What would fix it</p>
+          <ul className="reject-remedies">
+            {decision.remedies.map((remedy) => (
+              <li key={remedy}>
+                <Icon name="check" size={14} />
+                {remedy}
+              </li>
+            ))}
+          </ul>
+          <p className="reject-by">
+            {office.name} · {decision.on}
           </p>
+        </section>
+      )}
 
-          {/* 1 — the reason, and what would satisfy it. The only tinted block
-              in the drawer: spend colour once, on the thing that is asking. */}
-          {state === 'changes-requested' && decision && (
-            <section className="reject-panel" aria-labelledby="reject-title">
-              <h3 id="reject-title">
-                <Icon name="alert" size={17} /> Why it came back
-              </h3>
-              <p className="reject-reason">{decision.reason}</p>
-              <p className="reject-lead">What would fix it</p>
-              <ul className="reject-remedies">
-                {decision.remedies.map((remedy) => (
-                  <li key={remedy}>
-                    <Icon name="check" size={14} />
-                    {remedy}
-                  </li>
-                ))}
-              </ul>
-              <p className="reject-by">
-                {office.name} · {decision.on}
-              </p>
-            </section>
+      {/* 2 — what this requirement wants, before any file field. */}
+      <section className="document-brief">
+        <h3>What Aster needs</h3>
+        <p>{requirement.needs}</p>
+        <p className="document-why">
+          <Icon name="info" size={14} /> {requirement.why}
+        </p>
+        {accepts && (
+          <p className="document-accepts">
+            {listFormats(accepts.formats)} · up to {accepts.maxMb} MB
+            {maxFiles > 1 ? ` · up to ${maxFiles} files` : ''}
+          </p>
+        )}
+        {requirement.unblocks && (
+          <p className="document-unblocks">
+            <Icon name="lock" size={14} /> {requirement.unblocks}
+          </p>
+        )}
+      </section>
+
+      {/* 3 — the field, only when she is the one who owes a move. */}
+      {routeAway && (
+        <div className="document-route">
+          <p>{door.line}</p>
+          {door.route ? (
+            <a className="primary-button" href={door.route} onClick={onClose}>
+              {door.label} <Icon name="arrow" size={17} />
+            </a>
+          ) : (
+            <button className="primary-button" onClick={() => onOpenStep(task)}>
+              {door.label} <Icon name="arrow" size={17} />
+            </button>
           )}
+        </div>
+      )}
 
-          {/* 2 — what this requirement wants, before any file field. */}
-          <section className="document-brief">
-            <h3>What Aster needs</h3>
-            <p>{requirement.needs}</p>
-            <p className="document-why">
-              <Icon name="info" size={14} /> {requirement.why}
-            </p>
-            {accepts && (
-              <p className="document-accepts">
-                {listFormats(accepts.formats)} · up to {accepts.maxMb} MB
-                {maxFiles > 1 ? ` · up to ${maxFiles} files` : ''}
-              </p>
-            )}
-            {requirement.unblocks && (
-              <p className="document-unblocks">
-                <Icon name="lock" size={14} /> {requirement.unblocks}
-              </p>
-            )}
-          </section>
+      {canUpload && (
+        <section className="document-upload" aria-labelledby="upload-title">
+          <h3 id="upload-title">
+            {state === 'changes-requested' ? 'Send a replacement' : 'Send it'}
+          </h3>
 
-          {/* 3 — the field, only when she is the one who owes a move. */}
-          {routeAway && (
-            <div className="document-route">
-              <p>{door.line}</p>
-              {door.route ? (
-                <a className="primary-button" href={door.route} onClick={onClose}>
-                  {door.label} <Icon name="arrow" size={17} />
-                </a>
-              ) : (
-                <button className="primary-button" onClick={() => onOpenStep(task)}>
-                  {door.label} <Icon name="arrow" size={17} />
-                </button>
-              )}
+          <input
+            type="file"
+            ref={picker}
+            className="visually-hidden"
+            accept={accepts?.extensions}
+            multiple={maxFiles > 1}
+            onChange={pick}
+          />
+
+          <div className={`upload-zone ${refusal ? 'refused' : files.length > 0 ? 'has-file' : ''}`}>
+            <span className="upload-mark" aria-hidden="true">
+              <Icon name={refusal ? 'alert' : files.length > 0 ? 'check' : 'upload'} size={22} />
+            </span>
+            <div className="upload-chosen">
+              <strong>
+                {files.length === 0
+                  ? maxFiles > 1
+                    ? 'Choose your files'
+                    : 'Choose a file'
+                  : files.length === 1
+                    ? files[0].name
+                    : `${files.length} files ready to send`}
+              </strong>
+              <span>
+                {files.length === 1
+                  ? files[0].size
+                  : accepts
+                    ? `${listFormats(accepts.formats)} · up to ${accepts.maxMb} MB${maxFiles > 1 ? ` · ${maxFiles} files` : ''}`
+                    : ''}
+              </span>
             </div>
-          )}
+            <button className="secondary-button" onClick={() => picker.current?.click()}>
+              {files.length === 0 ? 'Browse' : maxFiles > 1 ? 'Add more' : 'Choose another'}
+            </button>
+            {files.length === 1 && (
+              <button
+                className="icon-button"
+                aria-label={`Remove ${files[0].name}`}
+                onClick={() => removeFile(files[0].name)}
+              >
+                <Icon name="close" size={18} />
+              </button>
+            )}
+          </div>
 
-          {canUpload && (
-            <section className="document-upload" aria-labelledby="upload-title">
-              <h3 id="upload-title">
-                {state === 'changes-requested' ? 'Send a replacement' : 'Send it'}
-              </h3>
-
-              <input
-                type="file"
-                ref={picker}
-                className="visually-hidden"
-                accept={accepts?.extensions}
-                multiple={maxFiles > 1}
-                onChange={pick}
-              />
-
-              <div className={`upload-zone ${refusal ? 'refused' : files.length > 0 ? 'has-file' : ''}`}>
-                <span className="upload-mark" aria-hidden="true">
-                  <Icon name={refusal ? 'alert' : files.length > 0 ? 'check' : 'upload'} size={22} />
-                </span>
-                <div className="upload-chosen">
-                  <strong>
-                    {files.length === 0
-                      ? maxFiles > 1
-                        ? 'Choose your files'
-                        : 'Choose a file'
-                      : files.length === 1
-                        ? files[0].name
-                        : `${files.length} files ready to send`}
-                  </strong>
-                  <span>
-                    {files.length === 1
-                      ? files[0].size
-                      : accepts
-                        ? `${listFormats(accepts.formats)} · up to ${accepts.maxMb} MB${maxFiles > 1 ? ` · ${maxFiles} files` : ''}`
-                        : ''}
-                  </span>
-                </div>
-                <button className="secondary-button" onClick={() => picker.current?.click()}>
-                  {files.length === 0 ? 'Browse' : maxFiles > 1 ? 'Add more' : 'Choose another'}
-                </button>
-                {files.length === 1 && (
+          {/* Every page she chose, named. A record that is eight photographs
+              has to be countable before it is sent, or "did they all go?" is
+              a question the screen cannot answer — ENR-209 Scenario 5. */}
+          {files.length > 1 && (
+            <ul className="upload-files">
+              {files.map((item) => (
+                <li key={item.name}>
+                  <Icon name="file" size={15} />
+                  <span className="upload-file-name">{item.name}</span>
+                  <span className="upload-file-size">{item.size}</span>
                   <button
                     className="icon-button"
-                    aria-label={`Remove ${files[0].name}`}
-                    onClick={() => removeFile(files[0].name)}
+                    aria-label={`Remove ${item.name}`}
+                    onClick={() => removeFile(item.name)}
                   >
-                    <Icon name="close" size={18} />
+                    <Icon name="close" size={16} />
                   </button>
-                )}
-              </div>
-
-              {/* Every page she chose, named. A record that is eight photographs
-                  has to be countable before it is sent, or "did they all go?" is
-                  a question the screen cannot answer — ENR-209 Scenario 5. */}
-              {files.length > 1 && (
-                <ul className="upload-files">
-                  {files.map((item) => (
-                    <li key={item.name}>
-                      <Icon name="file" size={15} />
-                      <span className="upload-file-name">{item.name}</span>
-                      <span className="upload-file-size">{item.size}</span>
-                      <button
-                        className="icon-button"
-                        aria-label={`Remove ${item.name}`}
-                        onClick={() => removeFile(item.name)}
-                      >
-                        <Icon name="close" size={16} />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {/* The refusal sits under the same line that stated the rule, so
-                  the rule is learned from the requirement and not from the error. */}
-              {refusal && (
-                <p className="upload-refusal" role="alert">
-                  <Icon name="alert" size={14} /> {refusal}
-                </p>
-              )}
-
-              {requirement.privacy && (
-                <p className="upload-privacy">
-                  <Icon name="shield" size={14} /> {requirement.privacy}
-                </p>
-              )}
-
-              {/* 4 — the extraction, once there is a file to have read. */}
-              {extract && files.length > 0 && (
-                <ExtractReview
-                  extract={extract}
-                  values={values}
-                  decisions={decisions}
-                  onChange={(field, value) => {
-                    setValues((current) => ({ ...current, [field.id]: value }));
-                    setDecisions((current) => {
-                      const next = { ...current };
-                      if (value.trim() === field.read) delete next[field.id];
-                      else next[field.id] = 'fixed';
-                      return next;
-                    });
-                  }}
-                  onConfirm={(field) =>
-                    setDecisions((current) => ({ ...current, [field.id]: 'right' }))
-                  }
-                />
-              )}
-
-              {failed ? (
-                // A send that did not arrive created nothing. Retrying resends
-                // the file already chosen; it never makes a second submission.
-                <div className="upload-failed" role="alert">
-                  <p>
-                    <strong>This did not reach Aster.</strong> Nothing was recorded, and{' '}
-                    {office.name} has not seen it. {files.length > 1 ? 'Your files are' : 'Your file is'} still here.
-                  </p>
-                  <div className="upload-failed-actions">
-                    <button className="primary-button" onClick={() => onRetry(requirement, files)}>
-                      <Icon name="refresh" size={16} /> Try again
-                    </button>
-                    <button className="secondary-button" onClick={() => picker.current?.click()}>
-                      Choose {files.length > 1 ? 'other files' : 'another file'}
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <button
-                  className="primary-button"
-                  disabled={!ready}
-                  onClick={() => onSubmit(requirement, files)}
-                >
-                  {sending ? 'Sending…' : 'Send to Aster'} <Icon name="arrow" size={17} />
-                </button>
-              )}
-
-              {extract && files.length > 0 && undecided > 0 && (
-                <p className="upload-blocked">
-                  {undecided === 1
-                    ? 'One field above still needs your answer'
-                    : `${undecided} fields above still need your answer`}{' '}
-                  before this can be sent.
-                </p>
-              )}
-            </section>
+                </li>
+              ))}
+            </ul>
           )}
 
-          {/* 5 — the history. A replacement is appended, never written over. */}
-          <section className="document-history" aria-labelledby="history-title">
-            <h3 id="history-title">Everything you have sent</h3>
-            {history.length === 0 ? (
-              <p className="inline-empty">
-                Nothing has been sent for this one yet. When you send something it stays here, and
-                so does whatever Aster decides about it.
-              </p>
-            ) : (
-              <ol className="history-list">
-                {history.map((submission) => (
-                  <li key={submission.id}>
-                    <div className="history-head">
-                      <strong>{filesLabel(submission)}</strong>
-                      <span>
-                        {submissionSize(submission)} · sent {submission.sent}
-                      </span>
-                    </div>
-                    <p className={`history-outcome ${outcomeTone(submission)}`}>
-                      {submission.checking
-                        ? 'Aster is checking it.'
-                        : !submission.decision
-                          ? `With ${office.name}. No decision yet.`
-                          : submission.decision.outcome === 'accepted'
-                            ? `Accepted ${submission.decision.on}.`
-                            : `Changes requested ${submission.decision.on} — ${submission.decision.reason}`}
-                    </p>
-                    <button className="link-button" onClick={() => onOriginal(submission)}>
-                      <Icon name="download" size={14} /> Open the original
-                    </button>
-                  </li>
-                ))}
-              </ol>
-            )}
-            <p className="history-rule">
-              Aster keeps every file you send. A replacement is added beside the one before it, never
-              over it.
+          {/* The refusal sits under the same line that stated the rule, so
+              the rule is learned from the requirement and not from the error. */}
+          {refusal && (
+            <p className="upload-refusal" role="alert">
+              <Icon name="alert" size={14} /> {refusal}
             </p>
-          </section>
-        </div>
-      </aside>
-    </>
+          )}
+
+          {requirement.privacy && (
+            <p className="upload-privacy">
+              <Icon name="shield" size={14} /> {requirement.privacy}
+            </p>
+          )}
+
+          {/* 4 — the extraction, once there is a file to have read. */}
+          {extract && files.length > 0 && (
+            <ExtractReview
+              extract={extract}
+              values={values}
+              decisions={decisions}
+              onChange={(field, value) => {
+                setValues((current) => ({ ...current, [field.id]: value }));
+                setDecisions((current) => {
+                  const next = { ...current };
+                  if (value.trim() === field.read) delete next[field.id];
+                  else next[field.id] = 'fixed';
+                  return next;
+                });
+              }}
+              onConfirm={(field) =>
+                setDecisions((current) => ({ ...current, [field.id]: 'right' }))
+              }
+            />
+          )}
+
+          {failed ? (
+            // A send that did not arrive created nothing. Retrying resends
+            // the file already chosen; it never makes a second submission.
+            <div className="upload-failed" role="alert">
+              <p>
+                <strong>This did not reach Aster.</strong> Nothing was recorded, and{' '}
+                {office.name} has not seen it. {files.length > 1 ? 'Your files are' : 'Your file is'} still here.
+              </p>
+              <div className="upload-failed-actions">
+                <button className="primary-button" onClick={() => onRetry(requirement, files)}>
+                  <Icon name="refresh" size={16} /> Try again
+                </button>
+                <button className="secondary-button" onClick={() => picker.current?.click()}>
+                  Choose {files.length > 1 ? 'other files' : 'another file'}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              className="primary-button"
+              disabled={!ready}
+              onClick={() => onSubmit(requirement, files)}
+            >
+              {sending ? 'Sending…' : 'Send to Aster'} <Icon name="arrow" size={17} />
+            </button>
+          )}
+
+          {extract && files.length > 0 && undecided > 0 && (
+            <p className="upload-blocked">
+              {undecided === 1
+                ? 'One field above still needs your answer'
+                : `${undecided} fields above still need your answer`}{' '}
+              before this can be sent.
+            </p>
+          )}
+        </section>
+      )}
+
+      {/* 5 — the history. A replacement is appended, never written over. */}
+      <section className="document-history" aria-labelledby="history-title">
+        <h3 id="history-title">Everything you have sent</h3>
+        {history.length === 0 ? (
+          <p className="inline-empty">
+            Nothing has been sent for this one yet. When you send something it stays here, and
+            so does whatever Aster decides about it.
+          </p>
+        ) : (
+          <ol className="history-list">
+            {history.map((submission) => (
+              <li key={submission.id}>
+                <div className="history-head">
+                  <strong>{filesLabel(submission)}</strong>
+                  <span>
+                    {submissionSize(submission)} · sent {submission.sent}
+                  </span>
+                </div>
+                <p className={`history-outcome ${outcomeTone(submission)}`}>
+                  {submission.checking
+                    ? 'Aster is checking it.'
+                    : !submission.decision
+                      ? `With ${office.name}. No decision yet.`
+                      : submission.decision.outcome === 'accepted'
+                        ? `Accepted ${submission.decision.on}.`
+                        : `Changes requested ${submission.decision.on} — ${submission.decision.reason}`}
+                </p>
+                <button className="link-button" onClick={() => onOriginal(submission)}>
+                  <Icon name="download" size={14} /> Open the original
+                </button>
+              </li>
+            ))}
+          </ol>
+        )}
+        <p className="history-rule">
+          Aster keeps every file you send. A replacement is added beside the one before it, never
+          over it.
+        </p>
+      </section>
+    </Drawer>
   );
 }
 

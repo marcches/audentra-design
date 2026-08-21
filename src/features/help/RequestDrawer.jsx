@@ -1,6 +1,5 @@
-import { useRef } from 'react';
 import Icon from '../../design-system/Icon.jsx';
-import { useOverlay } from '../../lib/overlay.js';
+import Drawer from '../../design-system/primitives/Drawer.jsx';
 import { officeOf, stateOf } from './logic.js';
 import { longDate, shortDate } from '../campus/logic.js';
 
@@ -20,8 +19,6 @@ import { longDate, shortDate } from '../campus/logic.js';
  * ENR-177 AC 3, and the thread has no field that could break it.
  */
 export default function RequestDrawer({ request, replyText, onReply, onSend, onClose }) {
-  const panel = useRef(null);
-  useOverlay(panel, { onClose });
 
   const office = officeOf(request);
   const state = stateOf(request);
@@ -29,103 +26,88 @@ export default function RequestDrawer({ request, replyText, onReply, onSend, onC
   const canSend = replyText.trim().length > 0;
 
   return (
-    <>
-      <button className="modal-scrim" aria-label="Close request" onClick={onClose} />
-      <aside
-        className="task-drawer request-drawer"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="request-drawer-title"
-        ref={panel}
-      >
-        <div className="drawer-header">
-          <div className="drawer-label">
-            <span>{office.name}</span>
-            <span>Opened {longDate(request.opened)}</span>
-          </div>
-          <button className="icon-button" aria-label="Close" onClick={onClose}>
-            <Icon name="close" />
-          </button>
-        </div>
+    <Drawer
+      variant="request"
+      label={[office.name, `Opened ${longDate(request.opened)}`]}
+      titleId="request-drawer-title"
+      closeLabel="Close request"
+      onClose={onClose}
+    >
+      <div className="drawer-icon">
+        <Icon name="message" size={25} />
+      </div>
+      <h2 id="request-drawer-title">{request.subject}</h2>
 
-        <div className="drawer-content">
-          <div className="drawer-icon">
-            <Icon name="message" size={25} />
-          </div>
-          <h2 id="request-drawer-title">{request.subject}</h2>
+      <div className="request-state" role="status">
+        <span className={`request-chip ${state.tone}`}>{state.label}</span>
+        <p>{state.line(office.name)}</p>
+      </div>
 
-          <div className="request-state" role="status">
-            <span className={`request-chip ${state.tone}`}>{state.label}</span>
-            <p>{state.line(office.name)}</p>
-          </div>
+      {request.reopened && (
+        <p className="reopened-note">
+          <Icon name="refresh" size={15} /> You reopened this, so it is back with{' '}
+          {office.name}.
+        </p>
+      )}
 
-          {request.reopened && (
-            <p className="reopened-note">
-              <Icon name="refresh" size={15} /> You reopened this, so it is back with{' '}
-              {office.name}.
-            </p>
-          )}
+      <ol className="request-thread">
+        {request.thread.map((entry) =>
+          entry.kind === 'event' ? (
+            <li className="thread-event" key={entry.id}>
+              <span className="thread-dot" aria-hidden="true" />
+              <p>
+                {entry.text} <span>{shortDate(entry.when)}</span>
+              </p>
+            </li>
+          ) : (
+            <li className={`thread-message ${entry.from}`} key={entry.id}>
+              <span className="thread-dot" aria-hidden="true" />
+              <div>
+                <p className="thread-from">
+                  {entry.from === 'student' ? 'You asked' : `${office.name} replied`}
+                  <span>{shortDate(entry.when)}</span>
+                </p>
+                {entry.body.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </li>
+          ),
+        )}
+      </ol>
 
-          <ol className="request-thread">
-            {request.thread.map((entry) =>
-              entry.kind === 'event' ? (
-                <li className="thread-event" key={entry.id}>
-                  <span className="thread-dot" aria-hidden="true" />
-                  <p>
-                    {entry.text} <span>{shortDate(entry.when)}</span>
-                  </p>
-                </li>
-              ) : (
-                <li className={`thread-message ${entry.from}`} key={entry.id}>
-                  <span className="thread-dot" aria-hidden="true" />
-                  <div>
-                    <p className="thread-from">
-                      {entry.from === 'student' ? 'You asked' : `${office.name} replied`}
-                      <span>{shortDate(entry.when)}</span>
-                    </p>
-                    {entry.body.map((paragraph) => (
-                      <p key={paragraph}>{paragraph}</p>
-                    ))}
-                  </div>
-                </li>
-              ),
-            )}
-          </ol>
+      <div className="reply-panel">
+        <label className="panel-label" htmlFor="request-reply">
+          {answered ? 'Not settled? Reply here' : 'Add to this request'}
+        </label>
+        <textarea
+          id="request-reply"
+          className="ask-textarea"
+          rows={4}
+          value={replyText}
+          placeholder={
+            answered
+              ? 'Say what is still open and this request goes back to the same office.'
+              : 'Anything that would help — a date, a document number, what changed.'
+          }
+          onChange={(event) => onReply(event.target.value)}
+        />
+        <button className="primary-button full" disabled={!canSend} onClick={onSend}>
+          <Icon name="send" size={16} />{' '}
+          {answered ? 'Send reply and reopen' : 'Send to ' + office.name}
+        </button>
+        {answered && (
+          <small className="prototype-note">
+            Replying reopens this request and puts it back with {office.name}. Nothing you have
+            already been told is removed.
+          </small>
+        )}
+      </div>
 
-          <div className="reply-panel">
-            <label className="panel-label" htmlFor="request-reply">
-              {answered ? 'Not settled? Reply here' : 'Add to this request'}
-            </label>
-            <textarea
-              id="request-reply"
-              className="ask-textarea"
-              rows={4}
-              value={replyText}
-              placeholder={
-                answered
-                  ? 'Say what is still open and this request goes back to the same office.'
-                  : 'Anything that would help — a date, a document number, what changed.'
-              }
-              onChange={(event) => onReply(event.target.value)}
-            />
-            <button className="primary-button full" disabled={!canSend} onClick={onSend}>
-              <Icon name="send" size={16} />{' '}
-              {answered ? 'Send reply and reopen' : 'Send to ' + office.name}
-            </button>
-            {answered && (
-              <small className="prototype-note">
-                Replying reopens this request and puts it back with {office.name}. Nothing you have
-                already been told is removed.
-              </small>
-            )}
-          </div>
-
-          <p className="published-note">
-            Aster replies here, in the portal — never only by email. A reply is signed by the office
-            because a request belongs to the office, not to one person’s day.
-          </p>
-        </div>
-      </aside>
-    </>
+      <p className="published-note">
+        Aster replies here, in the portal — never only by email. A reply is signed by the office
+        because a request belongs to the office, not to one person’s day.
+      </p>
+    </Drawer>
   );
 }

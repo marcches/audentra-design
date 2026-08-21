@@ -1,6 +1,5 @@
-import { useRef } from 'react';
 import Icon from '../../design-system/Icon.jsx';
-import { useOverlay } from '../../lib/overlay.js';
+import Drawer from '../../design-system/primitives/Drawer.jsx';
 import { formatMoney } from '../financials/logic.js';
 import { housingOffice } from './data.js';
 import { SHORTLIST_MAX, ordinal, reconciliation } from './logic.js';
@@ -25,107 +24,90 @@ export default function ResidenceDrawer({
   onRemove,
   onClose,
 }) {
-  const panel = useRef(null);
-  useOverlay(panel, { onClose });
 
   const ranked = rankIndex >= 0;
 
   return (
-    <>
-      <button className="modal-scrim" aria-label="Close residence" onClick={onClose} />
-      <aside
-        className="task-drawer residence-drawer"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="residence-drawer-title"
-        ref={panel}
-      >
-        <div className="drawer-header">
-          <div className="drawer-label">
-            <span>{residence.area}</span>
-            <span>{residence.walk} min walk</span>
-          </div>
-          <button className="icon-button" aria-label="Close" onClick={onClose}>
-            <Icon name="close" />
-          </button>
-        </div>
+    <Drawer
+      variant="residence"
+      label={[residence.area, `${residence.walk} min walk`]}
+      titleId="residence-drawer-title"
+      closeLabel="Close residence"
+      onClose={onClose}
+    >
+      <div className="drawer-icon housing">
+        <span className="org-tile large" aria-hidden="true">
+          {residence.initials}
+        </span>
+      </div>
+      <h2 id="residence-drawer-title">{residence.name}</h2>
+      <p className="drawer-description">{residence.about}</p>
 
-        <div className="drawer-content">
-          <div className="drawer-icon housing">
-            <span className="org-tile large" aria-hidden="true">
-              {residence.initials}
-            </span>
-          </div>
-          <h2 id="residence-drawer-title">{residence.name}</h2>
-          <p className="drawer-description">{residence.about}</p>
+      {ranked && (
+        <p className="ranked-banner">
+          <Icon name="check" size={16} /> This is your {ordinal(rankIndex)}.
+        </p>
+      )}
 
-          {ranked && (
-            <p className="ranked-banner">
-              <Icon name="check" size={16} /> This is your {ordinal(rankIndex)}.
+      <h3 className="drawer-subheading">Rooms and rates</h3>
+      <table className="rate-table">
+        <caption className="sr-only">Room types at {residence.name} and their annual rates</caption>
+        <tbody>
+          {residence.rooms.map((room) => (
+            <tr key={room.label}>
+              <th scope="row">{room.label}</th>
+              <td>{formatMoney(room.rate)}</td>
+            </tr>
+          ))}
+          <tr className={residence.meals.included ? '' : 'optional'}>
+            <th scope="row">
+              Meal plan
+              <small>
+                {residence.meals.included
+                  ? 'Required with this residence'
+                  : 'Optional — this residence is self-catered'}
+              </small>
+            </th>
+            <td>{formatMoney(residence.meals.amount)}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p className="reconcile-note">
+        <Icon name="wallet" size={16} />
+        <span>{reconciliation(residence)}</span>
+      </p>
+
+      <h3 className="drawer-subheading">What is in the building</h3>
+      <ul className="feature-list">
+        {residence.features.map((feature) => (
+          <li key={feature}>
+            <Icon name="check" size={14} /> {feature}
+          </li>
+        ))}
+      </ul>
+
+      {!readOnly && (
+        <div className="drawer-actions">
+          {ranked ? (
+            <button className="secondary-button full" onClick={() => onRemove(residence.id)}>
+              <Icon name="close" size={16} /> Remove from my shortlist
+            </button>
+          ) : canAdd ? (
+            <button className="primary-button full" onClick={() => onAdd(residence.id)}>
+              Add to my shortlist <Icon name="arrow" size={17} />
+            </button>
+          ) : (
+            <p className="action-reason block">
+              <Icon name="info" size={15} /> Your shortlist already names {SHORTLIST_MAX}{' '}
+              residences. Remove one to add this instead.
             </p>
           )}
-
-          <h3 className="drawer-subheading">Rooms and rates</h3>
-          <table className="rate-table">
-            <caption className="sr-only">Room types at {residence.name} and their annual rates</caption>
-            <tbody>
-              {residence.rooms.map((room) => (
-                <tr key={room.label}>
-                  <th scope="row">{room.label}</th>
-                  <td>{formatMoney(room.rate)}</td>
-                </tr>
-              ))}
-              <tr className={residence.meals.included ? '' : 'optional'}>
-                <th scope="row">
-                  Meal plan
-                  <small>
-                    {residence.meals.included
-                      ? 'Required with this residence'
-                      : 'Optional — this residence is self-catered'}
-                  </small>
-                </th>
-                <td>{formatMoney(residence.meals.amount)}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <p className="reconcile-note">
-            <Icon name="wallet" size={16} />
-            <span>{reconciliation(residence)}</span>
+          <p className="drawer-foot">
+            Adding a residence tells {housingOffice} what you would like. It does not hold a room.
           </p>
-
-          <h3 className="drawer-subheading">What is in the building</h3>
-          <ul className="feature-list">
-            {residence.features.map((feature) => (
-              <li key={feature}>
-                <Icon name="check" size={14} /> {feature}
-              </li>
-            ))}
-          </ul>
-
-          {!readOnly && (
-            <div className="drawer-actions">
-              {ranked ? (
-                <button className="secondary-button full" onClick={() => onRemove(residence.id)}>
-                  <Icon name="close" size={16} /> Remove from my shortlist
-                </button>
-              ) : canAdd ? (
-                <button className="primary-button full" onClick={() => onAdd(residence.id)}>
-                  Add to my shortlist <Icon name="arrow" size={17} />
-                </button>
-              ) : (
-                <p className="action-reason block">
-                  <Icon name="info" size={15} /> Your shortlist already names {SHORTLIST_MAX}{' '}
-                  residences. Remove one to add this instead.
-                </p>
-              )}
-              <p className="drawer-foot">
-                Adding a residence tells {housingOffice} what you would like. It does not hold a room.
-              </p>
-            </div>
-          )}
         </div>
-      </aside>
-    </>
+      )}
+    </Drawer>
   );
 }

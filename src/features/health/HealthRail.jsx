@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
 import { offices } from '../help/data.js';
 import { issuedDocuments } from '../documents/data.js';
 
@@ -25,15 +26,17 @@ export default function HealthRail({ unavailable, onToast }) {
 
   return (
     <>
-      <div className="anchor-card reply-card">
-        <span className="panel-label">How long a review takes</span>
-        <strong>{unavailable ? '—' : health.reply}</strong>
+      <AnchorCard
+        variant="reply"
+        label="How long a review takes"
+        figure={unavailable ? '—' : health.reply}
+      >
         <p>
           {unavailable
             ? 'Your record could not be read just now, so nothing here is a claim about where it is.'
             : `That is how long ${health.name} usually takes to decide on a record. While they have it, nothing is needed from you — a wait is not a problem to solve.`}
         </p>
-      </div>
+      </AnchorCard>
 
       <div className="provenance-card teams-card">
         <span className="panel-label">Who is on the other side</span>

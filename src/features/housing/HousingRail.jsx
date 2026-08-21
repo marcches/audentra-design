@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
 import { guideById, offices } from '../help/data.js';
 import { responseDeadline } from './data.js';
 import { STAGES } from './logic.js';
@@ -30,8 +31,7 @@ export default function HousingRail({ deadlinePassed, assignment, stage }) {
   return (
     <>
       {deadlinePassed && (
-        <div className="anchor-card stage-card">
-          <span className="panel-label">Where this is now</span>
+        <AnchorCard variant="stage" label="Where this is now">
           <ol className="stage-track">
             {STAGES.map((label, index) => (
               <li
@@ -54,12 +54,14 @@ export default function HousingRail({ deadlinePassed, assignment, stage }) {
               </li>
             ))}
           </ol>
-        </div>
+        </AnchorCard>
       )}
 
-      <div className="anchor-card deadline-card">
-        <span className="panel-label">{deadlinePassed ? 'Assigning now' : 'Answer by'}</span>
-        <strong>{deadlinePassed ? office.name : responseDeadline.label}</strong>
+      <AnchorCard
+        variant="deadline"
+        label={deadlinePassed ? 'Assigning now' : 'Answer by'}
+        figure={deadlinePassed ? office.name : responseDeadline.label}
+      >
         <p>
           {deadlinePassed
             ? `${office.decides} Rooms are assigned from the shortlists submitted before ${responseDeadline.label}.`
@@ -71,7 +73,7 @@ export default function HousingRail({ deadlinePassed, assignment, stage }) {
         <p className="reply-note">
           <Icon name="mail" size={14} /> Typically replies in {office.reply}
         </p>
-      </div>
+      </AnchorCard>
 
       <div className="provenance-card">
         <span className="panel-label">What a preference is worth</span>

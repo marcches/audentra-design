@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
 import { shortDate } from '../campus/logic.js';
 
 /**
@@ -14,8 +15,7 @@ export default function AppointmentsRail({ availability, publisher, unavailable,
 
   return (
     <>
-      <div className="anchor-card availability-card">
-        <span className="panel-label">Times open now</span>
+      <AnchorCard variant="availability" label="Times open now">
 
         {unavailable ? (
           <span className="counts-figure unknown">Not available</span>
@@ -53,7 +53,7 @@ export default function AppointmentsRail({ availability, publisher, unavailable,
             </p>
           </>
         )}
-      </div>
+      </AnchorCard>
 
       <div className="provenance-card">
         <span className="panel-label">After you book</span>
