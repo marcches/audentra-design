@@ -8,6 +8,14 @@
 
 html {
   scroll-behavior: smooth;
+  /* The scrollbar's column is reserved whether or not there is a scrollbar in
+     it. Without this a page that fits the window — the loading skeleton, an
+     empty state, a short section — is 15px wider than one that scrolls, and
+     everything centred or right-aligned walks sideways on every route change
+     and again when the content arrives. The portal's frame has to be the same
+     width on every page, including the ones that have not loaded yet. Overlay
+     scrollbars (phones, macOS) take no space, so nothing is reserved there. */
+  scrollbar-gutter: stable;
 }
 
 body {

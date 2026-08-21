@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Icon from './design-system/Icon.jsx';
 import Sidebar from './app/Sidebar.jsx';
 import Topbar from './app/Topbar.jsx';
@@ -243,7 +243,21 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  // Arriving on a page: close what was open, start at the top, focus the page.
+  // Arriving on a page: start at the top — before the browser paints it, and in
+  // one step. A layout effect runs after the new page is in the DOM and before
+  // it is on screen, so the student never sees it at the old page's scroll
+  // offset; `instant` overrides the page's `scroll-behavior: smooth`, which
+  // otherwise slides the new page up from wherever the last one was left. The
+  // ref, not a mounted flag, keeps StrictMode's double run from scrolling on
+  // first load.
+  const scrolledFor = useRef(hash);
+  useLayoutEffect(() => {
+    if (scrolledFor.current === hash) return;
+    scrolledFor.current = hash;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [hash]);
+
+  // Arriving on a page: close what was open, focus the page.
   useEffect(() => {
     setNavOpen(false);
     setSmartModal(false);
@@ -265,7 +279,6 @@ export default function App() {
     if (lastHash.current === hash) return;
     lastHash.current = hash;
 
-    window.scrollTo({ top: 0 });
     // preventScroll: focus is for the screen reader, not for the scroll
     // position — without it the browser tucks the page head under the topbar.
     main.current?.focus({ preventScroll: true });
