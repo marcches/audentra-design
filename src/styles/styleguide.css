@@ -418,6 +418,13 @@
   width: 100%;
   height: auto;
   position: static;
+  inset: auto;
+  overflow: visible;
+}
+
+.sg-rail-demo .rail-steps {
+  flex: none;
+  overflow: visible;
 }
 
 /* In the box the human does not need to be pushed to the floor. */
@@ -740,4 +747,12 @@
    grid read as they do in the sheet. */
 .sg-picker-demo {
   max-width: 409px;
+}
+
+/* The status pill's tones, side by side. */
+.sg-pills {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  display: flex;
 }

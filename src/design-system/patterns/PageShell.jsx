@@ -1,4 +1,4 @@
-import Icon from '../Icon.jsx';
+import PageHero from './PageHero.jsx';
 import { heroFor } from '../../lib/navigation.js';
 
 /**
@@ -81,38 +81,7 @@ export default function PageShell({
 
   return (
     <>
-      <header className="page-hero">
-        <div className="hero-copy">
-          <p className="eyebrow">
-            {flag && <span>{flag}</span>}
-            {flag && kicker ? ' · ' : null}
-            {kicker}
-          </p>
-          <h1>{title}</h1>
-          {/* Always rendered, even with nothing in it. Two reasons, and the
-              second one was a bug waiting: the band reserves two lines here so
-              every route's band is the same height (below), and the rule that
-              styles it used to read `.page-hero p:last-child` — with no lede,
-              that selector landed on the eyebrow and restyled it. */}
-          <p className="hero-lede">{lede}</p>
-        </div>
-
-        {motif && (
-          <div className="hero-motif" aria-hidden="true">
-            <div className="orbit-ring ring-one" />
-            <div className="orbit-ring ring-two" />
-            <div className="orbit-core">
-              {/* Outline here, on purpose: the core is a gradient disc, and a
-                  two-tone glyph's back layer turns to mud on a gradient. The
-                  duotone rule is for flat tinted tiles. */}
-              <Icon name={motif} size={30} />
-            </div>
-            <i className="spark-dot one" />
-            <i className="spark-dot two" />
-            <i className="spark-dot three" />
-          </div>
-        )}
-      </header>
+      <PageHero flag={flag} kicker={kicker} title={title} lede={lede} motif={motif} />
 
       {summary && (
         <section className="page-summary" aria-label={summaryLabel}>

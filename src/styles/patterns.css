@@ -404,7 +404,7 @@
 
 /* --- zone: a host with no head and no foot ---------------------------------
  *
- * A drawer, the onboarding step frame, Edward's thread. There is no card here
+ * A drawer, Edward's thread. There is no card here
  * to be the head or the foot of — the drawer *is* the card — so the notice sits
  * in the content flow and takes `--radius-row`, which is the token for a block
  * nested inside a card. That is still a zone of its host and not a card on the
@@ -413,7 +413,6 @@
  * It is the one zone that publishes a margin, because in a flow there is no
  * neighbouring band to meet. */
 .drawer-content > .notice,
-.flow-measure > .notice,
 .edward-thread > .notice {
   border-radius: var(--radius-row);
   margin: 0 0 var(--space-9);
@@ -825,12 +824,12 @@
 .primary-button {
   color: var(--on-ink);
   background: var(--grad-purple);
-  box-shadow: 0 6px 14px #5943c83d;
+  box-shadow: var(--shadow-primary);
 }
 
 .primary-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 9px 18px #5943c84a;
+  box-shadow: var(--shadow-primary-hover);
 }
 
 .primary-button:disabled {
@@ -2942,51 +2941,47 @@ footer a {
  * moment a second flow copies these classes by hand they drift, which is the
  * failure `Drawer` was written to end.
  *
- * It is paper, not a band. It was the product's purple band turned on its side
- * until 2026-08-21, when the flow's surface was aligned to the approved
- * prototype: a light workspace with exactly one saturated thing in it — the
- * primary button — and the colour spent on the marks instead. A purple rail
- * beside a purple button was two saturated things on one screen. So: the
- * institution at the top, the figure, the steps in their states, the human at
- * the foot, the vendor under everything; `--surface`, a hairline on its right,
- * each block closed by a hairline above the next.
+ * It is the portal's sidebar, continued. The same width (`--sidebar-width`),
+ * the same surface, fixed to the same edge, the brand row at the same height
+ * with the crest at the same place, the vendor line at the same foot — so a
+ * student who leaves the flow for the portal and comes back sees the column
+ * hold still and only its contents change (Marco, 2026-08-21: "mesmo tamanho,
+ * fixo, só mudando o conteúdo"). What makes it this product's rather than any
+ * light rail is the mechanism every portal rail already uses — **it leads with
+ * one `.anchor-card`, the key figure on ink** — composed for a flow: the
+ * institution, the greeting, the figure and its meter on ink, the steps, the
+ * human at the foot. Only the list of steps scrolls; the brand, the figure and
+ * the human hold still, the way the sidebar's brand and profile chip do.
  * ==========================================================================*/
 
 .step-rail {
-  background: var(--surface);
+  z-index: var(--z-sidebar);
   color: var(--ink);
+  /* The sidebar's own surface and edge — `chrome.css`'s `.sidebar`, to the
+     value: the column is the same column. */
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  background: var(--glass);
   border-right: 1px solid var(--line);
   flex-direction: column;
-  flex: none;
-  width: var(--flow-rail);
-  padding: var(--space-11) var(--space-10);
+  width: var(--sidebar-width);
+  padding: 0 var(--space-9) var(--space-9);
   display: flex;
-  position: sticky;
-  top: 0;
-  align-self: flex-start;
-  /* Pinned to the window's height: the rail always reaches the bottom edge, and
-     one longer than the window scrolls inside itself rather than pushing the
-     page. */
-  height: 100vh;
-  overflow-y: auto;
+  position: fixed;
+  inset: 0 auto 0 0;
+  /* The column itself never scrolls: the list of steps does, so the brand, the
+     figure and the human are always where she left them. */
+  overflow: hidden;
 }
 
-/* Each block is closed by a hairline above the next, the rule sitting optically
-   halfway between them. */
-.rail-band,
-.rail-steps,
-.rail-advisor,
-.rail-vendor {
-  border-top: 1px solid var(--line-soft);
-  margin-top: var(--space-10);
-  padding-top: var(--space-10);
-}
-
-/* --- the institution ------------------------------------------------------- */
+/* --- the institution: the sidebar's brand row, to the pixel ----------------- */
 
 .rail-brand {
+  flex: none;
   align-items: center;
   gap: var(--space-6);
+  height: var(--topbar-height);
+  padding: 0 var(--space-5);
   display: flex;
 }
 
@@ -3022,22 +3017,37 @@ footer a {
   line-height: var(--lh-heading);
 }
 
-/* --- the figure ------------------------------------------------------------ */
+/* --- the greeting, then the figure on ink ---------------------------------- */
+
+.rail-band {
+  flex: none;
+  padding: var(--space-4) 0 var(--space-8);
+}
 
 /* The greeting introduces the figure and is set one step under it: the band
    greets, the figure informs, and the greeting must never dwarf what it
-   introduces. */
+   introduces. It sits on paper; the figure sits on ink under it. */
 .rail-greeting {
-  letter-spacing: var(--ls-tight);
+  letter-spacing: var(--ls-snug);
   text-wrap: pretty;
-  margin: 0;
-  font-size: var(--fs-h2);
-  font-weight: var(--fw-heavy);
+  margin: 0 0 var(--space-5);
+  padding: 0 var(--space-5);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semi);
   line-height: var(--lh-heading);
 }
 
-.rail-figure {
-  margin-top: var(--space-5);
+/* The anchor card, the way every rail in the portal opens — the key figure on
+   ink. In a flow the key figure is how far along it is: the figure, the one
+   line under it, the meter — three lines, no label; the greeting above it is
+   the label. */
+.rail-band .anchor-card {
+  flex: none;
+  padding: var(--space-7) var(--space-8);
+}
+
+.rail-band .anchor-card .panel-label {
+  display: block;
 }
 
 .rail-label {
@@ -3051,41 +3061,42 @@ footer a {
 
 .rail-count {
   letter-spacing: var(--ls-tight);
-  margin: var(--space-2) 0 0;
+  margin: 0;
   font-size: var(--fs-display);
   font-weight: var(--fw-heavy);
   line-height: var(--lh-tight);
+  display: block;
 }
 
 /* At most one line under the figure — the fourth line inside a figure cell is
    what pushed My Classrooms' summary panel 16px taller than everyone else's. */
 .rail-note {
   color: var(--muted);
-  margin: var(--space-3) 0 0;
+  margin: var(--space-2) 0 0;
   font-size: var(--fs-copy);
   line-height: var(--lh-body);
 }
 
 /* Two runs, not one. Skipped is progress through the flow and is not progress,
-   so it is drawn beside the saved run and never inside it: the saved run is the
-   product's one gradient, the skipped run is a grey the eye reads as "counted,
-   not done". */
+   so it is drawn beside the saved run and never inside it. On ink: the saved
+   run is green, because green means one thing in this product, and the skipped
+   run is the ink plane's own muted light — counted, not done. */
 .rail-meter {
-  background: var(--line-soft);
+  background: var(--on-ink-line);
   border-radius: var(--radius-pill);
   height: 6px;
-  margin-top: var(--space-7);
+  margin-top: var(--space-5);
   display: flex;
   overflow: hidden;
 }
 
 .meter-saved {
-  background: var(--grad-purple);
+  background: var(--green);
   transition: width var(--dur-base) var(--ease);
 }
 
 .meter-skipped {
-  background: var(--line-strong);
+  background: var(--on-ink-muted);
   transition: width var(--dur-base) var(--ease);
 }
 
@@ -3094,11 +3105,18 @@ footer a {
   display: none;
 }
 
-/* --- the steps ------------------------------------------------------------- */
+/* --- the steps: the one part of the rail that scrolls ---------------------- */
+
+.rail-steps {
+  border-top: 1px solid var(--line-soft);
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-top: var(--space-5);
+  overflow-y: auto;
+}
 
 .rail-steps ol {
   flex-direction: column;
-  gap: var(--space-1);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -3121,6 +3139,12 @@ footer a {
   left: calc(var(--space-5) + 12px);
 }
 
+/* A row says its name, and a second line only where the second line is
+   information: how long an unreached step takes, why a locked one is not open,
+   that a skipped one can be come back to. A saved row has its check and the
+   current row has the step head under the question — a "Saved" and a "Step 3
+   of 8" on those were the same fact said twice. */
+
 .step-row > button,
 .step-row > span {
   color: inherit;
@@ -3128,16 +3152,18 @@ footer a {
   background: none;
   border: 0;
   border-radius: var(--radius-chip);
-  grid-template-columns: 24px minmax(0, 1fr) auto;
+  grid-template-columns: 24px minmax(0, 1fr);
   align-items: flex-start;
   gap: var(--space-6);
   width: 100%;
-  padding: var(--space-5) var(--space-5);
+  padding: var(--space-4) var(--space-5);
   font: inherit;
   display: grid;
   position: relative;
 }
 
+/* A reachable row is a button and says so on hover and to a keyboard; it does
+   not wear a chevron, which on six rows was six arrows pointing at nothing. */
 .step-row > button {
   cursor: pointer;
   transition: background var(--dur-fast) var(--ease);
@@ -3145,11 +3171,6 @@ footer a {
 
 .step-row > button:hover {
   background: var(--surface-sunk);
-}
-
-.step-row > button svg:last-child {
-  color: var(--faint);
-  align-self: center;
 }
 
 /* The step she is on is the one row with a surface: the faintest wash, and the
@@ -3261,8 +3282,13 @@ footer a {
 /* --- the advisor, at the foot: Edward is not here, and this keeps his promise
        that a named human is reachable --- */
 
+/* The foot is the sidebar's foot: a hairline, then the human where the profile
+   chip is, then the vendor where the vendor is. */
 .rail-advisor {
-  margin-top: auto;
+  border-top: 1px solid var(--line);
+  flex: none;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
 }
 
 .advisor-who {
@@ -3301,28 +3327,23 @@ footer a {
   text-decoration: underline;
 }
 
-/* --- the vendor, under everything. The same line the sidebar ends with,
-       `.powered-by` in `chrome.css`; here it is set to the left edge like the
-       rest of the rail. --- */
+/* --- the vendor, under everything: the same line the sidebar ends with,
+       `.powered-by` in `chrome.css`, in the same place. --- */
 
 .rail-vendor {
-  padding-top: var(--space-8);
-}
-
-.rail-vendor .powered-by {
-  justify-content: flex-start;
-  margin: 0;
+  flex: none;
 }
 
 /* ============================================================================
- * Below 1060 the rail is the compact header the approved surface draws: the
- * institution on the left, the count and a short meter on the right, and the
- * rows behind a disclosure that opens the list under the header. Folding the
- * rail never costs the position: the count stays on the header, and the step
- * head under it says "Step n of 8" at all times (ENR-151 AC 5).
+ * Below 820 — where the portal's sidebar becomes a drawer — the rail is the
+ * compact header the approved surface draws: the institution on the left, the
+ * count and a short meter on the right, and the rows behind a disclosure that
+ * opens the list under the header. Folding the rail never costs the position:
+ * the count stays on the header, and the band under it says "Step n of 8" at
+ * all times (ENR-151 AC 5).
  * ==========================================================================*/
 
-@media (width<=1060px) {
+@media (width<=820px) {
   .step-rail {
     border-right: 0;
     border-bottom: 1px solid var(--line);
@@ -3332,9 +3353,11 @@ footer a {
     width: auto;
     height: auto;
     padding: var(--space-5) var(--space-8);
-    /* The base rule pins the rail to the top of a row; in a column it is the
-       header, and it stays on top of the content it heads. */
-    align-self: stretch;
+    /* Fixed to the edge at wide; up here it is the header, in flow, sticky on
+       top of the content it heads. */
+    position: sticky;
+    inset: auto;
+    top: 0;
     z-index: var(--z-topbar);
     overflow: visible;
   }
@@ -3346,6 +3369,11 @@ footer a {
     border-top: 0;
     margin-top: 0;
     padding-top: 0;
+  }
+
+  .rail-brand {
+    height: auto;
+    padding: 0;
   }
 
   .rail-brand {
@@ -3366,20 +3394,39 @@ footer a {
     flex: none;
     align-items: center;
     gap: var(--space-5);
+    padding: 0;
+    display: flex;
+  }
+
+  /* Up here the figure is a line of the header, not a card on ink. */
+  .rail-band .anchor-card {
+    color: var(--ink);
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    align-items: center;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
     display: flex;
   }
 
   .rail-greeting,
-  .rail-label,
+  .rail-band .anchor-card .panel-label,
   .rail-note {
     display: none;
   }
 
-  .rail-figure {
-    margin: 0;
+  /* The institution keeps its name; on the narrowest phones it gives up its
+     last letters before the count and the meter give up their place. */
+  .rail-brand-name strong {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .rail-count {
+  .rail-band .anchor-card .rail-count {
+    color: var(--ink);
     letter-spacing: 0;
     margin: 0;
     font-size: var(--fs-copy);
@@ -3388,8 +3435,18 @@ footer a {
   }
 
   .rail-meter {
+    background: var(--line-soft);
     width: 96px;
     margin: 0;
+  }
+
+  .meter-skipped {
+    background: var(--line-strong);
+  }
+
+  .rail-steps {
+    flex: none;
+    overflow: visible;
   }
 
   .rail-disclosure {
@@ -4083,4 +4140,121 @@ a.pop-row:focus-visible {
   a.pop-row {
     transition: none;
   }
+}
+
+/* --- the status pill (StatusPill) ------------------------------------------
+ *
+ * One pill for the whole product — the evening of 2026-08-21, Health changes
+ * H8. The base is the shape My Enrollment's *In review* already had in
+ * `enrollment.css` (amber on amber tint, 27px, small bold), moved here so the
+ * record's head on Health, the answer's door row and the reviewing step all
+ * say a state the same way; uppercase and tracked, as the standings on My
+ * Degree already were. The tones are the colour contract's. `quiet` paints
+ * nothing: a fact that asks nothing wears a hairline and the muted ink. */
+
+.status-pill {
+  color: var(--amber);
+  background: var(--amber-tint);
+  border-radius: var(--radius-pill);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  height: 27px;
+  padding: 0 var(--space-5);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  display: inline-flex;
+}
+
+.status-pill.done {
+  color: var(--green-ink);
+  background: var(--green-tint);
+}
+
+.status-pill.stop {
+  color: var(--crimson-ink);
+  background: var(--crimson-soft);
+}
+
+.status-pill.quiet {
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+}
+
+/* --- the advisor's scope line (AdvisorBar `note`) -------------------------- */
+
+/* With a note the bar is a two-row grid — the same three columns the flex row
+   had (the face, the copy that may shrink, the two controls), and the note
+   across all three under them. A wrapping flex row was tried first and did two
+   things wrong: its line gap was the bar's own 14px, which put the bar at 89px
+   against the figure cell's 78 and grew the whole panel on Health alone; and
+   in a wrapping container the copy column stopped shrinking the way it does on
+   every other section, so the name broke onto two lines at 390. Two pixels of
+   row gap keeps the bar at 77, inside the cell. */
+.advisor-bar:has(.advisor-note) {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  row-gap: var(--space-1);
+  display: grid;
+}
+
+.advisor-bar:has(.advisor-note) .advisor-note {
+  grid-column: 1 / -1;
+}
+
+.advisor-note {
+  color: var(--muted);
+  flex: 1 0 100%;
+  font-size: var(--fs-micro);
+  line-height: var(--lh-body);
+  text-wrap: pretty;
+  display: block;
+}
+
+/* --- a door row's state (EntryRow `status`) --------------------------------
+ *
+ * The pill and its consequence, read together under the note — the same order
+ * the record card and the panel say theirs in. */
+
+.entry-status {
+  color: var(--muted);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  font-size: var(--fs-meta);
+  display: flex;
+}
+
+/* --- the action band under a card's head -----------------------------------
+ *
+ * `.section-card > .action-band` above tucks the band under the head and
+ * runs it to the card's edges. When the band *opens* a card that has no head —
+ * the door row on Health, the changes of 2026-08-21 (H6, case 2) — the same
+ * tuck puts it at the card's top, and it takes the card's top corners the way
+ * `.card-rows:only-child` takes them. */
+
+.section-card > .action-band:first-child {
+  border-radius: calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0 0;
+  margin-top: calc(-1 * var(--card-pad));
+}
+
+/* Content that follows the band directly — not a run of rows, which sit flush
+   under it — gets the card's breathing room back: the band is a strip, and a
+   chip or a sentence pressed against its underside read as part of it. */
+.section-card > .action-band + :not(.card-rows) {
+  margin-top: var(--space-7);
+}
+
+/* The consequence beside a pill in a summary figure — H8's order (the pill,
+   then the line) said in the panel's figure slot. It is a clause, not the
+   figure, so it drops to copy size and regular tracking beside the pill. */
+.summary-figure-copy strong .figure-consequence {
+  letter-spacing: normal;
+  margin-left: var(--space-4);
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-medium);
 }

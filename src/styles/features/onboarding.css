@@ -16,9 +16,7 @@
 
 .onboarding {
   background: var(--canvas);
-  align-items: stretch;
   min-height: 100vh;
-  display: flex;
 }
 
 /* ============================================================================
@@ -29,26 +27,29 @@
    the content column, the gap and the panel's minimum fit side by side, one
    column below that. A container query, not a fifth viewport breakpoint — the
    summary panel's 940 is the precedent. */
+/* The main column steps past the fixed rail exactly as the workspace steps past
+   the sidebar — the same margin, so the content starts on the same x in the
+   flow and in the portal. */
 .flow-page {
   container: flow / inline-size;
-  flex: 1;
-  min-width: 0;
+  min-height: 100vh;
+  margin-left: var(--sidebar-width);
+}
+
+/* The portal's topbar, across the main column: sticky, glass, the controls on
+   the right. `.topbar` is the shell's rule and this is the shell's shape; what
+   the flow adds is the one control the portal's topbar does not have. */
+.flow-leave {
+  font-weight: var(--fw-semi);
+}
+
+.flow-body {
   padding: var(--space-12) var(--space-13) var(--space-13);
 }
 
 .flow-measure {
   max-width: calc(var(--flow-column) + var(--space-10) + var(--flow-aside));
   margin: 0 auto;
-}
-
-/* --- the line above the question: the demo control, and one way out --- */
-
-.flow-topline {
-  justify-content: flex-end;
-  align-items: center;
-  gap: var(--space-8);
-  margin-bottom: var(--space-10);
-  display: flex;
 }
 
 /* `.text-button` is a bare button in `patterns.css`; anything in this flow that
@@ -59,56 +60,26 @@
   display: inline-flex;
 }
 
-/* A sentence about the flow, and the card that stands for a frame that could
-   not be read, both read at the content column's width — not across the panel's
-   too, which put the dismiss forty characters from the sentence it dismisses. */
-.flow-measure > .notice,
-.flow-measure > .state-card,
-.flow-measure > .step-skeleton {
+/* The card that stands for a frame that could not be read reads at the content
+   column's width, not across the panel's too. */
+.flow-measure > .state-card {
   max-width: var(--flow-column);
 }
 
-/* --- the question --- */
+/* --- the question is the band --- */
 
-.step-head {
-  max-width: var(--flow-column);
-  margin-bottom: var(--space-10);
-}
-
-/* ENR-151 AC 5 — the position is here as well as in the rail, because the rail
-   folds away below 1060 and "at all times" means at all times. Set the way the
-   band's eyebrow is: mono, tracked, small. */
-.step-head .eyebrow {
-  color: var(--muted);
-  letter-spacing: var(--ls-wide);
-  margin: 0;
-  font-family: var(--font-geist-mono);
-  font-size: var(--fs-meta);
-  font-weight: var(--fw-semi);
-}
-
-.step-head h1 {
-  letter-spacing: var(--ls-hero);
-  text-wrap: pretty;
-  margin: var(--space-5) 0 0;
-  font-size: var(--fs-hero);
-  font-weight: var(--fw-heavy);
-  line-height: var(--lh-tight);
-}
-
-.step-head h1:focus-visible {
-  outline: 2px solid var(--purple);
+/* The title takes focus when the step changes; on ink the ring is paper. */
+.onboarding .page-hero h1:focus-visible {
+  outline: 2px solid var(--on-ink);
   outline-offset: var(--space-3);
   border-radius: var(--radius-xs);
 }
 
-.step-lede {
-  color: var(--muted);
-  text-wrap: pretty;
-  max-width: 54ch;
-  margin: var(--space-6) 0 0;
-  font-size: var(--fs-h4);
-  line-height: var(--lh-body);
+/* The notice line sits between the band and the grid, and the shell's own
+   distance after the band already holds it off; the line keeps the shell's
+   distance after itself. */
+.flow-measure > .page-notice {
+  margin-top: calc(-1 * var(--hero-gap) + var(--space-9));
 }
 
 /* --- the grid: the cards, the panel beside them, the action bar under them --- */
@@ -268,10 +239,10 @@
    all draw it, and while it lived here its `.field-label` was silently
    overriding My Profile's rule of the same name. */
 
-/* The Registrar's three facts, two up. `StatedField` is the design system's;
-   the grid is this step's. */
+/* The Registrar's three facts, three up — two up left one alone on a row.
+   `StatedField` is the design system's; the grid is this step's. */
 .stated-grid {
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-8);
   display: grid;
 }
@@ -694,6 +665,7 @@
   display: flex;
 }
 
+.step-skeleton .skeleton-band,
 .step-skeleton .skeleton-line,
 .step-skeleton .skeleton-card {
   background: linear-gradient(90deg, var(--surface-sunk), var(--line-soft), var(--surface-sunk));
@@ -721,12 +693,20 @@
   height: 190px;
 }
 
+/* The band's own height, so loading → ready is a fade and not a rearrangement. */
+.step-skeleton .skeleton-band {
+  border-radius: var(--radius-panel);
+  height: var(--hero-min);
+  margin-bottom: var(--space-6);
+}
+
 @keyframes onboarding-shimmer {
   from { background-position: 100% 0; }
   to { background-position: -100% 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .step-skeleton .skeleton-band,
   .step-skeleton .skeleton-line,
   .step-skeleton .skeleton-card {
     animation: none;
@@ -739,28 +719,34 @@
  * ==========================================================================*/
 
 @media (width<=1060px) {
-  .onboarding {
-    flex-direction: column;
-  }
-
-  .flow-page {
-    padding: var(--space-11) var(--space-11) var(--space-13);
-  }
-
   .stated-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Where the portal's sidebar becomes a drawer, the rail becomes the header and
+   the column takes the whole width. */
+@media (width<=820px) {
+  .flow-page {
+    margin-left: 0;
+  }
+
+  /* The rail is the sticky header here; a second sticky bar under it would
+     ride up into it. */
+  .flow-topbar {
+    position: static;
+  }
+
+  .flow-body {
+    padding: var(--space-11) var(--space-11) var(--space-13);
   }
 }
 
 @media (width<=620px) {
   /* The bottom clearance is the fixed action bar's: the corner Edward owns
      plus one outer step. */
-  .flow-page {
+  .flow-body {
     padding: var(--space-9) var(--space-8) calc(var(--safe-bottom) + var(--space-13));
-  }
-
-  .flow-topline {
-    gap: var(--space-5);
   }
 
   .grant-top {

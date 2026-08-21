@@ -82,7 +82,7 @@ src/
     marks/                 # AsterMark, AudentraMark
     primitives/              # Drawer, AnchorCard, Card (+CardHead/Rows/Foot), Button, Avatar,
                              # Field, StatedField
-    patterns/                # PageShell, GroupTabs, Notice, StateCard, Spot, SummaryFigure,
+    patterns/                # PageShell, PageHero, GroupTabs, Notice, StateCard, Spot, SummaryFigure,
                              # AdvisorBar, InfoModal, PageError, PageSkeleton,
                              # SectionPlaceholder, Popover, EntryRow, ActionBand, StepRail, Dropzone
     styleguide/              # the page at #/styleguide

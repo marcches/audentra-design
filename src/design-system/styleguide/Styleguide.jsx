@@ -16,6 +16,7 @@ import StepRail from '../patterns/StepRail.jsx';
 import SummaryFigure from '../patterns/SummaryFigure.jsx';
 import AdvisorBar from '../patterns/AdvisorBar.jsx';
 import Avatar from '../primitives/Avatar.jsx';
+import StatusPill from '../primitives/StatusPill.jsx';
 import NavItem, { NavGroup, NavSkeleton, ProfileChip } from '../primitives/NavItem.jsx';
 import Spot from '../patterns/Spot.jsx';
 import PageSkeleton from '../patterns/PageSkeleton.jsx';
@@ -653,8 +654,14 @@ export default function Styleguide({ onToast }) {
                   icon="file"
                   title="A door that opens here"
                   note="One thing this page can open, as a row. No head — the row says what a head would, and a card with a head, a foot and nothing between is the empty band a Notice is written against."
+                  status={
+                    <>
+                      <StatusPill tone="quiet">Not answered</StatusPill> Optional. Nothing happens
+                      until you answer.
+                    </>
+                  }
                   count={2}
-                  where="Open"
+                  where="See the question"
                   onOpen={() => onToast('The panel this door opens would slide in from the right.')}
                 />
                 <EntryRow
@@ -694,9 +701,9 @@ export default function Styleguide({ onToast }) {
                         <h3>Final transcript check</h3>
                         <p>Aster received your transcript and is reviewing it now.</p>
                       </div>
-                      <div className="status-pill">
-                        <span className="pulse" /> In review
-                      </div>
+                      <StatusPill tone="wait" pulse>
+                        In review
+                      </StatusPill>
                     </article>
                     <article className="compact-task done-task">
                       <div className="task-type-icon decision" aria-hidden="true">
@@ -775,6 +782,19 @@ export default function Styleguide({ onToast }) {
               </Card>
             </div>
           </Block>
+          <Block
+            title="The status pill"
+            note="The state of a thing in one word, uppercase, and never a control. One pill for the whole product since the evening of 2026-08-21 — the record's head on Health, the reviewing step on My Enrollment and the answer's door row all say a state with it. The tone is the colour contract's; quiet paints nothing, which is the one tone an optional question may wear. The consequence, when there is one, is the line after it, in that order."
+          >
+            <div className="sg-pills">
+              <StatusPill tone="act">Not sent</StatusPill>
+              <StatusPill tone="progress" pulse>Sent</StatusPill>
+              <StatusPill tone="wait" pulse>In review</StatusPill>
+              <StatusPill tone="done">Accepted</StatusPill>
+              <StatusPill tone="stop">Came back</StatusPill>
+              <StatusPill tone="quiet">Not answered</StatusPill>
+            </div>
+          </Block>
         </Section>
 
         <Section
@@ -808,6 +828,31 @@ export default function Styleguide({ onToast }) {
               <AdvisorBar advisor={ADVISOR} onContact={() => {}} />
             </div>
           </section>
+          <Block
+            title="The same bar, covering a subject that is not its own"
+            note="The one line the advisor bar may add: what this person is for on this page. Health shows the enrollment advisor over a record Health Services decides and a question Accessibility Services answers, so the bar says so; My Degree may say the same while no academic advisor is assigned. The figure cell beside it is the state pill and its consequence, in the order the record card uses."
+          >
+            <section className="page-summary" aria-label="Summary panel with a scope line">
+              <div className="summary-main">
+                <SummaryFigure
+                  label="Immunization record"
+                  figure={
+                    <>
+                      <StatusPill tone="act">Not sent</StatusPill>
+                      <span className="figure-consequence">Blocks class registration</span>
+                    </>
+                  }
+                >
+                  Health Services asks for it by Aug 28 · 8 days
+                </SummaryFigure>
+                <AdvisorBar
+                  advisor={ADVISOR}
+                  note="For anything about enrollment. He isn’t part of your health record or your accessibility answer."
+                  onContact={() => {}}
+                />
+              </div>
+            </section>
+          </Block>
         </Section>
 
         <Section
@@ -1481,7 +1526,7 @@ export default function Styleguide({ onToast }) {
               steps={[
                 { id: 'a', name: 'A step that was saved', state: 'saved', reachable: true },
                 { id: 'b', name: 'Another one, saved', state: 'saved', reachable: true },
-                { id: 'c', name: 'The step you are on', state: 'current', meta: 'Step 3 of 6' },
+                { id: 'c', name: 'The step you are on', state: 'current' },
                 {
                   id: 'd',
                   name: 'A step that was set aside',

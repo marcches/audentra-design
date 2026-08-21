@@ -50,11 +50,12 @@ Mobbin, this round (`references.md`): Mercury, Remote, Melio, Deel.
 │   ├── .rail-steps                      numbered 24px marks · connector · name + meta per row
 │   ├── .rail-advisor                    label · <Avatar md> · name · office · mail
 │   └── .rail-vendor                     "Powered by" AudentraMark
-└── main.flow-page  (container: flow)    flex 1 · padding --space-12 --space-13
-    └── .flow-measure                    max-width: column + gap + aside, centred
-        ├── .flow-topline                right-aligned: PreviewStateMenu · "Save and finish later"
-        ├── <Notice>s, <StateCard>       as before
-        ├── <StepHead>                   eyebrow "Step n of 8" · h1 · lede (max-width: column)
+└── main.flow-page  (container: flow)    flex 1
+    ├── header.topbar.flow-topbar        sticky, glass; right: PreviewStateMenu · "Save and finish later" (topbar-chip)
+    └── .flow-body › .flow-measure
+        ├── <PageHero>                   the band: eyebrow "Step n of 8" · question · lede · motif
+        ├── .page-notice › <Notice>      one line under the band (refusal / outcome / welcome back)
+        ├── <StateCard>                  unreadable record
         └── .flow-grid                   1 col; 2 cols when the container ≥ 1032px
             ├── .flow-content            the step's cards · .step-failed
             ├── aside.flow-aside         <StepPanel> — sticky, top: --space-12
@@ -97,6 +98,26 @@ Head: `CardHead kind="status"` bare (no glyph), the title, one line. Rows: `Stat
 | 7 photo | Your photo | File → name or none chosen | Skipping this costs you nothing but a queue. |
 | 8 orientation | Your session | Session · Where | Whichever you pick lands in Appointments. |
 
+## 5c. The third round, 2026-08-21 evening — the header
+
+"Falta construir o header tipo os do portal… tá tudo inconsistente aqui." The main column opened
+with a bare eyebrow and `h1` on the canvas, a notice floating above, two controls floating above
+that. Now it opens the way a section does, with the portal's own mechanisms (Mobbin in
+`references.md`, "The header"):
+
+- **The topbar** — `.topbar`, sticky, glass, the controls on the right in the topbar's family:
+  the concept pill and *Save and finish later* as a `.topbar-chip`. Static below 1060, where the
+  rail is the sticky header.
+- **The band** — `PageHero`, extracted from `PageShell` (same markup; the portal renders
+  identically) and rendered by the flow: eyebrow in mono with the position (*Step 3 of 8 ·
+  optional*), the question as the title, the lede, the step's glyph in the motif (`icon` on each
+  step in `data.js`). The title takes focus on a step change, ring on ink. The finish gets the band
+  too.
+- **The notice docked under the band** — `.page-notice`, the shell's line dock: two hairlines and
+  a sentence. A refusal or an outcome shows there; the welcome-back line yields to either and comes
+  back after.
+- The loading skeleton draws the band's height first, so loading → ready is a fade.
+
 ## 6. What landed in the design system
 
 - `StepRail` — rewritten (white, numbered, brand head, Avatar, vendor foot). Styleguide `sg-steps`.
@@ -105,8 +126,10 @@ Head: `CardHead kind="status"` bare (no glyph), the title, one line. Rows: `Stat
 - `patterns/Dropzone` — the photo zone, as a shape. Styleguide `sg-steps`.
 - `Field` — the input is filled (`--surface-sunk`) and lifts to `--surface` on focus. **Product-wide**,
   deliberately: two input surfaces would be two products. The capture diff names every element.
+- `patterns/PageHero` — the band, extracted from `PageShell` so a flow can open with it.
 - tokens: `--flow-rail`, `--flow-column`, `--flow-aside`, `--flow-aside-min`; `--flow-bar` removed
-  (the bar is gone).
+  (the bar is gone); `--shadow-primary` / `--shadow-primary-hover` name the glow the primary button
+  wrote raw.
 
 ## 7. Out of scope, said out loud
 

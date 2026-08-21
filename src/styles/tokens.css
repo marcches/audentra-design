@@ -243,6 +243,12 @@
   /* A floating window rather than a card on the page. ENR-181 named it so the
      info modal and the Edward window cannot drift apart. */
   --shadow-float: 0 25px 70px #0d12233d;
+  /* The primary action's glow, and its lift on hover. It is the accent's own
+     colour under the button, which is why it lives here and moves when the
+     accent does — it was written raw on the button, in a purple the product no
+     longer has. */
+  --shadow-primary: 0 6px 14px #5943c83d;
+  --shadow-primary-hover: 0 9px 18px #5943c84a;
 
   /* Motion, named — ENR-181. Three loose durations were doing this job. */
   --dur-fast: .22s;
@@ -321,12 +327,12 @@
   --tip-edge: 12px;    /* the closest a bubble may come to the window's edge  */
   --tip-measure: 264px; /* an explainer's measure — about 40 characters       */
   /* A full-screen flow's frame — ENR-163, its surface aligned to the approved
-     prototype on 2026-08-21. The rail is `--flow-rail` wide; the main column
-     reads at `--flow-column`, with the step panel beside it between
-     `--flow-aside-min` and `--flow-aside` when the two fit — decided by a
-     container query on the column at column + gap + aside-min (1032px), not by
-     a fifth viewport breakpoint. */
-  --flow-rail: 304px;
+     prototype on 2026-08-21. The rail is the sidebar's width (`--sidebar-width`
+     above — it is the same column, continued); the main column reads at
+     `--flow-column`, with the step panel beside it between `--flow-aside-min`
+     and `--flow-aside` when the two fit — decided by a container query on the
+     column at column + gap + aside-min (1032px), not by a fifth viewport
+     breakpoint. */
   --flow-column: 736px;
   --flow-aside: 384px;
   --flow-aside-min: 272px;

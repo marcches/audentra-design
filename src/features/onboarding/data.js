@@ -42,11 +42,13 @@ export const advisor = {
  *
  * `required: false` is the only thing that produces a skip control (ENR-150
  * AC 4), and `after` is the only thing that locks a step (ENR-151 AC 2). Both
- * are configuration here because both are configuration in the story.
+ * are configuration here because both are configuration in the story. `icon`
+ * is the step's mark in the band's motif — the glyph its card head wears.
  */
 export const STEPS = [
   {
     id: 'details',
+    icon: 'profile',
     name: 'Confirm your details',
     question: 'Is this you, Maya?',
     lede: 'Aster’s admissions file says this. Tell Aster what to call you. The Registrar keeps the rest.',
@@ -55,6 +57,7 @@ export const STEPS = [
   },
   {
     id: 'contact',
+    icon: 'mail',
     name: 'How Aster reaches you',
     question: 'Where should Aster reach you?',
     lede: 'One address for anything urgent, and one place Aster writes to first.',
@@ -63,6 +66,7 @@ export const STEPS = [
   },
   {
     id: 'emergency',
+    icon: 'bell',
     name: 'Emergency contact',
     question: 'Who should Aster call in an emergency?',
     lede: 'One person Aster can reach if something happens to you on campus. That is the only thing it does.',
@@ -71,6 +75,7 @@ export const STEPS = [
   },
   {
     id: 'permissions',
+    icon: 'users',
     name: 'Family permissions',
     question: 'Who can talk to Aster about you?',
     lede: 'Right now, that is just you. This is where you change it, or decide not to.',
@@ -79,6 +84,7 @@ export const STEPS = [
   },
   {
     id: 'housing',
+    icon: 'home',
     name: 'Where you will live',
     question: 'Where will you live?',
     lede: `Your answer opens your move-in time. You can change it until ${responseDeadline.full}.`,
@@ -87,6 +93,7 @@ export const STEPS = [
   },
   {
     id: 'health',
+    icon: 'accessibility',
     name: 'Health and accessibility',
     question: 'Anything Aster should know before you arrive?',
     lede: 'One question, and “not right now” is a complete answer to it.',
@@ -95,6 +102,7 @@ export const STEPS = [
   },
   {
     id: 'photo',
+    icon: 'card',
     name: 'Your student photo',
     question: 'Want your campus card ready before you arrive?',
     lede: 'A photo now means your card is waiting for you at move-in instead of being made in a queue.',
@@ -103,6 +111,7 @@ export const STEPS = [
   },
   {
     id: 'orientation',
+    icon: 'calendar',
     name: 'Choose your orientation session',
     question: 'Which orientation will you come to?',
     lede: 'Two days, run twice. Pick the one that works. The seats are held as you choose.',

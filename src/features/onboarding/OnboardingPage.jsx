@@ -5,7 +5,7 @@ import Notice from '../../design-system/patterns/Notice.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import PreviewStateMenu from '../../app/PreviewStateMenu.jsx';
 import StepRail from '../../design-system/patterns/StepRail.jsx';
-import StepHead from './StepHead.jsx';
+import PageHero from '../../design-system/patterns/PageHero.jsx';
 import StepActions from './StepActions.jsx';
 import StepPanel from './StepPanel.jsx';
 import DetailsStep from './DetailsStep.jsx';
@@ -51,12 +51,20 @@ import {
  *      be empty and the fifth would mean something else.
  *
  * **The frame, since 2026-08-21.** The surface was aligned to the approved
- * prototype while the flow stayed exactly as it was: the rail is paper, with
- * the institution at its head; there is no top bar (the preview control and
- * the one way out sit in a line above the question); and the question's cards
- * share the column with a *step panel* — a card that reads back, as a column
- * of facts, what this step already holds. The panel mirrors and never
- * controls: nothing on it is a button, and every value on it is the draft's.
+ * prototype while the flow stayed exactly as it was — and then given the
+ * portal's own header mechanisms, because a flow that opened with a bare
+ * eyebrow and an `h1` on the canvas, a notice floating above them and two
+ * controls floating above that, read as a different product ("tá tudo
+ * inconsistente aqui"). So: the rail is paper and leads with the anchor card;
+ * the main column opens with the portal's **topbar** (the demo control and
+ * the one way out, in the topbar's control family), then the portal's
+ * **band** — `PageHero`, the eyebrow in mono saying the position, the
+ * question, the lede, the step's glyph in the motif — then the one notice
+ * true of the flow, **docked under the band** the way `PageShell` docks it;
+ * and the question's cards share the column with a *step panel* — a card that
+ * reads back, as a column of facts, what this step already holds. The panel
+ * mirrors and never controls: nothing on it is a button, and every value on
+ * it is the draft's.
  *
  * **Why the state lives here and not in `App`.** The repo's default is that
  * state lives in `App.jsx`, and the sections that own a self-contained subject
@@ -301,7 +309,7 @@ export default function OnboardingPage({ requestedStep, previewState, onPreviewS
         brand={{
           mark: <AsterMark size={40} tile />,
           name: 'Aster University',
-          line: 'Class of 2031 · Offer accepted',
+          line: 'Class of 2031',
         }}
         greeting={finished ? 'You’re all set, Maya.' : 'Let’s get you set up, Maya.'}
         figure={
@@ -321,135 +329,161 @@ export default function OnboardingPage({ requestedStep, previewState, onPreviewS
       />
 
       <main className="flow-page" id="onboarding-main" aria-live="polite">
-        <div className="flow-measure">
-          {/* No top bar: the demo control and the one way out sit in a line
-              above the question, the way the approved surface draws them. */}
-          <div className="flow-topline">
+        {/* The portal's topbar, with the flow's two controls in the topbar's
+            control family: the demo pill, and the one way out. Nothing floats. */}
+        <header className="topbar flow-topbar">
+          <div className="topbar-title" />
+          <div className="topbar-actions">
             <PreviewStateMenu
               state={previewState}
               states={ONBOARDING_PREVIEW_STATES}
               onChange={onPreviewState}
             />
-            <button className="text-button" onClick={() => onRoute('#/my-enrollment')}>
+            <button className="topbar-chip flow-leave" onClick={() => onRoute('#/my-enrollment')}>
               Save and finish later
             </button>
           </div>
+        </header>
 
-          {frameState === 'loading' && (
-            <div className="step-skeleton" aria-hidden="true">
-              <span className="skeleton-line short" />
-              <span className="skeleton-line wide" />
-              <span className="skeleton-card" />
-              <span className="skeleton-card" />
-            </div>
-          )}
+        <div className="flow-body">
+          <div className="flow-measure">
+            {frameState === 'loading' && (
+              <div className="step-skeleton" aria-hidden="true">
+                <span className="skeleton-band" />
+                <span className="skeleton-card" />
+                <span className="skeleton-card" />
+              </div>
+            )}
 
-          {frameState === 'error' && (
-            <StateCard
-              variant="error"
-              icon="alert"
-              title="Your steps could not be loaded"
-              action={{ label: 'Try again', icon: 'refresh', onClick: () => onPreviewState('ready') }}
-            >
-              Aster published these steps and the portal could not read them. Nothing you have already
-              saved is affected. It is on Aster’s side, not in this browser.
-            </StateCard>
-          )}
+            {frameState === 'error' && (
+              <StateCard
+                variant="error"
+                icon="alert"
+                title="Your steps could not be loaded"
+                action={{ label: 'Try again', icon: 'refresh', onClick: () => onPreviewState('ready') }}
+              >
+                Aster published these steps and the portal could not read them. Nothing you have
+                already saved is affected. It is on Aster’s side, not in this browser.
+              </StateCard>
+            )}
 
-          {frameState === 'ready' && (
-            <>
-              {/* A refusal is not a failure — it is the shape of the path, said
-                  out loud — so `alert` reads as `working` rather than as an
-                  escalation. `info` is the one place in the portal a notice is
-                  allowed to be green: the sentence is the outcome of a step she
-                  has just taken. */}
-              {notice && (
-                <Notice
-                  tone={notice.tone === 'alert' ? 'working' : 'done'}
-                  icon={notice.tone === 'alert' ? 'lock' : 'check'}
-                >
-                  {notice.text}
-                </Notice>
-              )}
-
-              {resume && (
-                <Notice
-                  tone="quiet"
-                  icon="clock"
-                  action={{ label: 'Dismiss', icon: 'close', onClick: () => setResumeShown(false) }}
-                >
-                  {resume}
-                </Notice>
-              )}
-
-              {/* ENR-149 Scenario 4, made something you can look at: the
-                  published steps arrived and her answers did not, so the
-                  interface claims nothing and refuses to write on top of a
-                  state nobody could read. */}
-              {unknown && (
-                <StateCard
-                  variant="error"
-                  icon="alert"
-                  title="What you have already done couldn’t be read"
-                  action={{
-                    label: 'Try again',
-                    icon: 'refresh',
-                    onClick: () => onPreviewState('ready'),
-                  }}
-                >
-                  Your eight steps are here, but what you saved is not, so nothing below is marked
-                  saved, and nothing can be saved until it can be read. Nothing has been lost.
-                </StateCard>
-              )}
-
-              {!finished && step && <StepHead ref={heading} step={step} />}
-              {finished && (
-                <p className="eyebrow muted">
-                  {TOTAL_STEPS} of {TOTAL_STEPS} resolved
-                </p>
-              )}
-
-              <div className="flow-grid">
-                <div className="flow-content">
-                  {body()}
-
-                  {/* ENR-149 AC 4. The step stays in progress, the count does
-                      not move, and the failure names itself. */}
-                  {failed && (
-                    <p className="step-failed" role="alert">
-                      <Icon name="alert" size={16} />
-                      <span>
-                        <strong>That didn’t reach Aster.</strong>
-                        {failed}
-                      </span>
-                    </p>
-                  )}
-                </div>
-
-                {/* The panel is `aria-live="off"` inside a polite `main`: it
-                    mirrors the draft on every keystroke, and a screen reader
-                    that re-read it on every keystroke would be narrating the
-                    typing. The fields announce themselves. */}
-                {working && (
-                  <aside className="flow-aside" aria-label="This step, at a glance" aria-live="off">
-                    <StepPanel stepId={step.id} draft={draft} grants={grants} />
-                  </aside>
-                )}
-
-                {working && (
-                  <StepActions
-                    step={step}
-                    first={stepNumber(step.id) === 1}
-                    saving={Boolean(saving)}
-                    saveLabel={failed ? 'Try again' : 'Save and continue'}
-                    onBack={() => goTo(STEPS[stepNumber(step.id) - 2].id)}
-                    onSkip={() => commit('skip')}
-                    onSave={() => commit('save')}
+            {frameState === 'ready' && (
+              <>
+                {/* The band — the portal's hero, and the flow's question. The
+                    eyebrow carries the position (ENR-151 AC 5: visible at all
+                    times, including where the rail folds), the motif carries
+                    the step's glyph, and the title takes focus when the step
+                    changes. The finish gets the band too: one screen, one
+                    shape, every time. */}
+                {!finished && step ? (
+                  <PageHero
+                    ref={heading}
+                    focusable
+                    kicker={`Step ${stepNumber(step.id)} of ${TOTAL_STEPS}${step.required ? '' : ' · optional'}`}
+                    title={step.question}
+                    lede={step.lede}
+                    motif={step.icon}
+                  />
+                ) : (
+                  <PageHero
+                    kicker={`${TOTAL_STEPS} of ${TOTAL_STEPS} resolved`}
+                    title="You’re all set, Maya."
+                    lede="Aster has what it needs to open your record. From here, everything lives in the portal."
+                    motif="check"
                   />
                 )}
-              </div>
-            </>
-          )}
+
+                {/* One notice, docked under the band the way the shell docks
+                    it — two hairlines and a sentence, never a card of its own.
+                    A refusal is not a failure — it is the shape of the path,
+                    said out loud — so `alert` reads as `working` rather than
+                    as an escalation; `info` is the one place in the portal a
+                    notice is allowed to be green: the sentence is the outcome
+                    of a step she has just taken. The welcome-back line yields
+                    to either while it is showing, and comes back after. */}
+                {(notice || resume) && (
+                  <div className="page-notice">
+                    {notice ? (
+                      <Notice
+                        tone={notice.tone === 'alert' ? 'working' : 'done'}
+                        icon={notice.tone === 'alert' ? 'lock' : 'check'}
+                      >
+                        {notice.text}
+                      </Notice>
+                    ) : (
+                      <Notice
+                        tone="quiet"
+                        icon="clock"
+                        action={{ label: 'Dismiss', icon: 'close', onClick: () => setResumeShown(false) }}
+                      >
+                        {resume}
+                      </Notice>
+                    )}
+                  </div>
+                )}
+
+                {/* ENR-149 Scenario 4, made something you can look at: the
+                    published steps arrived and her answers did not, so the
+                    interface claims nothing and refuses to write on top of a
+                    state nobody could read. */}
+                {unknown && (
+                  <StateCard
+                    variant="error"
+                    icon="alert"
+                    title="What you have already done couldn’t be read"
+                    action={{
+                      label: 'Try again',
+                      icon: 'refresh',
+                      onClick: () => onPreviewState('ready'),
+                    }}
+                  >
+                    Your eight steps are here, but what you saved is not, so nothing below is marked
+                    saved, and nothing can be saved until it can be read. Nothing has been lost.
+                  </StateCard>
+                )}
+
+                <div className="flow-grid">
+                  <div className="flow-content">
+                    {body()}
+
+                    {/* ENR-149 AC 4. The step stays in progress, the count does
+                        not move, and the failure names itself. */}
+                    {failed && (
+                      <p className="step-failed" role="alert">
+                        <Icon name="alert" size={16} />
+                        <span>
+                          <strong>That didn’t reach Aster.</strong>
+                          {failed}
+                        </span>
+                      </p>
+                    )}
+                  </div>
+
+                  {/* The panel is `aria-live="off"` inside a polite `main`: it
+                      mirrors the draft on every keystroke, and a screen reader
+                      that re-read it on every keystroke would be narrating the
+                      typing. The fields announce themselves. */}
+                  {working && (
+                    <aside className="flow-aside" aria-label="This step, at a glance" aria-live="off">
+                      <StepPanel stepId={step.id} draft={draft} grants={grants} />
+                    </aside>
+                  )}
+
+                  {working && (
+                    <StepActions
+                      step={step}
+                      first={stepNumber(step.id) === 1}
+                      saving={Boolean(saving)}
+                      saveLabel={failed ? 'Try again' : 'Save and continue'}
+                      onBack={() => goTo(STEPS[stepNumber(step.id) - 2].id)}
+                      onSkip={() => commit('skip')}
+                      onSave={() => commit('save')}
+                    />
+                  )}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </main>
 

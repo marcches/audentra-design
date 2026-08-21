@@ -173,20 +173,19 @@ export function shortlistLine(shortlist) {
 /**
  * The rows `StepRail` renders. The pattern owns what a state looks like and
  * what it is called; this owns which state each step is in and the two metas
- * that are onboarding's own — the position of the step she is on, and how long
- * a step nobody has reached yet takes.
+ * that are onboarding's own — why a locked step is not open, and how long a
+ * step nobody has reached yet takes. The step she is on carries no meta: its
+ * position is the number on its mark and the eyebrow over the question.
  */
 export function railSteps(record, currentId) {
   return STEPS.map((step) => {
     const state = stepState(step.id, record, currentId);
     const meta =
-      state === 'current'
-        ? `Step ${stepNumber(step.id)} of ${TOTAL_STEPS}`
-        : state === 'locked'
-          ? step.lockReason
-          : state === 'upcoming'
-            ? `${step.minutes} min${step.required ? '' : ' · optional'}`
-            : undefined;
+      state === 'locked'
+        ? step.lockReason
+        : state === 'upcoming'
+          ? `${step.minutes} min${step.required ? '' : ' · optional'}`
+          : undefined;
 
     return {
       id: step.id,

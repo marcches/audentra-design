@@ -1,6 +1,7 @@
 import { useId, useState } from 'react';
 import Icon from '../Icon.jsx';
 import Avatar from '../primitives/Avatar.jsx';
+import AnchorCard from '../primitives/AnchorCard.jsx';
 import AudentraMark from '../marks/AudentraMark.jsx';
 
 /**
@@ -42,13 +43,14 @@ import AudentraMark from '../marks/AudentraMark.jsx';
  * disclosure, so folding the rail never costs the position.
  *
  * Until 2026-08-21 it was the product's purple band turned on its side. The
- * approved surface reads a flow as a light workspace with one saturated thing
- * on it, the primary button; so the rail became paper and the colour moved to
- * the marks.
+ * approved surface reads a flow as a light workspace; so the rail became paper
+ * — and it leads with the `AnchorCard`, the way every rail in the portal does:
+ * the flow's key figure, how far along it is, on ink. That is what makes it
+ * this product's rail and not any light rail. Only the list of steps scrolls.
  */
 
 const MARKS = {
-  saved: { icon: 'check', meta: 'Saved' },
+  saved: { icon: 'check', meta: null },
   current: { icon: null, meta: null },
   skipped: { icon: 'half', meta: 'Skipped · you can come back' },
   upcoming: { icon: null, meta: null },
@@ -97,23 +99,22 @@ export default function StepRail({
             meter and no rows — a count beside "your steps could not be loaded"
             is the interface contradicting itself in one screen. */}
         {figure ? (
-          <div className="rail-figure">
-            {label ? <p className="rail-label">{label}</p> : null}
-            <p className="rail-count">{figure}</p>
+          <AnchorCard variant="flow" label={label} figure={figure} figureClass="rail-count">
             {/* At most one line under the figure. The fourth line inside a
                 figure cell is what pushed My Classrooms' summary panel 16px
                 taller than every other section's. */}
             {note ? <p className="rail-note">{note}</p> : null}
-          </div>
-        ) : null}
 
-        {/* Two runs, not one: what is done and what was set aside are different
-            facts, and a single bar that meant both would be the bug. */}
-        {meter ? (
-          <div className="rail-meter" role="img" aria-label={meterLabel}>
-            <span className="meter-saved" style={{ width: `${meter.saved}%` }} />
-            <span className="meter-skipped" style={{ width: `${meter.skipped}%` }} />
-          </div>
+            {/* Two runs, not one: what is done and what was set aside are
+                different facts, and a single bar that meant both would be the
+                bug. */}
+            {meter ? (
+              <div className="rail-meter" role="img" aria-label={meterLabel}>
+                <span className="meter-saved" style={{ width: `${meter.saved}%` }} />
+                <span className="meter-skipped" style={{ width: `${meter.skipped}%` }} />
+              </div>
+            ) : null}
+          </AnchorCard>
         ) : null}
 
         {steps.length > 0 && (
@@ -161,10 +162,7 @@ export default function StepRail({
                 aria-current={step.state === 'current' ? 'step' : undefined}
               >
                 {step.reachable ? (
-                  <button onClick={() => onOpen(step.id)}>
-                    {inside}
-                    <Icon name="chevron" size={14} />
-                  </button>
+                  <button onClick={() => onOpen(step.id)}>{inside}</button>
                 ) : (
                   <span>{inside}</span>
                 )}

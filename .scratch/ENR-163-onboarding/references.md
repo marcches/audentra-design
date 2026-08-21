@@ -126,3 +126,31 @@ card, with facts the student cannot change).
 — a nested tree of sub-steps in the rail with a crimson active bar painted down the left edge. The
 one thing this product never does to a rounded row. [Whop — activate payouts](https://mobbin.com/screens/b9b10212-57f8-48af-b245-991e2005ce37)
 — the flow inside a modal over the product; onboarding here replaces the chrome (ENR-151 AC 1).
+
+## The header — 2026-08-21, evening
+
+The main column opened with a bare eyebrow and `h1` on the canvas, a notice floating above them and
+two controls floating above that. Two searches for how a multi-step flow opens.
+
+- [Zillow — list a rental, final details](https://mobbin.com/screens/aabf9607-16cd-4aea-bc1d-86a89d01d8de)
+  — a top bar with the step's name and *Step 6 of 8* on the left and **Save & exit** as a real
+  control on the right; the stepper; then the question. **Taken:** the way out is a control in the
+  top bar, in the bar's own family, never a text link floating near the title.
+- [Turo — list your car](https://mobbin.com/screens/427a076c-a03f-4331-bd22-b098250bd8bf) — a header
+  block that says the flow's name, *8 of 9 steps*, what is next, and holds the progress bar; the
+  question below it in its own region. **Taken:** the position and the question are one header
+  region, not two loose lines.
+- [Arcade — let's get to know each other](https://mobbin.com/screens/c3feffb0-bcca-40d7-8465-6db6608b0f6d)
+  — brand left, stepper centre, help right, in one bar; the question as a large title under it.
+  **Taken:** one bar, then one title region — the shape the portal's topbar + band already is.
+- [Deel — add a person](https://mobbin.com/screens/2c95edc6-acae-4053-b87f-cde2d176d81f) — the
+  *Autosaved* note lives in the right column as a card, docked to the context, not as a banner over
+  the form. **Taken:** a sentence about the flow docks to something; here, under the band, the way
+  the portal docks its one notice.
+
+**Rejected:** [Uxcel](https://mobbin.com/screens/9e7e615a-754a-45a9-af67-1fe7049b87c9) and
+[Brilliant](https://mobbin.com/screens/89d8c94e-b073-4352-b108-3877b778e67f) — a bare progress bar
+as the whole header. Fine for a quiz; a student in an enrollment flow needs the question framed and
+the way out named. [Mercor](https://mobbin.com/screens/23364493-bbd2-47bc-9dc2-3e2d7ccbc0fc) —
+"Welcome back!" as the page title; the welcome-back here is a line about the record, not the
+question, so it docks under the band rather than replacing it.

@@ -197,7 +197,11 @@ export default function StepPanel({ stepId, draft, grants }) {
 
   return (
     <Card className="step-panel" aria-live="polite">
-      <CardHead kind="status" title={panel.title} note={panel.line} />
+      {/* A plain head — the title and one line — not the status band: a panel
+          this small with a band at each end read as three stripes. The foot
+          keeps its band, because it is the one sentence that qualifies the
+          card. */}
+      <CardHead kind="card" title={panel.title} note={panel.line} />
       <CardRows>
         {panel.rows.map((row) => (
           <StatedField

@@ -142,16 +142,16 @@ the main column are below the tabs and are what the tab switches, so those may a
 
 ### Most sections do not get a summary panel
 
-Four do: My Enrollment, My Documents, My Classrooms, My Financials. The test is
-that **both cells are true of the section** — a figure that is its standing, and a
-person who owns the subject. Nine sections had a panel before the Jam of
+Five do: My Enrollment, My Documents, My Classrooms, My Financials — and Health, since the
+evening of 2026-08-21. The test is that **both cells are true of the section** — a figure that is
+its standing, and a person who owns the subject. Nine sections had a panel before the Jam of
 2026-08-21 and five of them failed it:
 
 | Section | Why it lost the panel |
 | --- | --- |
 | Appointments | `Fri 12 Sep · 10:00` is the first row of `Your conversations` below it, and the person beside it is the person in that row. |
 | My Housing | the figure was the plan she chose, which is what `PlanPanel` is. |
-| Health | the figure, the label and the line were `RecordCard`'s heading, state chip and gate chip — the only card on the page. |
+| Health | the figure, the label and the line were `RecordCard`'s heading, state chip and gate chip — the only card on the page. **Back the same evening** (the changes of 2026-08-21): the page carries two things, a record and a question, so the panel summarises two — the record's state and deadline as the figure, the question's state as the foot, the enrollment advisor with a scope line. |
 | My Profile | `12 of 20 details are yours` is a legend, not a standing: nothing in it moves and nothing in it is pending. |
 | Help | ENR-177 AC 3 forbids this screen to name a person, so its right cell held a button instead. A section that cannot fill the second cell does not have a panel. |
 
@@ -396,6 +396,7 @@ guess, and guessing is what produced 436 hand-typed colours and eight hand-typed
 
 | Building | Use | Not |
 | --- | --- | --- |
+| The band a page opens with | `<PageHero flag kicker title lede motif>` — `PageShell` composes it; a flow renders it itself, with `focusable` so the title takes focus when the step changes | an eyebrow, an `h1` and a lede typed on the canvas |
 | A side panel | `<Drawer variant label titleId onClose>` — scrim, ARIA, header, focus, `Esc`, trap all included | a hand-written `<aside role="dialog">` |
 | A rail's first card | `<AnchorCard variant label figure>` | `<div className="anchor-card …">` |
 | A panel anchored to a control | `<Popover trigger tip ariaLabel panelLabel>` — scrim, `role="dialog"`, `Esc`, focus return; the panel is a `Card`, so inside it go `CardHead` + `CardRows` + `CardFoot`, or an `AnchorCard` taking its top corners | a positioned `div` with a hand-typed head and foot |
