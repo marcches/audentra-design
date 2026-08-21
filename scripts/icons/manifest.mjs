@@ -76,14 +76,12 @@ export const ICONS = {
   degree: 'graduation-cap',
   bed: 'bed',
   image: 'image',
-  // My Degree, brief of 2026-08-21: the plan action, the two confidence
+  // My Degree, brief of 2026-08-21: the plan action and the two confidence
   // readings (an estimate and a closer look — neither is a check, because a
-  // check means decided), and the office that decides, which is a thing and
-  // gets a glyph, never a face.
+  // check means decided).
   plus: 'plus',
   gauge: 'gauge',
   magnify: 'magnifying-glass',
-  bank: 'bank',
 };
 
 export const WEIGHTS = ['regular', 'bold', 'fill', 'duotone'];

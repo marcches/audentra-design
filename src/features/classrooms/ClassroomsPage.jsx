@@ -13,10 +13,10 @@ import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import {
+  courseAdvisor,
   creditMatches,
   matchSources,
   program,
-  registrarOffice,
   requirements as publishedRequirements,
   unassignedProgram,
 } from './data.js';
@@ -182,19 +182,19 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
     });
   }
 
-  // D15: every route to a person on this screen leads to the office that
-  // decides. The advisor is Admissions', and Admissions decides nothing here.
+  // D15: a question about a match goes to the office that decides it — the
+  // Registrar — never to Admissions, which decides nothing here.
   function askRegistrar(match) {
     onToast(
       `A message to the ${program.officialRecord.office} about ${match.target.courseCode} would open here. Nothing is sent yet.`,
     );
   }
 
-  function contactRegistrar(channel) {
+  // The panel's two actions reach the person who owns the subject: the course
+  // advisor, as every section's bar reaches its advisor (Marco, 2026-08-21).
+  function contactAdvisor(channel) {
     onToast(
-      `${channel === 'email' ? 'An email' : 'A message'} to the ${
-        program.officialRecord.office
-      } would open here. Nothing is sent yet.`,
+      `${channel === 'email' ? 'An email' : 'A message'} to ${courseAdvisor.name} would open here. Nothing is sent yet.`,
     );
   }
 
@@ -209,11 +209,12 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
   };
 
   /**
-   * The white card after the brief (D9, D10, D15): the ring tracks credits and
+   * The white card after the brief (D9, D10): the ring tracks credits and
    * its caption names the unit; the requirement count is the supporting line,
    * with the elective remainder beside it — a residual has no status, so it is
    * a line here and never a row in the list; and the person block is the
-   * office that decides, not the advisor who cannot.
+   * course advisor — D15 had seated the Registrar's office here, and Marco put
+   * the advisor back on 2026-08-21: the bar is a person on every section.
    */
   const summary = unknownProgram ? null : (
     <>
@@ -234,7 +235,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
       >
         {totals.met} of {totals.total} requirements met · {elective} elective credits remaining
       </SummaryFigure>
-      <AdvisorBar advisor={registrarOffice} onContact={contactRegistrar} />
+      <AdvisorBar advisor={courseAdvisor} onContact={contactAdvisor} />
     </>
   );
 

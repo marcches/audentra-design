@@ -614,18 +614,6 @@
   flex: none;
 }
 
-/* When the subject is an office rather than a person: a glyph in a tinted tile
-   at the avatar's size, because a thing never gets a face. */
-.advisor-office-mark {
-  color: var(--purple-dark);
-  background: var(--purple-tint);
-  border-radius: var(--radius-tile);
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  display: grid;
-}
-
 .advisor-bar-copy {
   flex-direction: column;
   min-width: 0;

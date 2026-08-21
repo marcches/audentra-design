@@ -20,10 +20,12 @@ import { articled, teamName } from './logic.js';
  *                      resolves now, being told suits someone willing to wait;
  *   times did not load asking is still possible, choosing is not, and the row says which.
  *
- * A row that cannot be clicked through to booking sits a step down in size (T5): the guide builds
- * hierarchy by shrinking what is not actionable now, not by bolding what is. The one `primary`
- * button on the card is the row the page's band points at — at most one primary per card
- * (`Button.jsx`); every other row's button is secondary, exactly as on the guide.
+ * Every row is the same row, whatever it offers. T5 asked for a row with no times to sit a step
+ * down in size; Marco struck that on 2026-08-21 — a card whose titles come in two sizes is a
+ * font-size error, not a hierarchy — so the title is at the head's size on every row and the
+ * difference is said by the facts line and the button's label. The one `primary` button on the
+ * card is the row the page's band points at — at most one primary per card (`Button.jsx`); every
+ * other row's button is secondary, exactly as on the guide.
  */
 export default function TopicRow({
   type,
@@ -43,9 +45,7 @@ export default function TopicRow({
 
   return (
     <article
-      className={['task-card', 'topic-row', recommended && 'recommended', !hasTimes && 'quiet']
-        .filter(Boolean)
-        .join(' ')}
+      className={['task-card', 'topic-row', recommended && 'recommended'].filter(Boolean).join(' ')}
     >
       {band === 'start' && <ActionBand icon="spark" label="Start here" />}
       {band === 'closed' && (

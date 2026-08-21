@@ -123,6 +123,17 @@ Mobile layout (the brief), course registration, any change to an academic outcom
 - [x] D12 three status families, three forms
 - [x] D13 no "In the catalog"
 - [x] D14 requirement titles H3 at `--fs-h2` weight 400; course titles `--fs-body` weight 400
-- [x] D15 every route to a person leads to the Office of the Registrar
+- [x] D15 every route to a person leads to the Office of the Registrar — narrowed the same day:
+      the panel's person block is the course advisor (section 9)
 - [x] D16 groups never collapse; IN PROGRESS open; closed heads carry the count; match cards closed
 - [x] `npm run build` clean; ready / no-matches / loading / partial / empty checked at 1440; keyboard on the accordion and the drawer
+
+## 9. After the fact — 2026-08-21, later the same day
+
+- **Q10 / D15, the person block — reverted by Marco.** The summary panel's bar is `AdvisorBar`,
+  a person with a face on every section, and an office seated in it was the one panel that showed
+  something else ("it is not the office, it is the advisor"). The block is the course advisor,
+  Ines Barros — `courseAdvisor`, now declared in `features/classrooms/data.js` and imported by
+  Appointments — and the two actions reach her. The match cards still ask the Registrar, who
+  decides. The office variant of `AdvisorBar` (`kind: 'office'`, `.advisor-office-mark`) is
+  removed; it was never on the styleguide.

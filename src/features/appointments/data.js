@@ -9,23 +9,11 @@
 // on the team; nothing is booked until they answer.
 //
 // The people are the ones the student already knows — Tomás from My Enrollment, Amara from My
-// Financials — so a booked conversation is time with a name. A request, by contrast, is with the
-// team, because nobody has been assigned to it yet.
+// Financials, Ines from My Degree — so a booked conversation is time with a name. A request, by
+// contrast, is with the team, because nobody has been assigned to it yet.
 
 import { enrollmentAdvisor, financialAidAdvisor, initialTasks, lockedTasks } from '../enrollment/data.js';
-
-/** The course advisor. Only this section knows her, so she is declared here. */
-export const courseAdvisor = {
-  name: 'Ines Barros',
-  initials: 'IB',
-  photo: '/people/ines-barros.webp',
-  office: 'Academic Advising Office, Computer Science',
-  label: 'Your course advisor',
-  intro:
-    'Ines advises Computer Science students on which courses satisfy which requirement, and on what a term should look like.',
-  location: { building: 'Ferrand Building', where: 'second floor' },
-  hours: { window: '10:00 AM–3:00 PM', days: 'Tuesday to Thursday' },
-};
+import { courseAdvisor } from '../classrooms/data.js';
 
 /**
  * The conversations a student can book, and where each one sits.

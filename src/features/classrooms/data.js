@@ -5,12 +5,15 @@
  * A read model published by staff (ENR-185 AC 5). Nothing here is the
  * student's own record: the catalog is Aster's, the approved credit is the
  * Registrar's decision, and a potential match is evidence that has not been
- * decided by anyone yet. Four rules the brief rests on, and this file carries
+ * decided by anyone yet. Three rules the brief rests on, and this file carries
  * the data for each: the university decides what a course counts toward
  * (`doubleCountRules`, and the requirement a course is listed under); double
  * counting is per pair of requirements with a rule ID; the student's plan is
- * hers alone and lives in the page, never here; and every route to a person
- * leads to the Office of the Registrar (`registrarOffice`).
+ * hers alone and lives in the page, never here. The brief's fourth rule —
+ * every route to a person leads to the Office of the Registrar — stops at the
+ * summary panel since 2026-08-21: the Registrar decides on credit and the
+ * matches say so, but the panel's person block is the student's course
+ * advisor (`courseAdvisor`), a person with a face, as on every section.
  * ------------------------------------------------------------------ */
 
 export const program = {
@@ -44,19 +47,31 @@ export const requirementGroups = [
 ];
 
 /**
- * The office that decides on credit, as the subject of the summary panel's
- * person block (brief, D15). An office is a thing, not a person: it gets a
- * glyph, never a face, and `AdvisorBar` draws it that way when `kind` says so.
- * The student is told the name and where to find it; both contact actions
- * route here, because this screen names the Registrar as the decider on every
- * match and must not then route her to Admissions.
+ * The course advisor: the person who owns this subject for the student, and
+ * the subject of the summary panel's person block. Her home is here because
+ * the degree is her subject — Appointments, where a conversation with her is
+ * booked, imports her from this file the way it imports Tomás and Amara from
+ * My Enrollment. Contacting her is the bar's two actions; the decision on a
+ * credit match is the Registrar's, and the match cards route there.
+ *
+ * The brief's D15 had seated the Office of the Registrar in this block.
+ * Marco reverted that on 2026-08-21: the block is `AdvisorBar`, a person with
+ * a face on every section, and an office in it was the one panel that showed
+ * something else.
  */
-export const registrarOffice = {
-  kind: 'office',
-  icon: 'bank',
-  label: 'Office of the Registrar',
-  name: 'Building A, second floor',
-  contact: 'the Office of the Registrar',
+export const courseAdvisor = {
+  name: 'Ines Barros',
+  initials: 'IB',
+  photo: '/people/ines-barros.webp',
+  // The office, as her two peers name theirs — the department is the topic's
+  // (`department` on the Appointments type), not part of the office’s name,
+  // and with it the bar's one line wrapped at 1440.
+  office: 'Academic Advising Office',
+  label: 'Your course advisor',
+  intro:
+    'Ines advises Computer Science students on which courses satisfy which requirement, and on what a term should look like.',
+  location: { building: 'Ferrand Building', where: 'second floor' },
+  hours: { window: '10:00 AM–3:00 PM', days: 'Tuesday to Thursday' },
 };
 
 /**

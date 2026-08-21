@@ -230,3 +230,13 @@ the new surfaces are in `references.md`, Round 2.
 - [ ] Booking, asking, reschedule, book-again and cancel-request all work from the rows and the sheet.
 - [ ] My Enrollment shows "The Financial Aid Office needs…" and "Student Health Services needs…".
 - [ ] `npm run build` clean; 390px checked; `Esc`, focus trap and return verified on both sheets.
+
+## After the fact — 2026-08-21, later the same day
+
+- **T5, struck by Marco.** A row with no published times no longer drops its title to `--fs-body`
+  or its tile to the quiet ink: two title sizes in one card read as a font-size error, not a
+  hierarchy, and the row still carries an action (`Ask for a time`). The same step on past
+  conversations (`.appointment-row.past .campus-row-title`) is gone with it — the past tile keeps
+  the campus row's quiet ink. Below 620px the conversation row's title now steps to `--fs-h3` with
+  the task row's, so both row shapes on the page share one title size at every width. Verified
+  with computed styles at 1440 and 390.

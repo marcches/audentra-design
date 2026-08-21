@@ -28,31 +28,17 @@ import Avatar from '../primitives/Avatar.jsx';
  * and the two ways to reach them, both one click away. One bar, one content,
  * every section — a section that shows more or less here is the drift.
  *
- * ## When the subject is an office — the My Degree brief, 2026-08-21
- *
- * My Degree names the Office of the Registrar as the decider on every match
- * and then routed the student to her Admissions advisor; the brief replaces
- * the advisor with the office. An office is a thing, and a thing never gets a
- * face (design-workflow, *People, marks and the one illustration*), so a
- * subject with `kind: 'office'` draws a glyph in a tinted tile where the
- * avatar would be, and keeps everything else: the label, the line, the two
- * ways to reach it. `contact` is the name the buttons say — "Email the Office
- * of the Registrar" — when the line under the label is a location rather than
- * a name.
+ * The subject is always a person. For one afternoon — the My Degree brief of
+ * 2026-08-21, D15 — the bar took an office, a glyph in a tile where the face
+ * sits, and Marco struck it the same day: this seat is the person who owns the
+ * subject for the student, on every section; an office is a thing, a thing
+ * never gets a face, and so an office is named in the copy that needs it and
+ * never seated here.
  */
 export default function AdvisorBar({ advisor, onContact }) {
-  const isOffice = advisor.kind === 'office';
-  const who = advisor.contact ?? advisor.name;
-
   return (
     <div className="advisor-bar">
-      {isOffice ? (
-        <span className="advisor-office-mark advisor-avatar" aria-hidden="true">
-          <Icon name={advisor.icon ?? 'buildings'} size={20} weight="duotone" />
-        </span>
-      ) : (
-        <Avatar person={advisor} size="md" className="advisor-avatar" />
-      )}
+      <Avatar person={advisor} size="md" className="advisor-avatar" />
       <div className="advisor-bar-copy">
         <span className="panel-label">{advisor.label}</span>
         <strong>
@@ -64,7 +50,7 @@ export default function AdvisorBar({ advisor, onContact }) {
         <Tooltip tip="Email">
           <button
             className="advisor-action"
-            aria-label={`Email ${who}`}
+            aria-label={`Email ${advisor.name}`}
             onClick={() => onContact('email')}
           >
             <Icon name="mail" size={16} />
@@ -73,7 +59,7 @@ export default function AdvisorBar({ advisor, onContact }) {
         <Tooltip tip="Message">
           <button
             className="advisor-action"
-            aria-label={`Message ${who}`}
+            aria-label={`Message ${advisor.name}`}
             onClick={() => onContact('message')}
           >
             <Icon name="message" size={16} />

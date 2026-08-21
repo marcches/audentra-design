@@ -20,18 +20,12 @@
 
 /* --- the topic row ---------------------------------------------------- */
 
-/* A row that cannot be clicked through to booking sits a step down (T5): the
-   title at the body size, the tile in the quiet ink. The guide builds
-   hierarchy by shrinking what is not actionable now. */
-.topic-row.quiet .task-main h3 {
-  font-size: var(--fs-body);
-}
-
-.topic-row.quiet .task-type-icon {
-  color: var(--muted);
-  background: var(--line-soft);
-  border-color: var(--line);
-}
+/* Every topic row is the same row. T5 of the brief asked for a row with no
+   published times to drop its title to the body size and its tile to the quiet
+   ink; Marco struck it on 2026-08-21 — two title sizes in one card is a
+   font-size error, not a hierarchy, and the row still carries an action
+   (`Ask for a time`). What differs between rows is said by the facts line and
+   by the button's label, never by the type. */
 
 /* The no-times explanation, directly in the row — no click, no accordion. */
 .topic-row .no-slots {
@@ -93,11 +87,9 @@
   color: var(--purple-dark);
 }
 
-/* What is over sits a step down, like a topic with no times. */
-.appointment-row.past .campus-row-title {
-  font-size: var(--fs-body);
-}
-
+/* What is over is marked the way the campus row marks it — the tile in the
+   quiet ink — and never by a smaller title: one row shape, one title size, on
+   every card of the page (Marco, 2026-08-21). */
 .appointment-row.past .date-tile {
   color: var(--muted);
   background: var(--line-soft);
@@ -669,5 +661,12 @@
      one fact the row exists to state. It stays. */
   .topic-row .task-facts span:last-child {
     display: flex;
+  }
+
+  /* The task row's title steps to --fs-h3 at this width (enrollment.css); the
+     conversation row's title, which sits at the task row's size above it, steps
+     with it — one title size for both row shapes on the page, at every width. */
+  .appointment-row .campus-row-title {
+    font-size: var(--fs-h3);
   }
 }
