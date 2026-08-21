@@ -97,7 +97,8 @@ const SPACE = [
   ['space-9', 'a card’s own padding'],
   ['space-10', 'a page region to the next'],
   ['space-11', 'the top and the bottom of a page'],
-  ['space-12', 'the widest gap the product uses'],
+  ['space-12', 'a page’s own top and bottom on a wide screen'],
+  ['space-13', 'the widest step: the padding on a page’s outer frame'],
 ];
 
 const RADIUS = [
@@ -108,6 +109,7 @@ const RADIUS = [
   ['radius-card', 'a card on the canvas'],
   ['radius-panel', 'a drawer, a modal, a window'],
   ['radius-pill', 'a pill'],
+  ['radius-round', 'a circle: an avatar, an orbit ring, a dot'],
 ];
 
 const TYPE = [
@@ -214,7 +216,7 @@ export default function Styleguide() {
         <Section
           id="sg-space"
           title="Space"
-          rule="Twelve steps. The audit found every whole pixel from 1 to 20 in use as a gap — a flat distribution over twenty values, which is the absence of a scale rather than a scale with exceptions."
+          rule="Thirteen steps. The audit found every whole pixel from 1 to 20 in use as a gap — a flat distribution over twenty values, which is the absence of a scale rather than a scale with exceptions."
         >
           <ul className="sg-scale">
             {SPACE.map(([token, note]) => (

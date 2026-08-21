@@ -630,6 +630,7 @@
   align-items: center;
   gap: var(--space-3);
   min-height: 36px;
+  padding: 0 var(--space-7);
   font-size: var(--fs-meta);
   font-weight: var(--fw-heavy);
   transition: all .17s;
@@ -1884,7 +1885,6 @@ footer a {
 
 .state-card .secondary-button {
   margin: var(--space-8) auto 0;
-  padding: 0 var(--space-7);
   display: inline-flex;
 }
 
@@ -2022,6 +2022,8 @@ footer a {
    and it eats the card's bottom padding the same way. */
 .card-foot {
   background: var(--card-zone);
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
   border-top: 1px solid var(--line);
   border-radius: 0 0 calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px);
   margin: var(--card-pad) calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad));
