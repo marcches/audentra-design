@@ -1060,9 +1060,30 @@
   display: grid;
 }
 
-/* No tile — the rows under this head carry their own. */
+/* No tile — the rows under this head carry their own. The type then carries
+   the weight the tile used to: the name heavy, the line under it in the second
+   voice rather than the muted one (Marco, 2026-08-21: a bare head set like a
+   tiled one read as washed out). */
 .status-heading.bare {
   grid-template-columns: minmax(0,1fr) auto;
+}
+
+.status-heading.bare h2 {
+  letter-spacing: var(--ls-tight);
+  font-weight: var(--fw-heavy);
+}
+
+.status-heading.bare p {
+  color: var(--ink-2);
+  font-size: var(--fs-copy);
+}
+
+/* A list runs straight into the head's hairline. The head's gap below itself is
+   for content that has no padding of its own; a row brings its padding, and the
+   two together were a double gap (Marco, 2026-08-21). */
+.section-card > .status-heading + .card-rows,
+.section-card > .card-heading + .card-rows {
+  margin-top: calc(-1 * var(--card-pad));
 }
 
 .status-icon {
@@ -1119,7 +1140,6 @@
   grid-template-columns: 40px minmax(0,1fr) auto;
   align-items: center;
   gap: var(--space-6);
-  min-height: 86px;
   padding: var(--space-7) var(--space-9);
   display: grid;
 }
@@ -3296,12 +3316,26 @@ img.avatar {
   transition: background-color var(--dur-fast) var(--ease);
 }
 
+/* The handle has to look like one: the chevron sits in a bordered disc — the
+   same furniture as an icon button — the count is a purple chip, and the whole
+   head answers a pointer: the band darkens, the name and the disc go purple. */
 .status-heading.collapsible:hover {
   background: var(--surface-sunk);
 }
 
-.status-heading.collapsible:focus-visible {
-  outline-offset: -3px;
+.status-heading.collapsible:hover h2 {
+  color: var(--purple-dark);
+}
+
+.status-heading.collapsible .status-count {
+  color: var(--purple-ink);
+  background: var(--purple-soft);
+}
+
+.status-heading.collapsible:hover .status-chevron {
+  color: var(--purple-dark);
+  background: var(--purple-wash);
+  border-color: var(--purple-line);
 }
 
 .status-trailing {
@@ -3311,10 +3345,19 @@ img.avatar {
 }
 
 .status-chevron {
-  color: var(--muted);
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-round);
   place-items: center;
+  width: 30px;
+  height: 30px;
   display: grid;
-  transition: transform var(--dur-fast) var(--ease);
+  transition:
+    transform var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
 }
 
 .status-chevron.open {
