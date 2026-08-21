@@ -35,12 +35,13 @@ export default function ShortlistPanel({ shortlist, locked, onMove, onRemove, on
 
   return (
     <section className="section-card shortlist-card" aria-labelledby="shortlist-heading">
-      <div className="section-heading">
+      <div className="status-heading">
+        <span className="status-icon accent" aria-hidden="true">
+          <Icon name="buildings" size={20} />
+        </span>
         <div>
-          <p className="eyebrow muted">{locked ? 'What you submitted' : 'Second question'}</p>
-          <h2 id="shortlist-heading">
-            {locked ? 'The residences you ranked' : 'Rank the residences you would like'}
-          </h2>
+          <h2 id="shortlist-heading">{locked ? 'The residences you ranked' : 'Rank the residences you would like'}</h2>
+          <p>{locked ? 'What you submitted' : 'Second question'}</p>
         </div>
         <span className="result-count" aria-live="polite">
           {rows.length} of {SHORTLIST_MAX} ranked

@@ -27,7 +27,7 @@ export default function ProgressPreview({ progress, unavailable, onExplain, onRe
     <Card variant="progress-preview" aria-labelledby="progress-title">
       <div className="card-heading">
         <span className="card-icon">
-          <Icon weight="duotone" name="chart" size={19} />
+          <Icon name="chart" size={19} />
         </span>
         <div>
           <h2 id="progress-title">

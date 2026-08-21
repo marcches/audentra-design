@@ -18,7 +18,6 @@
 
 .status-icon.record {
   color: var(--purple-dark);
-  background: var(--purple-soft);
 }
 
 /* Four cards, three kinds. The two record cards are purple; the card holding
@@ -27,12 +26,10 @@
    identical purple tiles made four different jobs look like one list. */
 .status-icon.private {
   color: var(--on-ink);
-  background: linear-gradient(145deg, var(--surface-ink), var(--purple-deep));
 }
 
 .status-icon.signpost {
   color: var(--muted);
-  background: var(--line-soft);
 }
 
 /* --- one field of the record --- */
@@ -442,56 +439,6 @@
   margin-top: var(--space-1);
 }
 
-/* --- what is held in another section: a route, never a copy --- */
-
-.elsewhere-row {
-  color: inherit;
-  grid-template-columns: 34px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--space-6);
-  padding-top: var(--space-7);
-  padding-bottom: var(--space-7);
-  text-decoration: none;
-  transition: background .15s;
-  display: grid;
-}
-
-.elsewhere-row:hover {
-  background: var(--card-zone);
-}
-
-.elsewhere-icon {
-  color: var(--purple-dark);
-  background: var(--purple-soft);
-  border-radius: var(--radius-chip);
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  display: grid;
-}
-
-.elsewhere-copy strong {
-  font-size: var(--fs-body);
-  display: block;
-}
-
-.elsewhere-copy small {
-  color: var(--muted);
-  margin-top: var(--space-1);
-  font-size: var(--fs-meta);
-  line-height: var(--lh-body);
-  display: block;
-}
-
-.elsewhere-where {
-  color: var(--purple-dark);
-  align-items: center;
-  gap: var(--space-3);
-  font-size: var(--fs-meta);
-  font-weight: var(--fw-heavy);
-  display: flex;
-}
-
 /* --- the profile rail --- */
 
 .access-note {
@@ -649,11 +596,5 @@
   .grant-foot .revoke-button {
     flex: 1 0 100%;
     justify-content: center;
-  }
-  .elsewhere-row {
-    grid-template-columns: 34px minmax(0, 1fr);
-  }
-  .elsewhere-where {
-    grid-column: 2;
   }
 }

@@ -32,7 +32,7 @@ export default function CostCard({ ledger, snapshot, year, children }) {
     <Card aria-labelledby="cost-title">
       <div className="card-heading">
         <span className="card-icon">
-          <Icon weight="duotone" name="receipt" size={19} />
+          <Icon name="receipt" size={19} />
         </span>
         <div>
           <h2 id="cost-title">Cost and coverage</h2>

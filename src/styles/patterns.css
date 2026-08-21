@@ -710,21 +710,12 @@
   display: grid;
 }
 
-.section-heading {
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--space-9);
-  margin: 0 0 var(--space-7);
-  display: flex;
-}
-
 /* One heading for a card, wherever the card is. Three classes were doing this
    job at three sizes — `.section-heading` at 21px on My Enrollment and Help,
    `.status-heading` at 17px on My Enrollment, My Classrooms and My Profile,
    `.card-heading` at 15px on My Financials and Appointments — and My Financials
    ran two of them side by side. They all name a `.section-card`, so they are
    all one size. Above this there is only the page band. */
-.section-heading h2,
 .status-heading h2,
 .card-heading h2 {
   letter-spacing: var(--ls-snug);
@@ -732,8 +723,13 @@
   font-size: var(--fs-h2);
 }
 
-/* `.section-heading` carries an eyebrow rather than a description, so it is
-   deliberately not in this rule — it would outrank `.eyebrow` and flatten it. */
+/* A status or card head's name sets a step up from regular: with a bare glyph
+   beside it rather than a tile, the name is the head's weight. */
+.status-heading h2,
+.card-heading h2 {
+  font-weight: var(--fw-semi);
+}
+
 .status-heading p,
 .card-heading p {
   color: var(--muted);
@@ -800,7 +796,7 @@
   border-color: var(--amber-line);
 }
 
-.task-type-icon.form, .drawer-icon.form {
+.task-type-icon.housing, .drawer-icon.housing {
   color: var(--teal);
   background: var(--teal-soft);
   border-color: var(--teal-line);
@@ -1053,17 +1049,16 @@
 }
 
 .status-heading {
-  grid-template-columns: 36px minmax(0,1fr) auto;
+  grid-template-columns: 24px minmax(0,1fr) auto;
   align-items: center;
   gap: var(--space-5);
   margin-bottom: var(--space-6);
   display: grid;
 }
 
-/* No tile — the rows under this head carry their own. The type then carries
-   the weight the tile used to: the name heavy, the line under it in the second
-   voice rather than the muted one (Marco, 2026-08-21: a bare head set like a
-   tiled one read as washed out). */
+/* A status head without a tile. The type then carries the weight the tile used
+   to: the name heavy, the line under it in the second voice (Marco,
+   2026-08-21: a bare head set like a tiled one read as washed out). */
 .status-heading.bare {
   grid-template-columns: minmax(0,1fr) auto;
 }
@@ -1086,22 +1081,25 @@
   margin-top: calc(-1 * var(--card-pad));
 }
 
+/* The mark a card head opens with: a bare outline glyph in the tone's colour,
+   and no tile — a tinted tile with a duotone glyph is the content's shape (a
+   task's kind, an organisation, a document), and a head that wore the same
+   shape repeated on every row under it (Marco, 2026-08-21). One form for every
+   head in the product; the tone classes below only colour the glyph. */
 .status-icon {
-  border-radius: var(--radius-chip);
+  color: var(--ink-2);
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 24px;
+  height: 24px;
   display: grid;
 }
 
 .status-icon.review {
   color: var(--amber);
-  background: var(--amber-tint);
 }
 
 .status-icon.locked {
   color: var(--muted);
-  background: var(--line);
 }
 
 /* The two tones every section may need: the section's own content (purple,
@@ -1109,12 +1107,10 @@
    which meant My Enrollment's completed group was styled by another feature. */
 .status-icon.accent {
   color: var(--purple-dark);
-  background: var(--purple-soft);
 }
 
 .status-icon.done {
   color: var(--green);
-  background: var(--green-tint);
 }
 
 .status-count {
@@ -1127,6 +1123,22 @@
   font-size: var(--fs-meta);
   font-weight: var(--fw-heavy);
   display: grid;
+}
+
+/* The kinds that only appear on a step that is with Aster, locked or done.
+   Each takes a family the contract already gives a meaning: review sits with
+   the documents (purple), meeting and preferences with the person (amber),
+   identity with verified (green), decision with the offer (purple). */
+.task-type-icon.meeting, .task-type-icon.preferences {
+  color: var(--amber);
+  background: var(--amber-soft);
+  border-color: var(--amber-line);
+}
+
+.task-type-icon.identity {
+  color: var(--green);
+  background: var(--green-soft);
+  border-color: var(--green-line);
 }
 
 /* A row in one of My Enrollment's groups. It shares the task row's columns —
@@ -1176,29 +1188,6 @@
   border-radius: 0 0 var(--radius-row) var(--radius-row);
 }
 
-.compact-check {
-  color: var(--amber);
-  background: var(--amber-soft);
-  border: 1px solid var(--amber-line);
-  border-radius: var(--radius-tile);
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  display: grid;
-  box-shadow: inset 0 1px #ffffffe6;
-}
-
-.compact-check.locked {
-  color: var(--muted);
-  background: var(--line-soft);
-  border-color: var(--line);
-}
-
-.compact-check.done {
-  color: var(--green);
-  background: var(--green-soft);
-  border-color: var(--green-line);
-}
 
 .compact-copy h3 {
   margin: 0 0 var(--space-2);
@@ -2275,11 +2264,6 @@ footer a {
   .advisor-action::after {
     display: none;
   }
-  .section-heading {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-5);
-  }
   .sort-group {
     width: 100%;
   }
@@ -2299,7 +2283,7 @@ footer a {
     justify-self: start;
   }
   .status-heading {
-    grid-template-columns: 34px minmax(0,1fr) auto;
+    grid-template-columns: 24px minmax(0,1fr) auto;
   }
   .status-heading .sort-group {
     grid-column: 1 / -1;
@@ -2445,19 +2429,17 @@ footer a {
 /* One heading shape for every card in the section. */
 .card-heading {
   align-items: center;
-  gap: var(--space-6);
+  gap: var(--space-5);
   margin-bottom: var(--space-8);
   display: flex;
 }
 
 .card-icon {
   color: var(--purple-dark);
-  background: var(--purple-soft);
-  border-radius: var(--radius-chip);
   flex: none;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 24px;
+  height: 24px;
   display: grid;
 }
 
@@ -2565,8 +2547,7 @@ footer a {
    `.card-rows` takes the bottom ones, and it publishes one gap below itself, so
    three margins (12px, 14px, 16px) stop being three. */
 .section-card > .status-heading:first-child,
-.section-card > .card-heading:first-child,
-.section-card > .section-heading:first-child {
+.section-card > .card-heading:first-child {
   background: var(--card-zone);
   border-bottom: 1px solid var(--line);
   border-radius: calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0 0;
@@ -2588,20 +2569,100 @@ footer a {
   padding: var(--space-6) var(--card-pad);
 }
 
-/* The foot of an entry card — `EntryCard`: what stands there today on the
-   left, the one way in on the right. The sentence gives way first; the control
-   never wraps its label. */
-.entry-foot {
-  flex-wrap: wrap;
-  justify-content: space-between;
+/* --- the door: one thing a page can open, as a row -------------------------
+ *
+ * `EntryRow`. It was `.elsewhere-row` in `features/profile.css`, where a second
+ * page could not find it, and for one afternoon it was `EntryCard` — a card
+ * with a head, a foot and nothing between, which drew the empty band this
+ * stylesheet spends a paragraph in `Notice` warning against. The anatomy below
+ * is Profile's, unchanged; what changed is that it has a name and lives where
+ * the product can reach it.
+ *
+ * Rows go in `.card-rows`, so the surface, the border, the width and the
+ * side padding all come from the card. What is here is the grid and the ink. */
+
+.entry-row {
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-6);
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-7);
+  text-decoration: none;
+  transition: background var(--dur-fast) var(--ease);
+  display: grid;
+}
+
+.entry-row:hover {
+  background: var(--card-zone);
+}
+
+/* The whole row is the control, so the ring is drawn inside it — an outline
+   outside a row that bleeds to the card's edge is clipped by the card. */
+.entry-row:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: -3px;
+}
+
+.entry-icon {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+  border-radius: var(--radius-chip);
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  display: grid;
+}
+
+.entry-copy strong {
+  font-size: var(--fs-body);
+  display: block;
+}
+
+.entry-copy small {
+  color: var(--muted);
+  margin-top: var(--space-1);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+  display: block;
+}
+
+.entry-where {
+  color: var(--purple-dark);
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-heavy);
   display: flex;
 }
 
-.entry-foot > span {
-  color: var(--muted);
-  flex: 1 1 240px;
+/* The trailing cell drops under the copy: at this width the destination name
+   and the title were sharing 340px and both wrapped.
+
+   This block sits *here*, directly under the rules it overrides, and not in
+   either of the two `width<=620` blocks further up the file — it was in one of
+   them for ten minutes and lost the tie to the base rule above by position, so
+   the row kept three columns and grew an implicit fourth. Two rules of equal
+   specificity are decided by position; a media query does not raise it. */
+@media (width<=620px) {
+  .entry-row {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+  .entry-where {
+    grid-column: 2;
+  }
+}
+
+/* A card whose whole content is one list has no head to close, so the list
+   takes the card's own radius on all four corners and pulls up into the
+   padding the head would have occupied. Without this the first row meets the
+   card's rounded top with a square edge — the tell `Card.jsx` names. */
+.section-card > .card-rows:only-child {
+  border-radius: calc(var(--card-radius) - 1px);
+  margin-top: calc(-1 * var(--card-pad));
 }
 
 /* --- the link button --- */

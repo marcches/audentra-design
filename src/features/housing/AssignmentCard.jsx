@@ -21,10 +21,13 @@ export default function AssignmentCard({ assignment, shortlist }) {
 
   return (
     <section className="section-card assignment-card" aria-labelledby="assignment-heading">
-      <div className="section-heading">
+      <div className="status-heading">
+        <span className="status-icon done" aria-hidden="true">
+          <Icon name="bed" size={20} />
+        </span>
         <div>
-          <p className="eyebrow muted">Assigned by {assignment.assignedBy}</p>
           <h2 id="assignment-heading">You have a room</h2>
+          <p>Assigned by {assignment.assignedBy}</p>
         </div>
       </div>
 

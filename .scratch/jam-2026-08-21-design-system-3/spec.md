@@ -90,3 +90,61 @@ worse page, not a panel.
 - **`Sidebar.jsx` still reads `destinationById(activeId)?.parent`.** `parent` no longer exists, so
   the two expressions are permanently false — dead, not broken. The file was held by a concurrent
   session doing the navigation pass; the removal was handed to it rather than raced.
+
+---
+
+# Round two, the same afternoon: the door was a card with nothing in it
+
+## 7. What Marco caught
+
+> *"Só copiou e colou na página. Precisa adaptar a página, colocar em lugar que não
+> prejudique a ordem de importância dos itens. Não precisa desse blocão todo — usa um
+> mecanismo diferente, tem tantos pelo sistema."*
+
+Two findings, and the screenshots carried a third we had not seen.
+
+1. **`EntryCard` was a card with nothing in the room.** `Card` + `CardHead` + `CardFoot`
+   and no content between them, so what it drew was two bands with a strip of the card's
+   own `--card-pad` showing white between them. Visible in both screenshots, and it is
+   exactly the shape the Jam of 2026-08-21 struck off My Enrollment. `Notice.jsx` spends
+   a paragraph on it: *a band on the canvas is a card with nothing in it, and it is what
+   you get when a thing is given a place of its own instead of a place in something.* We
+   wrote that rule down twice and then shipped a component that breaks it.
+2. **The weight inverted the page.** On Health the door stood at the immunization
+   record's size — the one obligation that blocks registration — for a question that must
+   never read as one (ADR-0001, ENR-208 AC 3). On Profile it was the first block on the
+   page, above the record the page exists to show.
+3. **The mechanism already existed, one file away.** Profile's own foot had
+   `.elsewhere-row`: icon tile, name, one line, and where the click goes, three to a card.
+   A door, drawn correctly, sitting unnamed in `features/profile.css` where no second page
+   could find it — the audit's finding in miniature.
+
+## 8. What replaced it
+
+`EntryRow` in `design-system/patterns/`, and `EntryCard` is deleted.
+
+- **The anatomy is Profile's, unchanged.** `.elsewhere-*` moves to `patterns.css` as
+  `.entry-*` and goes on the styleguide. Proven, not eyeballed: the two carried-over doors
+  were captured twice before and twice after at 1440 and 390 — x, width, height, grid
+  columns, colour, type, padding all identical. The only delta is `border-top: 0 → 1px` on
+  the first of them and the 1px it pushes down, which is the hairline it is *supposed* to
+  gain now that a row sits above it.
+- **Two kinds, told apart by the trailing cell.** `href` renders an `<a>` and `where` names
+  the section; `onOpen` renders a `<button>` and `where` is `Open`. A student is owed the
+  difference between *this takes you somewhere* and *this opens here* before she clicks.
+- **`count` is optional and never invented.** No chip at zero.
+- **Health**: one row, in a card with no head, after the record. A card whose only child is
+  a list now takes the card's radius on all four corners (`.section-card > .card-rows:only-child`),
+  so the first row does not meet a rounded card with a square edge — the tell `Card.jsx` names.
+- **Profile**: the door joins the page's existing list of doors at the foot, leading it,
+  with its count. `What lives somewhere else` becomes `The rest of your record`, because
+  the list now mixes one panel that opens here with two sections that do not.
+
+## 9. The bug the capture caught
+
+The `width<=620` override for the row went into one of `patterns.css`'s existing media
+blocks — which sit **above** the base rule in the file. Equal specificity, and a media query
+does not raise it, so the base won by position: the row kept three columns at 390 and grew
+an implicit fourth. It is the failure `CLAUDE.md` documents twice, committed for the third
+time and caught only because the rows were being diffed against a baseline. The block now
+sits directly under the rules it overrides, with the reason written beside it.

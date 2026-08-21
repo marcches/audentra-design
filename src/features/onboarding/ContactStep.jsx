@@ -53,6 +53,8 @@ export default function ContactStep({ draft, onChange }) {
       <Card>
         <CardHead
           kind="section"
+          icon="message"
+          tone="accent"
           eyebrow="Your choice"
           title="Where should Aster write first?"
         />

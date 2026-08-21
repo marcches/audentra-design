@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import EntryCard from '../../design-system/patterns/EntryCard.jsx';
+import Card, { CardRows } from '../../design-system/primitives/Card.jsx';import EntryRow from '../../design-system/patterns/EntryRow.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import { panelById } from '../../lib/navigation.js';
 import RecordCard from './RecordCard.jsx';
@@ -110,15 +110,23 @@ export default function HealthPage({
         onRetry={onRetry}
       />
 
-      <EntryCard
-        id="accessibility"
-        icon={accessibility.icon}
-        title={accessibility.label}
-        note={accessibility.lede}
-        standing="Yours to answer, or not. Not right now is a complete answer, and nothing here is a medical matter."
-        onOpen={() => setAccessOpen(true)}
-        action={accessibility.action}
-      />
+      {/* The door to Accessibility, and it is a door and not a second card.
+          Drawn at the record's weight it read as a second obligation, which is
+          the one thing this question must never look like (ADR-0001, ENR-208
+          AC 3) — and a card with a head and a foot and nothing between is the
+          empty band `Notice` is written against. One row, no head, because the
+          row says everything a head would. */}
+      <Card>
+        <CardRows>
+          <EntryRow
+            icon={accessibility.icon}
+            title={accessibility.label}
+            note={accessibility.lede}
+            where="Open"
+            onOpen={() => setAccessOpen(true)}
+          />
+        </CardRows>
+      </Card>
 
       {open && requirement && (
         <DocumentDrawer

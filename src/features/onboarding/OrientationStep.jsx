@@ -25,6 +25,8 @@ export default function OrientationStep({ draft, onChange }) {
     <Card className="asking">
       <CardHead
         kind="section"
+        icon="calendar"
+        tone="accent"
         eyebrow="The last one"
         title="Which orientation will you come to?"
         aside={

@@ -33,21 +33,29 @@ export default function Card({ as: Tag = 'section', variant, className, children
 }
 
 /**
- * The band a card opens with. Three kinds and no more, because the product has
- * three kinds of card and they must not look alike:
+ * The band a card opens with — **one anatomy for every card in the product**
+ * (Marco, 2026-08-21: "padronize os headers"): a bare outline glyph, the name,
+ * one line under it, and a trailing cell for a count, a control or the handle.
+ * `kind` only decides the glyph's colour:
  *
- *   status   an icon tile that carries a state, then the name and a line under
- *            it. For the card that holds a section's content.
- *   card     a neutral icon tile, then the name and a line. For a card that is
- *            one block among several.
- *   section  an eyebrow above the name, and room for a control at the trailing
- *            edge. For the head that names a region rather than a card.
+ *   status   the glyph takes a `tone` — the card carries a state.
+ *   card     the glyph is neutral purple — one block among several.
+ *   section  kept for its call sites; renders the same head, with `eyebrow`
+ *            as the line under the name. It used to be a different shape.
  *
- * `tone` is the status icon's variant, and it is the one place a card head is
+ * `tone` is the status mark's variant, and it is the one place a card head is
  * allowed colour — which is the rule "spend colour once per card" made into an
- * argument rather than a reminder. The glyph in the tile is **duotone**: that
- * is the one weight a tinted tile takes, and the head passes it itself so no
- * page has to remember (`Icon.jsx`).
+ * argument rather than a reminder.
+ *
+ * ## A head's mark is a glyph, not a tile — Marco, 2026-08-21
+ *
+ * The head used to draw its icon in a tinted tile, which is exactly the shape
+ * the content under it draws — a task's kind, an organisation, a document — so
+ * a card opened with the same form it then repeated on every row. One shape
+ * for heads across the whole product, one for content: the head's mark is a
+ * **bare outline glyph** (regular weight, 20px) in the tone's colour, before
+ * the name; a tinted tile with a duotone glyph belongs to content and never to
+ * a head. `.status-icon` and `.card-icon` are that glyph's box, everywhere.
  *
  * ## A status head can be the group's handle — Jam of 2026-08-21
  *
@@ -88,19 +96,12 @@ export function CardHead({
   onToggle,
   controls,
 }) {
-  if (kind === 'section') {
-    return (
-      <div className="section-heading">
-        <div>
-          {eyebrow ? <p className="eyebrow muted">{eyebrow}</p> : null}
-          <h2 id={titleId}>{title}</h2>
-        </div>
-        {aside}
-      </div>
-    );
-  }
-
-  const isStatus = kind === 'status';
+  // `section` used to be a different shape — an eyebrow above the name and no
+  // glyph. Marco, 2026-08-21: one head for the whole product. It keeps its name
+  // for the call sites; what it renders is the standard head, with the eyebrow
+  // copy as the line under the name and a glyph when one is given.
+  const isStatus = kind === 'status' || kind === 'section';
+  const line = note ?? eyebrow;
   const collapsible = isStatus && typeof onToggle === 'function';
   const bare = isStatus && !icon;
 
@@ -109,14 +110,14 @@ export function CardHead({
       className={isStatus ? ['status-icon', tone].filter(Boolean).join(' ') : 'card-icon'}
       aria-hidden="true"
     >
-      <Icon name={icon} size={iconSize ?? (isStatus ? 18 : 19)} weight="duotone" />
+      <Icon name={icon} size={iconSize ?? 20} />
     </span>
   ) : null;
 
   const copy = (
     <div>
       <h2 id={titleId}>{title}</h2>
-      {note ? <p>{note}</p> : null}
+      {line ? <p>{line}</p> : null}
     </div>
   );
 

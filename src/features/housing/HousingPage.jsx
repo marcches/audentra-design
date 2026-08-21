@@ -215,10 +215,13 @@ export default function HousingPage({
 
       {locked && opensShortlist(plan) && ranks === 'none' && (
         <section className="section-card" aria-labelledby="none-heading">
-          <div className="section-heading">
+          <div className="status-heading">
+            <span className="status-icon accent" aria-hidden="true">
+              <Icon name="buildings" size={20} />
+            </span>
             <div>
-              <p className="eyebrow muted">What you submitted</p>
               <h2 id="none-heading">You ranked no residences</h2>
+              <p>What you submitted</p>
             </div>
           </div>
           <p className="panel-lede">

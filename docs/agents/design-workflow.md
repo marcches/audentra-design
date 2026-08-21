@@ -218,6 +218,10 @@ card. A box inside a box is what made most of the portal read as stacked rather 
 
 - **Every block of the main column is a card** (`.section-card`, or one of My Financials' named
   variants). Nothing sits loose on the canvas.
+- **Content wears the tile, the head wears the glyph.** A row's mark — a task's kind, a guide, a
+  document — is `.task-type-icon`: a 40px tinted tile with a duotone glyph. A head's mark is never
+  that tile, and a row's mark is never the bare glyph; borrowing `.status-icon` for a row (Help's
+  guides and My Financials' documents did) is the tell.
 - **A list inside a card is `.card-rows`.** The rows give up their own background, border, shadow
   and radius, and live on the card's white; a hairline and the type do the separating. Reach for a
   tint or a second surface only when the content is genuinely one level in, as the courses inside a
@@ -226,8 +230,10 @@ card. A box inside a box is what made most of the portal read as stacked rather 
   last rows take the corner they touch. A square row meeting a rounded card is the tell that a
   component was built without looking at the one holding it. The card publishes `--card-pad` and
   `--card-radius` for exactly this; a row must never hard-code either.
-- **A card has three zones and they are visible.** The head — `.status-heading`, `.card-heading` or
-  `.section-heading`, whichever the block uses — is a band: `--card-zone`, the card's own paper one
+- **A card has three zones and they are visible.** The head — `.status-heading` or `.card-heading`,
+  one anatomy for every card in the product — opens with a **bare outline glyph** in its tone
+  (never a tile: a tinted tile is the content's shape, and a head that wears it repeats what every
+  row under it wears), and is a band: `--card-zone`, the card's own paper one
   shade down, run out to the card's edges and closed with a hairline, taking the top corners the way
   `.card-rows` takes the bottom ones. Content sits on the white below it. A note or control that
   *closes* a card is `.card-foot`, the same band at the other end. Nothing else in a card is tinted.
@@ -288,7 +294,7 @@ chooses it in almost every case:
 | **regular** | every glyph of 16px or more — inline with text, in a button, in a fact | nobody; it is the default |
 | **bold** | every glyph below 16px — chips, pills, meta facts — so the stroke survives | nobody; `Icon` switches by size |
 | **fill** | the *on* state of a stateful control, and nothing else — the nav row you are on, the sort you chose, the bell with unread | the control (`NavRow`, the sort group, the bell) |
-| **duotone** | the mark in a tinted tile, and nothing else — a status head, a task-type tile, a state card, a drawer's header tile, the band's orbit core | the tile (`CardHead`, `StateCard`, `Spot`, `.task-type-icon`, `.drawer-icon`) |
+| **duotone** | the mark in a flat tinted tile, and nothing else — a task-type tile, an organisation's tile, a state card's spot, a drawer's header tile. **Never a card head**: a head's mark is a bare outline glyph in its tone (`.status-icon`, `.card-icon` are the glyph's box, not a tile), so a head never wears the shape its rows wear | the tile (`StateCard`, `Spot`, `.task-type-icon`, `.drawer-icon`, `.org-tile`) |
 
 Light and thin are not vendored: two tile weights would be two tile styles. **Duotone never sits on
 a gradient** — the band's orbit core stays outline, because a two-tone back layer turns to mud on a
@@ -312,12 +318,12 @@ with initials and none of them had a place for a face. Now:
 - **A person** Aster knows — the student, an advisor, a club contact — is `<Avatar person size>`:
   the photo on the record when there is one, initials when there is not, at `xs 24 · sm 32 · md 40 ·
   lg 56`. `alt=""` when the name is printed beside it (nearly always); `alone` when it is not, and
-  the name becomes the alt. **Only the student has a photo on the record** — the one she gave the
-  portal at the ID-card step; staff and contacts are initials. An enrollment system holds no
-  directory of staff portraits, and a generated face in a staff role is how a teenager ended up as
-  the Admissions advisor for an afternoon (Marco, 2026-08-21). Her photo in `public/people/` is
-  **synthetic** — no real person — and `SOURCES.md` there records where it came from. Never fetch
-  a face at runtime.
+  the name becomes the alt. The photos in `public/people/` are **stock portraits** (Unsplash,
+  under its licence), **chosen for the role the way a directory photo reads**: an advisor looks
+  like staff — thirties to fifties, dressed for an office; a faculty adviser can look like faculty;
+  a student looks college-age. Never a generated face: asked for a 35–50-year-old Admissions
+  advisor, a GAN returned a teenager, and Marco read it as a child in a staff role (2026-08-21).
+  `SOURCES.md` there records each id and photographer. Never fetch a face at runtime.
 - **A thing** — an office, a residence, an organisation, a destination on another site — never gets
   a face. It is a glyph in a tile (`org.icon`, duotone), or a monogram. Offices are a name and
   nothing else (Help already decides this).
@@ -360,11 +366,15 @@ was that box, and it was the only one of three identical groups that could close
 - **The student's choice is remembered** per group (`localStorage`, the way the sidebar remembers
   its groups), and nothing else is stored.
 - **The group the page exists for never closes.** On My Enrollment that is *Your next steps*.
-- **The mark is on the head or on the rows, never both.** A status head takes its tile when the
-  rows carry none; when every row carries a tile — a task's kind, a step's standing — the head is
-  *bare* (no `icon`), and the rows of every group share the task row's columns (a 40px tile, the
-  copy, the trailing cell) and its horizontal padding, so the tiles and the titles of all four
-  groups sit on the same x down the page.
+- **The head says the standing, the row says the kind — never the same glyph on both, never the
+  same shape.** A group's status head carries the group's standing in its bare glyph (the
+  checklist, a clock, a lock, a check); every row under it carries the *step's kind* in its tile — external, upload, profile,
+  housing, meeting, review, identity, preferences, decision — from the one vocabulary in
+  `features/enrollment/logic.js` (`kindIcon`), whatever the row's standing. A clock on the head
+  and a clock on every row was the same thing said twice. All four groups' rows share the task
+  row's columns (a 40px tile, the copy, the trailing cell) and horizontal padding, so tiles and
+  titles sit on the same x down the page. A status head may still be *bare* (no `icon`) when the
+  card has no standing to show; it then carries its weight in type.
 
 ## 5. Build — the design system is a contract
 
@@ -397,8 +407,10 @@ guess, and guessing is what produced 436 hand-typed colours and eight hand-typed
 | A picture on a state | `<StateCard>` (it draws its own `<Spot>`) | an imported illustration set |
 | The institution's or the vendor's mark | `<AsterMark>` / `<AudentraMark>` | a letter in a tile, an icon from the set |
 
-`CardHead` takes `kind="status" | "card" | "section"` — the three, and only three, ways a card may
-open. `IconButton` takes `label`, not `aria-label`, so an icon-only control cannot ship unnamed.
+`CardHead` is the one way a card opens — a bare outline glyph, the name, one line under it, a
+trailing cell — and `kind` only colours the glyph (`status` takes a `tone`, `card` is neutral;
+`section` is kept for its call sites and renders the same head with `eyebrow` as the line).
+`IconButton` takes `label`, not `aria-label`, so an icon-only control cannot ship unnamed.
 
 ### Tooltips: two of them, and the line between them is not style
 

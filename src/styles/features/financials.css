@@ -340,7 +340,6 @@
 /* Documents that need you — the same tasks the checklist renders. */
 .status-icon.docs {
   color: var(--purple-dark);
-  background: var(--purple-soft);
 }
 
 .doc-list {

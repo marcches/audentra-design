@@ -25,10 +25,13 @@ export default function PlanPanel({ plan, source, locked, onChoose }) {
   if (locked) {
     return (
       <section className="section-card" aria-labelledby="plan-heading">
-        <div className="section-heading">
+        <div className="status-heading">
+          <span className="status-icon done" aria-hidden="true">
+            <Icon name="home" size={20} />
+          </span>
           <div>
-            <p className="eyebrow muted">Your answer</p>
             <h2 id="plan-heading">Where you will live</h2>
+            <p>Your answer</p>
           </div>
         </div>
         <p className="settled-answer">
@@ -48,10 +51,13 @@ export default function PlanPanel({ plan, source, locked, onChoose }) {
 
   return (
     <section className="section-card" aria-labelledby="plan-heading">
-      <div className="section-heading">
+      <div className="status-heading">
+        <span className="status-icon accent" aria-hidden="true">
+          <Icon name="home" size={20} />
+        </span>
         <div>
-          <p className="eyebrow muted">First question</p>
           <h2 id="plan-heading">Where will you live?</h2>
+          <p>First question</p>
         </div>
       </div>
 

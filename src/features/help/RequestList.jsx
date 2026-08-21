@@ -13,10 +13,13 @@ import StateCard from '../../design-system/patterns/StateCard.jsx';
 export default function RequestList({ requests, open, today, unavailable, onOpen, onAsk, onRetry }) {
   return (
     <section className="section-card" aria-labelledby="requests-heading">
-      <div className="section-heading">
+      <div className="status-heading">
+        <span className="status-icon accent" aria-hidden="true">
+          <Icon name="message" size={20} />
+        </span>
         <div>
-          <p className="eyebrow muted">What you have asked</p>
           <h2 id="requests-heading">Your requests</h2>
+          <p>What you have asked</p>
         </div>
         {/* The section's standing, and the way to add to it. Both were in a
             summary panel above the page until the Jam of 2026-08-21, where the

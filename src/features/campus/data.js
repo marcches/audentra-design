@@ -304,7 +304,7 @@ export const campusOrganisations = [
     about:
       'The choir sings two concert programs a term and rehearses once a week. Roughly a third of the singers arrive having never read sheet music, so rehearsals start with the part-learning rather than assuming it.',
     meets: 'Tuesdays, 7:30 PM · Ferrand Music Building',
-    contact: { name: 'Dana Whitfield', role: 'Faculty adviser', email: 'd.whitfield@aster.edu' },
+    contact: { name: 'Dana Whitfield', photo: '/people/dana-whitfield.webp', role: 'Faculty adviser', email: 'd.whitfield@aster.edu' },
     latestUpdate: {
       text: 'Auditions for the autumn concert close on Sep 12. Slots are going quickly.',
       date: '2026-08-18',
@@ -322,7 +322,7 @@ export const campusOrganisations = [
     about:
       'Run entirely by students since 2019, with a staff link in the chaplaincy. Volunteers pack boxes on Saturday mornings and a smaller team drives the deliveries; you can do either, or both, or one Saturday a term.',
     meets: 'Saturdays, 10:00 AM · Student Union, lower level',
-    contact: { name: 'Miguel Santos', role: 'Student coordinator', email: 'm.santos@aster.edu' },
+    contact: { name: 'Miguel Santos', photo: '/people/miguel-santos.webp', role: 'Student coordinator', email: 'm.santos@aster.edu' },
     latestUpdate: {
       text: 'We are covering 240 households a week and need six more Saturday volunteers.',
       date: '2026-08-19',
@@ -340,7 +340,7 @@ export const campusOrganisations = [
     about:
       'The network runs a monthly meetup, a mentoring pairing with second and third years, and a private channel for the questions that are easier to ask in writing.',
     meets: 'Second Tuesday of the month, 5:00 PM · Alcott House',
-    contact: { name: 'Rae Okonjo', role: 'Network chair', email: 'r.okonjo@aster.edu' },
+    contact: { name: 'Rae Okonjo', photo: '/people/rae-okonjo.webp', role: 'Network chair', email: 'r.okonjo@aster.edu' },
     latestUpdate: null,
   },
   {
@@ -355,7 +355,7 @@ export const campusOrganisations = [
     about:
       'Two competition robots a year, an open lab night every Thursday, and a workshop with more tools than most students have used. Historians and biologists are as welcome as engineers.',
     meets: 'Thursdays, 6:00 PM · Kessler Lab',
-    contact: { name: 'Lena Duarte', role: 'Faculty adviser', email: 'l.duarte@aster.edu' },
+    contact: { name: 'Lena Duarte', photo: '/people/lena-duarte.webp', role: 'Faculty adviser', email: 'l.duarte@aster.edu' },
     latestUpdate: {
       text: 'Build season starts Sep 21. The open lab nights run all through August.',
       date: '2026-08-11',
@@ -373,7 +373,7 @@ export const campusOrganisations = [
     about:
       'Weekend hikes at three difficulty levels, two indoor climbing walls, and a kit room where boots, packs and waterproofs are borrowed rather than bought. Trips are subsidised for first-year students.',
     meets: 'Wednesdays, 5:30 PM · Sports Center foyer',
-    contact: { name: 'Sam Iyer', role: 'Trips secretary', email: 's.iyer@aster.edu' },
+    contact: { name: 'Sam Iyer', photo: '/people/sam-iyer.webp', role: 'Trips secretary', email: 's.iyer@aster.edu' },
     latestUpdate: {
       text: 'Three places left on the September ridge hike. Boots can be borrowed from the kit room.',
       date: '2026-08-17',
@@ -391,7 +391,7 @@ export const campusOrganisations = [
     about:
       'The station broadcasts eighteen hours a day in term and trains anyone who wants a show, from scratch. It also runs the open mic night and records the poetry evenings.',
     meets: 'Mondays, 7:00 PM · Student Union, studio 3',
-    contact: { name: 'Noor Haddad', role: 'Station manager', email: 'n.haddad@aster.edu' },
+    contact: { name: 'Noor Haddad', photo: '/people/noor-haddad.webp', role: 'Station manager', email: 'n.haddad@aster.edu' },
     latestUpdate: {
       text: 'Applications for autumn shows are open until Sep 5. No experience required.',
       date: '2026-08-15',

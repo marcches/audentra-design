@@ -39,7 +39,7 @@ export default function HousingStep({ draft, onChange }) {
         {/* The head does not repeat the question the page already asks. It
             carries the half of ENR-210 AC 2 that has to be read *before* the
             options, and the body carries the other half. */}
-        <CardHead kind="section" eyebrow="Your answer" title="All four are complete answers" />
+        <CardHead kind="section" icon="home" tone="accent" eyebrow="Your answer" title="All four are complete answers" />
         <div className="card-body">
           <p className="body-copy">
             None of these is a skip, and none of them is the wrong one. You can change your answer

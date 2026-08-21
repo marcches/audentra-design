@@ -41,7 +41,7 @@ export default function RecordCard({
       <section className="section-card" aria-labelledby="record-title">
         <div className="status-heading">
           <span className="status-icon docs">
-            <Icon weight="duotone" name="file" size={18} />
+            <Icon name="file" size={18} />
           </span>
           <div>
             <h2 id="record-title">Immunization record</h2>
@@ -72,7 +72,7 @@ export default function RecordCard({
     <section className={`section-card record-card ${asking ? 'asking' : ''}`} aria-labelledby="record-title">
       <div className="status-heading">
         <span className={`status-icon ${asking ? info.tone : 'docs'}`}>
-          <Icon weight="duotone" name={state === 'accepted' ? 'check' : 'file'} size={18} />
+          <Icon name={state === 'accepted' ? 'check' : 'file'} size={18} />
         </span>
         <div>
           <h2 id="record-title">{requirement.title}</h2>

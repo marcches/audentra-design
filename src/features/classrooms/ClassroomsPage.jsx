@@ -213,7 +213,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
               <section className="section-card" key={group.id}>
                 <div className="status-heading">
                   <span className="status-icon requirement">
-                    <Icon weight="duotone" name="book" size={18} />
+                    <Icon name="book" size={18} />
                   </span>
                   <div>
                     <h2>{group.name}</h2>
@@ -246,7 +246,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
             <section className="section-card match-section">
               <div className="status-heading">
                 <span className="status-icon advisory">
-                  <Icon weight="duotone" name="alert" size={18} />
+                  <Icon name="alert" size={18} />
                 </span>
                 <div>
                   <h2>Potential credit matches</h2>

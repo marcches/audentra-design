@@ -38,12 +38,10 @@
 
 .status-icon.act {
   color: color-mix(in srgb, var(--amber) 74%, var(--ink));
-  background: var(--amber-soft);
 }
 
 .status-icon.stop {
   color: var(--crimson);
-  background: color-mix(in srgb, var(--crimson) 10%, var(--surface));
 }
 
 .record-state {

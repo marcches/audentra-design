@@ -14,7 +14,7 @@ export default function DocumentList({ documents, unavailable, onOpen, onRetry }
     <section className="section-card doc-section" aria-labelledby="docs-title">
       <div className="status-heading">
         <span className="status-icon docs">
-          <Icon weight="duotone" name="file" size={18} />
+          <Icon name="file" size={18} />
         </span>
         <div>
           <h2 id="docs-title">Documents that need you</h2>
@@ -43,8 +43,8 @@ export default function DocumentList({ documents, unavailable, onOpen, onRetry }
             const level = escalation(task.daysLeft);
             return (
               <article className="compact-task doc-task" key={task.id}>
-                <div className="compact-check">
-                  <Icon weight="duotone" name={kindIcon(task.kind)} size={17} />
+                <div className={`task-type-icon ${task.kind}`} aria-hidden="true">
+                  <Icon name={kindIcon(task.kind)} size={21} weight="duotone" />
                 </div>
                 <div className="compact-copy">
                   <h3>{task.title}</h3>

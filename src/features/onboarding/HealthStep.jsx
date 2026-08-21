@@ -38,6 +38,8 @@ export default function HealthStep({ draft, onChange }) {
       <Card className="asking">
         <CardHead
           kind="section"
+          icon="accessibility"
+          tone="accent"
           eyebrow="One question"
           title="Would you like to talk to Accessibility Services?"
         />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Icon from '../Icon.jsx';
 import Card, { CardFoot, CardHead, CardRows } from '../primitives/Card.jsx';
-import EntryCard from '../patterns/EntryCard.jsx';
+import EntryRow from '../patterns/EntryRow.jsx';
 import AnchorCard from '../primitives/AnchorCard.jsx';
 import Button, { IconButton } from '../primitives/Button.jsx';
 import Drawer from '../primitives/Drawer.jsx';
@@ -224,6 +224,7 @@ const ADVISOR = {
   label: 'Your enrollment advisor',
   name: 'Tomás Okafor',
   office: 'Admissions Office',
+  photo: '/people/tomas-okafor.webp',
 };
 
 const STUDENT = { name: 'Maya Johnson', initials: 'MJ', photo: '/people/maya-johnson.webp' };
@@ -493,10 +494,10 @@ export default function Styleguide({ onToast }) {
               <li>
                 <span className="sg-icon-spec">
                   <span className="status-icon review">
-                    <Icon name="clock" size={18} weight="duotone" />
+                    <Icon name="clock" size={18} />
                   </span>
                   <span className="card-icon">
-                    <Icon name="file" size={19} weight="duotone" />
+                    <Icon name="file" size={19} />
                   </span>
                 </span>
                 <code>duotone, in a tile</code>
@@ -570,7 +571,7 @@ export default function Styleguide({ onToast }) {
         <Section
           id="sg-card"
           title="The card, and its three zones"
-          rule="Every block of a page’s main column is a card; nothing sits loose on the canvas. A card opens with one of three heads, and the head and the foot are visible bands of the card’s own paper — not a fourth plane."
+          rule="Every block of a page’s main column is a card; nothing sits loose on the canvas. A card opens with one head — a bare outline glyph, the name, one line under it, a trailing cell — and the head and the foot are visible bands of the card’s own paper, not a fourth plane. The glyph’s colour is the only thing `kind` decides; a tinted tile is the content’s shape and never a head’s."
         >
           <div className="sg-grid">
             <Card>
@@ -579,7 +580,7 @@ export default function Styleguide({ onToast }) {
                 icon="file"
                 tone="docs"
                 title="A status head"
-                note="For the card that holds a section’s content. The icon tile is the one place a card head spends colour."
+                note="For the card that holds a section’s content. The glyph is the one place a card head spends colour — a bare outline glyph, never a tile: tiles belong to the rows."
               />
               <CardRows>
                 <div className="sg-row">
@@ -606,7 +607,7 @@ export default function Styleguide({ onToast }) {
                 kind="card"
                 icon="calendar"
                 title="A card head"
-                note="For a card that is one block among several. Neutral tile, no state."
+                note="The same head. `card` only makes the glyph neutral: one block among several, no state to colour."
               />
               <CardRows>
                 <div className="sg-row">
@@ -623,37 +624,54 @@ export default function Styleguide({ onToast }) {
             <Card>
               <CardHead
                 kind="section"
+                icon="ticket"
+                tone="accent"
                 eyebrow="What’s happening"
-                title="A section head"
+                title="A head that names a region"
                 aside={<span className="result-count">3 results</span>}
               />
               <CardRows>
                 <div className="sg-row">
-                  <span>An eyebrow above the name</span>
-                  <strong>and room for a control</strong>
+                  <span>Still the same head</span>
+                  <strong>with room for a control</strong>
+                </div>
+                <div className="sg-row">
+                  <span>The eyebrow copy</span>
+                  <strong>is the line under the name</strong>
                 </div>
               </CardRows>
             </Card>
 
-            <EntryCard
-              id="sg-entry"
-              icon="file"
-              title="An entry card"
-              note="The way in to a panel that lives under this page — head, then foot, nothing between. The action is a button, because what it opens is the side panel, not a page."
-              count={2}
-              standing="What stands there today, beside the one way in."
-              onOpen={() => onToast("The panel this door opens would slide in from the right.")}
-              action="Open it"
-            />
+            <Card>
+              <CardRows>
+                <EntryRow
+                  icon="file"
+                  title="A door that opens here"
+                  note="One thing this page can open, as a row. No head — the row says what a head would, and a card with a head, a foot and nothing between is the empty band a Notice is written against."
+                  count={2}
+                  where="Open"
+                  onOpen={() => onToast('The panel this door opens would slide in from the right.')}
+                />
+                <EntryRow
+                  icon="book"
+                  title="A door that goes somewhere"
+                  note="The same row with a route instead of a panel. The trailing cell names the section, so the two kinds are told apart before the click."
+                  where="My Degree"
+                  href="#/styleguide"
+                />
+              </CardRows>
+            </Card>
           </div>
           <Block
             title="A status head can be the group’s handle"
-            note="Give the status head count, open, onToggle and controls and it is a button: the count before the chevron, the card closing on the head. The one disclosure in the product — no details element, no hand-made toggle, no box of its own. A group with nothing in it has no toggle. The head is bare when the rows carry their own tile: the mark is said on the head or on the rows, never both."
+            note="Give the status head count, open, onToggle and controls and it is a button: the count before the chevron, the card closing on the head. The one disclosure in the product — no details element, no hand-made toggle, no box of its own. A group with nothing in it has no toggle. The head’s glyph is the group’s standing; each row’s tile is the step’s kind — a head’s mark and a row’s mark never share a shape, and never say the same glyph."
           >
             <div className="sg-grid">
               <Card className={groupOpen ? '' : 'collapsed'}>
                 <CardHead
                   kind="status"
+                  icon="clock"
+                  tone="review"
                   title="Aster is reviewing"
                   note="You’ve done your part. No action needed right now."
                   count={2}
@@ -664,8 +682,8 @@ export default function Styleguide({ onToast }) {
                 {groupOpen && (
                   <CardRows id="sg-group-demo">
                     <article className="compact-task review-task">
-                      <div className="compact-check review" aria-hidden="true">
-                        <Icon name="clock" size={21} weight="duotone" />
+                      <div className="task-type-icon review" aria-hidden="true">
+                        <Icon name="file" size={21} weight="duotone" />
                       </div>
                       <div className="compact-copy">
                         <h3>Final transcript check</h3>
@@ -676,8 +694,8 @@ export default function Styleguide({ onToast }) {
                       </div>
                     </article>
                     <article className="compact-task done-task">
-                      <div className="compact-check done" aria-hidden="true">
-                        <Icon name="check" size={21} />
+                      <div className="task-type-icon decision" aria-hidden="true">
+                        <Icon name="pen" size={21} weight="duotone" />
                       </div>
                       <div className="compact-copy">
                         <h3>Accept your offer</h3>
@@ -695,6 +713,8 @@ export default function Styleguide({ onToast }) {
               <Card>
                 <CardHead
                   kind="status"
+                  icon="lock"
+                  tone="locked"
                   title="Coming up later"
                   note="These will open automatically when you’re ready for them."
                 />
@@ -742,7 +762,7 @@ export default function Styleguide({ onToast }) {
         <Section
           id="sg-people"
           title="People, marks, and the one illustration"
-          rule="A person is Avatar; a thing is a glyph; an office is a name. The student has a photo — the one she gave the portal — and everyone else Aster names, advisor or contact, is initials: the record holds no staff portraits, and a student portal does not invent them. Her photo is synthetic: no real person, provenance in public/people/SOURCES.md."
+          rule="A person is Avatar; a thing is a glyph; an office is a name. People Aster knows are drawn with Avatar — the photo on the record, initials when there is none. The photos are stock portraits chosen for the role, so an advisor looks like staff and a student looks college-age — never a generated face. Provenance in public/people/SOURCES.md."
         >
           <div className="sg-grid">
             <Block
@@ -1223,7 +1243,7 @@ export default function Styleguide({ onToast }) {
             <section className="section-card">
               <div className="status-heading">
                 <span className="status-icon signpost">
-                  <Icon weight="duotone" name="progress" size={18} />
+                  <Icon name="progress" size={18} />
                 </span>
                 <div>
                   <h2>Everything on file</h2>

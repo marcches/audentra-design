@@ -228,10 +228,13 @@ export default function CampusPage({
     >
       {active === 'events' ? (
         <section className="section-card" aria-labelledby="events-heading">
-          <div className="section-heading">
+          <div className="status-heading">
+            <span className="status-icon accent" aria-hidden="true">
+              <Icon name="ticket" size={20} />
+            </span>
             <div>
-              <p className="eyebrow muted">What’s happening</p>
               <h2 id="events-heading">Events</h2>
+              <p>What’s happening</p>
             </div>
             {board.events.length > 0 && (
               <div className="sort-group" aria-label="Choose which events to see">
@@ -370,10 +373,13 @@ export default function CampusPage({
         </section>
       ) : (
         <section className="section-card" aria-labelledby="clubs-heading">
-          <div className="section-heading">
+          <div className="status-heading">
+            <span className="status-icon accent" aria-hidden="true">
+              <Icon name="users" size={20} />
+            </span>
             <div>
-              <p className="eyebrow muted">Who you could join</p>
               <h2 id="clubs-heading">Clubs</h2>
+              <p>Who you could join</p>
             </div>
             {!clubsFailed && board.clubs.length > 0 && (
               <span className="result-count" aria-live="polite">

@@ -55,12 +55,14 @@ screens needed had no names and no components, so each screen invented its own f
 - **Icons are Phosphor, vendored — never a package, never a hand-drawn one-off.** Add a line to
   `scripts/icons/manifest.mjs`, run `npm run icons`, commit `icon-paths.js`. Four weights, each with
   one job: regular (≥16px), bold (below 16px, automatic), fill (the *on* state of a control, only),
-  duotone (the mark in a flat tinted tile, only — never on a gradient). A tile passes its own weight;
+  duotone (the mark in a flat tinted tile, only — never on a gradient, never a card head: a head's
+  mark is a bare outline glyph, a tile is content's shape). A tile passes its own weight;
   a page almost never writes `weight=`. ADR 0004.
-- **A person is `<Avatar person>`; a thing is a glyph in a tile.** The student has a photo — the
-  one she gave the portal, in `public/people/` (synthetic, provenance in `SOURCES.md`); staff and
-  contacts have none on file and are initials, never a generated face in a staff role; offices,
-  residences, organisations and other sites never get a face. Marks — Aster's crest and Audentra's
+- **A person is `<Avatar person>`; a thing is a glyph in a tile.** People Aster knows get a photo
+  from `public/people/` — stock portraits (Unsplash, provenance in `SOURCES.md`) chosen for the
+  role, so an advisor looks like staff and a student looks college-age; never a generated face —
+  and initials when none is on file; offices, residences, organisations and other sites never get a
+  face. Marks — Aster's crest and Audentra's
   symbol — live in `design-system/marks/`. The one illustration is `<Spot>`.
 - **Accessibility and responsive behaviour are part of done**, not a follow-up.
 

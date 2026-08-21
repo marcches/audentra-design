@@ -29,10 +29,13 @@ export default function Catalogue({
   if (catalogue === null) {
     return (
       <section className="section-card" aria-labelledby="catalogue-heading">
-        <div className="section-heading">
+        <div className="status-heading">
+          <span className="status-icon accent" aria-hidden="true">
+            <Icon name="buildings" size={20} />
+          </span>
           <div>
-            <p className="eyebrow muted">Published by {housingOffice}</p>
             <h2 id="catalogue-heading">Residences</h2>
+            <p>Published by {housingOffice}</p>
           </div>
         </div>
         <StateCard
@@ -55,10 +58,13 @@ export default function Catalogue({
   if (catalogue.length === 0) {
     return (
       <section className="section-card" aria-labelledby="catalogue-heading">
-        <div className="section-heading">
+        <div className="status-heading">
+          <span className="status-icon accent" aria-hidden="true">
+            <Icon name="buildings" size={20} />
+          </span>
           <div>
-            <p className="eyebrow muted">Published by {housingOffice}</p>
             <h2 id="catalogue-heading">Residences</h2>
+            <p>Published by {housingOffice}</p>
           </div>
         </div>
         <StateCard icon="home" title="No residences published yet">
@@ -77,10 +83,13 @@ export default function Catalogue({
 
   return (
     <section className="section-card" aria-labelledby="catalogue-heading">
-      <div className="section-heading">
+      <div className="status-heading">
+        <span className="status-icon accent" aria-hidden="true">
+          <Icon name="buildings" size={20} />
+        </span>
         <div>
-          <p className="eyebrow muted">Published by {housingOffice}</p>
           <h2 id="catalogue-heading">Residences</h2>
+          <p>Published by {housingOffice}</p>
         </div>
         <div className="sort-group" aria-label="Order the residences">
           <button

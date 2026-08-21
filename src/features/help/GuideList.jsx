@@ -16,10 +16,13 @@ import { shortDate } from '../campus/logic.js';
 export default function GuideList({ guides, open, onToggle }) {
   return (
     <section className="section-card" aria-labelledby="guides-heading">
-      <div className="section-heading">
+      <div className="status-heading">
+        <span className="status-icon accent" aria-hidden="true">
+          <Icon name="book" size={20} />
+        </span>
         <div>
-          <p className="eyebrow muted">Answered in advance</p>
           <h2 id="guides-heading">Aster’s guides</h2>
+          <p>Answered in advance</p>
         </div>
         <span className="result-count">{guides.length} guides</span>
       </div>
@@ -35,8 +38,8 @@ export default function GuideList({ guides, open, onToggle }) {
                 aria-controls={`guide-${guide.id}`}
                 onClick={() => onToggle(guide.id)}
               >
-                <span className="status-icon guide" aria-hidden="true">
-                  <Icon weight="duotone" name="book" size={17} />
+                <span className="task-type-icon guide" aria-hidden="true">
+                  <Icon name="book" size={21} weight="duotone" />
                 </span>
                 <span>
                   <strong>{guide.topic}</strong>

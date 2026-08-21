@@ -41,12 +41,10 @@
 
 .status-icon.requirement {
   color: var(--purple-dark);
-  background: var(--purple-soft);
 }
 
 .status-icon.advisory {
   color: var(--amber);
-  background: var(--amber-soft);
 }
 
 .advisory-badge {

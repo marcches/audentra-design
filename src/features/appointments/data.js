@@ -14,6 +14,7 @@ import { enrollmentAdvisor, financialAidAdvisor } from '../enrollment/data.js';
 export const courseAdvisor = {
   name: 'Ines Barros',
   initials: 'IB',
+  photo: '/people/ines-barros.webp',
   office: 'Academic Advising, Computer Science',
   label: 'Your course advisor',
   intro:

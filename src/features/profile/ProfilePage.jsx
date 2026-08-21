@@ -1,11 +1,11 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
-import EntryCard from '../../design-system/patterns/EntryCard.jsx';
+import EntryRow from '../../design-system/patterns/EntryRow.jsx';
 import Notice from '../../design-system/patterns/Notice.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import { panelById } from '../../lib/navigation.js';
-import { checkingOne, needsYou, standing, standingLede } from '../documents/logic.js';
+import { needsYou } from '../documents/logic.js';
 import FieldRow from './FieldRow.jsx';
 import PermissionGrant from './PermissionGrant.jsx';
 import ProfileRail from './ProfileRail.jsx';
@@ -65,13 +65,6 @@ export default function ProfilePage({
   const documents = panelById('my-documents');
   const requirements = record?.requirements ?? [];
   const mine = unchecked ? [] : needsYou(requirements);
-  const documentsStanding = standingLede({
-    unavailable: unchecked,
-    mine,
-    checking: unchecked ? null : checkingOne(requirements),
-    figures: standing(unchecked ? [] : requirements),
-  });
-
   const [channel, setChannel] = useState('portal');
   const [choiceOpen, setChoiceOpen] = useState(false);
   const [grants, setGrants] = useState(() => grantsFor(state));
@@ -228,24 +221,11 @@ export default function ProfilePage({
         />
       }
     >
-      {/* The way in to My Documents, first: it is the one block on this page
-          that can need something from her. */}
-      <EntryCard
-        id="documents"
-        icon={documents.icon}
-        title={documents.label}
-        note={documents.lede}
-        count={mine.length}
-        standing={documentsStanding}
-        onOpen={() => setDocumentsOpen(true)}
-        action={documents.action}
-      />
-
       {groups.map((group) => (
         <section className="section-card" key={group.id} aria-labelledby={`${group.id}-title`}>
           <div className="status-heading">
             <span className="status-icon record">
-              <Icon weight="duotone" name={group.icon} size={18} />
+              <Icon name={group.icon} size={18} />
             </span>
             <div>
               <h2 id={`${group.id}-title`}>{group.title}</h2>
@@ -290,7 +270,7 @@ export default function ProfilePage({
       <section className="section-card" aria-labelledby="access-title">
         <div className="status-heading">
           <span className="status-icon private">
-            <Icon weight="duotone" name="users" size={18} />
+            <Icon name="users" size={18} />
           </span>
           <div>
             <h2 id="access-title">Who can see your record</h2>
@@ -349,35 +329,44 @@ export default function ProfilePage({
         </p>
       </section>
 
+      {/* The doors. My Documents leads because it is the only one that can be
+          holding something of hers; the other two are sections in their own
+          right. All three are the same row, and the trailing cell is what says
+          which kind each is — a section's name for a route, `Open` for a panel
+          that opens on this page. */}
       <section className="section-card" aria-labelledby="elsewhere-title">
         <div className="status-heading">
           <span className="status-icon signpost">
-            <Icon weight="duotone" name="pin" size={18} />
+            <Icon name="pin" size={18} />
           </span>
           <div>
-            <h2 id="elsewhere-title">What lives somewhere else</h2>
+            <h2 id="elsewhere-title">The rest of your record</h2>
             <p>
-              Aster keeps one copy of each of these, in the section that owns it. This page points
-              at them rather than repeating them.
+              Aster keeps one copy of each of these and never a second. My Documents opens here;
+              the other two are sections of their own, and this page points at them rather than
+              repeating them.
             </p>
           </div>
         </div>
 
-        <div className="card-rows elsewhere-list">
+        <div className="card-rows">
+          <EntryRow
+            icon={documents.icon}
+            title={documents.label}
+            note={documents.lede}
+            count={mine.length}
+            where="Open"
+            onOpen={() => setDocumentsOpen(true)}
+          />
           {elsewhere.map((item) => (
-            <a className="elsewhere-row" href={item.route} key={item.id}>
-              <span className="elsewhere-icon" aria-hidden="true">
-                <Icon name={item.icon} size={17} />
-              </span>
-              <span className="elsewhere-copy">
-                <strong>{item.label}</strong>
-                <small>{item.note}</small>
-              </span>
-              <span className="elsewhere-where">
-                {item.where}
-                <Icon name="arrow" size={15} />
-              </span>
-            </a>
+            <EntryRow
+              key={item.id}
+              icon={item.icon}
+              title={item.label}
+              note={item.note}
+              where={item.where}
+              href={item.route}
+            />
           ))}
         </div>
       </section>

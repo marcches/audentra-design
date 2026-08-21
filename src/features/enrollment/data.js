@@ -175,7 +175,7 @@ const TASKS = [
     daysLeft: responseDeadline.daysLeft,
     minutes: 3,
     action: 'Choose housing plan',
-    kind: 'form',
+    kind: 'housing',
     // ENR-207. The plan used to be answered inside the drawer — this was the
     // file's only `kind: 'form'`, three radios and a save. The question now has
     // a section of its own, so the step routes there and the radios are gone
@@ -206,12 +206,14 @@ export const initialTasks = TASKS.map(withValues);
 export const lockedTasks = [
   {
     title: 'Choose your move-in time',
+    kind: 'housing',
     description: 'Your arrival window will appear after your housing plan is confirmed.',
     prerequisite: 'Complete ‘Choose your housing plan’ first',
     due: 'Jan 12',
   },
   {
     title: 'Meet your academic adviser',
+    kind: 'meeting',
     description: 'Available advisers appear after Aster assigns your academic program.',
     prerequisite: 'Waiting for program assignment',
     due: 'Date coming soon',
@@ -225,16 +227,17 @@ export const lockedTasks = [
  * already earned: history does not read the configuration.
  */
 export const initialCompleted = [
-  { title: 'Accept your offer', date: 'Aug 7', points: 150 },
-  { title: 'Confirm your identity', date: 'Aug 7', points: 100 },
-  { title: 'Choose your preferred name', date: 'Aug 7', points: 78 },
-  { title: 'Set communication preferences', date: 'Aug 7', points: 60 },
-  { title: 'Review your admission details', date: 'Aug 7', points: 40 },
+  { title: 'Accept your offer', kind: 'decision', date: 'Aug 7', points: 150 },
+  { title: 'Confirm your identity', kind: 'identity', date: 'Aug 7', points: 100 },
+  { title: 'Choose your preferred name', kind: 'profile', date: 'Aug 7', points: 78 },
+  { title: 'Set communication preferences', kind: 'preferences', date: 'Aug 7', points: 60 },
+  { title: 'Review your admission details', kind: 'review', date: 'Aug 7', points: 40 },
 ];
 
 export const initialReviewing = [
   {
     title: 'Final transcript check',
+    kind: 'review',
     description: 'Aster received your transcript and is reviewing it now.',
     submitted: 'Submitted Aug 6',
     eta: 'Usually 2–3 business days',
@@ -245,6 +248,7 @@ export const initialReviewing = [
 export const enrollmentAdvisor = {
   name: 'Tomás Okafor',
   initials: 'TO',
+  photo: '/people/tomas-okafor.webp',
   office: 'Admissions Office',
   label: 'Your enrollment advisor',
   intro:
@@ -256,6 +260,7 @@ export const enrollmentAdvisor = {
 export const financialAidAdvisor = {
   name: 'Amara Nwosu',
   initials: 'AN',
+  photo: '/people/amara-nwosu.webp',
   office: 'Student Financial Services',
   label: 'Your financial aid advisor',
   intro:

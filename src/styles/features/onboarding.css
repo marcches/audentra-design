@@ -249,8 +249,7 @@
 /* --- the card that asks, and the card that only states -------------------- */
 
 /* Spend colour once per card, on the one that is asking. */
-.section-card.asking > .status-heading:first-child,
-.section-card.asking > .section-heading:first-child {
+.section-card.asking > .status-heading:first-child {
   background: var(--purple-wash);
   border-bottom-color: var(--purple-line);
 }
@@ -265,17 +264,14 @@
 
 .status-icon.ask {
   color: var(--purple-dark);
-  background: var(--purple-tint);
 }
 
 .status-icon.calm {
   color: var(--ink);
-  background: var(--line);
 }
 
 .status-icon.done {
   color: var(--green-ink);
-  background: var(--green-tint);
 }
 
 /* The foot that separates one thing from another — ENR-152 AC 4. It carries the

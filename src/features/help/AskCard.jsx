@@ -46,10 +46,13 @@ export default function AskCard({
     const receiptOffice = offices[receipt.office];
     return (
       <section className="section-card ask-card" aria-labelledby="ask-heading">
-        <div className="section-heading">
+        <div className="status-heading">
+          <span className="status-icon done" aria-hidden="true">
+            <Icon name="send" size={20} />
+          </span>
           <div>
-            <p className="eyebrow muted">Sent</p>
             <h2 id="ask-heading">Ask an office</h2>
+            <p>Sent</p>
           </div>
         </div>
 
@@ -91,10 +94,13 @@ export default function AskCard({
 
   return (
     <section className="section-card ask-card" aria-labelledby="ask-heading">
-      <div className="section-heading">
+      <div className="status-heading">
+        <span className="status-icon accent" aria-hidden="true">
+          <Icon name="pen" size={20} />
+        </span>
         <div>
-          <p className="eyebrow muted">When a step needs a decision</p>
           <h2 id="ask-heading">Ask an office</h2>
+          <p>When a step needs a decision</p>
         </div>
       </div>
 
@@ -153,8 +159,8 @@ export default function AskCard({
               aria-controls="ask-guide-body"
               onClick={onToggleGuide}
             >
-              <span className="status-icon guide" aria-hidden="true">
-                <Icon weight="duotone" name="book" size={17} />
+              <span className="task-type-icon guide" aria-hidden="true">
+                <Icon name="book" size={21} weight="duotone" />
               </span>
               <span>
                 <span className="panel-label">Aster has already answered this</span>

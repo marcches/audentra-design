@@ -29,6 +29,7 @@ export const ONBOARDING_TODAY = 'Aug 20';
 export const advisor = {
   name: 'Priya Raman',
   initials: 'PR',
+  photo: '/people/priya-raman.webp',
   office: 'Admissions',
   label: 'Stuck on something?',
   email: 'p.raman@aster.edu',

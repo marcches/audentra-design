@@ -48,11 +48,6 @@
 
 /* --- the navigation itself --- */
 
-.status-icon.guide {
-  color: var(--purple);
-  background: var(--purple-soft);
-}
-
 /* The sidebar's own rules — the rows, the groups, the foot — live with the
    frame in chrome.css. What stays here is the one control that must come
    after `.icon-button`: the drawer's close button, hidden above 820px. */
