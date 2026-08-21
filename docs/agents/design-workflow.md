@@ -312,14 +312,20 @@ with initials and none of them had a place for a face. Now:
 - **A person** Aster knows — the student, an advisor, a club contact — is `<Avatar person size>`:
   the photo on the record when there is one, initials when there is not, at `xs 24 · sm 32 · md 40 ·
   lg 56`. `alt=""` when the name is printed beside it (nearly always); `alone` when it is not, and
-  the name becomes the alt. The photos in `public/people/` are **synthetic** — generated faces, no
-  real person — and `SOURCES.md` there records where each came from. Never fetch a face at runtime.
+  the name becomes the alt. **Only the student has a photo on the record** — the one she gave the
+  portal at the ID-card step; staff and contacts are initials. An enrollment system holds no
+  directory of staff portraits, and a generated face in a staff role is how a teenager ended up as
+  the Admissions advisor for an afternoon (Marco, 2026-08-21). Her photo in `public/people/` is
+  **synthetic** — no real person — and `SOURCES.md` there records where it came from. Never fetch
+  a face at runtime.
 - **A thing** — an office, a residence, an organisation, a destination on another site — never gets
   a face. It is a glyph in a tile (`org.icon`, duotone), or a monogram. Offices are a name and
   nothing else (Help already decides this).
 - **Edward** is neither: an assistant with a mark, so it cannot be mistaken for someone at Aster.
 - **Marks** are drawn components under `design-system/marks/`, not icons: `AsterMark` (the
-  institution's — the brand row, the favicon, the tile for Aster's own payment portal) and
+  institution's crest — a shield, an open book in chief, an aster in base, the grammar a US
+  university mark actually uses; the brand row, the favicon, the tile for Aster's own payment
+  portal) and
   `AudentraMark` (the vendor's, in "Powered by" and nowhere else). A third party's site keeps a
   monogram; we do not draw other people's trademarks.
 - **The one illustration is `<Spot>`**: the band's orbit motif at card scale with a duotone glyph

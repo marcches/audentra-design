@@ -224,7 +224,6 @@ const ADVISOR = {
   label: 'Your enrollment advisor',
   name: 'Tomás Okafor',
   office: 'Admissions Office',
-  photo: '/people/tomas-okafor.webp',
 };
 
 const STUDENT = { name: 'Maya Johnson', initials: 'MJ', photo: '/people/maya-johnson.webp' };
@@ -743,7 +742,7 @@ export default function Styleguide({ onToast }) {
         <Section
           id="sg-people"
           title="People, marks, and the one illustration"
-          rule="A person is a face; a thing is a glyph; an office is a name. People Aster knows are drawn with Avatar — the photo on the record, initials when there is none — and nothing else in the product draws a person. The photos are synthetic: no real person, provenance in public/people/SOURCES.md."
+          rule="A person is Avatar; a thing is a glyph; an office is a name. The student has a photo — the one she gave the portal — and everyone else Aster names, advisor or contact, is initials: the record holds no staff portraits, and a student portal does not invent them. Her photo is synthetic: no real person, provenance in public/people/SOURCES.md."
         >
           <div className="sg-grid">
             <Block
@@ -766,11 +765,11 @@ export default function Styleguide({ onToast }) {
             </Block>
             <Block
               title="Marks — drawn, not icons"
-              note="The institution’s mark and the vendor’s. A mark that is also the glyph for “flower” somewhere else can be mistaken for a button, so these live in design-system/marks/ and nowhere in the icon set."
+              note="The institution’s crest — a shield, an open book in chief, an aster in base, the grammar a US university mark actually uses — in colour and in one colour; and the vendor’s symbol. Drawn components in design-system/marks/, never glyphs from the icon set: a crest that is also an icon can be mistaken for a button."
             >
               <div className="sg-marks-row">
-                <span className="university-mark" aria-hidden="true">
-                  <AsterMark size={44} tile />
+                <span className="brand-mark" aria-hidden="true">
+                  <AsterMark size={40} tile />
                 </span>
                 <AsterMark size={28} title="Aster University" />
                 <span className="sg-people-sep" aria-hidden="true" />
@@ -815,7 +814,7 @@ export default function Styleguide({ onToast }) {
                     <AsterMark size={40} tile />
                   </span>
                   <div className="brand-name">
-                    <strong>Aster</strong>
+                    <strong>Aster University</strong>
                     <span>New Student Portal</span>
                   </div>
                 </div>

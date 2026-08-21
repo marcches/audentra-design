@@ -62,8 +62,11 @@
   display: flex;
 }
 
+/* The institution's own voice, not the product's: a university writes its name in
+   a serif, the way the mobile topbar already does. */
 .brand-name strong {
   letter-spacing: var(--ls-snug);
+  font-family: Georgia, serif;
   font-size: var(--fs-h3);
   line-height: var(--lh-heading);
 }

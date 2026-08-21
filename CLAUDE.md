@@ -57,10 +57,11 @@ screens needed had no names and no components, so each screen invented its own f
   one job: regular (≥16px), bold (below 16px, automatic), fill (the *on* state of a control, only),
   duotone (the mark in a flat tinted tile, only — never on a gradient). A tile passes its own weight;
   a page almost never writes `weight=`. ADR 0004.
-- **A person is `<Avatar person>`; a thing is a glyph in a tile.** People Aster knows get a photo
-  from `public/people/` (synthetic faces, provenance in `SOURCES.md`) and initials when none is on
-  file; offices, residences, organisations and other sites never get a face. Marks — Aster's and
-  Audentra's — live in `design-system/marks/`. The one illustration is `<Spot>`.
+- **A person is `<Avatar person>`; a thing is a glyph in a tile.** The student has a photo — the
+  one she gave the portal, in `public/people/` (synthetic, provenance in `SOURCES.md`); staff and
+  contacts have none on file and are initials, never a generated face in a staff role; offices,
+  residences, organisations and other sites never get a face. Marks — Aster's crest and Audentra's
+  symbol — live in `design-system/marks/`. The one illustration is `<Spot>`.
 - **Accessibility and responsive behaviour are part of done**, not a follow-up.
 
 Full contract, including how a page is composed and how a card is read: `docs/agents/design-workflow.md`.

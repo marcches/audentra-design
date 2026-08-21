@@ -148,7 +148,7 @@ export default function Sidebar({
           <AsterMark size={40} tile />
         </span>
         <div className="brand-name">
-          <strong>Aster</strong>
+          <strong>Aster University</strong>
           <span>New Student Portal</span>
         </div>
         <IconButton

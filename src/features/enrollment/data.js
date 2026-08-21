@@ -245,7 +245,6 @@ export const initialReviewing = [
 export const enrollmentAdvisor = {
   name: 'Tomás Okafor',
   initials: 'TO',
-  photo: '/people/tomas-okafor.webp',
   office: 'Admissions Office',
   label: 'Your enrollment advisor',
   intro:
@@ -257,7 +256,6 @@ export const enrollmentAdvisor = {
 export const financialAidAdvisor = {
   name: 'Amara Nwosu',
   initials: 'AN',
-  photo: '/people/amara-nwosu.webp',
   office: 'Student Financial Services',
   label: 'Your financial aid advisor',
   intro:
