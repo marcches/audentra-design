@@ -345,7 +345,7 @@ function EdwardWindow({ panel, isSheet, twoPane, showHistory, showThread, onClos
         ref={panel}
         role="dialog"
         aria-modal={isSheet ? 'true' : undefined}
-        aria-label="Edward, Aster’s enrollment assistant"
+        aria-label="Edward, Aster’s AI assistant"
       >
         {children}
       </aside>

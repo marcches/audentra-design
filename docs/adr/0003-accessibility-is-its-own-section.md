@@ -1,0 +1,46 @@
+# Accessibility is a section of its own, not a card inside Health
+
+[ADR-0001](./0001-accommodation-answer-stays-in-health.md) put the question *"Would you like to talk
+to Accessibility Services?"* inside Health, and ENR-208 — the story behind it — is labelled
+`screen-health` and says "a student opens the Health section". The UX writing audit of 2026-08-21
+asked for the opposite, and we did it: the question is a destination, `#/accessibility`, with its
+own sidebar row straight after Health, its own hero, and the same card it always was. Anyone who
+finds ENR-208 under `screen-health` and then finds no question on `#/health` will wonder why, and
+this is the answer.
+
+The reason is the card's own first sentence. *Aster isn't asking what your condition is, and this
+page has nowhere to put it* — and yet the information architecture filed accommodations under
+Health, beside an immunization record and an office called Health Services. A student reads where a
+thing lives before she reads what it says. Put under Health, the question reads as a medical matter,
+which is the one framing the whole section exists to refuse; the audience this portal is written
+for — first-generation students, English-language learners — reads that framing first and the
+disclaimer second. Moving it is what makes the sentence true.
+
+What did **not** change is everything ADR-0001 actually decided. The answer still creates nothing
+anywhere else: no help request, no appointment, no notification, no sidebar count, nothing in the
+record Edward speaks from. It is still never a figure — the new page has no summary panel at all,
+because *not right now* must never look like a standing. The section still has **no badge**, for
+the reason ADR-0001 gave: any counter that could include the question would turn a complete answer
+into a pending item. The module that holds the answer moved with it
+(`src/features/accessibility/`), and nothing outside that module and `App.jsx` imports it. ADR-0001
+is annotated, not retired: its title is now wrong and its substance is not.
+
+## Considered options
+
+- **Leave it in Health and change the copy.** Rejected. The copy already said the right thing;
+  the placement contradicted it, and placement is read first.
+- **A leaf under a group (Health · Accessibility as tabs).** Rejected for the rule every group
+  obeys: everything above the tab row is true of the whole group. The record's deadline and gate
+  are true of Health and false of Accessibility, so they would either sit above the tabs and lie,
+  or hide below them. Same reasoning as [ADR-0002](./0002-housing-is-not-a-campus-life-leaf.md).
+- **Its own section, after Health.** Taken. One more sidebar row, the cost ADR-0002 already
+  accepted once for the same kind of reason.
+
+## Consequences
+
+ENR-208's scenarios name the Health section; the divergence is recorded here and in
+`.scratch/ux-writing-spec/spec.md`, the way ENR-214's spec recorded its own. Onboarding still asks
+the question once, in its health step — that is where the answer is first given, and the step is
+about both things — and the Accessibility page is where the answer lives afterwards. If a staff
+view of accommodations ever arrives (ENR-212), it inherits this section's rule, not Health's: the
+record may travel, the answer may not.

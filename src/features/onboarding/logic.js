@@ -156,7 +156,7 @@ export function grantProblem(draft) {
     return {
       field: 'categories',
       reason:
-        'Pick at least one thing they may discuss. An authorization that covers nothing is not saved — if you do not want to share anything, leave them off the list.',
+        'Pick at least one thing they may discuss. An authorization that covers nothing is not saved. If you do not want to share anything, leave them off the list.',
     };
   }
   if (!draft.endsOn) return { field: 'endsOn', reason: 'Every authorization ends on a date. Choose one.' };

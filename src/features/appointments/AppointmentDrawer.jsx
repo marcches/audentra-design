@@ -42,7 +42,7 @@ export default function AppointmentDrawer({
       tone: 'failed',
       icon: 'alert',
       title: 'Not booked',
-      body: `This never reached ${type.team}, so nothing is scheduled. The time may still be open — trying again is the fastest way to find out.`,
+      body: `This never reached ${type.team}, so nothing is scheduled. The time may still be open. Trying again is the fastest way to find out.`,
     },
     cancelled: {
       tone: 'quiet',
@@ -127,7 +127,7 @@ export default function AppointmentDrawer({
         </p>
         <small className="prototype-note">
           {state.tone === 'failed'
-            ? `This has not been sent to anyone — the booking never reached ${type.team}.`
+            ? `This has not been sent to anyone. The booking never reached ${type.team}.`
             : `${type.team} received this with the booking, so nobody has to be caught up on the day.`}
         </small>
       </div>
@@ -140,7 +140,7 @@ export default function AppointmentDrawer({
           <button
             className="secondary-button"
             onClick={() =>
-              onToast(`${type.otherRoute} would open here — nothing is sent in this preview.`)
+              onToast(`${type.otherRoute} would open here. Nothing is sent in this preview.`)
             }
           >
             <Icon name="mail" size={16} /> {type.otherRoute}
@@ -153,7 +153,7 @@ export default function AppointmentDrawer({
           <button
             className="primary-button full"
             onClick={() =>
-              onToast('This would download an invite for your own calendar — nothing is sent.')
+              onToast('This would download an invite for your own calendar. Nothing is sent.')
             }
           >
             Add to my calendar <Icon name="calendar" size={17} />
@@ -162,7 +162,7 @@ export default function AppointmentDrawer({
             className="secondary-button"
             onClick={() =>
               onToast(
-                `A message to ${type.person.name} would open here — nothing is sent in this preview.`,
+                `A message to ${type.person.name} would open here. Nothing is sent in this preview.`,
               )
             }
           >

@@ -122,7 +122,7 @@ export const session = {
   device: 'Chrome on this computer',
   since: 'Signed in at 8:42 AM today',
   reason:
-    'On a shared or library computer, closing the tab does not sign you out. Whoever opens the portal next would land in your record — your aid, your address, your grades.',
+    'On a shared or library computer, closing the tab does not sign you out. Whoever opens the portal next would land in your record: your aid, your address, your grades.',
 };
 
 /**
@@ -135,7 +135,7 @@ export const elsewhere = [
     id: 'documents',
     icon: 'file',
     label: 'The files you sent Aster',
-    note: 'Transcripts, forms and letters — and everything Aster sent you.',
+    note: 'Transcripts, forms, and letters, and everything Aster sent you.',
     route: '#/my-documents',
     where: 'My Documents',
   },
@@ -145,7 +145,7 @@ export const elsewhere = [
     label: 'Your degree and your courses',
     note: 'Requirements, approved credit and what still counts. The Registrar holds the official transcript.',
     route: '#/my-classrooms',
-    where: 'My Classrooms',
+    where: 'My Degree',
   },
   {
     id: 'money',
@@ -172,6 +172,12 @@ export const elsewhere = [
  * `newBlank` marks a field a record does not have on the day it is opened. It
  * is what the empty state reads; nothing else in the file needs to know.
  */
+/**
+ * Campus interests — the one list. My Campus Life ranks events and clubs by it
+ * and re-exports it, so the record and the ranking cannot disagree (UX writing 6.4).
+ */
+export const campusInterests = ['Music', 'Volunteering'];
+
 export const fieldGroups = [
   {
     id: 'you',
@@ -185,7 +191,7 @@ export const fieldGroups = [
         owner: 'student',
         value: 'Maya',
         note: 'Used everywhere in the portal. Your legal name appears only where the law needs it.',
-        newBlank: 'Not set — Aster is calling you Amelia',
+        newBlank: 'Not set · Aster is calling you Amelia',
       },
       {
         id: 'pronouns',
@@ -198,7 +204,7 @@ export const fieldGroups = [
         id: 'interests',
         label: 'Campus interests',
         owner: 'student',
-        value: 'Design · Robotics · Volunteering',
+        value: campusInterests.join(' · '),
         newBlank: 'Not set',
       },
       {
@@ -212,7 +218,7 @@ export const fieldGroups = [
         id: 'date-of-birth',
         label: 'Date of birth',
         owner: 'registrar',
-        value: 'March 14, 2008',
+        value: 'Mar 14, 2008',
       },
       {
         id: 'student-id',
@@ -228,7 +234,7 @@ export const fieldGroups = [
     id: 'contact',
     title: 'How Aster reaches you',
     icon: 'mail',
-    lede: 'Where a decision, a bill or a deadline lands — and which one Aster uses first.',
+    lede: 'Where a decision, a bill, or a deadline lands, and which one Aster uses first.',
     fields: [
       {
         id: 'channel',
@@ -254,7 +260,7 @@ export const fieldGroups = [
         verify: {
           state: 'pending',
           label: 'Verification pending',
-          detail: 'We texted a code to this number 6 minutes ago. It works until midnight tonight.',
+          detail: 'Aster texted a code to this number 6 minutes ago. It works until midnight tonight.',
           action: 'Resend the code',
         },
       },
@@ -263,7 +269,7 @@ export const fieldGroups = [
         label: 'Term-time address',
         owner: 'student',
         value: '1226 University Drive, Apt 4B, Aster, MA 02139',
-        newBlank: 'Not set — Aster is writing to your home address',
+        newBlank: 'Not set · Aster is writing to your home address',
         verify: {
           state: 'unverified',
           label: 'Not verified',

@@ -52,7 +52,7 @@ export default function OrientationStep({ draft, onChange }) {
               <span>
                 <strong>{session.label} · {session.when}</strong>
                 <small>
-                  {session.where} — {session.hint}
+                  {session.where} · {session.hint}
                 </small>
               </span>
               <span className="radio-mark">

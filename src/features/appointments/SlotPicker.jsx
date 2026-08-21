@@ -64,7 +64,7 @@ export default function SlotPicker({ days, day, slotId, team, onDay, onSlot }) {
 
       <p className="picker-note">
         <Icon name="lock" size={13} />
-        These are the times {team} has published. You cannot propose another one here — if none of
+        These are the times {team} has published. You can’t propose another one here. If none of
         them work, ask them for more.
       </p>
     </>

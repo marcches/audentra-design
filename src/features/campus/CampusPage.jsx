@@ -141,13 +141,13 @@ export default function CampusPage({
   // how many sessions Student Life has made required today.
   const hero = {
     lede: nothingPublished
-      ? `Events, clubs and the people who run them are published here by ${campusPublisher.office}. Nothing is up yet — this page fills itself in as they publish.`
-      : `Events, clubs and the people who run them — published by ${campusPublisher.office}. ${
+      ? `Events, clubs, and the people who run them are published here by ${campusPublisher.office}. Nothing is up yet. This page fills itself in as they publish.`
+      : `Events, clubs, and the people who run them, published by ${campusPublisher.office}. ${
           required.length === 0
-            ? 'Nothing here is required; it is all yours to choose.'
+            ? 'Nothing here is required. It’s all yours to choose.'
             : `${
                 required.length === 1 ? 'One session is' : `${required.length} sessions are`
-              } required; everything else is yours to choose.`
+              } required. Everything else is yours to choose.`
         }`,
   };
 
@@ -263,7 +263,7 @@ export default function CampusPage({
           {board.events.length === 0 ? (
             <StateCard icon="calendar" title="No events published yet">
               {campusPublisher.office} publishes talks, socials, volunteering shifts and orientation
-              sessions here. The first one they publish appears on this page straight away — you
+              sessions here. The first one they publish appears on this page straight away. You
               don’t need to do anything.
             </StateCard>
           ) : (
@@ -386,14 +386,14 @@ export default function CampusPage({
             <StateCard
               variant="error"
               icon="alert"
-              title="We couldn’t load the club list"
+              title="The club list couldn’t be loaded"
               action={{
                 label: 'Try again',
                 icon: 'refresh',
                 onClick: () => onToast('Retrying would reload the club list from Aster.'),
               }}
             >
-              Events loaded normally — only this list is missing, and nothing you have already done
+              Events loaded normally. Only this list is missing, and nothing you have already done
               is affected. If it keeps happening, ask {campusPublisher.coordinator.name} at{' '}
               {campusPublisher.office}.
             </StateCard>
@@ -436,7 +436,7 @@ export default function CampusPage({
                   title={`No ${clubCategory} clubs in this view`}
                   action={{ label: 'Clear filter', onClick: () => pickClubCategory('All') }}
                 >
-                  {campusPublisher.office} adds organisations through the year.
+                  {campusPublisher.office} adds organizations through the year.
                 </StateCard>
               ) : (
                 <div className="card-rows campus-list" ref={clubList}>

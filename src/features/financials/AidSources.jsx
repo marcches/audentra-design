@@ -6,7 +6,7 @@ import { formatCredit, formatMoney } from './logic.js';
 
 const KIND = {
   grant: 'Grant · never repaid',
-  loan: 'Loan · repaid after you leave',
+  loan: 'Loan · you repay it after you leave Aster',
   work: 'Work-study · earned by working',
 };
 
@@ -56,23 +56,28 @@ export default function AidSources({ snapshot, ledger, onOpenBlocker, blockers }
                     {item.label}
                     {item.term && <TermTip term={item.term} label={item.label} />}
                   </strong>
+                  {item.gloss && <span className="aid-gloss">{item.gloss}</span>}
                   <span className="aid-source">{item.source}</span>
                   <span className="aid-kind">{KIND[item.kind] ?? ''}</span>
                 </div>
 
-                <span className={`aid-status ${item.status}`}>{STATUS[item.status]}</span>
+                {/* A pending source says so once, on the line below, with its reason
+                    (UX writing 5.7) — not as a chip, an amount and a note at once. */}
+                {item.status !== 'pending' && (
+                  <span className={`aid-status ${item.status}`}>{STATUS[item.status]}</span>
+                )}
 
-                <span className={`aid-amount ${item.status}`}>
-                  {item.amount === null ? 'Pending' : formatCredit(item.amount)}
-                </span>
+                {item.amount !== null && (
+                  <span className={`aid-amount ${item.status}`}>{formatCredit(item.amount)}</span>
+                )}
 
                 {item.status === 'pending' && (
                   <p className="aid-blocked">
                     <Icon name="clock" size={14} />
-                    {item.blockedNote}
+                    Pending · {item.blockedNote}
                     {blocker && (
                       <button className="text-button" onClick={() => onOpenBlocker(blocker)}>
-                        Open it
+                        {blocker.shortAction ?? 'Open it'}
                       </button>
                     )}
                   </p>

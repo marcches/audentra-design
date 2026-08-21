@@ -62,7 +62,7 @@ export const conversationTypes = [
     place: 'Ferrand Building, second floor',
     videoNote: 'A link reaches your Aster address the morning of the conversation.',
     // The reason this team has published nothing. Without it the empty picker would be a shrug.
-    publishes: 'Course advisors publish their times once course registration opens on 1 September.',
+    publishes: 'Course advisors publish their times once course registration opens on September 1.',
     otherRoute: 'Email Academic Advising',
   },
 ];
@@ -160,7 +160,7 @@ export const bookedAppointments = [
     format: 'in-person',
     state: 'confirmed',
     subject: 'Whether the transcript I uploaded is the one Admissions needs.',
-    bookedOn: '18 August',
+    bookedOn: 'Aug 18',
   },
   {
     id: 'appt-loan',
@@ -171,7 +171,7 @@ export const bookedAppointments = [
     format: 'video',
     state: 'confirmed',
     subject: 'What happens to my first payment if the federal loan is still pending.',
-    bookedOn: '19 August',
+    bookedOn: 'Aug 19',
   },
   {
     id: 'appt-checklist',
@@ -182,7 +182,7 @@ export const bookedAppointments = [
     format: 'in-person',
     state: 'confirmed',
     subject: 'How the order of the checklist is decided.',
-    bookedOn: '6 August',
+    bookedOn: 'Aug 6',
   },
   {
     id: 'appt-housing',
@@ -193,9 +193,9 @@ export const bookedAppointments = [
     format: 'video',
     state: 'cancelled',
     cancelledBy: 'you',
-    cancelledOn: '13 August',
+    cancelledOn: 'Aug 13',
     subject: 'Whether I can change my housing preference after the deposit.',
-    bookedOn: '10 August',
+    bookedOn: 'Aug 10',
   },
 ];
 

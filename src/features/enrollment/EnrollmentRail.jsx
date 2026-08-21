@@ -29,10 +29,10 @@ export default function EnrollmentRail({
           <span className="tiny-avatar">MJ</span>
           <span className="resume-badge">Saved from welcome</span>
         </div>
-        <h3>No rush—you can finish these now.</h3>
+        <h3>No rush. You can finish these now.</h3>
         <p>
-          You skipped two details while accepting your offer. We saved your place, so nothing was
-          lost.
+          You skipped two details while accepting your offer. Aster saved your place, so nothing
+          was lost.
         </p>
         <button onClick={onResume}>
           Continue where I left off <Icon name="arrow" size={16} />

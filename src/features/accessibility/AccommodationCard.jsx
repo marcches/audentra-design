@@ -4,16 +4,13 @@ import { answerInfo, answerOption, answerState } from './logic.js';
 import { offices } from '../help/data.js';
 
 /**
- * The accommodation question — ENR-208.
+ * The accommodation question — ENR-208. Built inside Health by ENR-206 and moved
+ * to its own section by ADR-0003; the card itself is unchanged in construction.
  *
- * ## Why this card looks nothing like the one above it
+ * ## Why this card has no heading band
  *
- * The brief's central risk is that the two halves of this screen read as one
- * thing, and "make them different" only becomes true if it is built. So this
- * card has **no heading band**: it opens in prose and closes on a foot, where
- * the record above opens on a tinted band with a state chip and a list of
- * submissions. One is a record with a history; this is a question with two
- * doors, and the silhouettes say so before a word is read
+ * It opens in prose and closes on a foot. One is a record with a history; this
+ * is a question with two doors, and the silhouette says so before a word is read
  * ([YNAB](https://mobbin.com/screens/7f14f6d6-2262-46ee-899c-cbe02b2884a3)).
  *
  * ## Three conditions, not two
@@ -82,9 +79,8 @@ export default function AccommodationCard({
       {unavailable ? (
         <div className="question-unreadable" role="alert">
           <p>
-            <strong>Your answer could not be read just now.</strong> It is not shown as answered and
-            it is not shown as open, because we do not know which it is — and guessing either way
-            would be wrong.
+            <strong>Your answer couldn’t be read just now.</strong> It isn’t shown as answered or as
+            open, because neither can be read right now, and guessing either way would be wrong.
           </p>
           <button className="secondary-button" onClick={onRetry}>
             <Icon name="refresh" size={16} /> Try again
@@ -108,7 +104,7 @@ export default function AccommodationCard({
               form. What is shown is always the current answer. */}
           <div className="answered-change">
             <span>
-              {state === 'yes' ? 'Changed your mind?' : 'You can change this at any time.'}
+              {state === 'yes' ? 'Changed your mind?' : 'You can change this any time.'}
             </span>
             <button
               className="secondary-button"
@@ -160,8 +156,8 @@ export default function AccommodationCard({
       {failed && (
         <div className="question-failed" role="alert">
           <p>
-            <strong>This did not reach {office.name}.</strong> Nothing was saved and nothing was
-            sent, so the question is still open — and no one at Aster has been told anything.
+            <strong>This didn’t reach {office.name}.</strong> Nothing was saved and nothing was
+            sent, so the question is still open. No one at Aster has been told anything.
           </p>
           <button className="secondary-button" onClick={onRetry}>
             <Icon name="refresh" size={16} /> Try again

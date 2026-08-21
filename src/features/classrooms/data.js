@@ -11,12 +11,12 @@ export const program = {
   name: 'BA Computer Science',
   classOf: 'Class of 2031',
   catalog: '2026–27',
-  publishedOn: 'Published by Aster on 12 Aug',
+  publishedOn: 'Published by Aster on Aug 12',
   creditsToGraduate: 120,
   officialRecord: {
-    office: 'Registrar’s Office',
+    office: 'Office of the Registrar',
     where: 'Building A, second floor',
-    note: 'This page shows Aster’s published catalog and the credit the Registrar has already approved. Your official academic record lives with the Registrar’s Office.',
+    note: 'This page shows Aster’s published catalog and the credit the Registrar has already approved. Your official academic record lives with the Office of the Registrar.',
   },
 };
 
@@ -79,7 +79,7 @@ export const requirements = [
     summary: 'One calculus sequence course, or credit Aster has already accepted for it.',
     creditsRequired: 4,
     creditsApproved: 4,
-    decidedOn: 'Approved 4 Aug by the Registrar’s Office',
+    decidedOn: 'Approved Aug 4 by the Registrar',
     courses: [
       {
         code: 'MATH 101',
@@ -88,7 +88,7 @@ export const requirements = [
         terms: 'Fall and Spring',
         state: 'approved',
         evidence: 'AP Calculus BC, score 5',
-        decidedOn: 'Approved 4 Aug',
+        decidedOn: 'Approved Aug 4',
       },
     ],
   },
@@ -107,7 +107,7 @@ export const requirements = [
         terms: 'Fall',
         state: 'approved',
         evidence: 'AP Physics C: Mechanics, score 5',
-        decidedOn: 'Approved 4 Aug',
+        decidedOn: 'Approved Aug 4',
       },
       {
         code: 'PHYS 122',
@@ -141,7 +141,7 @@ export const requirements = [
     summary: 'One course in how people make and read culture.',
     creditsRequired: 4,
     creditsApproved: 4,
-    decidedOn: 'Approved 4 Aug by the Registrar’s Office',
+    decidedOn: 'Approved Aug 4 by the Registrar',
     courses: [
       {
         code: 'ARTS 150',
@@ -150,7 +150,7 @@ export const requirements = [
         terms: 'Fall and Spring',
         state: 'approved',
         evidence: 'Northside College ARTS 150, transferred in full',
-        decidedOn: 'Approved 4 Aug',
+        decidedOn: 'Approved Aug 4',
       },
     ],
   },
@@ -193,7 +193,7 @@ export const requirements = [
         terms: 'Fall',
         state: 'approved',
         evidence: 'Aster placement exam',
-        decidedOn: 'Approved 6 Aug',
+        decidedOn: 'Approved Aug 6',
       },
       {
         code: 'SPAN 102',
@@ -358,8 +358,8 @@ export const creditMatches = [
     evidence: {
       document: 'IB Diploma transcript',
       source: 'International Baccalaureate',
-      detail: 'Spanish B, Higher Level — score 6',
-      uploadedOn: 'Uploaded 6 Aug with your application',
+      detail: 'Spanish B, Higher Level · score 6',
+      uploadedOn: 'Uploaded Aug 6 with your application',
     },
     target: {
       requirementId: 'foreign-language',
@@ -383,8 +383,8 @@ export const creditMatches = [
     evidence: {
       document: 'Northside College transcript',
       source: 'Northside College',
-      detail: 'CSCI 140 Introduction to Computing — grade A−, Spring 2026, 3 credits',
-      uploadedOn: 'Uploaded 6 Aug with your application',
+      detail: 'CSCI 140 Introduction to Computing · grade A−, Spring 2026, 3 credits',
+      uploadedOn: 'Uploaded Aug 6 with your application',
     },
     target: {
       requirementId: 'programming-foundations',
@@ -415,6 +415,6 @@ export const matchSources = [
 /** Shown while the program itself has not been assigned. */
 export const unassignedProgram = {
   heading: 'Your program hasn’t been assigned yet',
-  body: 'Aster assigns your academic program after your enrollment deposit clears. When it does, your degree requirements appear here — every requirement, what satisfies it, and any credit you already have.',
+  body: 'Aster assigns your academic program after your enrollment deposit clears. When it does, your degree requirements appear here: every requirement, what satisfies it, and any credit you already have.',
   produces: 'Complete ‘Lock in your place’ on My Enrollment',
 };

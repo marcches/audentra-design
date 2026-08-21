@@ -50,7 +50,7 @@ function NavRow({ id, activeId, badges, leaf, onNavigate }) {
         {item.badge === 'decisions' && (
           <NavBadge
             count={badges.decisions}
-            noun={badges.decisions === 1 ? 'decision you have not opened' : 'decisions you have not opened'}
+            noun={badges.decisions === 1 ? 'document that needs you' : 'documents that need you'}
           />
         )}
         {item.badge === 'required' && (
@@ -177,7 +177,7 @@ export default function Sidebar({
           <span>
             <Icon name="alert" size={17} />
           </span>
-          <p>We couldn’t load your sections.</p>
+          <p>Your sections couldn’t be loaded.</p>
           <button onClick={onRetry}>
             <Icon name="refresh" size={15} /> Try again
           </button>

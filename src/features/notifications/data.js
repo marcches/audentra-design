@@ -25,7 +25,7 @@ export const notifications = [
   {
     id: 'income-changes-requested',
     category: 'action-required',
-    title: 'Your income verification needs another try',
+    title: 'Verify your household income · sent back',
     office: 'financial-services',
     when: '2026-08-15',
     route: '#/my-documents',
@@ -41,13 +41,13 @@ export const notifications = [
   {
     id: 'housing-form-withdrawn',
     category: 'record-changed',
-    title: 'The housing preference form was withdrawn',
+    title: 'Housing Services replaced the housing preference form with the housing plan question.',
     office: 'housing',
     when: '2026-08-09',
     // The `gone` case, and a true one: Housing Services replaced a form that
     // used to be answered inside the checklist drawer with the plan question in
     // the Housing section. The old form has no page to link to any more.
-    gone: 'Housing Services replaced it with the plan question in Housing.',
+    gone: true,
   },
   {
     id: 'aid-award-issued',

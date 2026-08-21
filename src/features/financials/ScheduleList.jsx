@@ -81,7 +81,7 @@ export default function ScheduleList({ schedule, ledger, unavailable, onChangePl
 
           <p className="ledger-foot">
             <Icon name="info" size={15} />
-            {formatMoney(ledger.scheduleTotal)} in total — what Aster bills you, minus the aid you
+            {formatMoney(ledger.scheduleTotal)} in total: what Aster bills you, minus the aid you
             have accepted. Installments are an estimate and are recalculated if your aid changes.
           </p>
         </>

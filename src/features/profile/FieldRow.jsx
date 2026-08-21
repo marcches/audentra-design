@@ -77,7 +77,7 @@ export default function FieldRow({
         {note && <p className="field-note">{note}</p>}
         {option && textBlocked && (
           <p className="field-note pending">
-            Aster can’t text you until that number is verified, so it will email you until then.
+            Aster can’t text you until that number is verified.
           </p>
         )}
         {verify?.detail && (

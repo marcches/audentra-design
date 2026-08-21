@@ -1,5 +1,6 @@
 import Icon from '../../design-system/Icon.jsx';
 import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
+import { longDate } from '../campus/logic.js';
 import { guideById, offices } from '../help/data.js';
 import { responseDeadline } from './data.js';
 import { STAGES } from './logic.js';
@@ -71,7 +72,7 @@ export default function HousingRail({ deadlinePassed, assignment, stage }) {
           <Icon name="pin" size={14} /> {office.location} · {office.hours}
         </p>
         <p className="reply-note">
-          <Icon name="mail" size={14} /> Typically replies in {office.reply}
+          <Icon name="mail" size={14} /> Usually replies in {office.reply}
         </p>
       </AnchorCard>
 
@@ -79,12 +80,12 @@ export default function HousingRail({ deadlinePassed, assignment, stage }) {
         <span className="panel-label">What a preference is worth</span>
         <p>
           You are telling {office.name} what you would like, in the order you would like it. They
-          decide, and they may place you somewhere you did not name — that is what makes this a
+          decide, and they may place you somewhere you didn’t name. That’s what makes this a
           preference and not a booking.
         </p>
         <p>
-          It is not nothing, either. They read the order you set, first to last, and a residence you
-          never name is one you will not be considered for.
+          Your order still matters. They read it first to last, and a residence you never name is
+          one you won’t be considered for.
         </p>
 
         {guide && (
@@ -94,7 +95,7 @@ export default function HousingRail({ deadlinePassed, assignment, stage }) {
               <p key={paragraph.slice(0, 24)}>{paragraph}</p>
             ))}
             <span className="guide-meta">
-              Published by {office.name} · updated {guide.updated}
+              Published by {office.name} · updated {longDate(guide.updated)}
             </span>
           </div>
         )}

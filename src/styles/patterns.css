@@ -658,7 +658,11 @@
  * nothing measures anything. A button that resized itself while it worked
  * would reflow the card holding it, every time, on every action.
  */
-.pending {
+/* Scoped to the button kinds: `pending` is also the status class on a financials
+   aid row and a ledger cell, and a bare `.pending` made their text transparent. */
+.primary-button.pending,
+.secondary-button.pending,
+.text-button.pending {
   cursor: progress;
   color: transparent;
   position: relative;

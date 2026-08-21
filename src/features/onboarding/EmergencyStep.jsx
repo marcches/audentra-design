@@ -53,7 +53,7 @@ export default function EmergencyStep({ draft, onChange }) {
           <Icon name="shield" size={15} />
           <span>
             {first ? `${first} cannot see anything in your record.` : 'An emergency contact cannot see anything in your record.'}{' '}
-            Letting someone <em>see</em> things — your bill, your grades, where you live — is a
+            Letting someone <em>see</em> things (your bill, your grades, where you live) is a
             separate decision, and it is the next step.
           </span>
         </p>

@@ -7,13 +7,13 @@ const SIGNALS = [
   ['01', 'What you can do', 'Actionable steps always come before work that is locked or under review.'],
   ['02', 'What it unlocks', 'Steps that open housing, advising, or orientation move higher.'],
   ['03', 'When it’s due', 'Deadlines and processing time keep urgent work from sneaking up on you.'],
-  ['04', 'How long it takes', 'Quick wins appear when they can clear the path without distracting you.'],
+  ['04', 'How long it takes', 'The fastest steps appear when they can clear the path without distracting you.'],
 ];
 
 const CREDIT_STEPS = [
   ['01', 'Evidence arrives', 'Aster reads the transcripts and score reports you sent with your application.'],
   ['02', 'A rule is proposed', 'A published credit policy is matched against that evidence. That suggestion is what you see on this page.'],
-  ['03', 'A person reviews it', 'The Registrar’s Office compares the course, its contact hours and its content against Aster’s own.'],
+  ['03', 'A person reviews it', 'The Office of the Registrar compares the course, its contact hours, and its content against Aster’s own.'],
   ['04', 'A decision is recorded', 'Approved, partly approved, or not approved. Only at this point does a requirement change.'],
 ];
 
@@ -54,7 +54,7 @@ export default function InfoModal({ variant, onClose }) {
             </span>
             <h2 id="info-title">Your checklist adapts to what matters now.</h2>
             <p>
-              Audentra ranks steps using four signals, then updates the order as your situation
+              Aster ranks steps using four signals, then updates the order as your situation
               changes.
             </p>
             <div className="signal-grid">
@@ -67,7 +67,7 @@ export default function InfoModal({ variant, onClose }) {
               ))}
             </div>
             <div className="modal-note">
-              <Icon name="info" size={18} /> The order is a recommendation—not a restriction. You
+              <Icon name="info" size={18} /> The order is a recommendation, not a restriction. You
               can open any available task.
             </div>
           </>
@@ -78,8 +78,8 @@ export default function InfoModal({ variant, onClose }) {
             </span>
             <h2 id="info-title">A match is a suggestion. Only the Registrar decides.</h2>
             <p>
-              Audentra can spot that something you already did looks like an Aster course. It cannot
-              grant credit for it, and neither can this page.
+              The portal can spot that something you already did looks like an Aster course. It
+              can’t grant credit for it, and neither can this page.
             </p>
             <div className="signal-grid">
               {CREDIT_STEPS.map(([number, title, copy]) => (
@@ -110,10 +110,8 @@ export default function InfoModal({ variant, onClose }) {
             <p>
 
               Federal rules ask Aster to confirm you are moving through your degree before it
-
-              releases aid for another term. Audentra can show you what your record says today. It
-
-              cannot decide anything, and neither can the panel you came from.
+              releases aid for another term. The portal can show you what your record says today.
+              It can’t decide anything, and neither can the panel you came from.
 
             </p>
 

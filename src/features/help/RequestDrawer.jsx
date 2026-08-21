@@ -88,7 +88,7 @@ export default function RequestDrawer({ request, replyText, onReply, onSend, onC
           placeholder={
             answered
               ? 'Say what is still open and this request goes back to the same office.'
-              : 'Anything that would help — a date, a document number, what changed.'
+              : 'Anything that would help: a date, a document number, what changed.'
           }
           onChange={(event) => onReply(event.target.value)}
         />
@@ -105,7 +105,7 @@ export default function RequestDrawer({ request, replyText, onReply, onSend, onC
       </div>
 
       <p className="published-note">
-        Aster replies here, in the portal — never only by email. A reply is signed by the office
+        Aster replies here, in the portal. A reply is signed by the office
         because a request belongs to the office, not to one person’s day.
       </p>
     </Drawer>

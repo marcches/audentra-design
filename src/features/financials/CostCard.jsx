@@ -35,7 +35,7 @@ export default function CostCard({ ledger, snapshot, year, children }) {
           <Icon name="receipt" size={19} />
         </span>
         <div>
-          <h2 id="cost-title">Cost &amp; coverage</h2>
+          <h2 id="cost-title">Cost and coverage</h2>
           <p>
             {year.label} · {year.entry}
           </p>
@@ -53,6 +53,7 @@ export default function CostCard({ ledger, snapshot, year, children }) {
             <th scope="row">
               Cost of attendance
               <TermTip term="coa" label="cost of attendance" />
+              <small>Aster’s full estimate for the year, including what you spend off campus</small>
             </th>
             <td />
             <td className="ledger-amount">{formatMoney(ledger.cost)}</td>
@@ -97,12 +98,12 @@ export default function CostCard({ ledger, snapshot, year, children }) {
               <th scope="row">
                 {item.label}
                 {item.term && <TermTip term={item.term} label={item.label} />}
-                <small>{item.blockedNote}</small>
+                <small>Pending · {item.blockedNote}</small>
               </th>
-              <td>
-                <span className="aid-status pending">Pending</span>
+              <td />
+              <td className="ledger-amount pending" aria-label="No amount yet">
+                —
               </td>
-              <td className="ledger-amount pending">Pending</td>
             </tr>
           ))}
 

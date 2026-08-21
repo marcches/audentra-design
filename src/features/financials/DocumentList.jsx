@@ -27,7 +27,7 @@ export default function DocumentList({ documents, unavailable, onOpen, onRetry }
         <StateCard
           variant="error"
           icon="alert"
-          title="We couldn’t check your paperwork"
+          title="Your paperwork couldn’t be checked"
           action={{ label: 'Try again', icon: 'refresh', onClick: onRetry }}
         >
           Everything else on this page loaded. Nothing has changed on your record.

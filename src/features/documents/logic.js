@@ -42,13 +42,14 @@ export const DOCUMENT_STATES = {
     // Names the office, so a card where every row is `needed` is not six
     // identical grey sentences under six identical amber tiles. A line that
     // repeats down the whole card is texture, not information.
-    line: (office) => `Not sent yet · ${office.name} is waiting for it`,
+    line: (office, requirement) =>
+      requirement?.neededLine ?? `Not sent yet · ${office.name} is waiting for it`,
   },
   checking: {
     label: 'Sent',
     tone: 'progress',
     holder: 'nobody',
-    line: () => 'Aster is checking it. You can close this page — it keeps going.',
+    line: () => 'Aster is checking it. You can close this page. It keeps going.',
   },
   'in-review': {
     label: 'In review',
@@ -239,13 +240,13 @@ export function refuseCount(requirement, chosen, incoming) {
 const DOORS = {
   task: {
     id: 'task',
-    line: 'This one is a step on your checklist, and that is where it is sent from — so there is only ever one place it can be submitted.',
+    line: 'This one is a step on your checklist, and that is where it is sent from, so there is only ever one place it can be submitted.',
     label: 'Open the step',
   },
   health: {
     id: 'health',
     route: '#/health',
-    line: 'This one lives in your Health section, with the question Accessibility Services asked — so there is only ever one place it can be sent from.',
+    line: 'This one lives in your Health section, so there is only ever one place it can be sent from.',
     label: 'Open Health',
   },
 };

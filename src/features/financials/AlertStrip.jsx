@@ -26,7 +26,7 @@ export default function AlertStrip({ task, onOpen }) {
         {task.consequence}
       </p>
       <button className="secondary-button" onClick={() => onOpen(task)}>
-        Open it <Icon name="arrow" size={15} />
+        {task.shortAction ?? 'Open it'} <Icon name="arrow" size={15} />
       </button>
     </div>
   );

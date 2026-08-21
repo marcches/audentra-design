@@ -18,7 +18,7 @@ export default function CampusDrawer({ item, kind, past, onClose, onToast }) {
       variant="campus"
       label={[item.category, isEvent ? longDate(item.date) : item.meets]}
       titleId="campus-drawer-title"
-      closeLabel={isEvent ? 'Close event' : 'Close organisation'}
+      closeLabel={isEvent ? 'Close event' : 'Close organization'}
       onClose={onClose}
     >
       <div className={`drawer-icon campus ${item.required ? 'required' : ''}`}>
@@ -116,8 +116,8 @@ export default function CampusDrawer({ item, kind, past, onClose, onToast }) {
               onClick={() =>
                 onToast(
                   item.registration.kind === 'email'
-                    ? `An email to ${item.registration.contact} would open here — nothing is sent yet.`
-                    : `Registration for ${item.title} would open on Aster’s events site — nothing is submitted in this preview.`
+                    ? `An email to ${item.registration.contact} would open here. Nothing is sent yet.`
+                    : `Registration for ${item.title} would open on Aster’s events site. Nothing is submitted in this preview.`
                 )
               }
             >
@@ -126,7 +126,7 @@ export default function CampusDrawer({ item, kind, past, onClose, onToast }) {
             </button>
           )}
           <small className="prototype-note">
-            Preview: Aster handles registration. Audentra never registers you for an event.
+            Preview: Aster handles registration. The portal never registers you for an event.
           </small>
         </div>
       ) : (
@@ -140,14 +140,14 @@ export default function CampusDrawer({ item, kind, past, onClose, onToast }) {
             className="primary-button full"
             onClick={() =>
               onToast(
-                `An email to ${item.contact.name} would open here — nothing is sent yet.`
+                `An email to ${item.contact.name} would open here. Nothing is sent yet.`
               )
             }
           >
             Email {item.contact.name} <Icon name="mail" size={17} />
           </button>
           <small className="prototype-note">
-            Preview: membership is handled by the organisation, not by this portal.
+            Preview: membership is handled by the organization, not by this portal.
           </small>
         </div>
       )}

@@ -14,7 +14,7 @@
 export const EDWARD = {
   name: 'Edward',
   mark: 'E',
-  role: 'Aster’s enrollment assistant',
+  role: 'Aster’s AI assistant',
 };
 
 /**
@@ -25,11 +25,11 @@ export const EDWARD = {
 export const STANDING_CAUTION =
   'Edward can be wrong. Check anything about your record, aid or payments against your official record before you act on it.';
 
-export const VOICE_NOTE = 'Prototype: voice is simulated here — nothing is recorded or spoken.';
+export const VOICE_NOTE = 'Prototype: voice is simulated here. Nothing is recorded or spoken.';
 
 export const GREETING = {
-  title: 'Hi Maya — ask me about your enrollment.',
-  body: 'I read your own record and what Aster has published. I can point you at the right page, but I never change anything for you.',
+  title: 'Hi Maya. Ask me about your enrollment.',
+  body: 'I can read your record and what Aster has published. I can point you to the right page, but I never change anything for you.',
 };
 
 /** Shown once under the greeting, so AC 2 is a promise on screen, not only in code. */
@@ -56,7 +56,7 @@ export const GUIDANCE = {
   aidTerms: {
     topic: 'Grants and loans',
     body: [
-      'A grant is money you keep — the Aster Grant and the Federal Pell Grant are both grants.',
+      'A grant is money you keep. The Aster Grant and the Federal Pell Grant are both grants.',
       'A loan is money you repay after you leave school. Subsidized means the government covers the interest while you are enrolled at least half time.',
     ],
   },
@@ -78,7 +78,7 @@ export const GUIDANCE = {
     topic: 'What Edward can see',
     body: [
       'I can read your own record and the guidance Aster publishes. I cannot see another student’s record, and there is no way for me to ask for one.',
-      'I also never change anything — no payment, no upload, no booking. When something needs doing, I send you to the page that does it.',
+      'I also never change anything: no payment, no upload, no booking. When something needs doing, I send you to the page that does it.',
     ],
   },
 };
@@ -141,7 +141,7 @@ export const seededConversations = [
         role: 'edward',
         body: [
           'Aster received your final transcript on Aug 6 and it is with the review team now. Reviews usually take two to three business days.',
-          'Nothing is needed from you while it is open — the step moves on its own once the check is recorded.',
+          'Nothing is needed from you while it is open. The step moves on its own once the check is recorded.',
         ],
         source: { basis: 'record', label: 'My Enrollment', destination: 'my-enrollment' },
       },
@@ -162,7 +162,7 @@ export const seededConversations = [
         id: 'seed-housing-a',
         role: 'edward',
         body: [
-          'Yes. Your housing answer can be changed any time before the housing deadline — Housing Services only uses it to open the right next steps for you.',
+          'Yes. Your housing answer can be changed any time before the housing deadline. Housing Services only uses it to open the right next steps for you.',
         ],
         source: { basis: 'guidance', label: 'Housing Services', destination: null },
       },

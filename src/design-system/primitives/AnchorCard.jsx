@@ -13,7 +13,7 @@
  * order — label, then figure, then whatever qualifies it — which is the part
  * that kept coming out differently.
  *
- *   <AnchorCard variant="reply" label="Typical reply" figure={TYPICAL_REPLY}>
+ *   <AnchorCard variant="reply" label="Usual reply" figure={TYPICAL_REPLY}>
  *     <p>…</p>
  *   </AnchorCard>
  *

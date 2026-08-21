@@ -46,10 +46,10 @@ export const HOUSING_PREVIEW_STATES = [
   ['ready', 'No plan yet', 'The first question unanswered, and the second one not yet asked.'],
   ['onboarding-answered', 'Answered at onboarding', 'Living on campus, three residences already ranked.'],
   ['deadline-passed', 'After the deadline', 'The submitted shortlist, and Housing Services assigning.'],
-  ['room-assigned', 'Room assigned', 'A room that is not the first preference — and is still valid.'],
+  ['room-assigned', 'Room assigned', 'A room that isn’t the first preference, and is still valid.'],
   ['send-fails', 'A change that failed', 'A plan the server rejected, showing the last saved answer.'],
-  ['loading', 'Loading', 'Before the published catalogue arrives.'],
-  ['partial', 'Partial data', 'Your plan loaded; the residence catalogue did not.'],
+  ['loading', 'Loading', 'Before the published catalog arrives.'],
+  ['partial', 'Partial data', 'Your plan loaded; the residence catalog did not.'],
   ['error', 'Error', 'Nothing Housing Services publishes could be loaded.'],
   ['empty', 'Nothing published', 'Before Housing Services publishes any residence.'],
 ];
@@ -108,7 +108,7 @@ export default function HousingPage({
     onToast({
       tone: 'success',
       title: option.complete ? 'Saved.' : 'Saved as still deciding.',
-      body: option.complete ? option.consequence : `${housingOffice} will come back to you.`,
+      body: option.complete ? option.consequence : `${housingOffice} will help you decide.`,
     });
   }
 
@@ -173,7 +173,7 @@ export default function HousingPage({
       ? `${housingOffice} assigned your room on ${assignment.assignedOn}. Move in ${assignment.moveIn}.`
       : `${housingOffice} is assigning rooms from the shortlists submitted by ${responseDeadline.label}.`
     : !planIsAnswered(plan)
-      ? `Answer by ${responseDeadline.full} — ${responseDeadline.daysLeft} days left. It is what opens your move-in time.`
+      ? `Answer by ${responseDeadline.full}. It’s what opens your move-in time.`
       : opensShortlist(plan)
         ? `${shortlist.length} of ${SHORTLIST_MAX} residences ranked · yours to change until ${responseDeadline.label}.`
         : `Recorded, and complete. Yours to change until ${responseDeadline.label}.`;
@@ -181,7 +181,7 @@ export default function HousingPage({
   const hero = {
     lede: deadlinePassed
       ? `${housingOffice} is assigning rooms now, from the answers submitted before ${responseDeadline.label}. This page shows what you submitted.`
-      : `Two questions: where you plan to live, and — if that is on campus — which residences you would like. Both are yours to change until ${responseDeadline.full}.`,
+      : `Two questions: where you’ll live, and which residences you’d like if that’s on campus. You can change both until ${responseDeadline.full}.`,
   };
 
   return (
@@ -250,7 +250,7 @@ export default function HousingPage({
           </div>
           <p className="panel-lede">
             You told Aster you would live on campus and did not name any residence before{' '}
-            {responseDeadline.label}. You are still in the assignment list — {housingOffice} places
+            {responseDeadline.label}. You are still in the assignment list. {housingOffice} places
             students who named nothing alongside everyone else, from what is free.
           </p>
         </section>

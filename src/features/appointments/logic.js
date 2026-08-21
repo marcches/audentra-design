@@ -94,15 +94,16 @@ export function failedBookings(current) {
   return current.filter((item) => item.state === 'failed');
 }
 
-/** 'Thu 27 August'. Short enough for a 21px figure on a 380px screen. */
-export function shortWeekdayDate(iso) {
-  const [weekday, ...rest] = weekdayDate(iso).split(' ');
-  return `${weekday.slice(0, 3)} ${rest.join(' ')}`;
+/** 'Thu, Aug 27' inside a week, 'Aug 27' after. Short enough for a 21px figure on a 380px screen. */
+export function shortWeekdayDate(iso, today) {
+  const text = weekdayDate(iso, today);
+  return text.includes(',') ? `${text.slice(0, 3)},${text.split(',')[1]}` : text;
 }
 
 /** 'Fri' — the day strip has room for three letters and nothing more. */
 export function weekdayShort(iso) {
-  return shortWeekdayDate(iso).split(' ')[0];
+  const [year, month, day] = iso.split('-').map(Number);
+  return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(year, month - 1, day).getDay()];
 }
 
 function dayDiff(iso, today) {
@@ -128,12 +129,12 @@ export function relativeDay(iso, today) {
 export function stateOf(appointment, today) {
   if (appointment.state === 'failed') return { tone: 'failed', label: 'Not booked' };
   if (appointment.state === 'cancelled') return { tone: 'cancelled', label: 'Cancelled' };
-  if (appointment.date < today) return { tone: 'done', label: 'Happened' };
+  if (appointment.date < today) return { tone: 'done', label: 'Completed' };
   return { tone: 'confirmed', label: 'Confirmed' };
 }
 
 export function timeRange(appointment) {
-  return appointment.end ? `${appointment.time} – ${appointment.end}` : appointment.time;
+  return appointment.end ? `${appointment.time}–${appointment.end}` : appointment.time;
 }
 
 /** Where the conversation happens, which the format decides and the type supplies. */

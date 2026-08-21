@@ -186,13 +186,13 @@ export default function AskCard({
             type="text"
             value={subject}
             maxLength={90}
-            placeholder="One line — the thing you want decided or explained"
+            placeholder="One line: the thing you want decided or explained"
             onChange={(event) => onSubject(event.target.value)}
           />
         </div>
 
         <div className="ask-step">
-          <label htmlFor="ask-message">Tell them the rest</label>
+          <label htmlFor="ask-message">Add any details</label>
           <textarea
             id="ask-message"
             className="ask-textarea"
@@ -206,7 +206,7 @@ export default function AskCard({
         {failed && (
           <StateCard variant="error" icon="alert" title="Nothing was sent">
             Your question did not reach {office ? office.name : 'Aster'}. Nothing was saved and
-            nobody has seen it — every word is still above, exactly as you wrote it. Sending again is
+            nobody has seen it. Every word is still above, exactly as you wrote it. Sending again is
             safe; there is no half-sent copy of this anywhere.
           </StateCard>
         )}
@@ -219,14 +219,9 @@ export default function AskCard({
             iconSize={16}
             disabled={!ready}
             pending={sending}
-            aria-describedby="ask-channel-note"
           >
             {failed ? 'Try sending again' : `Send to ${office ? office.name : 'an office'}`}
           </Button>
-          <p className="ask-channel-note" id="ask-channel-note">
-            Aster answers here, in the portal. Emails from Aster only tell you that something has
-            landed — there is no address on them that reaches a person.
-          </p>
         </div>
       </form>
     </section>

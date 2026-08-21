@@ -38,14 +38,14 @@ export default function Catalogue({
         <StateCard
           variant="error"
           icon="alert"
-          title="We couldn’t load the residence catalogue"
+          title="The residence catalog couldn’t be loaded"
           action={{
             label: 'Try again',
             icon: 'refresh',
-            onClick: () => onToast(`Retrying would reload the catalogue from ${housingOffice}.`),
+            onClick: () => onToast(`Retrying would reload the catalog from ${housingOffice}.`),
           }}
         >
-          Your housing plan above loaded normally and is unaffected — only the list of residences is
+          Your housing plan above loaded normally and is unaffected. Only the list of residences is
           missing. Nothing you have already answered or ranked has been lost.
         </StateCard>
       </section>
@@ -63,7 +63,7 @@ export default function Catalogue({
         </div>
         <StateCard icon="home" title="No residences published yet">
           {housingOffice} publishes the residences open to your year here, each with its rooms, its
-          rate and its meal plan. They appear on this page as soon as they are published — you don’t
+          rate and its meal plan. They appear on this page as soon as they are published. You don’t
           need to do anything, and your plan above is answerable either way.
         </StateCard>
       </section>

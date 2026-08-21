@@ -34,9 +34,9 @@ export default function ClassroomsRail({
           {unknownProgram
             ? 'Anything you have already sent Aster is kept and reviewed then'
             : unavailable
-              ? 'We couldn’t check what’s under review right now'
+              ? 'What’s under review couldn’t be checked right now'
               : underReview > 0
-                ? `${underReview} credits under review — not counted above`
+                ? `${underReview} credits under review, not counted yet`
                 : 'Nothing is under review right now'}
         </p>
       </AnchorCard>

@@ -63,7 +63,7 @@ export function buildLedger(snapshot) {
       { key: 'paid', label: 'You’ve paid', amount: paid },
       {
         key: 'open',
-        label: pending.length > 0 ? 'Still to cover — before your pending loan' : 'Still to cover',
+        label: pending.length > 0 ? 'Still to cover, before your pending loan' : 'Still to cover',
         amount: balance,
       },
     ].filter((segment) => segment.amount > 0),

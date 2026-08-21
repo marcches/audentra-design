@@ -21,8 +21,7 @@ export default function TypeRow({ type, days, unavailable, onOpen }) {
     <strong>Times unavailable</strong>
   ) : count === 0 ? (
     <>
-      <strong>No times yet</strong>
-      <small>See why</small>
+      <strong>No times available</strong>
     </>
   ) : (
     <>

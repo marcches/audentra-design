@@ -28,10 +28,10 @@ export default function RequestList({ requests, today, unavailable, onOpen, onRe
         <StateCard
           variant="error"
           icon="alert"
-          title="We couldn’t load your requests"
+          title="Your requests couldn’t be loaded"
           action={{ label: 'Try again', icon: 'refresh', onClick: onRetry }}
         >
-          Aster’s guides below are unaffected, and so is anything you have already sent — this is the
+          Aster’s guides below are unaffected, and so is anything you have already sent. This is the
           list that failed to load, not the requests themselves. Raising a new one still works.
         </StateCard>
       ) : requests.length === 0 ? (

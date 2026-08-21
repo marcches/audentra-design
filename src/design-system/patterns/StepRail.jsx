@@ -42,7 +42,7 @@ import Icon from '../Icon.jsx';
 const MARKS = {
   saved: { icon: 'check', meta: 'Saved' },
   current: { icon: null, meta: null },
-  skipped: { icon: 'half', meta: 'Skipped — you can come back' },
+  skipped: { icon: 'half', meta: 'Skipped · you can come back' },
   upcoming: { icon: null, meta: null },
   locked: { icon: 'lock', meta: null },
   unknown: { icon: null, meta: 'Couldn’t be checked' },

@@ -61,19 +61,19 @@ export default function ProfilePage({ destination, state, onToast }) {
 
   function editField(field) {
     onToast(
-      `${field.value ? 'Changing' : 'Adding'} your ${field.label.toLowerCase()} would open here — nothing is saved yet.`,
+      `${field.value ? 'Changing' : 'Adding'} your ${field.label.toLowerCase()} would open here. Nothing is saved yet.`,
     );
   }
 
   function askOffice(office) {
-    onToast(`A message to ${office.name} would open here — nothing is sent yet.`);
+    onToast(`A message to ${office.name} would open here. Nothing is sent yet.`);
   }
 
   function runVerify(field) {
     onToast(
       field.verify.state === 'pending'
-        ? 'A new code would be texted to that number — nothing is sent yet.'
-        : `Confirming your ${field.label.toLowerCase()} would open here — nothing is sent yet.`,
+        ? 'A new code would be texted to that number. Nothing is sent yet.'
+        : `Confirming your ${field.label.toLowerCase()} would open here. Nothing is sent yet.`,
     );
   }
 
@@ -136,7 +136,7 @@ export default function ProfilePage({ destination, state, onToast }) {
 
   const hero = {
     kicker: `Profile · Version ${version} · Updated ${updated}`,
-    title: `This is what Aster knows about you, ${identity.firstName}.`,
+    title: 'What Aster knows about you.',
   };
 
   const summary = (
@@ -159,7 +159,7 @@ export default function ProfilePage({ destination, state, onToast }) {
         advisor={registrarContact}
         onContact={(way) =>
           onToast(
-            `${way === 'email' ? 'An email' : 'A message'} to ${registrarContact.name} at the Registrar would open here — nothing is sent yet.`,
+            `${way === 'email' ? 'An email' : 'A message'} to ${registrarContact.name} at the Registrar would open here. Nothing is sent yet.`,
           )
         }
       />
@@ -172,9 +172,9 @@ export default function ProfilePage({ destination, state, onToast }) {
       <span>
         Everything under <strong>Yours to change</strong> you can change here, and the change takes
         effect at once. Everything under <strong>Aster’s record</strong> belongs to the office named
-        beside it, and every one of those rows offers the way to reach them.
+        beside it. Each of those rows shows how to reach them.
         {unchecked && (
-          <em> We couldn’t check verification just now, so no row on this page claims to be verified.</em>
+          <em> Verification couldn’t be checked just now, so no row on this page claims to be verified.</em>
         )}
         {identity.usingLegalName && (
           <em> Aster is using your legal first name until you set a preferred one.</em>
@@ -267,19 +267,19 @@ export default function ProfilePage({ destination, state, onToast }) {
           <StateCard
             variant="warn"
             icon="alert"
-            title="We couldn’t check who can see your record"
+            title="Who can see your record couldn’t be checked"
             action={{
               label: 'Try again',
               icon: 'refresh',
               onClick: () => onToast('Retrying would re-check the permissions you granted.'),
             }}
           >
-            Nothing changed while we couldn’t read it, and nobody gained access. Everything else on
+            Nothing changed while it couldn’t be read, and nobody gained access. Everything else on
             this page loaded normally.
           </StateCard>
         ) : grants.length === 0 ? (
           <StateCard variant="empty" icon="lock" title="Only you can see your record">
-            Your record is private by default. Nobody — not a parent, not a sponsor — sees any of it
+            Your record is private by default. Nobody, not a parent, not a sponsor, sees any of it
             until you name them and pick the categories yourself. Aster asks about this while you
             enroll, and anything you grant appears here.
           </StateCard>

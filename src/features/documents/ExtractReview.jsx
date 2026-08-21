@@ -34,7 +34,7 @@ export default function ExtractReview({ extract, values, decisions, onChange, on
   return (
     <section className="extract-review" aria-labelledby="extract-title">
       <div className="extract-head">
-        <h3 id="extract-title">Check what we read</h3>
+        <h3 id="extract-title">Check what Aster read</h3>
         <p className="extract-note">{extract.note}</p>
       </div>
 

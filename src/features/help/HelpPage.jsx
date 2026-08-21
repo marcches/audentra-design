@@ -41,7 +41,7 @@ import { shortDate } from '../campus/logic.js';
 
 /** The states this section adds to the frame's. */
 export const HELP_PREVIEW_STATES = [
-  ['ready', 'Ready', 'Two requests — one answered and unread, one in progress.'],
+  ['ready', 'Ready', 'Two requests: one answered and unread, one in progress.'],
   ['needs-you', 'A request needs you', 'An office asked a question back and is waiting on you.'],
   ['send-fails', 'Sending fails', 'The next thing you send does not reach Aster.'],
   ['empty', 'Nothing asked yet', 'The guides, and no request ever raised.'],
@@ -183,7 +183,7 @@ export default function HelpPage({
     setReplyText('');
     onToast(
       reopening
-        ? `Reopened — this is back with ${officeOf(openRequest).name}.`
+        ? `Reopened. This is back with ${officeOf(openRequest).name}.`
         : `${officeOf(openRequest).name} has your reply.`,
     );
   }
@@ -309,13 +309,13 @@ function heroLede({ unavailable, open, waiting }) {
   if (open === 0) {
     return 'Aster’s own guides, and a way to put a named office on a step that is blocked.';
   }
-  return `${open === 1 ? 'One question is' : `${open} questions are`} with Aster, and every answer lands on this page. Below: Aster’s guides, and a way to reach the office that owns a step.`;
+  return `${open === 1 ? 'One question is' : `${open} questions are`} with Aster, and every answer lands on this page. Below are Aster’s guides, and a way to reach the office that owns a step.`;
 }
 
 /** The sentence under the figure: what the number means today. */
 function standingLine({ unavailable, requests, open, unread, waiting }) {
   if (unavailable) {
-    return 'Nothing you have already sent is affected — this is the list that failed to load, not your requests.';
+    return 'Nothing you have already sent is affected. This is the list that failed to load, not your requests.';
   }
   if (requests.length === 0) {
     return 'Nothing is with Aster right now. Raise one when a step is blocked and you need a person on it.';
@@ -323,7 +323,7 @@ function standingLine({ unavailable, requests, open, unread, waiting }) {
   if (waiting) {
     return open > 1
       ? 'One of them is waiting on you; the rest are with Aster.'
-      : 'Your open request is waiting on you — it stops moving until you reply.';
+      : 'Your open request is waiting on you. It stops moving until you reply.';
   }
   if (unread > 0) {
     const answered = requests.find((item) => item.unread);

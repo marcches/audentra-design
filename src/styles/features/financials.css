@@ -1065,3 +1065,20 @@
   font-size: var(--fs-copy);
   line-height: var(--lh-body);
 }
+
+/* ── UX writing 2026-08-21: a term glossed in the same sentence, as a caption under the
+   row title or as a muted continuation of the label (UX writing §4). ── */
+.ledger-group th small,
+.aid-gloss {
+  color: var(--muted);
+  margin-top: var(--space-1);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-heading);
+  display: block;
+}
+.metric-gloss {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-regular);
+}

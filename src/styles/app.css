@@ -27,6 +27,7 @@
 @import './features/appointments.css';
 @import './features/documents.css';
 @import './features/health.css';
+@import './features/accessibility.css';
 @import './features/housing.css';
 @import './features/onboarding.css';
 @import './features/notifications.css';

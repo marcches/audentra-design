@@ -23,7 +23,7 @@ export default function ProfileRail({ grants, onSignOut, onAsk }) {
           {grants === null ? '—' : people === 0 ? 'Only you' : `${people} person`}
           <small>
             {grants === null
-              ? 'we couldn’t check this just now'
+              ? 'this couldn’t be checked just now'
               : people === 0
                 ? 'nobody else has been given access'
                 : `${shared} of ${RECORD_CATEGORIES.length} categories, until ${until}`}

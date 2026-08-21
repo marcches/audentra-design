@@ -119,7 +119,7 @@ export default function DocumentDrawer({
       </div>
       <h2 id="document-drawer-title">{requirement.title}</h2>
       <p className="document-lede" role="status">
-        {info.line(office)}
+        {info.line(office, requirement)}
       </p>
 
       {/* 1 — the reason, and what would satisfy it. The only tinted block
@@ -354,7 +354,7 @@ export default function DocumentDrawer({
                       ? `With ${office.name}. No decision yet.`
                       : submission.decision.outcome === 'accepted'
                         ? `Accepted ${submission.decision.on}.`
-                        : `Changes requested ${submission.decision.on} — ${submission.decision.reason}`}
+                        : `Changes requested ${submission.decision.on}. ${submission.decision.reason}`}
                 </p>
                 <button className="link-button" onClick={() => onOriginal(submission)}>
                   <Icon name="download" size={14} /> Open the original

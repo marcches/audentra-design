@@ -54,12 +54,15 @@ export const documentRequirements = [
   {
     id: 'income-verification',
     title: 'Household income verification',
+    // The step this document belongs to, in the checklist's words: a task is a
+    // verb phrase, a document is a noun phrase (UX writing §3.1).
+    step: 'Verify your household income',
     office: 'financial-services',
     taskId: 'income-verification',
     // ENR-157 AC 1: what is needed, in what format, and why — before the file
     // field, not after a refusal.
     needs: 'Last year’s federal tax return, including every schedule. If nobody in your household filed, a signed statement of non-filing instead.',
-    why: 'Aster has to confirm the income you reported before your federal loan can be finalized.',
+    why: 'Verification is the check that your reported income matches your tax records. Aster has to finish it before your federal loan can be finalized.',
     accepts: PDF_IMAGE,
     privacy: 'Encrypted, and read only by authorized Student Financial Services staff.',
     // ENR-158 AC 6: what acceptance releases, named on the requirement itself so
@@ -68,7 +71,7 @@ export const documentRequirements = [
     // The one requirement that offers extraction. ENR-165's design brief: the
     // result invites correction, and is never confirmed by silence.
     extract: {
-      note: 'We read these from the file you sent. Check each one — nothing is saved until you say so.',
+      note: 'Aster read these from the file you sent. Check each one. Nothing is saved until you say so.',
       fields: [
         { id: 'tax-year', label: 'Tax year', read: '2025' },
         { id: 'filing-status', label: 'Filing status', read: 'Married filing jointly' },
@@ -86,12 +89,12 @@ export const documentRequirements = [
           on: 'Aug 15',
           // ENR-158 AC 2 and the épico guardrail: specific, and about this file.
           reason:
-            'Pages 3 and 4 are cut off, so Schedule 1 could not be read. The income on page 1 also does not match the figure on your application.',
+            'Pages 3 and 4 got cut off, so Schedule 1, the extra IRS form, couldn’t be read. The income on page 1 doesn’t match your application. Send all pages again, full page this time.',
           // OKX's shape: what would actually satisfy the request, in concrete
           // physical terms, so "try again" is not a guess.
           remedies: [
             'Send every page, including the schedules, with all four corners visible.',
-            'Scan or photograph flat — a phone photo is fine if nothing is cropped.',
+            'Scan or photograph flat. A phone photo is fine if nothing is cropped.',
             'If the income really did change, say so when you send it and Financial Services will reconcile it.',
           ],
           unread: true,
@@ -102,6 +105,10 @@ export const documentRequirements = [
   {
     id: 'immunization-record',
     title: 'Immunization record',
+    step: 'Send your immunization record',
+    // What the row says while it is still to send: the consequence, with the
+    // gate it holds, not the bare fact that an office is waiting (UX writing 5.3).
+    neededLine: 'Not sent yet. Health Services needs it before you can register for classes.',
     office: 'health',
     taskId: 'health',
     // ENR-206. The door this requirement is sent from is the Health section, not
@@ -127,7 +134,7 @@ export const documentRequirements = [
     needs: 'Your final transcript, issued after graduation, sent by your school or uploaded here.',
     why: 'Your offer is conditional on the final record matching what you applied with.',
     accepts: PDF_IMAGE,
-    privacy: 'Encrypted, and read only by the Registrar’s office.',
+    privacy: 'Encrypted, and read only by the Office of the Registrar.',
     submissions: [
       { id: 'transcript-1', files: [{ name: 'final_transcript.pdf', size: '840 KB' }], sent: 'Aug 6' },
     ],
@@ -136,7 +143,7 @@ export const documentRequirements = [
     id: 'photo-id',
     title: 'Photo identification',
     office: 'admissions',
-    needs: 'A government-issued photo ID — passport, driver’s licence or national ID card.',
+    needs: 'A government-issued photo ID: passport, driver’s license, or national ID card.',
     why: 'Aster confirms that the person enrolling is the person who applied.',
     accepts: PDF_IMAGE,
     privacy: 'Encrypted, and read only by authorized Admissions staff.',
@@ -156,7 +163,7 @@ export const documentRequirements = [
     needs: 'A utility bill, bank statement or lease dated within the last three months, showing your name and address.',
     why: 'Housing uses it to confirm your residency category before assigning a room.',
     accepts: PDF_IMAGE,
-    privacy: 'Encrypted, and read only by authorized Housing & Residential Life staff.',
+    privacy: 'Encrypted, and read only by authorized Housing and Residential Life staff.',
     submissions: [
       {
         id: 'address-1',
@@ -285,7 +292,7 @@ export function documentsFor(state) {
                 'The second photograph cuts off the dates beside the MMR and Tdap lines, so neither dose could be read. The first page is fine and is already on your record.',
               remedies: [
                 'Photograph the page flat, with all four edges of the sheet visible.',
-                'Make sure the date beside every vaccine is legible — that is the part Health Services reads.',
+                'Make sure the date beside every vaccine is legible. That is the part Health Services reads.',
                 'Send only the page that came back; the one that was accepted stays where it is.',
               ],
               unread: true,

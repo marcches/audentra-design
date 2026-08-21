@@ -117,14 +117,14 @@ export default function BookingDrawer({
 
               <h2 id="booking-drawer-title">
                 {result === 'booked'
-                  ? `Booked — ${longDate(day.date)}`
+                  ? `Booked · ${longDate(day.date)}`
                   : `This didn’t reach ${type.team}`}
               </h2>
 
               <p>
                 {result === 'booked'
                   ? `${timeRange({ time: slot.time, end: slot.end })} with ${type.person.name}, ${place.toLowerCase()}.`
-                  : `Nothing is booked. The time is still open on their calendar, so you have not lost it — but until this goes through, the conversation does not exist.`}
+                  : `Nothing is booked. The time is still open on their calendar, so you have not lost it. Until this goes through, the conversation does not exist.`}
               </p>
 
               {result === 'booked' ? (
@@ -168,7 +168,7 @@ export default function BookingDrawer({
                       className="secondary-button"
                       onClick={() =>
                         onToast(
-                          `${type.otherRoute} would open here — nothing is sent in this preview.`,
+                          `${type.otherRoute} would open here. Nothing is sent in this preview.`,
                         )
                       }
                     >
@@ -241,7 +241,7 @@ export default function BookingDrawer({
                       className="secondary-button"
                       onClick={() =>
                         onToast(
-                          `${type.otherRoute} would open here — nothing is sent in this preview.`,
+                          `${type.otherRoute} would open here. Nothing is sent in this preview.`,
                         )
                       }
                     >

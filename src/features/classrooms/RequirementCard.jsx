@@ -78,7 +78,7 @@ export default function RequirementCard({ requirement, matches, open, onToggle, 
                   {course.prerequisite && (
                     <span className={course.prerequisiteMet ? 'met' : 'unmet'}>
                       Requires {course.prerequisite}
-                      {course.prerequisiteMet ? ' — you have it' : ''}
+                      {course.prerequisiteMet ? ', and you have it' : ''}
                     </span>
                   )}
                 </span>

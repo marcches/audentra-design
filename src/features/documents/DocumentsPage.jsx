@@ -43,7 +43,7 @@ import {
 
 /** The states this section adds to the frame's. */
 export const DOCUMENT_PREVIEW_STATES = [
-  ['ready', 'Ready', 'All four states at once — one back with a reason, one with Aster, three settled.'],
+  ['ready', 'Ready', 'All four states at once: one back with a reason, one with Aster, three settled.'],
   ['changes-requested', 'One came back', 'A rejection with its reason, as the only thing outstanding.'],
   ['send-fails', 'Sending fails', 'The next thing you send does not reach Aster.'],
   ['empty', 'Nothing sent yet', 'Aster has asked for six things and has none of them.'],
@@ -141,7 +141,7 @@ export default function DocumentsPage({
             advisor={enrollmentAdvisor}
             onContact={(channel) =>
               onToast(
-                `${channel === 'email' ? 'An email' : 'A message'} about your record would open here — nothing is sent yet.`,
+                `${channel === 'email' ? 'An email' : 'A message'} about your record would open here. Nothing is sent yet.`,
               )
             }
           />
@@ -154,12 +154,12 @@ export default function DocumentsPage({
               <Icon name="alert" size={19} />
             </span>
             <p>
-              <strong>{rejected.title} came back</strong>
-              {officeOf(rejected).name} sent it back with a reason, and a replacement goes in the
-              same place. Nothing else on your record is affected.
+              <strong>{rejected.step ?? rejected.title} · sent back</strong>
+              {officeOf(rejected).name} sent it back and said why. Send a new copy in the same
+              place. Nothing else on your record is affected.
             </p>
             <button className="secondary-button" onClick={() => openDocument(rejected)}>
-              See why <Icon name="arrow" size={15} />
+              See what to fix <Icon name="arrow" size={15} />
             </button>
           </div>
         ) : null
@@ -174,7 +174,7 @@ export default function DocumentsPage({
             </span>
             <p>
               <strong>Aster is checking your {checking.title.toLowerCase()}</strong>
-              You can close this page or go somewhere else — it keeps going, and this record shows
+              You can close this page or go somewhere else. It keeps going, and this record shows
               where it got to whenever you come back.
             </p>
           </div>
@@ -189,7 +189,7 @@ export default function DocumentsPage({
           </span>
           <div>
             <h2 id="needs-title">What Aster still needs</h2>
-            <p>Everything where the next move is yours. Each one says what it is holding up.</p>
+            <p>Everything where the next move is yours. Each one says what it’s holding up.</p>
           </div>
           {!unavailable && mine.length > 0 && <span className="status-count">{mine.length}</span>}
         </div>
@@ -198,11 +198,11 @@ export default function DocumentsPage({
           <StateCard
             variant="error"
             icon="alert"
-            title="We couldn’t read what Aster decided"
+            title="What Aster decided couldn’t be read"
             action={{ label: 'Try again', icon: 'refresh', onClick: onRetry }}
           >
             Your files are safe and nothing has changed on your record. Until this loads, nothing
-            here is shown as accepted — an unread decision is not the same as a decision.
+            here is shown as accepted. An unread decision is not the same as a decision.
           </StateCard>
         ) : mine.length === 0 ? (
           <StateCard variant="empty" icon="check" title="Nothing is waiting on you">
@@ -230,7 +230,7 @@ export default function DocumentsPage({
             <Icon name="progress" size={18} />
           </span>
           <div>
-            <h2 id="record-title">On the record</h2>
+            <h2 id="record-title">Everything on file</h2>
             <p>Everything you have sent Aster, and everything Aster has sent you.</p>
           </div>
         </div>
@@ -240,7 +240,7 @@ export default function DocumentsPage({
           // where her files are — they are on the record; it is the decisions on
           // them that did not load. One loud error above, one quiet caveat here.
           <StateCard variant="empty" icon="alert" title="Your record is here, but not readable yet">
-            Nothing has been lost and nothing has changed. The files you sent are on your record — it
+            Nothing has been lost and nothing has changed. The files you sent are on your record. It
             is what Aster decided about them that could not be loaded.
           </StateCard>
         ) : settled.length === 0 && issued.length === 0 ? (
@@ -273,7 +273,7 @@ export default function DocumentsPage({
                     key={item.id}
                     document={item}
                     onOpen={(doc) =>
-                      onToast(`${doc.title} would open as a PDF — nothing is downloaded here.`)
+                      onToast(`${doc.title} would open as a PDF. Nothing is downloaded here.`)
                     }
                   />
                 ))}
@@ -311,10 +311,10 @@ function heroLede({ unavailable, mine, checking, figures }) {
     return 'Everything you have sent Aster, and everything Aster has sent you. What Aster decided could not be read just now, so nothing below is shown as settled.';
   }
   if (checking) {
-    return 'Something you just sent is still being checked. You can leave this page — it keeps going without you.';
+    return 'Something you just sent is still being checked. You can leave this page. It keeps going without you.';
   }
   if (mine.length > 0) {
-    return `${mine.length === 1 ? 'One document needs' : `${mine.length} documents need`} something from you. Everything else is either with Aster or settled.`;
+    return `${mine.length === 1 ? 'One document needs' : `${mine.length} documents need`} something from you. Everything else is with Aster or settled.`;
   }
   if (figures.withAster > 0) {
     return 'Nothing needs you. What is left is with Aster, and each one says who is holding it.';

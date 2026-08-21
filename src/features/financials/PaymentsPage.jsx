@@ -52,7 +52,7 @@ export default function PaymentsPage({
             <Icon name="receipt" size={19} />
           </span>
           <div>
-            <h2 id="billed-title">What is a bill and what is not</h2>
+            <h2 id="billed-title">What Aster bills you, and what it doesn’t</h2>
             <p>Aster only charges you for part of what the year costs.</p>
           </div>
         </div>
@@ -79,7 +79,7 @@ export default function PaymentsPage({
         <p className="ledger-foot">
           <Icon name="info" size={15} />
           Together they make the {formatMoney(ledger.balance)} estimated balance on your Overview.
-          Only the left-hand figure ever arrives as a bill.
+          Only the amount Aster bills you ever arrives as a bill.
         </p>
       </Card>
 

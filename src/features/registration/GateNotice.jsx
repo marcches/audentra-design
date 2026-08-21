@@ -20,7 +20,7 @@ export default function GateNotice({ state, items, unavailable, onRetry, onShow 
     return (
       <div className="gate-notice muted">
         <Icon name="flag" size={17} />
-        <p>We couldn’t check what’s outstanding for {registration.label}.</p>
+        <p>What’s outstanding for {registration.label} couldn’t be checked.</p>
         {onRetry && (
           <button className="secondary-button" onClick={onRetry}>
             Try again
@@ -69,11 +69,11 @@ export default function GateNotice({ state, items, unavailable, onRetry, onShow 
     <div className={`gate-notice ${urgent ? 'urgent' : 'soon'}`}>
       <Icon name="flag" size={17} />
       <p>
-        {mine.length === 1 ? 'One step' : `${mine.length} steps`} must be done before{' '}
-        {registration.label} opens on {when} — {days === 1 ? '1 day' : `${days} days`} away.
+        {mine.length === 1 ? 'One step has' : `${mine.length} steps have`} to be done before{' '}
+        {registration.label} opens on {when}.
       </p>
       <button className="link-button" onClick={onShow}>
-        See what’s blocking <Icon name="arrow" size={14} />
+        See the {mine.length === 1 ? 'step' : `${mine.length} steps`} <Icon name="arrow" size={14} />
       </button>
     </div>
   );

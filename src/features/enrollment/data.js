@@ -21,7 +21,7 @@ const TASKS = [
     category: 'Your offer',
     title: 'Lock in your place',
     description:
-      'Pay your $500 enrollment deposit to confirm that you’re joining Aster’s incoming class.',
+      'Pay your $500 enrollment deposit to confirm you’re joining Aster’s incoming class.',
     due: 'Nov 16',
     daysLeft: 88,
     minutes: 4,
@@ -35,32 +35,35 @@ const TASKS = [
       mark: 'A',
       name: 'Aster secure payment portal',
       url: 'payments.aster.edu',
-      note: 'You’ll finish payment on Aster’s website. When it’s received, this checklist will update automatically—usually within a minute.',
+      note: 'You’ll finish payment on Aster’s website. When it’s received, this checklist will update automatically, usually within a minute.',
       cta: 'Open Aster payment page',
       prototypeNote: 'Prototype: this button simulates Aster confirming payment.',
     },
     steps: [
       'Continue to Aster’s secure payment page.',
       'Pay by card or bank transfer.',
-      'Come back anytime—Audentra will mark this complete automatically.',
+      'Come back any time. Aster marks this complete automatically.',
     ],
   },
   {
     id: 'income-verification',
-    category: 'Money & aid',
+    category: 'Money and aid',
     title: 'Verify your household income',
     description:
-      'Aster’s Financial Aid office needs to confirm the income you reported before your federal loan can be finalized.',
+      'Student Financial Services needs to confirm the income you reported. Your federal loan stays pending until they do.',
     due: 'Sep 2',
     daysLeft: 13,
     minutes: 6,
     action: 'Upload documents',
+    // The verb the financials alert uses for the same step (UX writing §2.4).
+    shortAction: 'Verify income',
     kind: 'upload',
     priority: 'critical',
     unlocks: 1,
     financial: true,
     office: 'Student Financial Services',
-    consequence: 'Your federal loan stays pending until this is verified.',
+    consequence:
+      'Verification is the check that your reported income matches your tax records. Your federal loan stays pending until it’s done.',
     why: 'Your loan cannot be finalized while verification is open, so its amount stays off your balance until this clears.',
     upload: {
       prompt: 'Choose your income documents',
@@ -77,10 +80,10 @@ const TASKS = [
   },
   {
     id: 'loan-agreement',
-    category: 'Money & aid',
+    category: 'Money and aid',
     title: 'Sign your federal loan agreement',
     description:
-      'Sign the Master Promissory Note on the federal student aid website so Aster can release your loan money.',
+      'Sign the Master Promissory Note, the federal form where you promise to repay the loan. Aster can’t release your money without it.',
     due: 'Sep 30',
     daysLeft: 41,
     minutes: 8,
@@ -95,22 +98,22 @@ const TASKS = [
       mark: 'F',
       name: 'Federal Student Aid',
       url: 'studentaid.gov',
-      note: 'You’ll sign on the federal student aid website using your FSA ID. When it’s signed, this checklist will update automatically—usually within a day.',
+      note: 'You’ll sign on the federal student aid website using your FSA ID. When it’s signed, this checklist will update automatically, usually within a day.',
       cta: 'Open Federal Student Aid',
       prototypeNote: 'Prototype: this button simulates the federal site confirming your signature.',
     },
     steps: [
       'Sign in with your FSA ID.',
       'Read the agreement and sign it electronically.',
-      'Come back anytime—Audentra will mark this complete automatically.',
+      'Come back any time. Aster marks this complete automatically.',
     ],
   },
   {
     id: 'profile',
     category: 'About you',
-    title: 'Finish the details you skipped',
+    title: 'Finish your setup',
     description:
-      'Add the contact details you didn’t have during welcome setup. It’s okay to update them later.',
+      'Add the contact details you didn’t have during setup. You can change them any time.',
     due: 'Nov 23',
     daysLeft: 95,
     minutes: 2,
@@ -127,14 +130,17 @@ const TASKS = [
   },
   {
     id: 'health',
-    category: 'Health & wellness',
-    title: 'Share your health records',
+    category: 'Health and wellness',
+    title: 'Send your immunization record',
     description:
-      'Upload your immunization record so Aster University Health Services can verify the required vaccines before arrival.',
-    due: 'Nov 30',
-    daysLeft: 102,
+      'Aster University Health Services needs your immunization record. You can’t register for classes until they have it.',
+    // Before class registration opens on Sep 1: the record gates it, so a
+    // deadline after the gate was the portal contradicting itself (UX writing 6.1).
+    due: 'Aug 28',
+    dueFull: 'Aug 28, 2026',
+    daysLeft: 8,
     minutes: 5,
-    action: 'Open Health',
+    action: 'Send record',
     kind: 'upload',
     // ENR-206 AC 4 of ENR-205. The record used to be uploaded inside this
     // drawer, which made three doors for one file once My Documents and Health
@@ -143,7 +149,7 @@ const TASKS = [
     // second field for the same record is a second place a send can fail.
     section: '#/health',
     sectionLine:
-      'This one is sent from your Health section, where the record’s review state and the question Accessibility Services asked both live.',
+      'This one is sent from your Health section, where the record’s review state lives.',
     // ENR-207 moved this sentence out of the drawer too, so a second step can
     // route to a second section without the foot still talking about Health.
     sectionFoot: 'Sending it there ticks this step off and opens class registration.',
@@ -152,16 +158,16 @@ const TASKS = [
     why: 'Submitting early leaves time to resolve a missing dose or incomplete record before you register for classes.',
     steps: [
       'Ask your doctor for a current immunization record.',
-      'Send it from your Health section — up to eight photos or scans.',
+      'Send it from your Health section, up to eight photos or scans.',
       'Health Services decides within 5 business days.',
     ],
   },
   {
     id: 'housing',
     category: 'Campus life',
-    title: 'Tell us where you’ll live',
+    title: 'Choose your housing plan',
     description:
-      'Let Aster know whether you plan to live on campus, commute, or need help deciding.',
+      'Tell Aster whether you’ll live on campus, commute, arrange your own housing, or want help deciding.',
     // ENR-207 — one date, owned by the section that is about it. This used to be
     // a literal here that happened to agree with the move-in step below.
     due: responseDeadline.label,
@@ -200,12 +206,12 @@ export const lockedTasks = [
   {
     title: 'Choose your move-in time',
     description: 'Your arrival window will appear after your housing plan is confirmed.',
-    prerequisite: 'Complete ‘Tell us where you’ll live’ first',
+    prerequisite: 'Complete ‘Choose your housing plan’ first',
     due: 'Jan 12',
   },
   {
     title: 'Meet your academic adviser',
-    description: 'We’ll show available advisers after Aster assigns your academic program.',
+    description: 'Available advisers appear after Aster assigns your academic program.',
     prerequisite: 'Waiting for program assignment',
     due: 'Date coming soon',
   },
@@ -241,7 +247,7 @@ export const enrollmentAdvisor = {
   office: 'Admissions Office',
   label: 'Your enrollment advisor',
   intro:
-    'We’re here to help. Tomás holds your file, decides what you send to Admissions, and is the person to ask when a step is blocked.',
+    'Tomás holds your file, decides what you send to Admissions, and is the person to ask when a step is blocked.',
   location: { building: 'Building C', where: 'ground floor' },
   hours: { window: '9:00 AM–5:00 PM', days: 'Monday to Friday' },
 };
@@ -263,7 +269,8 @@ export const financialAidAdvisor = {
 
 export const academicYear = {
   label: '2026–27 academic year',
-  entry: 'Spring 2027 entry',
+  years: '2026–27',
+  entry: 'Fall 2026 entry',
 };
 
 /**
@@ -291,6 +298,7 @@ export const additionalAid = [
   {
     id: 'work-study',
     label: 'Federal Work-Study',
+    gloss: 'a part-time campus job paid from federal aid',
     amount: 2400,
     note: 'Offered and not yet accepted · about 8 hours a week',
   },
@@ -308,6 +316,7 @@ const ACADEMIC_METRICS = [
   {
     id: 'pace',
     label: 'Completion pace',
+    gloss: 'the share of credits you finish out of the ones you start',
     term: 'pace',
     minimumLabel: 'minimum 67%',
     minimum: 67,
@@ -316,6 +325,7 @@ const ACADEMIC_METRICS = [
   {
     id: 'credits',
     label: 'Attempted credits',
+    gloss: 'every credit you start whether or not you pass',
     term: 'credits',
     minimumLabel: 'maximum 180',
     minimum: 0,
@@ -357,11 +367,12 @@ export const financialStates = {
         label: 'Federal Direct Subsidized Loan',
         kind: 'loan',
         term: 'subsidized',
+        gloss: 'where the government covers the interest while you study',
         source: 'U.S. Department of Education',
         amount: null,
         status: 'pending',
         blockedBy: 'income-verification',
-        blockedNote: 'Waiting on your income verification.',
+        blockedNote: 'waiting on your income verification',
       },
     ],
     payments: [],
@@ -383,6 +394,7 @@ export const financialStates = {
         label: 'Federal Direct Subsidized Loan',
         kind: 'loan',
         term: 'subsidized',
+        gloss: 'where the government covers the interest while you study',
         source: 'U.S. Department of Education',
         amount: 3500,
         status: 'accepted',
@@ -413,7 +425,7 @@ export const paymentPlan = {
 export const financialTerms = {
   coa: {
     title: 'Cost of attendance',
-    body: 'Everything the year is expected to cost — tuition and fees, plus housing, meals, books and travel. It is a planning figure, not a bill. Aster only charges you for part of it.',
+    body: 'Everything the year is expected to cost: tuition and fees, plus housing, meals, books, and travel. It’s a planning figure, not a bill. Aster only charges you for part of it.',
   },
   aid: {
     title: 'Financial aid',
@@ -433,7 +445,7 @@ export const financialTerms = {
   },
   direct: {
     title: 'What Aster bills you directly',
-    body: 'Tuition, fees, housing and meals — the part of the cost that arrives as a bill from Aster and appears in your payment schedule.',
+    body: 'Tuition, fees, housing, and meals. The part of the cost that arrives as a bill from Aster and appears in your payment schedule.',
   },
   indirect: {
     title: 'What you spend elsewhere',

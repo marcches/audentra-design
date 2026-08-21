@@ -19,16 +19,16 @@ export default function HelpRail({ onToast }) {
     <>
       <AnchorCard
         variant="reply"
-        label="Typical reply"
+        label="Usual reply"
         figure={TYPICAL_REPLY}
       >
         <p>
-          Every answer lands on this page and stays here — that is the record. Some offices take
+          Every answer lands on this page and stays here. That’s the record. Some offices take
           longer than others, and each one tells you its own before you send.
         </p>
         <p className="reply-note">
-          <Icon name="mail" size={14} /> Aster’s emails only say that something has arrived here.
-          Nothing you write back to one reaches a person.
+          <Icon name="mail" size={14} /> Aster’s emails only say that something arrived here. You
+          can’t reply to them. Nobody reads them.
         </p>
       </AnchorCard>
 

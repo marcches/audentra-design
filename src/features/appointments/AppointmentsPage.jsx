@@ -53,7 +53,7 @@ export const APPOINTMENT_PREVIEW_STATES = [
   [
     'booking-fails',
     'Team unreachable',
-    'One booking never reached its team — and a new one will not either.',
+    'One booking never reached its team, and a new one will not either.',
   ],
   ['loading', 'Loading', 'Before the published times arrive.'],
   ['partial', 'Partial data', 'Your conversations loaded; the published times did not.'],
@@ -118,10 +118,10 @@ export default function AppointmentsPage({
     lede: next
       ? `Your next conversation is ${relativeDay(next.date, PORTAL_TODAY)}, with ${
           nextType.person.name
-        }. Every time here is one a team published — you choose from them rather than proposing one.`
+        }. You choose from the times each team published. You can’t propose a different one.`
       : availability.total > 0
         ? 'Aster’s teams publish the times they can offer. You take one, and it lands on their calendar and yours at the same moment.'
-        : 'Aster’s teams publish the times they can offer here. None of them has opened a calendar yet, so there is nothing to book — and nothing waiting on you.',
+        : 'Aster’s teams publish the times they can offer here. None of them has opened a calendar yet, so there is nothing to book, and nothing waiting on you.',
   };
 
   function openBooking(type, node, replaceId) {
@@ -172,7 +172,7 @@ export default function AppointmentsPage({
       ),
     );
     closeAppointment();
-    onToast('Cancelled. The time went back to their calendar — nothing else changed.');
+    onToast('Cancelled. The time went back to their calendar. Nothing else changed.');
   }
 
   function rebook(type, appointment) {
@@ -237,7 +237,7 @@ export default function AppointmentsPage({
             onToast(
               `${channel === 'email' ? 'An email' : 'A message'} to ${
                 (nextType ?? { person: enrollmentAdvisor }).person.name
-              } would open here — nothing is sent yet.`,
+              } would open here. Nothing is sent yet.`,
             )
           }
         />
@@ -260,7 +260,7 @@ export default function AppointmentsPage({
           </span>
           <div>
             <h2 id="book-heading">Book a conversation</h2>
-            <p>What it is about decides which team receives it.</p>
+            <p>What it’s about decides which team receives it.</p>
           </div>
         </div>
 
@@ -284,7 +284,7 @@ export default function AppointmentsPage({
           </span>
           <div>
             <h2 id="conversations-heading">Your conversations</h2>
-            <p>What is booked — and anything that did not reach a team.</p>
+            <p>What is booked, and anything that did not reach a team.</p>
           </div>
         </div>
 
@@ -300,7 +300,7 @@ export default function AppointmentsPage({
               }}
             >
               You have not taken any of the {availability.total} times Aster’s teams have published.
-              Booking one is a single choice — there is no request to wait on afterwards.
+              Booking one is a single choice. There is no request to wait on afterwards.
             </StateCard>
           ) : (
             <StateCard
@@ -311,7 +311,7 @@ export default function AppointmentsPage({
                 icon: 'mail',
                 onClick: () =>
                   onToast(
-                    `${conversationTypes[0].otherRoute} would open here — nothing is sent yet.`,
+                    `${conversationTypes[0].otherRoute} would open here. Nothing is sent yet.`,
                   ),
               }}
             >
@@ -343,7 +343,7 @@ export default function AppointmentsPage({
             </span>
             <div>
               <h2 id="record-heading">Past and cancelled</h2>
-              <p>Kept, so you can see who you have already spoken to.</p>
+              <p>Kept so you can see who you’ve already spoken to.</p>
             </div>
           </div>
 

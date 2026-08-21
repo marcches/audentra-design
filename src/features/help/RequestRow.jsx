@@ -21,7 +21,7 @@ export default function RequestRow({ request, today, onOpen }) {
     <button
       className="request-row"
       onClick={() => onOpen(request)}
-      aria-label={`${request.subject} — ${state.label}, ${office.name}`}
+      aria-label={`${request.subject}, ${state.label}, ${office.name}`}
     >
       <span className={`request-chip ${state.tone}`}>{state.label}</span>
 

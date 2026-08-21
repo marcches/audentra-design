@@ -41,7 +41,7 @@ export default function NextAppointment({
             : unavailable
               ? 'Your conversations loaded, but the times Aster’s teams published did not. Nothing can be booked until they do.'
               : openTimes > 0
-                ? `${openTimes} times are open across Aster’s teams. Picking one is the whole of booking — there is nothing to wait for afterwards.`
+                ? `${openTimes} times are open across Aster’s teams. Picking one is the whole of booking. There is nothing to wait for afterwards.`
                 : 'No team has published times yet. They appear on this page as each one opens its calendar; you do not have to ask for that.'}
         </p>
       </div>

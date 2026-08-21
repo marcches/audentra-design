@@ -46,7 +46,7 @@ export default function PermissionGrant({ grant, onToggle, onRevoke }) {
           ones cannot answer "what else could she see?" — ENR-144. */}
       <fieldset className="permission-set">
         <legend>
-          What {firstName} can see — {grant.granted.length} of {RECORD_CATEGORIES.length}
+          What {firstName} can see · {grant.granted.length} of {RECORD_CATEGORIES.length}
         </legend>
         <div className="permission-grid">
           {RECORD_CATEGORIES.map((category) => {
@@ -71,8 +71,8 @@ export default function PermissionGrant({ grant, onToggle, onRevoke }) {
       <div className="grant-foot">
         <p>
           <Icon name="shield" size={14} />
-          Untick a category and Aster stops sharing it at once. It never tells {firstName} what you
-          do in the portal.
+          Uncheck a category and Aster stops sharing it right away. Aster never tells {firstName}
+          what you do in the portal.
         </p>
         <button
           className="revoke-button"

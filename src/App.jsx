@@ -24,9 +24,13 @@ import DocumentsPage, { DOCUMENT_PREVIEW_STATES } from './features/documents/Doc
 import AppointmentsPage, { APPOINTMENT_PREVIEW_STATES } from './features/appointments/AppointmentsPage.jsx';
 import HelpPage, { HELP_PREVIEW_STATES } from './features/help/HelpPage.jsx';
 import HousingPage, { HOUSING_PREVIEW_STATES } from './features/housing/HousingPage.jsx';
-import HealthPage, { HEALTH_PREVIEW_STATES, answerToast } from './features/health/HealthPage.jsx';
+import HealthPage, { HEALTH_PREVIEW_STATES } from './features/health/HealthPage.jsx';
+import AccessibilityPage, {
+  ACCESSIBILITY_PREVIEW_STATES,
+  answerToast,
+} from './features/accessibility/AccessibilityPage.jsx';
 import { documentsFor } from './features/documents/data.js';
-import { healthAnswerFor } from './features/health/data.js';
+import { answerFor } from './features/accessibility/data.js';
 import { offices } from './features/help/data.js';
 import {
   addSubmission,
@@ -35,8 +39,8 @@ import {
   decisionKey,
   finishChecking,
   markDecisionRead,
+  needsYou,
   officeOf,
-  unreadDecisions,
 } from './features/documents/logic.js';
 import { notifications as notificationFeed } from './features/notifications/data.js';
 import { markAllRead, markRead, readIds as storedReadIds, unreadCount } from './features/notifications/logic.js';
@@ -116,12 +120,12 @@ export default function App() {
   const [readIds, setReadIds] = useState(storedReadIds);
 
   // ENR-206. One record, read by My Documents and by Health; one answer, which
-  // never leaves Health. Both are here because both have to survive a route
-  // change — see `submitDocument` and `answerAccommodation` below.
+  // never leaves Accessibility (ADR-0001, ADR-0003). Both are here because both
+  // have to survive a route change — see `submitDocument` and `answerAccommodation` below.
   const [record, setRecord] = useState(() => withReads(documentsFor(readPreviewState())));
   const [sendingId, setSendingId] = useState(null);
   const [failedId, setFailedId] = useState(null);
-  const [answer, setAnswer] = useState(() => healthAnswerFor(readPreviewState()));
+  const [answer, setAnswer] = useState(() => answerFor(readPreviewState()));
   const [savingAnswer, setSavingAnswer] = useState(false);
   const [answerFailed, setAnswerFailed] = useState(null);
 
@@ -196,9 +200,11 @@ export default function App() {
   const urgentDoc = [...financialDocs].sort((a, b) => a.daysLeft - b.daysLeft)[0] ?? null;
   const byId = useMemo(() => Object.fromEntries(tasks.map((t) => [t.id, t])), [tasks]);
 
-  // A decision the student has not opened is counted on the sidebar, so it
-  // reaches her somewhere other than the page it happened on — ENR-158 AC 5.
-  const decisions = unavailable ? null : unreadDecisions(record.requirements);
+  // A sidebar badge counts only what needs action from the student, and it is
+  // the same count the page's own subhead gives (UX writing 6.6). A decision she
+  // has not opened still reaches her somewhere other than the page it happened
+  // on — ENR-158 AC 5 — through the bell, which counts unread updates.
+  const decisions = unavailable ? null : needsYou(record.requirements).length;
   const badges = unavailable
     ? {}
     : { openSteps: viewTasks.length, decisions, required: requiredEventCount(preview) };
@@ -277,7 +283,7 @@ export default function App() {
   // re-read rather than carried across.
   useEffect(() => {
     setRecord(withReads(documentsFor(preview)));
-    setAnswer(healthAnswerFor(preview));
+    setAnswer(answerFor(preview));
     setSendingId(null);
     setFailedId(null);
     setSavingAnswer(false);
@@ -356,7 +362,7 @@ export default function App() {
       pushToast({
         tone: 'success',
         title: `Sent to ${officeOf(requirement).name}.`,
-        body: 'You can close this page — the check keeps going.',
+        body: 'You can close this page. The check keeps going.',
       });
     }, SEND_MS);
   }
@@ -462,23 +468,23 @@ export default function App() {
     pushToast(
       `${channel === 'email' ? 'An email' : 'A message'} to ${
         financialAidAdvisor.name
-      } would open here—nothing is sent yet.`,
+      } would open here. Nothing is sent yet.`,
     );
   }
 
   function payHandoff() {
-    pushToast('Aster’s secure payment page would open here — nothing is sent yet.');
+    pushToast('Aster’s secure payment page would open here. Nothing is sent yet.');
   }
 
   function changePlan() {
-    pushToast('Payment plans are changed in Aster’s billing portal — nothing is changed here.');
+    pushToast('Payment plans are changed in Aster’s billing portal. Nothing is changed here.');
   }
 
   function contactAdvisor(channel) {
     pushToast(
       `${channel === 'email' ? 'An email' : 'A message'} to ${
         enrollmentAdvisor.name
-      } would open here—nothing is sent yet.`,
+      } would open here. Nothing is sent yet.`,
     );
   }
 
@@ -496,7 +502,7 @@ export default function App() {
   }
 
   function edwardContact(person) {
-    pushToast(`A message to ${person.name} would open here — nothing is sent yet.`);
+    pushToast(`A message to ${person.name} would open here. Nothing is sent yet.`);
   }
 
   function renderPage() {
@@ -635,8 +641,7 @@ export default function App() {
     }
 
     // ENR-206. Health reads the immunization record out of the same list My
-    // Documents renders, and holds the accommodation answer, which reaches no
-    // other module — ADR-0001.
+    // Documents renders — never a copy of it.
     if (current.id === 'health') {
       return (
         <HealthPage
@@ -644,15 +649,27 @@ export default function App() {
           previewState={preview}
           requirement={immunization}
           task={byId.health ?? null}
-          answer={answer}
-          savingAnswer={savingAnswer}
-          answerFailed={answerFailed}
           sendingId={sendingId}
           failedId={failedId}
-          onAnswer={answerAccommodation}
           onSubmit={submitDocument}
           onToast={pushToast}
           onOverlay={setSectionOverlay}
+          onRetry={() => choosePreview('ready')}
+        />
+      );
+    }
+
+    // ADR-0003. The accommodation answer, on a section of its own; it reaches
+    // no other module — ADR-0001.
+    if (current.id === 'accessibility') {
+      return (
+        <AccessibilityPage
+          destination={current}
+          previewState={preview}
+          answer={answer}
+          savingAnswer={savingAnswer}
+          answerFailed={answerFailed}
+          onAnswer={answerAccommodation}
           onRetry={() => choosePreview('ready')}
         />
       );
@@ -835,7 +852,9 @@ export default function App() {
                             ? HOUSING_PREVIEW_STATES
                             : current?.id === 'health'
                               ? HEALTH_PREVIEW_STATES
-                              : undefined
+                              : current?.id === 'accessibility'
+                                ? ACCESSIBILITY_PREVIEW_STATES
+                                : undefined
           }
           onPreviewState={choosePreview}
         />

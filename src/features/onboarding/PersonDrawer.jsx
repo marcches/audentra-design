@@ -139,7 +139,7 @@ export default function PersonDrawer({ grant, onSave, onClose }) {
       <Field
         label="How they’re related to you"
         value={draft.relation}
-        hint="Mother, guardian, sister — whatever you would call them."
+        hint="Mother, guardian, sister, whatever you would call them."
         onChange={(value) => set({ relation: value })}
       />
 

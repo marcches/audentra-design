@@ -139,7 +139,7 @@ export default function OnboardingPage({ requestedStep, previewState, onPreviewS
     setNotice({
       tone: 'alert',
       text: target.after
-        ? `${target.name} isn’t open yet — it ${target.lockReason.replace(/^Opens/, 'opens')}.`
+        ? `${target.name} isn’t open yet. It ${target.lockReason.replace(/^Opens/, 'opens')}.`
         : `Finish the step you are on first. ${target.name} comes after it.`,
     });
     onRoute(`#/onboarding/${stepNumber(stepId)}`);
@@ -185,7 +185,7 @@ export default function OnboardingPage({ requestedStep, previewState, onPreviewS
         setFailed(
           kind === 'skip'
             ? 'Aster did not confirm that this step was set aside. Nothing changed, and the step is still yours to finish.'
-            : 'Aster did not confirm this save. Nothing was lost — what you typed is still here — and the step has not moved.',
+            : 'Aster did not confirm this save. Nothing was lost, what you typed is still here, and the step has not moved.',
         );
         return;
       }
@@ -339,7 +339,7 @@ export default function OnboardingPage({ requestedStep, previewState, onPreviewS
               action={{ label: 'Try again', icon: 'refresh', onClick: () => onPreviewState('ready') }}
             >
               Aster published these steps and the portal could not read them. Nothing you have already
-              saved is affected — it is on Aster’s side, not in this browser.
+              saved is affected. It is on Aster’s side, not in this browser.
             </StateCard>
           )}
 
@@ -370,15 +370,15 @@ export default function OnboardingPage({ requestedStep, previewState, onPreviewS
                 <StateCard
                   variant="error"
                   icon="alert"
-                  title="Aster couldn’t tell us what you have already done"
+                  title="What you have already done couldn’t be read"
                   action={{
                     label: 'Try again',
                     icon: 'refresh',
                     onClick: () => onPreviewState('ready'),
                   }}
                 >
-                  Your eight steps are here, but what you saved is not — so nothing below is marked
-                  saved, and nothing can be saved until we can read it. Nothing has been lost.
+                  Your eight steps are here, but what you saved is not, so nothing below is marked
+                  saved, and nothing can be saved until it can be read. Nothing has been lost.
                 </StateCard>
               )}
 

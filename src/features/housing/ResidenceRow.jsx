@@ -67,7 +67,7 @@ export default function ResidenceRow({ residence, rankIndex, canAdd, readOnly, o
             </button>
           ) : (
             <span className="action-reason">
-              <Icon name="info" size={14} /> Your shortlist is full — remove one to add this
+              <Icon name="info" size={14} /> Your shortlist is full. Remove one to add this
             </span>
           )}
         </div>

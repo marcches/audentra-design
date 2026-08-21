@@ -36,7 +36,7 @@ export const PREVIEW_STATES = [
   // `health-settled` is both halves resolved, which the section still has to
   // show rather than turning into a congratulatory page (ENR-205 Scenario 4).
   ['health-returned', 'Record came back', 'The immunization record sent back with a reason.'],
-  ['health-settled', 'Health resolved', 'Both halves of Health settled, and the section still shows both.'],
+  ['health-settled', 'Health resolved', 'The record accepted and the accommodation question answered, and both sections still show it.'],
   // ENR-207: the three worlds Housing cannot be clicked into. The four plans are
   // reachable by answering the question, so they need no id; these are not.
   // `onboarding-answered` is a shortlist that arrived already written, which is
@@ -48,7 +48,7 @@ export const PREVIEW_STATES = [
   // person's decision never does.
   ['onboarding-answered', 'Answered at onboarding', 'Living on campus, three residences already ranked.'],
   ['deadline-passed', 'After the housing deadline', 'The submitted shortlist, and Housing Services assigning.'],
-  ['room-assigned', 'Room assigned', 'A room that is not the first preference — and is still valid.'],
+  ['room-assigned', 'Room assigned', 'A room that isn’t the first preference, and is still valid.'],
   // ENR-163. The five onboarding adds. `empty`, `partial`, `loading` and
   // `error` mean something there too, but they already exist above; these are
   // the ones with nowhere else to live, and they are listed here so a `?state=`
@@ -61,7 +61,7 @@ export const PREVIEW_STATES = [
   ['save-fails', 'A save that fails', 'A step that does not reach Aster, and does not pretend to.'],
   // ENR-167 second pass and ENR-214. Listed here too, so a `?state=` link to
   // either survives a reload — `readPreviewState` validates against this list.
-  ['rewards-off', 'Rewards off', 'An institution that does not run a points programme.'],
+  ['rewards-off', 'Rewards off', 'An institution that does not run a points program.'],
   ['registration-open', 'Nothing gates registration', 'An institution that holds registration for nothing.'],
   ['partial', 'Partial data', 'The catalog loaded; your transcript could not be checked.'],
   ['error', 'Error', 'The published catalog could not be loaded at all.'],
@@ -88,7 +88,7 @@ export const FRAME_STATES = [
   // is loading, error, empty or partial, so every page renders exactly as it
   // does when ready; what reads them is the shell and the checklist, from the
   // raw preview value, the way ENR-188 already does.
-  ['rewards-off', 'Rewards off', 'An institution that does not run a points programme.'],
+  ['rewards-off', 'Rewards off', 'An institution that does not run a points program.'],
   ['registration-open', 'Nothing gates registration', 'An institution that holds registration for nothing.'],
 ];
 
@@ -143,7 +143,7 @@ export const FINANCIALS_STATES = [
  */
 export const PROFILE_STATES = [
   ['ready', 'Ready', 'The full record: one number pending, one address unverified, one authorization.'],
-  ['empty', 'New record', 'The day Aster opened it — only what your application gave it.'],
+  ['empty', 'New record', 'The day Aster opened it, only what your application gave it.'],
   ['partial', 'Partial data', 'The record loaded; verification and family permissions could not be read.'],
   ['loading', 'Loading', 'Before the record arrives.'],
   ['error', 'Error', 'The record could not be loaded.'],

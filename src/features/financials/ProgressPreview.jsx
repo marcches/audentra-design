@@ -34,7 +34,6 @@ export default function ProgressPreview({ progress, unavailable, onExplain, onRe
             Academic progress preview
             <TermTip term="progress" label="academic progress" />
           </h2>
-          <p>A check Aster runs at the end of each term. Not a decision.</p>
         </div>
       </div>
 
@@ -61,7 +60,10 @@ export default function ProgressPreview({ progress, unavailable, onExplain, onRe
                 <li className="metric-row" key={metric.id}>
                   <div className="metric-head">
                     <span className="metric-label">
-                      {metric.label}
+                      <span>
+                        {metric.label}
+                        {metric.gloss && <small className="metric-gloss">, {metric.gloss}</small>}
+                      </span>
                       <TermTip term={metric.term} label={metric.label} />
                     </span>
                     <span className={`metric-chip ${chip.tone}`}>{chip.word}</span>
@@ -88,8 +90,8 @@ export default function ProgressPreview({ progress, unavailable, onExplain, onRe
 
           <p className="preview-disclaimer">
             <Icon name="shield" size={16} />
-            This is a preview of a check Aster runs. It is not Aster’s decision — Student Financial
-            Services reviews every record individually and tells you directly.
+            This is a preview. It isn’t Aster’s decision. Student Financial Services reviews every
+            record individually.
           </p>
 
           <button className="learn-link" onClick={onExplain}>

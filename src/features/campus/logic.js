@@ -1,3 +1,5 @@
+import { CAMPUS_TODAY } from './data.js';
+
 const MONTHS = [
   'January',
   'February',
@@ -38,22 +40,37 @@ export function dateTile(iso) {
   };
 }
 
-export function longDate(iso) {
-  const date = toDate(iso);
-  return `${DAYS[date.getDay()]}, ${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+/**
+ * Inside a week of today the weekday is worth saying; past that, and for anything
+ * already gone, it is noise (UX writing §2.3). Every formatter below reads the
+ * frozen portal date unless a caller has a better one.
+ */
+function withinWeek(iso, today) {
+  const diff = Math.round((toDate(iso) - toDate(today)) / DAY_MS);
+  return diff >= 0 && diff <= 7;
 }
 
-// "Thursday 3 September" — what a required row needs to say before the student
-// can decide whether the day is free. The year is not in it: the date tile
-// beside it carries the month, and a session on the board is always this year's.
-export function weekdayDate(iso) {
+/** `Aug 27, 2026`, or `Thursday, Aug 27, 2026` when it is less than a week away. */
+export function longDate(iso, today = CAMPUS_TODAY) {
   const date = toDate(iso);
-  return `${DAYS[date.getDay()]} ${date.getDate()} ${MONTHS[date.getMonth()]}`;
+  const day = `${MONTHS[date.getMonth()].slice(0, 3)} ${date.getDate()}, ${date.getFullYear()}`;
+  return withinWeek(iso, today) ? `${DAYS[date.getDay()]}, ${day}` : day;
 }
 
+// "Thursday, Aug 27" — what a required row needs to say before the student can
+// decide whether the day is free. The year is not in it: the date tile beside it
+// carries the month, and a session on the board is always this year's. Past a
+// week out the weekday goes too, and the row says `Sep 15`.
+export function weekdayDate(iso, today = CAMPUS_TODAY) {
+  const date = toDate(iso);
+  const day = `${MONTHS[date.getMonth()].slice(0, 3)} ${date.getDate()}`;
+  return withinWeek(iso, today) ? `${DAYS[date.getDay()]}, ${day}` : day;
+}
+
+/** `Aug 27` — month first, always. */
 export function shortDate(iso) {
   const date = toDate(iso);
-  return `${date.getDate()} ${MONTHS[date.getMonth()].slice(0, 3)}`;
+  return `${MONTHS[date.getMonth()].slice(0, 3)} ${date.getDate()}`;
 }
 
 // A past event leaves the browsable set without being deleted: the partition is derived from the

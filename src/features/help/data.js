@@ -58,14 +58,14 @@ export const offices = {
     // everywhere rather than a longer one Health wears and a shorter one the
     // rest of the portal wears.
     name: 'Aster University Health Services',
-    decides: 'Immunisation records, medical clearance, and health forms.',
+    decides: 'Immunization records, medical clearance, and health forms.',
     hours: '8:30 AM–4:30 PM, Monday to Friday',
     location: 'Building D, first floor',
     reply: '5 business days',
   },
   registrar: {
     id: 'registrar',
-    name: 'Aster Registrar',
+    name: 'Office of the Registrar',
     decides: 'Your program, approved credit, and your official academic record.',
     hours: '9:00 AM–5:00 PM, Monday to Friday',
     location: 'Whitfield Hall',
@@ -81,7 +81,7 @@ export const offices = {
   accessibility: {
     id: 'accessibility',
     name: 'Accessibility Services',
-    decides: 'Nothing. They arrange accommodations with you, and they decide no part of your file.',
+    decides: 'Nothing. Accessibility Services arranges accommodations with you. They decide no part of your file.',
     hours: '9:00 AM–5:00 PM, Monday to Friday',
     location: 'Building C, second floor',
     reply: '3 business days',
@@ -111,7 +111,7 @@ export const helpTopics = [
   { id: 'deadline', label: 'A deadline or a step I can’t finish', office: 'admissions', guide: 'deadlines' },
   { id: 'housing', label: 'Housing and where I’ll live', office: 'housing', guide: 'housing-answer' },
   { id: 'health', label: 'Health records and forms', office: 'health', guide: null },
-  { id: 'program', label: 'My program, credit or the catalog', office: 'registrar', guide: 'progress' },
+  { id: 'program', label: 'My program, credit, or the catalog', office: 'registrar', guide: 'progress' },
   { id: 'other', label: 'Something else', office: 'admissions', guide: 'replies' },
 ];
 
@@ -134,7 +134,7 @@ export const helpGuides = [
     office: 'admissions',
     updated: '2026-08-05',
     body: [
-      'Every answer to a request lands on this page, and stays here. That is the record — nothing you are told about your enrollment lives only in an inbox.',
+      'Every answer to a request lands on this page, and stays here. That is the record. Nothing you are told about your enrollment lives only in an inbox.',
       'Aster does send email, but only to say that something has arrived here. Those messages come from an address that nobody reads, so replying to one reaches no person and starts nothing.',
     ],
   },
@@ -155,7 +155,7 @@ export const helpGuides = [
     updated: '2026-08-08',
     body: [
       'Your housing answer can be changed at any point before the housing deadline. Housing Services only uses it to open the right next steps for you, so changing it changes what your checklist asks of you.',
-      'After the deadline it becomes a room assignment, and a room assignment is changed by request rather than by editing an answer.',
+      'After the deadline it becomes a room assignment. You change a room assignment by request, not by editing an answer.',
     ],
   },
 ];

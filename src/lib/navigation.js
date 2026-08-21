@@ -36,14 +36,14 @@ export const GROUPS = {
 export const GROUP_HEROES = {
   financials: {
     kicker: 'My Financials · 2026–27 academic year',
-    title: 'Let’s make the year add up, Maya.',
-    lede: 'What the year costs, what is covering it, and what still needs you — with the person who can change it.',
+    title: 'What the year costs, and what covers it.',
+    lede: 'What the year costs, what’s covering it, and what still needs you, with the person who can change it.',
     motif: 'wallet',
   },
   campus: {
     kicker: 'Campus life · Published by Aster Student Life',
-    title: 'Find your people, Maya.',
-    lede: 'Events, clubs and the people who run them. One session is required; everything else is yours to choose.',
+    title: 'Find your people.',
+    lede: 'Events, clubs, and the people who run them. One session is required. Everything else is yours to choose.',
     motif: 'users',
   },
 };
@@ -61,8 +61,8 @@ export const DESTINATIONS = [
     hero: {
       flag: 'Offer accepted',
       kicker: 'Class of 2031',
-      title: 'You’re in, Maya. Let’s make it official.',
-      lede: 'We’ve put your next steps in the order that will keep everything moving. Start with the first one—or choose any task you can do now.',
+      title: 'You’re in, Maya. Here’s what’s left.',
+      lede: 'Your next steps are in the order that keeps things moving. Start with the first one, or pick any task you can do now.',
       motif: 'check',
     },
     appears: 'The steps Aster still needs from you appear here.',
@@ -82,7 +82,7 @@ export const DESTINATIONS = [
     lede: 'Everything you have sent Aster, and everything Aster has sent you.',
     hero: {
       kicker: 'My Documents',
-      title: 'Everything on the record, Maya.',
+      title: 'Everything on file.',
       lede: 'Everything you have sent Aster, and everything Aster has sent you, in one place.',
     },
     appears: 'Documents you upload and documents Aster sends you appear here.',
@@ -100,8 +100,8 @@ export const DESTINATIONS = [
     // not the portal's, and that is the whole premise of ENR-178.
     hero: {
       kicker: 'Appointments · Times published by Aster teams',
-      title: 'Book time with the people who can help, Maya.',
-      lede: 'Time with the offices that own a step — booked, confirmed and in one calendar.',
+      title: 'Book time with the people who can help.',
+      lede: 'Time with the offices that own a step, booked, confirmed, and in one calendar.',
     },
     appears: 'Appointments you book with Aster staff appear here.',
     produces: 'Booking opens as each team publishes its availability.',
@@ -110,14 +110,14 @@ export const DESTINATIONS = [
   },
   {
     id: 'my-classrooms',
-    label: 'My Classrooms',
+    label: 'My Degree',
     route: '#/my-classrooms',
     icon: 'book',
     lede: 'What your degree asks of you, and the courses that satisfy each requirement.',
     hero: {
       kicker: 'Academic · BA Computer Science',
-      title: 'Here’s what your degree asks of you, Maya.',
-      lede: 'Every requirement your program sets, and the courses that satisfy each one. Aster’s reading of your record, not the record itself.',
+      title: 'What your degree asks of you.',
+      lede: 'Every requirement your program sets, and the courses that satisfy each one. This is Aster’s reading of your record, not the record itself.',
       motif: 'book',
     },
     appears: 'Your degree requirements appear here, with the courses that satisfy each one.',
@@ -133,22 +133,39 @@ export const DESTINATIONS = [
     // Not a heart and not a cross: this section is not a medical record, and the
     // first thing a student reads must not suggest it is.
     icon: 'shield',
-    // No badge, deliberately. The record's unread decision is already counted on
-    // My Documents — the same event twice in one sidebar is a lie about how much
-    // is outstanding — and any counter that could one day include the
-    // accommodation question would turn a complete "not right now" into a
-    // pending item, which is the one thing this section exists to avoid.
-    lede: 'One record Health Services needs, and one question Accessibility Services asked.',
-    // The eyebrow names both owners, because the whole screen turns on the two
-    // halves belonging to different teams.
+    // No badge, deliberately. The record's open state is already counted on
+    // My Documents — the same thing twice in one sidebar is a lie about how much
+    // is outstanding.
+    lede: 'One record Health Services needs before you can register for classes.',
     hero: {
-      kicker: 'Health · Accessibility Services and Aster University Health Services',
-      title: 'Only two things here, Maya.',
-      lede: 'One record Health Services needs before you register, and one question that is yours to answer — or not.',
+      kicker: 'Health',
+      title: 'One record, before you can register.',
+      lede: 'One record Health Services needs before you can register for classes.',
       motif: 'shield',
     },
     appears: 'The health step from onboarding is finished here, whatever is left of it.',
-    produces: 'Both parts are open to you from the day your offer is accepted.',
+    produces: 'The record is open to you from the day your offer is accepted.',
+    next: 'my-documents',
+    built: true,
+  },
+  {
+    id: 'accessibility',
+    label: 'Accessibility',
+    route: '#/accessibility',
+    icon: 'accessibility',
+    // Its own section, not a card inside Health — ADR-0003. And no badge, ever:
+    // any counter that could include the accommodation question would turn a
+    // complete "not right now" into a pending item, which is the one thing this
+    // section exists to avoid (ADR-0001, ENR-208 AC 3).
+    lede: 'One question that’s yours to answer, or not.',
+    hero: {
+      kicker: 'Accessibility · Accessibility Services',
+      title: 'Accommodations, if you want them.',
+      lede: 'One question that’s yours to answer, or not.',
+      motif: 'accessibility',
+    },
+    appears: 'The question from onboarding is finished here, whatever you answered.',
+    produces: 'It is open to you from the day your offer is accepted.',
     next: 'my-documents',
     built: true,
   },
@@ -234,9 +251,9 @@ export const DESTINATIONS = [
     // The eyebrow names who publishes the catalogue, because the eight
     // residences on this page are the institution's list and not the portal's.
     hero: {
-      kicker: 'Housing · Catalogue published by Housing Services',
-      title: 'Let’s settle where you’ll live, Maya.',
-      lede: 'Two questions: where you plan to live, and which residences you would like. Housing Services assigns the rooms.',
+      kicker: 'Housing · Published by Housing Services',
+      title: 'Where you’ll live.',
+      lede: 'Two questions: where you’ll live, and which residences you’d like. Housing Services assigns the rooms.',
       motif: 'home',
     },
     appears: 'Your housing plan appears here, with the residences Housing Services publishes.',
@@ -258,7 +275,7 @@ export const DESTINATIONS = [
     lede: 'Aster’s guides, and a way to reach the office that owns a step.',
     hero: {
       kicker: 'Help',
-      title: 'Let’s get you unstuck, Maya.',
+      title: 'Get unstuck, Maya.',
       lede: 'Aster’s own guides, and a way to put a named office on a step that is blocked.',
     },
     appears: 'Aster’s guides, and any request you raise with an office, appear here.',
@@ -275,7 +292,7 @@ export const DESTINATIONS = [
     lede: 'The record Aster keeps about you.',
     hero: {
       kicker: 'Profile',
-      title: 'This is what Aster knows about you, Maya.',
+      title: 'What Aster knows about you.',
       lede: 'Some of it is yours to change. The rest belongs to an office, and this page says which one.',
     },
     appears: 'The details Aster holds about you appear here.',
@@ -356,6 +373,7 @@ export const NAV = [
   { kind: 'link', id: 'appointments' },
   { kind: 'link', id: 'my-classrooms' },
   { kind: 'link', id: 'health' },
+  { kind: 'link', id: 'accessibility' },
   {
     kind: 'group',
     id: 'financials',

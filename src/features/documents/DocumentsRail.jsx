@@ -31,7 +31,7 @@ export default function DocumentsRail({ requirements, unavailable, onToast }) {
         {unavailable ? (
           <p>
             Your record loaded, but what Aster has decided could not be read. Nothing here is out of
-            date — it is unread, which is not the same thing.
+            date. It is unread, which is not the same thing.
           </p>
         ) : waiting.length === 0 ? (
           <p>
@@ -64,9 +64,8 @@ export default function DocumentsRail({ requirements, unavailable, onToast }) {
       <div className="provenance-card keeping-card">
         <span className="panel-label">What Aster keeps</span>
         <p>
-          Every file you send is kept exactly as you sent it. When you replace something, the new
-          file is added <em>beside</em> the old one — the first is never written over, and the reason
-          it came back stays readable next to it.
+          Every file you send is kept exactly as you sent it. Aster never writes over your first
+          file. The new one sits next to it, and the reason the first came back stays readable.
         </p>
         <p className="keeping-note">
           <Icon name="shield" size={14} /> Files are encrypted, and read only by staff at the office

@@ -1,5 +1,10 @@
 # The accommodation answer stays inside Health
 
+> **Status: accepted, location superseded.** On 2026-08-21 the question moved to a section of its
+> own, Accessibility — [ADR-0003](./0003-accessibility-is-its-own-section.md). Everything below
+> about *what the answer may touch* stands unchanged; only *where the card sits* changed, and the
+> module that holds the answer is now `src/features/accessibility/`.
+
 A student's answer to "would you like to talk to Accessibility Services?" is the one thing in this
 portal she may have deliberately chosen not to tell anyone. Every instinct in this codebase pulls
 the other way — a *yes* looks like a help request, the section looks like it wants a badge, and

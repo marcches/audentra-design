@@ -25,7 +25,8 @@ export default function AidOpportunityCard({ total }) {
         {additionalAid.map((item) => (
           <li key={item.id}>
             <strong>
-              {item.label} — {item.prefix ? `${item.prefix} ` : ''}
+              {item.label}, {item.gloss ? `${item.gloss}, ` : ''}
+              {item.prefix ? `${item.prefix} ` : ''}
               {formatMoney(item.amount)}
             </strong>
             <span>{item.note}</span>
@@ -33,7 +34,7 @@ export default function AidOpportunityCard({ total }) {
         ))}
       </ul>
       <a className="learn-link" href="#/financials/aid">
-        See what I could add <Icon name="arrow" size={14} />
+        See both options <Icon name="arrow" size={14} />
       </a>
     </div>
   );

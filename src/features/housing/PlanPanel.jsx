@@ -38,7 +38,7 @@ export default function PlanPanel({ plan, source, locked, onChoose }) {
             <small>
               {chosen
                 ? `Recorded before ${responseDeadline.label}. Housing Services is working from this.`
-                : `The deadline passed on ${responseDeadline.label} without an answer. Housing Services will contact you.`}
+                : `The deadline passed on ${responseDeadline.label} without an answer. This page updates when Housing Services decides.`}
             </small>
           </span>
         </p>
@@ -56,7 +56,7 @@ export default function PlanPanel({ plan, source, locked, onChoose }) {
       </div>
 
       <p className="panel-lede">
-        All four are complete answers and none of them is a skip. You can change your answer until{' '}
+        All four are real answers. Pick the one that’s true. You can change it until{' '}
         {responseDeadline.full}.
       </p>
 

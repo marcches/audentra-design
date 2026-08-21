@@ -30,7 +30,6 @@ function Row({ item, read, onOpen }) {
         {!read && <i className="note-dot" aria-hidden="true" />}
         <span className="note-body">
           <strong>{item.title}</strong>
-          <small>No longer available — {item.gone}</small>
         </span>
       </li>
     );
@@ -95,7 +94,7 @@ export default function NotificationPanel({
 
       {state === 'error' && (
         <div className="pop-state">
-          <p>We couldn’t load what changed. Nothing you did is lost.</p>
+          <p>What changed couldn’t be loaded. Nothing you did is lost.</p>
           <button className="secondary-button" onClick={onRetry}>
             Try again
           </button>

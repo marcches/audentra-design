@@ -22,9 +22,8 @@ export default function PlanOutcome({ variant, onToast }) {
         </span>
         <h2 id="next-heading">A second question opens if you live on campus</h2>
         <p>
-          Students living on campus rank three residences from the catalogue {housingOffice}{' '}
-          publishes. It is not shown yet because it only applies to one of the four answers above —
-          nothing is missing from this page.
+          Students living on campus rank three residences from the catalog {housingOffice}{' '}
+          publishes. It only applies if you live on campus.
         </p>
         <p className="outcome-meta">
           <Icon name="clock" size={14} /> Answer any time before {responseDeadline.full}.
@@ -69,7 +68,7 @@ export default function PlanOutcome({ variant, onToast }) {
         </p>
         <p>
           {housingOffice} keeps a list of letting agents and a guide to local tenancy agreements, if
-          either would be useful — but neither is a step you owe anyone.
+          either would be useful, but neither is a step you owe anyone.
         </p>
         <p className="outcome-meta">
           <Icon name="clock" size={14} /> Changed your mind? Choose a different plan above, any time
@@ -86,9 +85,9 @@ export default function PlanOutcome({ variant, onToast }) {
       </span>
       <h2 id="undecided-heading">Someone at {housingOffice} will help you decide</h2>
       <p>
-        Nothing is recorded as your plan — needing to decide is not a decision, and your checklist
+        Nothing is recorded as your plan. Needing to decide is not a decision, and your checklist
         still shows housing as open, with its deadline. Put the question to {housingOffice} and they
-        will come back to you.
+        will help you decide.
       </p>
       <p>
         The residences are below so you can read them while you decide. You cannot rank them yet:

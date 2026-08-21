@@ -10,10 +10,9 @@ import { issuedDocuments } from '../documents/data.js';
  * review* read as pending rather than as broken, and it is genuinely secondary
  * to the record's own state, which is the summary panel's figure.
  *
- * Then the two teams, side by side, because the section is the only place in the
- * portal where two offices own one screen and the student has to be able to tell
- * which is which — one decides on a file, the other decides nothing at all and
- * says so.
+ * Then the team on the other side: who decides on the file, and where they are.
+ * Accessibility Services used to sit beside it here; it has its own section now
+ * (ADR-0003).
  *
  * Last, a route to the list Aster already published. "What counts as proof?" has
  * an answer written by Health Services and sitting in her own record; writing a
@@ -21,7 +20,6 @@ import { issuedDocuments } from '../documents/data.js';
  */
 export default function HealthRail({ unavailable, onToast }) {
   const health = offices.health;
-  const accessibility = offices.accessibility;
   const published = issuedDocuments.find((item) => item.office === 'health') ?? null;
 
   return (
@@ -34,7 +32,7 @@ export default function HealthRail({ unavailable, onToast }) {
         <p>
           {unavailable
             ? 'Your record could not be read just now, so nothing here is a claim about where it is.'
-            : `That is how long ${health.name} usually takes to decide on a record. While they have it, nothing is needed from you — a wait is not a problem to solve.`}
+            : 'That’s how long Health Services usually takes to decide. Nothing for you to do while they have it.'}
         </p>
       </AnchorCard>
 
@@ -48,13 +46,6 @@ export default function HealthRail({ unavailable, onToast }) {
               <Icon name="pin" size={13} /> {health.location} · {health.hours}
             </span>
           </li>
-          <li>
-            <strong>{accessibility.name}</strong>
-            <span>{accessibility.decides}</span>
-            <span className="team-where">
-              <Icon name="pin" size={13} /> {accessibility.location} · {accessibility.hours}
-            </span>
-          </li>
         </ul>
       </div>
 
@@ -63,7 +54,7 @@ export default function HealthRail({ unavailable, onToast }) {
           <span className="panel-label">What counts as proof</span>
           <p>
             {health.name} published the list of required vaccines and what Aster accepts as evidence
-            of each. It is on your record, sent to you {published.issued}.
+            of each. It’s on your record, sent to you {published.issued}.
           </p>
           <a
             className="link-button"

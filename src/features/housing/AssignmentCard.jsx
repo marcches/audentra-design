@@ -60,10 +60,10 @@ export default function AssignmentCard({ assignment, shortlist }) {
         <Icon name="info" size={16} />
         <span>
           {matchedFirst
-            ? `This was your 1st preference. It often works out that way, and it was never guaranteed — Housing Services assigns rooms, and your ranking told them where to start.`
+            ? `This was your 1st preference. It often works out that way, and it was never guaranteed. Housing Services assigns rooms, and your ranking told them where to start.`
             : rankIndex > 0
               ? `You ranked ${residence.name} ${rankIndex === 1 ? 'second' : 'third'}. Your first preference was not available, which is what a preference means: it told Housing Services where to start, and they worked down your list.`
-              : `${residence.name} was not on your shortlist. Housing Services places students outside their ranking when none of the three has a room free — the assignment is still yours, and it is final unless you ask them to change it.`}
+              : `${residence.name} was not on your shortlist. Housing Services places students outside their ranking when none of the three has a room free. The assignment is still yours, and it is final unless you ask them to change it.`}
         </span>
       </p>
     </section>

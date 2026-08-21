@@ -46,7 +46,7 @@ export default function FinishCard({ record, onOpen }) {
         />
         <div className="card-body">
           <p className="body-copy">
-            Aster has what it needs to open your record. From here, everything lives in the portal —
+            Aster has what it needs to open your record. From here, everything lives in the portal:
             your checklist, your documents, your money and your room, each in the section that owns
             it.
           </p>

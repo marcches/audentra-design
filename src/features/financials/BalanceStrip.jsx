@@ -32,7 +32,7 @@ export default function BalanceStrip({ ledger, year, unknown, onContact }) {
         {unknown
           ? 'Aster opens your financial record once your enrollment deposit is paid.'
           : ledger.hasPending
-            ? `Before your aid package is final — this number will go down, not up. ${year.label}.`
+            ? `This is an estimate for ${year.years}. It can go down, never up.`
             : `Your package is final. This can still change if your housing or meal plan does. ${year.label}.`}
       </SummaryFigure>
 

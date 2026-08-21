@@ -33,7 +33,7 @@ export default function AppointmentsRail({ availability, publisher, unavailable,
         {unavailable ? (
           <p>
             The published times could not be loaded. Conversations you have already booked are
-            unaffected — this is about what you could book next.
+            unaffected. This is about what you could book next.
           </p>
         ) : (
           <>
@@ -47,10 +47,6 @@ export default function AppointmentsRail({ availability, publisher, unavailable,
                 </li>
               ))}
             </ul>
-            <p>
-              Each team publishes its own times, and only what it publishes can be booked. A team
-              with none has not gone quiet on you — it has not opened that calendar yet.
-            </p>
           </>
         )}
       </AnchorCard>
@@ -68,15 +64,15 @@ export default function AppointmentsRail({ availability, publisher, unavailable,
             <span aria-hidden="true">
               <Icon name="send" size={14} />
             </span>
-            <span>What you wrote it is about travels with it, so nobody starts from nothing.</span>
+            <span>What you wrote goes with the booking, so the team arrives prepared.</span>
           </li>
           <li>
             <span aria-hidden="true">
               <Icon name="alert" size={14} />
             </span>
             <span>
-              If it cannot reach the team, it says so and stays in your list as{' '}
-              <strong>Not booked</strong>. It is never shown as confirmed.
+              If it can’t reach the team, it says so and stays in your list as{' '}
+              <strong>Not booked</strong>. It’s never shown as confirmed.
             </span>
           </li>
         </ol>
@@ -93,7 +89,7 @@ export default function AppointmentsRail({ availability, publisher, unavailable,
         <button
           className="secondary-button"
           onClick={() =>
-            onToast('A request for another time would go to the team — nothing is sent yet.')
+            onToast('A request for another time would go to the team. Nothing is sent yet.')
           }
         >
           <Icon name="mail" size={16} /> Ask a team for another time

@@ -56,7 +56,7 @@ export default function EnrollmentPage({
             label="Your enrollment progress"
             explain={{
               title: 'Steps complete',
-              body: `${totalSteps} steps make up enrolling. One counts here once you have finished it — a step Aster is still reading is with Aster, and is not counted until it comes back.`,
+              body: `${totalSteps} steps make up enrolling. One counts here once you have finished it. A step Aster is still reading is with Aster, and is not counted until it comes back.`,
             }}
             figure={`${completed.length} of ${totalSteps} steps complete`}
           >
@@ -96,7 +96,7 @@ export default function EnrollmentPage({
         <div className="section-heading">
           <div>
             <p className="eyebrow muted">Your next steps</p>
-            <h2>Ready when you are</h2>
+            <h2>Your steps</h2>
           </div>
           <div className="sort-group" aria-label="Sort your next steps">
             <button className={sort === 'smart' ? 'selected' : ''} onClick={() => onSort('smart')}>
@@ -106,7 +106,7 @@ export default function EnrollmentPage({
               Due soon
             </button>
             <button className={sort === 'quick' ? 'selected' : ''} onClick={() => onSort('quick')}>
-              Quick wins
+              Fastest
             </button>
             <Tooltip tip="How smart order works">
               <button className="sort-info" aria-label="How smart order works" onClick={onOpenSmart}>
@@ -135,8 +135,8 @@ export default function EnrollmentPage({
             <div>
               <Icon name="spark" size={28} />
             </div>
-            <h3>You’re all caught up!</h3>
-            <p>We’ll let you know when Aster adds another step.</p>
+            <h3>You’re all caught up.</h3>
+            <p>New steps appear here when Aster adds them.</p>
           </div>
         )}
       </section>

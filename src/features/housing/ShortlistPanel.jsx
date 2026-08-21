@@ -56,7 +56,7 @@ export default function ShortlistPanel({ shortlist, locked, onMove, onRemove, on
           <p>
             {housingOffice} assigns every room after {responseDeadline.full}, and they may assign one
             you did not name. What your order is worth: they work down your list in the order you set
-            it, so first is read as first — and most students are placed in one of the three they
+            it, so first is read as first, and most students are placed in one of the three they
             name.
           </p>
         </div>
@@ -64,7 +64,7 @@ export default function ShortlistPanel({ shortlist, locked, onMove, onRemove, on
 
       {rows.length === 0 ? (
         <p className="shortlist-empty">
-          Nothing ranked yet. Add up to {SHORTLIST_MAX} from the catalogue below, in the order you
+          Nothing ranked yet. Add up to {SHORTLIST_MAX} from the catalog below, in the order you
           would like them.
         </p>
       ) : (
@@ -129,7 +129,7 @@ export default function ShortlistPanel({ shortlist, locked, onMove, onRemove, on
         <p className="shortlist-foot partial">
           <Icon name="clock" size={15} />
           Saved, and incomplete. {SHORTLIST_MAX - rows.length} more to name before{' '}
-          {responseDeadline.label} — until then housing stays open on your checklist.
+          {responseDeadline.label}. Until then housing stays open on your checklist.
         </p>
       )}
 
@@ -144,7 +144,7 @@ export default function ShortlistPanel({ shortlist, locked, onMove, onRemove, on
       {state === 'complete' && !locked && (
         <p className="shortlist-foot">
           <Icon name="check" size={15} />
-          Saved. Change the order any time before {responseDeadline.label} — every change saves on its
+          Saved. Change the order any time before {responseDeadline.label}. Every change saves on its
           own.
         </p>
       )}

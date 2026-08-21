@@ -1,8 +1,8 @@
 # Audentra — student enrollment
 
 The language the portal and the staff workspace share. Written down because the same English word
-kept meaning two different things on two different screens: a *requirement* in My Classrooms is a
-degree rule, a *requirement* in My Documents is a file Aster is waiting for, and a *document* is
+kept meaning two different things on two different screens: a *requirement* in My Degree (the
+section the code calls `classrooms`) is a degree rule, a *requirement* in My Documents is a file Aster is waiting for, and a *document* is
 either something the student sent or something Aster issued. This file settles which is which.
 
 Started 2026-08-20 while specifying [ENR-165](https://audentra.atlassian.net/browse/ENR-165). It is
@@ -76,7 +76,7 @@ In review never does.** Faking a decision on a timer would put words in a review
 ### Elsewhere in the product, so the words stop colliding
 
 **Degree requirement**:
-A rule of an academic program — a course, a credit count, a category — that My Classrooms tracks.
+A rule of an academic program — a course, a credit count, a category — that My Degree tracks.
 Nothing to do with documents. When both are in the same sentence, qualify both.
 _Avoid_: Requirement, unqualified.
 
@@ -87,14 +87,31 @@ _Avoid_: Request, unqualified; ticket; case.
 
 **Office**:
 The team at Aster that owns a document requirement and makes the decision on its submissions —
-Admissions, Student Financial Services, Housing Services, Aster University Health
-Services, the Registrar. The student is told which one holds their file, always by name.
+Admissions, Student Financial Services, Housing Services, Aster University Health Services, the
+Office of the Registrar. The student is told which one holds their file, always by name, and each
+office has exactly one name: *Office of the Registrar* on first mention in a page and *the
+Registrar* after; *Aster University Health Services* first and *Health Services* after; *Student
+Financial Services* always.
 
 An office may also be a team that owns no requirement and decides nothing, and instead **receives
 what a section routes to it**: Accessibility Services receives an *accommodation answer* and
 contacts the student. It is still an office, because the student is owed the same thing either way —
 a name for whoever is on the other side.
-_Avoid_: Department, team, staff.
+_Avoid_: Department, team, staff. Aster Registrar, the Registrar's Office (the name is the Office
+of the Registrar). Financial Aid office (the name is Student Financial Services).
+
+**Step**:
+One item on the My Enrollment checklist: something the student does, named as a verb phrase —
+*Send your immunization record*, *Verify your household income*, *Choose your housing plan* — and
+called by that one name wherever it appears: the card, the drawer, the alert, the notification. The
+document a step produces is a noun phrase (*Immunization record*), and the two never swap roles. A
+step's state is a suffix, never a rewrite of the name: *Verify your household income · sent back*.
+_Avoid_: Task (the code's word for the same object), to-do, item, requirement.
+
+**Wellness**:
+The product's one word for the category of health services a student may use — the Events filter,
+the Profile sharing category, the checklist section *Health and wellness*.
+_Avoid_: Wellbeing, well-being.
 
 **Advisor**:
 The named person who holds this student's file and is reachable from every section's summary panel.

@@ -85,7 +85,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
 
   function askAdvisor(match) {
     onToast(
-      `A message to ${enrollmentAdvisor.name} about ${match.target.courseCode} would open here—nothing is sent yet.`,
+      `A message to ${enrollmentAdvisor.name} about ${match.target.courseCode} would open here. Nothing is sent yet.`,
     );
   }
 
@@ -123,7 +123,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
           onToast(
             `${channel === 'email' ? 'An email' : 'A message'} to ${
               enrollmentAdvisor.name
-            } would open here—nothing is sent yet.`,
+            } would open here. Nothing is sent yet.`,
           )
         }
       />
@@ -144,7 +144,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
     >
       <Icon name={matches === null ? 'alert' : 'info'} size={14} />
       {matches === null
-        ? 'We couldn’t check your transcript for matches. Nothing approved has changed.'
+        ? 'Your transcript couldn’t be checked for matches. Nothing approved has changed.'
         : matches.length > 0
           ? `${matches.length} potential ${
               matches.length === 1 ? 'match isn’t' : 'matches aren’t'
@@ -158,8 +158,8 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
     <p className="record-note">
       <Icon name="shield" size={15} />
       <span>
-        Catalog {program.catalog} · {program.publishedOn} · read-only. This is not your official
-        academic record — the {program.officialRecord.office} holds your transcript.
+        Catalog {program.catalog} · {program.publishedOn} · read-only. This isn’t your official
+        academic record. The {program.officialRecord.office} holds your transcript.
         {totals.pending > 0 && (
           <em> *One requirement’s credits haven’t synced, so this total is incomplete.</em>
         )}
@@ -253,7 +253,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
                 <StateCard
                   variant="warn"
                   icon="alert"
-                  title="We can’t check your transcript right now"
+                  title="Your transcript can’t be checked right now"
                   action={{
                     label: 'Try again',
                     icon: 'refresh',

@@ -39,7 +39,7 @@ export default function MomentumCard({
 
       {unavailable ? (
         <p className="momentum-unavailable">
-          Your balance didn’t load this time. Nothing you earned is lost — it will be back shortly.
+          Your balance didn’t load this time. Nothing you earned is lost. It will be back shortly.
         </p>
       ) : (
         <>

@@ -57,14 +57,14 @@ export default function TaskDrawer({
           onClick={() => onTab('action')}
           role="tab"
         >
-          Do this now
+          Do it now
         </button>
         <button
           className={tab === 'how' ? 'active' : ''}
           onClick={() => onTab('how')}
           role="tab"
         >
-          Step-by-step help
+          How it works
         </button>
       </div>
 
@@ -82,12 +82,12 @@ export default function TaskDrawer({
           <div className="help-note">
             <Icon name="help" size={18} />
             <p>
-              <strong>Still unsure?</strong> Ask your enrollment team. They typically reply
-              within one business day.
+              <strong>Still unsure?</strong> Ask your enrollment team. Usually replies in 1 business
+              day.
             </p>
           </div>
           <button className="primary-button full" onClick={() => onTab('action')}>
-            I’m ready to start <Icon name="arrow" size={17} />
+            Continue to payment <Icon name="arrow" size={17} />
           </button>
         </div>
       ) : (
@@ -114,7 +114,7 @@ export default function TaskDrawer({
               </div>
               <p>
                 You’ll finish payment on Aster’s website. When it’s received, this checklist
-                will update automatically—usually within a minute.
+                will update automatically, usually within a minute.
               </p>
               <button className="primary-button full" onClick={() => onComplete(task)}>
                 Open Aster payment page <Icon name="external" size={17} />
@@ -177,7 +177,7 @@ export default function TaskDrawer({
                 className="skip-link"
                 onClick={() => {
                   onClose();
-                  onToast('No problem — this task will stay on your checklist.');
+                  onToast('No problem. This task will stay on your checklist.');
                 }}
               >
                 I don’t have this with me

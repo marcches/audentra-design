@@ -109,6 +109,16 @@ const paths = {
   ),
   close: <path d="m7 7 10 10M17 7 7 17" />,
   menu: <path d="M4 7h16M4 12h16M4 17h16" />,
+  // The universal access figure: a person, arms open, not a wheelchair — the
+  // section is a conversation anyone may ask for, not a category of need.
+  accessibility: (
+    <>
+      <circle cx="12" cy="4.6" r="1.7" />
+      <path d="M4.5 9.2c5 1.4 10 1.4 15 0" />
+      <path d="M12 9.9v4.6" />
+      <path d="m8.6 20.5 3.4-6 3.4 6" />
+    </>
+  ),
   shield: (
     <>
       <path d="M12 3 5 6v5c0 4.5 2.8 8.2 7 10 4.2-1.8 7-5.5 7-10V6z" />

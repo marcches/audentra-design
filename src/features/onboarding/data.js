@@ -48,7 +48,7 @@ export const STEPS = [
     id: 'details',
     name: 'Confirm your details',
     question: 'Is this you, Maya?',
-    lede: 'Aster’s admissions file says this. Tell us what to call you — the Registrar keeps the rest.',
+    lede: 'Aster’s admissions file says this. Tell Aster what to call you. The Registrar keeps the rest.',
     required: true,
     minutes: 2,
   },
@@ -72,7 +72,7 @@ export const STEPS = [
     id: 'permissions',
     name: 'Family permissions',
     question: 'Who can talk to Aster about you?',
-    lede: 'Right now, that is just you. This is where you change it — or decide not to.',
+    lede: 'Right now, that is just you. This is where you change it, or decide not to.',
     required: true,
     minutes: 4,
   },
@@ -104,7 +104,7 @@ export const STEPS = [
     id: 'orientation',
     name: 'Choose your orientation session',
     question: 'Which orientation will you come to?',
-    lede: 'Two days, run twice. Pick the one that works — the seats are held as you choose.',
+    lede: 'Two days, run twice. Pick the one that works. The seats are held as you choose.',
     required: true,
     minutes: 2,
     // ENR-151 AC 3. Residents and commuters are given different sessions, so
@@ -125,10 +125,10 @@ export const TOTAL_STEPS = STEPS.length;
 export const channelOptions = [
   [
     'portal',
-    'Portal messages',
-    'Aster writes to you in Messages and emails you that something is waiting.',
+    'Portal',
+    'Aster answers in the portal and emails you that something is waiting.',
   ],
-  ['email', 'Email', 'Aster writes to your personal email first, and keeps a copy in Messages.'],
+  ['email', 'Email', 'Aster writes to your personal email first, and keeps a copy in the portal.'],
   ['text', 'Text message', 'Aster texts you first for anything time-critical. Needs a verified number.'],
 ];
 
@@ -163,9 +163,9 @@ export const RECORD_CATEGORIES = [
     sees: 'Where you live on campus and which meal plan you hold.',
   },
   {
-    id: 'wellbeing',
-    name: 'Health and wellbeing',
-    sees: 'That you used a wellbeing service — never what was said in one.',
+    id: 'wellness',
+    name: 'Health and wellness',
+    sees: 'That you used a wellness service, never what was said in one.',
   },
   { id: 'conduct', name: 'Conduct', sees: 'Any conduct case Aster has opened about you.' },
 ];
@@ -196,25 +196,25 @@ export const ORIENTATION_SESSIONS = [
   {
     id: 'commuters-aug',
     label: 'Commuter day',
-    when: 'Friday Aug 28, 9:00 AM – 4:00 PM',
+    when: 'Thursday, Aug 27, 9:00 AM–4:00 PM',
     where: 'Halloran Hall',
     forPlans: ['commuting', 'own-housing', 'undecided'],
     hint: 'One day, with parking held for you. Lunch is included.',
   },
   {
-    id: 'late-sep',
+    id: 'late-aug',
     label: 'Late orientation',
-    when: 'Thursday Sep 3, 9:00 AM – 4:00 PM',
+    when: 'Monday, Aug 31, 9:00 AM–4:00 PM',
     where: 'Halloran Hall',
     forPlans: ['on-campus', 'commuting', 'own-housing', 'undecided'],
-    hint: 'For anyone who cannot make the first two. Covers the same ground.',
+    hint: 'For anyone who can’t make the first two. Covers the same ground.',
   },
 ];
 
 export const PHOTO_RULES = [
   'Face forward, with your whole face visible.',
   'A plain wall behind you, and nothing covering your head unless it is worn daily.',
-  'Taken in the last six months — this is the photo on your card for four years.',
+  'Taken in the last six months. This is the photo on your card for four years.',
 ];
 
 /** What the photo is used for, and the sentence that says what it is not used for. */
@@ -239,7 +239,7 @@ const EMERGENCY = {
 /** The record as the application left it: what step 1 and 2 open with. */
 const APPLICATION = {
   legalName: 'Amelia Maya Johnson',
-  birthDate: 'March 14, 2009',
+  birthDate: 'Mar 14, 2008',
   studentId: 'AST-2031-04417',
   preferredName: 'Maya',
   pronouns: 'she',
@@ -344,7 +344,7 @@ export function recordFor(previewState) {
 /** The states this screen adds, offered on its own pill. */
 export const ONBOARDING_PREVIEW_STATES = [
   ['ready', 'Ready', 'Two steps saved, the third in hand, the last one locked.'],
-  ['empty', 'First visit', 'Nothing saved and nothing skipped — 0 of 8.'],
+  ['empty', 'First visit', 'Nothing saved and nothing skipped, 0 of 8.'],
   [
     'resume-skipped',
     'Back after a skip',

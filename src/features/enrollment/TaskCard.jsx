@@ -17,7 +17,7 @@ export default function TaskCard({
       {recommended && (
         <div className="recommended-banner">
           <span>
-            <Icon name="spark" size={14} /> Best next step
+            <Icon name="spark" size={14} /> Start here
           </span>
           {task.unlocks ? (
             <span>Unlocks {task.unlocks} more steps</span>
@@ -77,7 +77,7 @@ export default function TaskCard({
             {task.action} <Icon name="arrow" size={16} />
           </button>
           <button className="text-button" onClick={() => onOpen(task, 'how')}>
-            See how
+            How this works
           </button>
         </div>
       </div>

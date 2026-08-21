@@ -36,7 +36,7 @@ export default function DocumentRow({ requirement, task, gating = false, onOpen 
     <button
       className={`document-row ${info.tone}`}
       onClick={() => onOpen(requirement)}
-      aria-label={`${requirement.title} — ${info.label}, ${office.name}`}
+      aria-label={`${requirement.title}, ${info.label}, ${office.name}`}
     >
       <span className={`document-tile ${info.tone}`} aria-hidden="true">
         <Icon name={state === 'accepted' ? 'check' : 'file'} size={17} />
@@ -54,7 +54,7 @@ export default function DocumentRow({ requirement, task, gating = false, onOpen 
           {state === 'checking' && <i className="pulse" aria-hidden="true" />}
           {state === 'accepted' && decision?.on
             ? `Accepted ${decision.on} · ${office.name}`
-            : info.line(office)}
+            : info.line(office, requirement)}
         </span>
         {/* A helper line only where it changes what she does. On every row it
             would be a template; here it is the consequence of not acting. */}
@@ -90,7 +90,7 @@ export function IssuedRow({ document, onOpen }) {
     <button
       className="document-row issued"
       onClick={() => onOpen(document)}
-      aria-label={`${document.title} — sent by ${office.name} on ${document.issued}`}
+      aria-label={`${document.title}, sent by ${office.name} on ${document.issued}`}
     >
       <span className="document-tile issued" aria-hidden="true">
         <Icon name="mail" size={17} />

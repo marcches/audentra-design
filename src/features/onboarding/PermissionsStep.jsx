@@ -42,7 +42,7 @@ export default function PermissionsStep({ draft, grants, onAdd, onEdit, onRemove
         <div className="card-body">
           <p className="body-copy">
             Your record is yours. Aster discusses your grades, your bill, your aid and where you live
-            with you — and with nobody else, unless you say so here.
+            with you, and with nobody else, unless you say so here.
           </p>
           {/* ENR-152 AC 3, before the control. */}
           <p className="body-copy strong">
@@ -74,7 +74,7 @@ export default function PermissionsStep({ draft, grants, onAdd, onEdit, onRemove
           note={
             grants.length
               ? 'Each person sees only what you ticked for them.'
-              : 'Nobody yet — and that is a finished answer.'
+              : 'Nobody yet, and that is a finished answer.'
           }
           aside={
             grants.length ? (
@@ -99,7 +99,7 @@ export default function PermissionsStep({ draft, grants, onAdd, onEdit, onRemove
                 <strong>Nobody is authorized.</strong>
                 <small>
                   If someone helps you with money, housing or paperwork, you can let them discuss
-                  exactly those parts — and nothing else.
+                  exactly those parts, and nothing else.
                 </small>
               </span>
             </p>

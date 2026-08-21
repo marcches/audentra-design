@@ -229,7 +229,7 @@ const ANSWERS = {
     return {
       body: [
         `You have ${record.tasks.length} step${record.tasks.length === 1 ? '' : 's'} open. The nearest ${next.length === 1 ? 'one is' : `${next.length} are`}:`,
-        next.map((task) => `${task.title} — due ${task.due}, ${deadlineLabel(task.daysLeft).toLowerCase()}`).join('\n'),
+        next.map((task) => `${task.title}, due ${task.due}, ${deadlineLabel(task.daysLeft).toLowerCase()}`).join('\n'),
       ],
       source: recordSource('my-enrollment'),
       route: taskRoute(next[0]),
@@ -241,7 +241,7 @@ const ANSWERS = {
     if (!next) return ANSWERS.outstanding(record);
     return {
       body: [
-        `${next.title} is due ${next.due} — ${deadlineLabel(next.daysLeft).toLowerCase()}. It takes about ${next.minutes} minutes, and ${next.office} is the office behind it.`,
+        `${next.title} is due ${next.due}, ${deadlineLabel(next.daysLeft).toLowerCase()}. It takes about ${next.minutes} minutes, and ${next.office} is the office behind it.`,
         next.consequence ?? next.why,
       ],
       source: recordSource('my-enrollment'),
@@ -257,7 +257,7 @@ const ANSWERS = {
       body: [
         `${task.title} is due ${task.due}, ${deadlineLabel(task.daysLeft).toLowerCase()}.${urgency === 'urgent' ? ` That is inside the ${ESCALATION_WINDOW}-day window Aster flags.` : ''}`,
         task.consequence ?? task.why,
-        `Nothing is decided against you for being late — ${task.office} would contact you first. The step stays open until it is done.`,
+        'Nothing is decided against you for being late. The step stays open until it is done.',
       ],
       source: recordSource('my-enrollment'),
       route: taskRoute(task),
@@ -318,7 +318,7 @@ const ANSWERS = {
     if (!ledger) return null;
     return {
       body: [
-        `Your estimated remaining balance is ${formatMoney(ledger.balance)}. Of that, ${formatMoney(ledger.billedRemaining)} is what Aster bills you directly; the rest is what the year costs elsewhere — books, travel, personal.`,
+        `Your estimated remaining balance is ${formatMoney(ledger.balance)}. Of that, ${formatMoney(ledger.billedRemaining)} is what Aster bills you directly; the rest is what the year costs elsewhere: books, travel, personal.`,
         ledger.hasPending
           ? 'This is before your pending loan. When that is finalized the figure comes down, and every remaining installment is recalculated.'
           : 'Your aid is final, so this figure only moves if your housing or meal plan changes.',
@@ -334,7 +334,7 @@ const ANSWERS = {
     return {
       body: [
         `${accepted.length} source${accepted.length === 1 ? '' : 's'} ${accepted.length === 1 ? 'is' : 'are'} paying towards your year, worth ${formatMoney(record.ledger?.aidAccepted ?? 0)}:`,
-        accepted.map((item) => `${item.label} — ${formatMoney(item.amount)} from ${item.source}`).join('\n'),
+        accepted.map((item) => `${item.label}, ${formatMoney(item.amount)} from ${item.source}`).join('\n'),
         loan ? `Your ${loan.label} is offered but not final, so it has no amount yet.` : null,
       ].filter(Boolean),
       source: recordSource('financials-aid'),
@@ -353,7 +353,7 @@ const ANSWERS = {
     }
     return {
       body: [
-        `${next.label} — ${formatMoney(next.amount)}, due ${next.date}. It is payment ${(record.ledger.nextPaymentIndex ?? 0) + 1} of ${record.ledger.paymentCount}.`,
+        `${next.label}, ${formatMoney(next.amount)}, due ${next.date}. It is payment ${(record.ledger.nextPaymentIndex ?? 0) + 1} of ${record.ledger.paymentCount}.`,
         'Aster charges these through its billing portal. I cannot pay it for you, but the page below is where it happens.',
       ],
       source: recordSource('financials-payments'),
@@ -375,7 +375,7 @@ const ANSWERS = {
         uploads.length > 0
           ? `Aster is waiting on ${uploads.length} document${uploads.length === 1 ? '' : 's'} from you:`
           : 'Aster is not waiting on a new document from you.',
-        uploads.map((task) => `${task.title} — due ${task.due}, for ${task.office}`).join('\n') || null,
+        uploads.map((task) => `${task.title}, due ${task.due}, for ${task.office}`).join('\n') || null,
         record.reviewing.length > 0
           ? `${record.reviewing.length} thing you already sent is being reviewed: ${record.reviewing.map((item) => item.title).join(', ')}.`
           : null,
@@ -389,7 +389,7 @@ const ANSWERS = {
     return {
       body: [
         `You have finished ${record.completed.length} of ${record.totalSteps} steps${record.reviewing.length > 0 ? `, and ${record.reviewing.length} more is with Aster for review` : ''}.`,
-        record.completed.slice(0, 4).map((item) => `${item.title} — ${item.date}`).join('\n'),
+        record.completed.slice(0, 4).map((item) => `${item.title}, ${item.date}`).join('\n'),
       ],
       source: recordSource('my-enrollment'),
       route: pageRoute('my-enrollment'),
@@ -401,7 +401,7 @@ const ANSWERS = {
     return {
       body: [
         `Your program is ${program.name}, ${program.classOf}, on the ${program.catalog} catalog. It asks for ${program.creditsToGraduate} credits.`,
-        `What you see on My Classrooms is Aster’s published catalog and the credit the Registrar has already approved. Your official academic record lives with the ${program.officialRecord.office}.`,
+        `What you see on My Degree is Aster’s published catalog and the credit the Registrar has already approved. Your official academic record lives with the ${program.officialRecord.office}.`,
       ],
       source: recordSource('my-classrooms'),
       route: pageRoute('my-classrooms'),
@@ -429,7 +429,7 @@ const ANSWERS = {
     return {
       body: [
         `Two people hold your file. ${enrollmentAdvisor.name} at the ${enrollmentAdvisor.office} is who to ask when a step is blocked. ${financialAidAdvisor.name} at ${financialAidAdvisor.office} is who to ask before you borrow anything.`,
-        `Both keep ${enrollmentAdvisor.hours.days} hours — ${enrollmentAdvisor.name} ${enrollmentAdvisor.hours.window}, ${financialAidAdvisor.name} ${financialAidAdvisor.hours.window}.`,
+        `Both keep ${enrollmentAdvisor.hours.days} hours: ${enrollmentAdvisor.name} ${enrollmentAdvisor.hours.window}, ${financialAidAdvisor.name} ${financialAidAdvisor.hours.window}.`,
       ],
       source: guidanceSource('Aster’s staff directory'),
       route: pageRoute('appointments', 'Book time with them'),
@@ -539,7 +539,7 @@ export function answerFor(text, record, hint = {}) {
       kind: 'answer',
       intent,
       body: [
-        'There is nothing in your record for that yet — Aster has not opened this part of your file.',
+        'There is nothing in your record for that yet. Aster has not opened this part of your file.',
         'It fills in as your enrollment moves. Until then the person below is the one who can tell you when to expect it.',
       ],
       source: guidanceSource('Aster’s published guidance'),
@@ -561,7 +561,7 @@ function noAnswer(person) {
     kind: 'none',
     body: [
       'I don’t have an answer for that.',
-      'I read your own record and the guidance Aster publishes, so anything outside those two is a question for a person.',
+      'I can read your record and the guidance Aster publishes, so anything outside those two is a question for a person.',
     ],
     person,
   };

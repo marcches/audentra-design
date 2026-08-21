@@ -45,7 +45,7 @@ export default function RecordCard({
           </span>
           <div>
             <h2 id="record-title">Immunization record</h2>
-            <p>Aster University Health Services reviews this one.</p>
+            <p>Health Services reviews it.</p>
           </div>
         </div>
         <StateCard
@@ -55,7 +55,7 @@ export default function RecordCard({
           action={{ label: 'Try again', icon: 'refresh', onClick: onRetry }}
         >
           Nothing has been lost. Until this loads it is shown neither as sent nor as outstanding,
-          because we cannot tell you which it is without knowing.
+          because Aster can’t tell you which it is without knowing.
         </StateCard>
       </section>
     );
@@ -76,7 +76,7 @@ export default function RecordCard({
         </span>
         <div>
           <h2 id="record-title">{requirement.title}</h2>
-          <p>{office.name} reviews this one and decides on it.</p>
+          <p>Health Services reviews it and decides.</p>
         </div>
         <span className={`status-chip ${info.tone}`}>{info.label}</span>
       </div>
@@ -99,7 +99,7 @@ export default function RecordCard({
                 // has.
                 `Accepted ${decision?.on ?? ''} by ${office.name}. Your record is clear and nothing more is needed here.`
               : state === 'checking'
-                ? 'Aster is checking the files. You can leave this page — it keeps going without you.'
+                ? 'Aster is checking the files. You can leave this page. It keeps going without you.'
                 : state === 'changes-requested'
                   ? `${office.name} sent it back. A replacement goes in the same place, beside what you already sent.`
                   : requirement.needs}
@@ -112,7 +112,7 @@ export default function RecordCard({
             {/* The gate clause left this line when the chip above took it —
                 it was hard-coded here, and which requirements gate is
                 configuration (AC 7). */}
-            <Icon name="calendar" size={14} /> Health Services asks for it by {task.due}
+            <Icon name="calendar" size={14} /> Health Services asks for it by {task.dueFull ?? task.due}
           </p>
         )}
       </div>
@@ -180,7 +180,7 @@ export default function RecordCard({
         </span>
         <button className="primary-button" onClick={() => onOpen(requirement)}>
           {state === 'needed'
-            ? 'Send your record'
+            ? 'Send your immunization record'
             : state === 'changes-requested'
               ? 'Send a replacement'
               : 'Open the record'}

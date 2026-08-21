@@ -45,9 +45,10 @@ export function daysUntilOpen(config = registration, today = PORTAL_TODAY) {
 }
 
 export function opensOn(config = registration) {
-  return new Date(`${config.opens}T00:00:00`).toLocaleDateString('en-GB', {
-    day: 'numeric',
+  // US order — `September 1`, never `1 September` (UX writing §2.3).
+  return new Date(`${config.opens}T00:00:00`).toLocaleDateString('en-US', {
     month: 'long',
+    day: 'numeric',
   });
 }
 

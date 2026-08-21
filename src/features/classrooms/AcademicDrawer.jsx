@@ -5,8 +5,8 @@ import { confidenceLabel, requirementStatus } from './logic.js';
 import { program } from './data.js';
 
 const NEXT_STEPS = [
-  'The Registrar’s Office compares your evidence against Aster’s credit policy.',
-  'A decision is recorded — approved, partly approved, or not approved.',
+  'The Office of the Registrar compares your evidence against Aster’s credit policy.',
+  'A decision is recorded: approved, partly approved, or not approved.',
   'Only then does your requirement change. You will see it here and in your official record.',
 ];
 
@@ -58,7 +58,7 @@ function CourseBody({ course, requirement }) {
         <div>
           <strong>Where this fits</strong>
           <p>
-            {requirement.name} —{' '}
+            {requirement.name} ·{' '}
             {requirement.creditsApproved == null
               ? 'credits pending sync'
               : `${requirement.creditsApproved} of ${requirement.creditsRequired} credits approved`}
@@ -76,7 +76,7 @@ function CourseBody({ course, requirement }) {
             <strong>{course.evidence}</strong>
           </p>
           <p>
-            {course.decidedOn} by the {program.officialRecord.office}. This one is decided — it counts
+            {course.decidedOn} by the {program.officialRecord.office}. This one is decided. It counts
             toward your degree.
           </p>
         </div>

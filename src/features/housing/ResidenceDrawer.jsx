@@ -65,7 +65,7 @@ export default function ResidenceDrawer({
               <small>
                 {residence.meals.included
                   ? 'Required with this residence'
-                  : 'Optional — this residence is self-catered'}
+                  : 'Optional · this residence is self-catered'}
               </small>
             </th>
             <td>{formatMoney(residence.meals.amount)}</td>

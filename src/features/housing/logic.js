@@ -132,7 +132,7 @@ export function reconciliation(residence) {
   if (!residence.meals.included) {
     const room = rateFrom(residence);
     return (
-      `${formatMoney(room)} for the room — ${against(room, standardRate)} My Financials uses for ` +
+      `${formatMoney(room)} for the room, ${against(room, standardRate)} My Financials uses for ` +
       `housing. It is self-catered, so the ${formatMoney(standardMeals)} on the meals line stops ` +
       `being something Aster bills you and becomes money you spend yourself; the full meal plan is ` +
       `available at the same price, which would bring the year to ${formatMoney(room + residence.meals.amount)}. ` +
@@ -145,13 +145,13 @@ export function reconciliation(residence) {
 
   if (total === standard) {
     return (
-      `${formatMoney(total)} for room and meals — the same figure My Financials is already using, ` +
+      `${formatMoney(total)} for room and meals, the same figure My Financials is already using, ` +
       'so your estimated balance there would not move.'
     );
   }
 
   return (
-    `${formatMoney(total)} for room and meals — ${against(total, standard)} My Financials is ` +
+    `${formatMoney(total)} for room and meals, ${against(total, standard)} My Financials is ` +
     'using for the two together. That estimate only changes once Housing Services assigns your room.'
   );
 }

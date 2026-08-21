@@ -20,12 +20,13 @@ export default function CampusRail({ interests, publisher, onToast }) {
           ))}
         </div>
         <p>
-          You chose these when you set up your account, so we put matching events and organisations
-          first. Nothing you read or open here changes your interests, your progress or your points.
+          You chose these when you set up your account, so Aster puts matching events and
+          organizations first. Nothing you read or open here changes your interests, your progress,
+          or your points.
         </p>
         <button
           className="learn-link"
-          onClick={() => onToast('Interests are set in your profile — never from this page.')}
+          onClick={() => onToast('Interests are set in your profile, never from this page.')}
         >
           Change them in your profile <Icon name="arrow" size={14} />
         </button>
@@ -34,8 +35,8 @@ export default function CampusRail({ interests, publisher, onToast }) {
       <div className="provenance-card">
         <span className="panel-label">Where this comes from</span>
         <p>
-          <strong>{publisher.office}</strong> publishes every event and organisation on this page.
-          Aster staff write it in the campus life editor; the portal only shows it.
+          <strong>{publisher.office}</strong> publishes every event and organization on this page.
+          Aster staff write it in the campus life editor. The portal only shows it.
         </p>
         <div className="provenance-meta">
           <span>
@@ -50,7 +51,7 @@ export default function CampusRail({ interests, publisher, onToast }) {
           className="secondary-button"
           onClick={() =>
             onToast(
-              `A message to ${publisher.coordinator.name} would open here — nothing is sent yet.`,
+              `A message to ${publisher.coordinator.name} would open here. Nothing is sent yet.`,
             )
           }
         >

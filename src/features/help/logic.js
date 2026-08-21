@@ -155,7 +155,7 @@ export function appendReply(request, text, today) {
         kind: 'event',
         when: today,
         text: reopening
-          ? `Reopened — back with ${office.name}`
+          ? `Reopened · back with ${office.name}`
           : `Your reply is with ${office.name}`,
       },
     ],

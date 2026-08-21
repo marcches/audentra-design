@@ -20,8 +20,8 @@ import Icon from '../../design-system/Icon.jsx';
 const ANSWERS = [
   {
     id: 'yes',
-    label: 'Yes — put me in touch',
-    hint: 'Accessibility Services emails you within two working days. You decide what happens next.',
+    label: 'Yes, I’d like to talk',
+    hint: 'Accessibility Services gets your name. Nothing about your health is sent with it.',
   },
   {
     id: 'no',
@@ -74,8 +74,8 @@ export default function HealthStep({ draft, onChange }) {
               <Icon name="check" size={16} />
               <span>
                 {chosen.id === 'no'
-                  ? 'That is a complete answer. Nothing about it stays open on your checklist.'
-                  : 'Recorded. Accessibility Services will write to you at the address from step 2.'}
+                  ? 'That’s a complete answer. Nothing about it stays open on your checklist.'
+                  : 'Recorded. Accessibility Services has your name.'}
               </span>
             </p>
           )}
@@ -85,7 +85,7 @@ export default function HealthStep({ draft, onChange }) {
             <Icon name="file" size={14} />
             <span>
               Separately, Aster needs your <strong>immunization record</strong> before term starts.
-              That is a document, not a question — it is asked for in My Documents, and nothing is
+              That’s a document, not a question. It’s asked for in My Documents, and nothing is
               uploaded here.
             </span>
           </p>

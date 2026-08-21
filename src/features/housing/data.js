@@ -20,7 +20,7 @@
 /** The date after which the plan and the shortlist stop being editable and Housing Services assigns. */
 export const responseDeadline = {
   label: 'Dec 15',
-  full: 'December 15, 2026',
+  full: 'Dec 15, 2026',
   daysLeft: 117,
 };
 
@@ -56,8 +56,8 @@ export const planOptions = [
     label: 'Commuting',
     hint: 'You will live at home and travel in. No residence to rank.',
     consequence:
-      'Your move-in time opens once this is confirmed. Aster will send you the commuter parking ' +
-      'and transit information before term starts.',
+      'Your move-in time opens once this is confirmed. Commuter parking and transit information ' +
+      'appears on this page before term starts.',
     complete: true,
   },
   {
@@ -65,16 +65,16 @@ export const planOptions = [
     label: 'Arranging my own housing',
     hint: 'You will rent near campus yourself. Aster needs nothing further.',
     consequence:
-      'Your move-in time opens once this is confirmed. This is a complete answer — nothing about ' +
+      'Your move-in time opens once this is confirmed. This is a complete answer. Nothing about ' +
       'housing stays open on your checklist.',
     complete: true,
   },
   {
     id: 'undecided',
     label: 'I need help deciding',
-    hint: 'Put someone at Housing Services on it. Your plan stays open.',
+    hint: 'Housing Services will help you decide. Your plan stays open.',
     consequence:
-      'Nothing is recorded as your plan yet. Housing Services will come back to you, and you can ' +
+      'Nothing is recorded as your plan yet. Housing Services will help you decide, and you can ' +
       `still answer any time before ${responseDeadline.label}.`,
     complete: false,
   },
@@ -151,7 +151,7 @@ export const residences = [
     summary: 'Self-catered flats with a shared kitchen, for people who would rather cook.',
     about:
       'Flats of four or six with a full kitchen and a living room. No meal plan is included in the ' +
-      'rate — you can add one, or you can shop and cook, which most people here do.',
+      'rate. You can add one, or you can shop and cook, which most people here do.',
     features: ['Full kitchen in every flat', 'Living room per flat', 'Laundry in the courtyard'],
   },
   {
