@@ -83,11 +83,11 @@ src/
     primitives/              # Drawer, AnchorCard, Card (+CardHead/Rows/Foot), Button, Avatar
     patterns/                # PageShell, GroupTabs, Notice, StateCard, Spot, SummaryFigure,
                              # AdvisorBar, InfoModal, PageError, PageSkeleton,
-                             # SectionPlaceholder
+                             # SectionPlaceholder, Popover, EntryRow
     styleguide/              # the page at #/styleguide
 
   app/                       # the shell every page renders inside
-    Sidebar, Topbar, TopbarPopover, PreviewStateMenu
+    Sidebar, Topbar, PreviewStateMenu
 
   features/<name>/           # one section, whole: its page, its parts, its data, its logic
     <Domain>Page.jsx         # the page a route lands on

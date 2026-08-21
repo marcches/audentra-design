@@ -71,7 +71,15 @@ export default function Notice({ tone = 'quiet', icon, title, action, children }
         {children}
       </p>
 
-      {action ? (
+      {/* A route is an `<a>` and a panel on this page is a `<button>` — the
+          same line `EntryRow` draws. `href` makes it a link a middle click and
+          a screen reader both recognise; `onClick` may still ride along, for a
+          popover that has to close before the page moves. */}
+      {action?.href ? (
+        <a className="notice-action link-button" href={action.href} onClick={action.onClick}>
+          {action.label} <Icon name={action.icon ?? 'arrow'} size={14} />
+        </a>
+      ) : action ? (
         <button className="notice-action link-button" onClick={action.onClick}>
           {action.label} <Icon name={action.icon ?? 'arrow'} size={14} />
         </button>

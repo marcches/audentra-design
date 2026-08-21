@@ -69,24 +69,8 @@
 /* A run of rows, named once — "Yours to change", then "Aster's record". These
    two labels are the page's whole argument, so they are the only type inside a
    card that is tracked and coloured, and the break between them carries the
-   distinction a pill on every row could not. */
-.rows-label {
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-  align-items: center;
-  gap: var(--space-3);
-  margin: 0;
-  padding-top: var(--space-7);
-  padding-bottom: var(--space-4);
-  font-size: var(--fs-small);
-  font-weight: var(--fw-heavy);
-  display: flex;
-}
-
-.rows-label svg {
-  flex: none;
-}
-
+   distinction a pill on every row could not. The label itself is `.rows-label`
+   in `patterns.css` (the popovers draw it too); these are its two tones here. */
 .rows-label.yours {
   color: var(--purple-dark);
 }
@@ -99,15 +83,6 @@
   color: var(--muted);
 }
 
-.rows-label em {
-  color: var(--muted);
-  letter-spacing: var(--ls-caps);
-  text-transform: none;
-  margin-left: auto;
-  font-size: var(--fs-small);
-  font-style: normal;
-  font-weight: var(--fw-semi);
-}
 
 /* Verification is a state of the field, so it sits with the label. Green is
    settled; amber is a code in flight that she has to act on; grey is a fact

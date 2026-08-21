@@ -2,7 +2,7 @@ import Icon from '../design-system/Icon.jsx';
 import Avatar from '../design-system/primitives/Avatar.jsx';
 import { IconButton } from '../design-system/primitives/Button.jsx';
 import PreviewStateMenu from './PreviewStateMenu.jsx';
-import TopbarPopover from './TopbarPopover.jsx';
+import Popover from '../design-system/patterns/Popover.jsx';
 import NotificationPanel from '../features/notifications/NotificationPanel.jsx';
 import PointsPopover from '../features/rewards/PointsPopover.jsx';
 import { FRAME_STATES } from '../lib/preview-state.js';
@@ -60,7 +60,7 @@ export default function Topbar({
         {/* ENR-162 AC 5: an institution with rewards off gets no chip, no
             popover and no gap where they were. */}
         {points && (
-          <TopbarPopover
+          <Popover
             className="topbar-chip points-chip"
             tip="Your momentum"
             ariaLabel={
@@ -97,10 +97,10 @@ export default function Topbar({
                 onClose={close}
               />
             )}
-          </TopbarPopover>
+          </Popover>
         )}
 
-        <TopbarPopover
+        <Popover
           className="topbar-chip bell-chip"
           tip="What changed"
           ariaLabel={
@@ -134,7 +134,7 @@ export default function Topbar({
               onClose={close}
             />
           )}
-        </TopbarPopover>
+        </Popover>
 
         <a className="mobile-avatar" href="#/profile" aria-label="Profile">
           <Avatar person={identity} size="sm" />

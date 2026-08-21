@@ -2,90 +2,126 @@
  * What a point is worth — ENR-162.
  * ==========================================================================*/
 
-/* --- What a point is worth — ENR-162 --------------------------------------- */
+/* --- The popover: the balance on ink, then what it reaches -----------------
+   The panel is `Popover` (patterns.css): the anchor card takes its top
+   corners, the rows and the foot follow on the card's white. Here is only
+   what the balance adds to the anchor and to a row. */
 
-.points-balance {
-  color: var(--muted);
+/* The anchor's one figure, at the rail's headline size; the unit rides beside
+   it in the second voice. */
+.balance-card strong {
+  letter-spacing: var(--ls-tight);
   align-items: baseline;
   gap: var(--space-2);
-  margin: 0;
-  padding: var(--space-8) var(--space-7) 0;
-  font-size: var(--fs-copy);
-  display: flex;
-}
-
-.points-balance strong {
-  color: var(--ink);
+  margin: var(--space-1) 0 0;
   font-size: var(--fs-figure);
   font-weight: var(--fw-bold);
   font-variant-numeric: tabular-nums;
-  line-height: 1.1;
+  line-height: var(--lh-tight);
+  display: flex;
 }
 
-.points-lede {
-  color: var(--muted);
+.balance-card strong small {
+  color: var(--on-ink-muted);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semi);
+}
+
+.balance-card p {
   margin: var(--space-2) 0 0;
-  padding: 0 var(--space-7);
-  font-size: var(--fs-small);
+  font-size: var(--fs-copy);
   line-height: var(--lh-body);
 }
 
-.points-ladder {
-  padding: var(--space-8) var(--space-7) var(--space-2);
+/* The spark in the corner — a bare outline glyph. Duotone on a gradient is mud. */
+.balance-mark {
+  color: var(--on-ink-muted);
+  position: absolute;
+  top: var(--space-9);
+  right: var(--space-9);
 }
 
+/* The ladder on ink: what the balance has covered, and where each reward
+   sits on the way. Every colour here is one the ink plane already names. */
 .ladder-track {
-  background: var(--canvas);
+  background: var(--on-ink-line);
   border-radius: var(--radius-pill);
   height: 6px;
+  margin-top: var(--space-8);
   position: relative;
 }
 
 .ladder-fill {
-  background: var(--ink);
+  background: var(--purple-line);
   border-radius: var(--radius-pill);
   height: 100%;
   display: block;
 }
 
 .ladder-mark {
-  background: var(--canvas);
-  outline: 2px solid var(--surface);
+  box-sizing: border-box;
+  background: var(--surface-ink);
+  border: 2px solid var(--on-ink-muted);
   border-radius: var(--radius-pill);
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   position: absolute;
-  top: -1px;
+  top: -2px;
   transform: translateX(-50%);
 }
 
 .ladder-mark.reached {
-  background: var(--ink);
+  background: var(--on-ink);
+  border-color: var(--on-ink);
 }
 
-.ladder-list {
-  flex-direction: column;
-  gap: var(--space-3);
-  margin: var(--space-7) 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-}
-
-/* Not reached yet is stated by weight, not by a colour that would read as a
-   warning. Nothing on a catalogue row is a control — redemption is out of
-   scope on ENR-148, so there is nothing here to press. */
-.ladder-list li {
+/* The catalogue: one compact row per reward and no control on any of them —
+   redemption is out of scope on ENR-148. The marker is the track's mark
+   brought down to the row. The next reward is the one the balance is heading
+   for and the one row that spends colour; a reached reward is green, because
+   green means exactly one thing; the rest are not yet, and say so by weight. */
+.rows-label.reaches {
   color: var(--muted);
-  justify-content: space-between;
-  gap: var(--space-6);
-  font-size: var(--fs-small);
-  display: flex;
 }
 
-.ladder-list li.reached {
+.ladder-row {
+  color: var(--muted);
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+  font-size: var(--fs-copy);
+  display: grid;
+}
+
+.ladder-dot {
+  box-sizing: border-box;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-round);
+  justify-self: center;
+  width: 10px;
+  height: 10px;
+}
+
+.ladder-row.next {
   color: var(--ink);
-  font-weight: var(--fw-bold);
+  background: var(--purple-wash);
+  font-weight: var(--fw-semi);
+}
+
+.ladder-row.next .ladder-dot {
+  background: var(--purple);
+  border-color: var(--purple);
+}
+
+.ladder-row.reached {
+  color: var(--ink);
+}
+
+.ladder-row.reached .ladder-dot {
+  background: var(--green);
+  border-color: var(--green);
 }
 
 .ladder-cost {
@@ -93,85 +129,22 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* AC 2 — every award attributed to the requirement that earned it. */
-.points-awards {
-  border-top: 1px solid var(--line);
-  margin-top: var(--space-8);
-  padding: var(--space-6) var(--space-7) var(--space-7);
-}
-
-.points-awards h3 {
-  color: var(--muted);
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  margin: 0 0 var(--space-4);
-  font-size: var(--fs-micro);
-  font-weight: var(--fw-bold);
-}
-
-.points-awards ul {
-  flex-direction: column;
-  gap: var(--space-3);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-}
-
-.points-awards li {
-  align-items: baseline;
-  gap: var(--space-4);
-  font-size: var(--fs-small);
-  display: flex;
-}
-
-.points-awards li span:first-child {
-  flex: 1;
-  min-width: 0;
-}
-
-.award-when {
-  color: var(--muted);
-  flex: none;
+/* AC 2 — every award attributed to the requirement that earned it, in the
+   completed step's own row, and its points in the same purple they were
+   earned in on My Enrollment. The run is hers, so its label is the colour My
+   Profile gives "Yours to change". */
+.rows-label.earned-run {
+  color: var(--purple-dark);
 }
 
 .award-points {
-  flex: none;
+  color: var(--purple-hover);
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-meta);
   font-weight: var(--fw-bold);
   font-variant-numeric: tabular-nums;
-}
-
-.award-more {
-  color: var(--muted);
-  margin: var(--space-4) 0 0;
-  font-size: var(--fs-small);
-}
-
-@media (width<=820px) {
-  .pop-panel {
-    width: min(344px, calc(100vw - 24px));
-  }
-
-  /* AC 1 second half drops here. The value is one tap away in the popover
-     instead of on the chip — the divergence is recorded on the card. */
-  .chip-reach {
-    display: none;
-  }
-}
-
-@media (width<=620px) {
-  .points-chip .chip-unit {
-    display: none;
-  }
-
-  /* The panel is anchored to a chip that is now near the screen edge; let it
-     use the full width rather than hang off it. */
-  .pop-panel {
-    width: calc(100vw - 20px);
-    position: fixed;
-    top: 62px;
-    right: 10px;
-  }
+  display: flex;
 }
 
 /* ============================================================================

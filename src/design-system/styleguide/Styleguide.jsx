@@ -16,6 +16,7 @@ import Avatar from '../primitives/Avatar.jsx';
 import NavItem, { NavGroup, NavSkeleton, ProfileChip } from '../primitives/NavItem.jsx';
 import Spot from '../patterns/Spot.jsx';
 import PageSkeleton from '../patterns/PageSkeleton.jsx';
+import Popover from '../patterns/Popover.jsx';
 import AsterMark from '../marks/AsterMark.jsx';
 import AudentraMark from '../marks/AudentraMark.jsx';
 import { ICON_NAMES } from '../Icon.jsx';
@@ -1505,6 +1506,85 @@ export default function Styleguide({ onToast }) {
               </div>
             </Drawer>
           )}
+        </Section>
+
+        <Section
+          id="sg-popover"
+          title="The popover"
+          rule="A card that floats: the anchored panel a control opens — the bell’s feed, the points chip’s balance. It is a Card, so what goes inside it is the card’s own three zones — a status head, rows, a foot — or the rail’s anchor taking the top corners; nothing in it is a second shape. Esc, the scrim and focus return come with the primitive, on the same layer pair as the preview menu, so the three things that corner can open never stack."
+        >
+          <div className="sg-controls">
+            <Popover
+              className="topbar-chip"
+              align="start"
+              tip="An example"
+              ariaLabel="Open the example popover"
+              panelLabel="An example popover"
+              trigger={
+                <>
+                  <Icon name="bell" size={19} />
+                  <span className="chip-figure">Open one</span>
+                </>
+              }
+            >
+              {(close) => (
+                <>
+                  <CardHead
+                    kind="status"
+                    icon="bell"
+                    title="What a popover holds"
+                    note="The status head stays put while the rows scroll under it"
+                    aside={
+                      <button className="link-button" onClick={close}>
+                        A head action
+                      </button>
+                    }
+                  />
+                  <CardRows>
+                    <p className="rows-label">A run, labelled once</p>
+                    <a className="pop-row" href="#sg-popover" onClick={close}>
+                      <span className="task-type-icon" aria-hidden="true">
+                        <Icon name="file" size={21} weight="duotone" />
+                      </span>
+                      <span className="pop-copy">
+                        <strong>A row that goes somewhere</strong>
+                        <small>Where it came from · when</small>
+                      </span>
+                      <span className="pop-trail">
+                        <i className="pop-dot" aria-hidden="true" />
+                        <Icon name="arrow" size={15} />
+                      </span>
+                    </a>
+                    <div className="pop-row">
+                      <span className="task-type-icon" aria-hidden="true">
+                        <Icon name="shield" size={21} weight="duotone" />
+                      </span>
+                      <span className="pop-copy">
+                        <strong>A row that is only a fact</strong>
+                        <small>The tile is the content’s shape; the dot is unread</small>
+                      </span>
+                      <span className="pop-trail">
+                        <span className="status-count">+78</span>
+                      </span>
+                    </div>
+                  </CardRows>
+                  <CardFoot>
+                    <Notice
+                      tone="quiet"
+                      action={{ label: 'Where it leads', href: '#sg-popover', onClick: close }}
+                    >
+                      The foot is a Notice, and its action is a link.
+                    </Notice>
+                  </CardFoot>
+                </>
+              )}
+            </Popover>
+            <p className="sg-note">
+              The two real ones are in the topbar above: the bell’s feed opens with the status head;
+              the points chip’s balance opens with an <code>AnchorCard</code> on ink, the way a rail
+              opens.
+            </p>
+          </div>
         </Section>
 
         <Section

@@ -398,6 +398,7 @@ guess, and guessing is what produced 436 hand-typed colours and eight hand-typed
 | --- | --- | --- |
 | A side panel | `<Drawer variant label titleId onClose>` — scrim, ARIA, header, focus, `Esc`, trap all included | a hand-written `<aside role="dialog">` |
 | A rail's first card | `<AnchorCard variant label figure>` | `<div className="anchor-card …">` |
+| A panel anchored to a control | `<Popover trigger tip ariaLabel panelLabel>` — scrim, `role="dialog"`, `Esc`, focus return; the panel is a `Card`, so inside it go `CardHead` + `CardRows` + `CardFoot`, or an `AnchorCard` taking its top corners | a positioned `div` with a hand-typed head and foot |
 | A block of the main column | `<Card>` + `<CardHead>` + `<CardRows>` + `<CardFoot>` | `<section className="section-card">` |
 | A button | `<Button kind>` / `<IconButton name label>` | `<button className="primary-button">` |
 | A hint on a control | `<IconButton>` (built in) or `<Tooltip tip>` | `::after { content: attr(data-tip) }` |

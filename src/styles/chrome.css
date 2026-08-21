@@ -486,3 +486,96 @@
   margin: 0 auto;
   padding: var(--space-12) var(--space-12) var(--space-13);
 }
+
+/* ── The topbar's two chips ──────────────────────────────────────────────────
+ * ENR-167 second pass, serving ENR-161 and ENR-162. The brief: "navigation,
+ * notifications, points and the route to a person compete for the same corner.
+ * The unread indicator must be findable without being anxious. Points are a
+ * reward and never a distraction from an overdue requirement."
+ *
+ * The rule that settles it, and the reason there is exactly one crimson below:
+ * THE INTERRUPTION MAY SPEND COLOUR; THE REWARD MAY NOT. Every points surface
+ * in this block is ink, muted and line. That is ENR-162 AC 6 enforced by the
+ * colour budget rather than left to whoever writes the next rule.
+ *
+ * Moved here from `features/housing.css` on 2026-08-21: the topbar is the
+ * frame's, not a section's. The panel a chip opens is `Popover` (patterns.css). */
+
+/* One chip, two tenants, so the bell and the balance cannot drift apart. */
+.topbar-chip {
+  color: var(--ink);
+  cursor: pointer;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--control-height);
+  padding: 0 var(--space-5);
+  font-family: inherit;
+  font-size: var(--fs-copy);
+  display: inline-flex;
+  position: relative;
+}
+
+.topbar-chip:hover {
+  border-color: var(--line-strong);
+}
+
+.bell-chip {
+  justify-content: center;
+  width: var(--control-height);
+  padding: 0;
+}
+
+.points-chip svg {
+  color: var(--muted);
+  flex: none;
+}
+
+.chip-figure {
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.chip-unit, .chip-reach {
+  color: var(--muted);
+}
+
+/* The count. Ink for news; crimson only when something in the feed needs her —
+   findable without being anxious as a rule and not as an intention. */
+.bell-count {
+  color: var(--on-ink);
+  background: var(--ink);
+  border: 2px solid var(--surface);
+  border-radius: var(--radius-pill);
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--space-2);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  display: grid;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+}
+
+.bell-count.needs-you {
+  background: var(--crimson);
+}
+
+@media (width<=820px) {
+  /* ENR-162 AC 1's second half drops here. The value is one tap away in the
+     popover instead of on the chip — the divergence is recorded on the card. */
+  .chip-reach {
+    display: none;
+  }
+}
+
+@media (width<=620px) {
+  .points-chip .chip-unit {
+    display: none;
+  }
+}

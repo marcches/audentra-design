@@ -14,8 +14,13 @@
  *           notification explains itself rather than linking nowhere
  *
  * `category` is the closed set from AC 4. The panel ranks it into two groups;
- * see `lib/notifications.js`. `office` resolves against `help-data.js` — no
- * sixth office is invented here any more than anywhere else.
+ * see `logic.js`. `office` resolves against `help/data.js` — no sixth office is
+ * invented here any more than anywhere else.
+ *
+ * `icon` is what the thing *is* — a document she sends, a record Aster holds,
+ * a form, a letter, a proof — in the glyph the row's tile wears. It is a field
+ * rather than a guess from `route`, because three of five rows lead to the
+ * same page and are about three different things.
  *
  * Nothing in this file invites a reply. AC 5: there is no inbound channel, so
  * the panel offers no reply control and its foot names Help instead.
@@ -26,6 +31,7 @@ export const notifications = [
     id: 'income-changes-requested',
     category: 'action-required',
     title: 'Verify your household income · sent back',
+    icon: 'upload',
     office: 'financial-services',
     when: '2026-08-15',
     route: '#/profile',
@@ -34,6 +40,7 @@ export const notifications = [
     id: 'transcript-received',
     category: 'action-completed',
     title: 'Aster received your final transcript',
+    icon: 'file',
     office: 'registrar',
     when: '2026-08-12',
     route: '#/profile',
@@ -42,6 +49,7 @@ export const notifications = [
     id: 'housing-form-withdrawn',
     category: 'record-changed',
     title: 'Housing Services replaced the housing preference form with the housing plan question.',
+    icon: 'home',
     office: 'housing',
     when: '2026-08-09',
     // The `gone` case, and a true one: Housing Services replaced a form that
@@ -53,6 +61,7 @@ export const notifications = [
     id: 'aid-award-issued',
     category: 'record-changed',
     title: 'Your financial aid award letter is ready',
+    icon: 'wallet',
     office: 'financial-services',
     when: '2026-08-03',
     route: '#/financials/aid',
@@ -61,6 +70,7 @@ export const notifications = [
     id: 'address-accepted',
     category: 'action-completed',
     title: 'Your proof of address was accepted',
+    icon: 'shield',
     office: 'admissions',
     when: '2026-07-30',
     route: '#/profile',

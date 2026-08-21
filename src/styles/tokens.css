@@ -323,6 +323,11 @@
   /* The bar a full-screen flow runs under, so the rail beside it can be sticky
      and still reach the bottom edge of the window — ENR-163. */
   --flow-bar: 53px;
+  /* The anchored panel a topbar control opens — `Popover`. Wide enough for a
+     40px tile, a two-line title and a trailing cell; as tall as the window
+     allows before it scrolls under its own head. */
+  --popover-width: 372px;
+  --popover-max-height: 720px;
 
   --font-geist-sans: 'Geist Variable', 'Geist', sans-serif;
   --font-geist-mono: 'Geist Mono Variable', 'Geist Mono', monospace;
