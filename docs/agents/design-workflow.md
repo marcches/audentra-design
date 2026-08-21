@@ -66,7 +66,7 @@ Always cite the `mobbin_url` as a markdown link — for the file and when report
 2. **Layout** — regions, in reading order, each with the Mobbin reference it came from.
 3. **States** — loading, empty, error, permission-denied, and every state the `Guardrails` imply.
 4. **Interactions** — what each control does and what it must never do.
-5. **Data** — which fields of `src/data.js` (or a new shape) it reads.
+5. **Data** — which fields of the section’s `data.js` (or a new shape) it reads.
 6. **Out of scope** — copied from the card.
 7. **Done when** — the card's `Closes when`, made checkable.
 
@@ -103,7 +103,7 @@ Two rules make the order non-negotiable:
 
 `PageShell` owns the *order* of the slots, so a page cannot arrange them wrongly. It cannot own their
 *content* — and when a group's leaves are separate files, each one remembers the group's standing
-separately and they drift. On My Financials the escalation strip lived in `FinancialsOverview` alone,
+separately and they drift. On My Financials the escalation strip lived in `OverviewPage` alone,
 so opening Financial aid made a 13-day deadline disappear; in the empty state Overview showed the
 balance panel and the other two showed none, so the panel blinked in and out along the tab row. Three
 files had been treated as three screens. They are one screen read three ways.
@@ -233,23 +233,65 @@ is deliberately neither.
 This repo has **no UI library and no CSS framework**. Deviating from that is the fastest way to make
 the product look like two products.
 
-- **Tokens only.** Colors come from the `:root` variables in `src/styles/app.css`
-  (`--ink`, `--muted`, `--line`, `--surface`, `--canvas`, `--purple`, `--purple-dark`, `--purple-soft`,
-  `--crimson`, `--green`, `--green-soft`, `--amber`, `--amber-soft`). A raw hex in a new rule is a bug.
-- **Shadows** are `--shadow-soft` / `--shadow-card`. Don't invent a third.
+### Open `#/styleguide` first
+
+Every token, primitive and pattern is rendered there, in its states. It is faster to look than to
+guess, and guessing is what produced 436 hand-typed colours and eight hand-typed drawer shells.
+
+> **If a shape is not on the styleguide, it does not exist.** If you add one, add it there in the
+> same commit — otherwise the next person cannot find it and will write their own.
+
+### Reach for the primitive before writing markup
+
+`src/design-system/primitives/`. If you are typing `modal-scrim`, `drawer-header`, `anchor-card` or
+`section-card` by hand, stop: you are re-creating something that exists, and the copy will drift.
+
+| Building | Use | Not |
+| --- | --- | --- |
+| A side panel | `<Drawer variant label titleId onClose>` — scrim, ARIA, header, focus, `Esc`, trap all included | a hand-written `<aside role="dialog">` |
+| A rail's first card | `<AnchorCard variant label figure>` | `<div className="anchor-card …">` |
+| A block of the main column | `<Card>` + `<CardHead>` + `<CardRows>` + `<CardFoot>` | `<section className="section-card">` |
+| A button | `<Button kind>` / `<IconButton name label>` | `<button className="primary-button">` |
+
+`CardHead` takes `kind="status" | "card" | "section"` — the three, and only three, ways a card may
+open. `IconButton` takes `label`, not `aria-label`, so an icon-only control cannot ship unnamed.
+
+### Tokens only
+
+- **A raw value in a rule is a bug** — colour, space, radius, type, motion, depth, z-index. They all
+  live in `src/styles/tokens.css`, in three layers: a palette of raw ramps, the **roles** a rule may
+  name, and the scales. If the value you need is not a role, the token is missing — add it there.
+- **Never name a palette entry from a rule.** `--purple-400` is for `tokens.css` to reference;
+  a rule names `--purple`, `--purple-line`, `--purple-ink`.
+- **Space** is `--space-1` … `--space-13`, **radius** is `--radius-xs` … `--radius-panel` plus
+  `--radius-pill` / `--radius-round`, and both carry a note saying what each step is for.
+- **Shadows** are `--shadow-soft` / `--shadow-card` / `--shadow-float`. Don't invent a fourth.
 - **Type** is Geist / Geist Mono via `--font-geist-sans` / `--font-geist-mono`, self-hosted through
   `@fontsource-variable`. Never add a webfont link or an external request.
-- **Classes** are flat and semantic (`.task-card`, `.page-rail`, `.drawer-tabs`) in
-  `src/styles/app.css`. No utility classes, no CSS-in-JS, no CSS modules. Reuse an existing class
-  before adding one; if you add one, put it next to its siblings, not at the bottom of the file.
-- **Icons** are our own — add to `src/Icon.jsx`, 24×24, stroke 1.9, `currentColor`. No icon package.
-- **Components** are function components in `src/components/`, one per file, props over context.
-  State lives in `App.jsx` unless the card says otherwise.
-- **Accessibility is part of done**: landmarks, `aria-label` / `aria-modal` / `role`, `Esc` closes
-  drawers and modals, focus is trapped in overlays and returns on close, `prefers-reduced-motion`
-  respected.
-- **Responsive is part of done**: at narrow widths the sidebar becomes a drawer with a scrim and side
-  panels become bottom sheets. Match the existing breakpoints.
+- **Breakpoints**: there are exactly four — 1060, 820, 620, 560. A fifth width in a new `@media` is
+  drift. The JS mirrors live in `src/lib/overlay.js`; never re-type a `matchMedia` string inline.
+
+### Where things go
+
+- **Classes** are flat and semantic (`.task-card`, `.page-rail`, `.drawer-tabs`). No utility classes,
+  no CSS-in-JS, no CSS modules. Reuse an existing class before adding one.
+- **A new rule goes in the layer that owns its subject**: `patterns.css` if the design system renders
+  it, `features/<name>.css` if one section does. A shared shape written into a feature file is the
+  bug that put the whole card system inside My Financials.
+- **A new section** gets a file under `src/styles/features/` and a line in `app.css`, which holds
+  the cascade order and nothing else.
+- **Icons** are our own — add to `src/design-system/Icon.jsx`, 24×24, stroke 1.9, `currentColor`.
+- **Components** are function components, one per file, props over context. A section's page, parts,
+  `data.js` and `logic.js` live together in `src/features/<name>/`. State lives in `App.jsx` unless
+  the card says otherwise. `design-system/` imports no feature and no data — ever.
+
+### Still part of done
+
+- **Accessibility**: landmarks, `aria-label` / `aria-modal` / `role`, `Esc` closes drawers and
+  modals, focus is trapped in overlays and returns on close, `prefers-reduced-motion` respected.
+  Using `Drawer` gives you most of this; a modal or a popover still owes it.
+- **Responsive**: at narrow widths the sidebar becomes a drawer with a scrim and side panels become
+  bottom sheets. Match the four breakpoints.
 - **Copy** is plain, student-facing English, using the card's vocabulary. No placeholder lorem.
 
 ## 6. Verify before claiming it works

@@ -116,7 +116,7 @@ forbids opening a Jira issue unasked. Spec: `.scratch/ENR-214-registration-gate/
 ### 2.4 ENR-160 AC3 — the financial document link · small follow-up
 
 The financial checklist must link to where the file is actually submitted.
-`src/components/financials/DocumentList.jsx:62` opens the task drawer, which is correct, and the
+`src/features/financials/DocumentList.jsx:62` opens the task drawer, which is correct, and the
 drawer then offers no route to the record.
 
 This got cheap after ENR-206. `TaskDrawer.jsx:141` already renders a `task.section` signpost — *the

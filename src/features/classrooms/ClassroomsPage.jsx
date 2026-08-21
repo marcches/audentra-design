@@ -114,6 +114,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
         {totals.pending > 0 ? '*' : ''}
       </SummaryFigure>
       <AdvisorBar
+        advisor={enrollmentAdvisor}
         onContact={(channel) =>
           onToast(
             `${channel === 'email' ? 'An email' : 'A message'} to ${

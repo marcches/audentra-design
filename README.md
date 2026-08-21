@@ -35,26 +35,38 @@ index.html
 public/favicon.svg
 src/
   main.jsx                     # bootstrap + CSS and font imports
-  App.jsx                      # application state + page layout
-  Icon.jsx                     # inline SVG icon library (24x24, stroke 1.9)
-  data.js                      # student data: tasks, locked, completed, in review
-  lib/task-helpers.js          # sorting (smart/due/quick) and priority labels
-  components/
-    Sidebar.jsx                # side navigation + student profile
-    Topbar.jsx                 # top bar
-    TaskCard.jsx               # task card, with the "Best next step" banner
-    TaskDrawer.jsx             # task drawer: payment, upload, form, choice
-    InfoModal.jsx              # "Smart order" and "Momentum points" modals
-    InsightColumn.jsx          # right column: resume, momentum, support
+  App.jsx                      # application state, routing, page layout
+
+  design-system/               # the product's vocabulary — no domain, no data
+    Icon.jsx                   # inline SVG icon library (24x24, stroke 1.9)
+    primitives/                # Drawer, AnchorCard, Card, Button
+    patterns/                  # PageShell, GroupTabs, StateCard, SummaryFigure, AdvisorBar…
+    styleguide/                # the page at #/styleguide
+
+  app/                         # the shell every page renders inside
+    Sidebar.jsx  Topbar.jsx  TopbarPopover.jsx  PreviewStateMenu.jsx
+
+  features/<name>/             # one section, whole
+    <Domain>Page.jsx           # the page a route lands on
+    <Domain>Rail.jsx           # the insight column
+    data.js                    # what the section knows
+    logic.js                   # what the section computes
+
+  lib/                         # only what crosses features
+    navigation.js  overlay.js  preview-state.js
+
   styles/
+    app.css                    # an index of imports — the cascade order, nothing else
+    tokens.css                 # every decision about the whole product
+    base.css  chrome.css  patterns.css  navigation.css
+    features/<name>.css        # one per section
     preflight.css              # base reset
-    app.css                    # design system: tokens, layout, components, responsive
 docs/preview.png               # screenshot of the main screen
 ```
 
 ## Domain model
 
-Every checklist task (`src/data.js`) has this shape:
+Every checklist task (`src/features/enrollment/data.js`) has this shape:
 
 | Field | Description |
 | --- | --- |
@@ -108,7 +120,7 @@ Typography is Geist (variable, 100–900) and Geist Mono. Radii, shadows, and sp
 
 This base covers the presentation layer and local state. What comes next:
 
-- [ ] API and persistence (`src/data.js` is static today and state lives in memory)
+- [ ] API and persistence (`features/*/data.js` is static today and state lives in memory)
 - [ ] Student authentication and sessions
 - [ ] Multi-tenant: branding, copy, deadlines, and point rules per institution
 - [ ] Real document upload and the review workflow

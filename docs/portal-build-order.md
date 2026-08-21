@@ -51,7 +51,7 @@ named layers, a bottom safe area, motion tokens and one shared overlay primitive
 The largest new screen, and the one that unblocked the most:
 
 - ENR-160 AC3 requires the financial document checklist to link to where the file is submitted.
-  `src/components/financials/DocumentList.jsx` has no destination today.
+  `src/features/financials/DocumentList.jsx` has no destination today.
 - ENR-190 states that Profile must **route** to the documents section rather than duplicate it, so
   Documents has to exist before Profile.
 - The `in review` group in My Enrollment (ENR-164) is already built and waiting for the other half.

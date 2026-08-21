@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { enrollmentAdvisor } from '../enrollment/data.js';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
 import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
@@ -99,6 +100,7 @@ export default function HealthPage({
               'Your record could not be read just now, so nothing here is shown as done or as outstanding.'}
           </SummaryFigure>
           <AdvisorBar
+            advisor={enrollmentAdvisor}
             onContact={(channel) =>
               onToast(
                 `${channel === 'email' ? 'An email' : 'A message'} about your record would open here — nothing is sent yet.`,

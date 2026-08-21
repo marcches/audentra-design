@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { enrollmentAdvisor } from '../enrollment/data.js';
 import Icon from '../../design-system/Icon.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
@@ -136,6 +137,7 @@ export default function DocumentsPage({
             {standingLine({ unavailable, figures, unread })}
           </SummaryFigure>
           <AdvisorBar
+            advisor={enrollmentAdvisor}
             onContact={(channel) =>
               onToast(
                 `${channel === 'email' ? 'An email' : 'A message'} about your record would open here — nothing is sent yet.`,

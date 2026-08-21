@@ -115,7 +115,7 @@
 
   /* Surfaces. Three planes and no more — canvas, card, ink — plus the card's
      own paper one shade down, which is not a fourth plane but the head and the
-     foot of a card. See `docs/design-system.md`. */
+     foot of a card. All four are rendered side by side at `#/styleguide`. */
   --canvas: var(--ink-25);
   --surface: var(--ink-0);
   --surface-sunk: var(--ink-75);      /* was #f1f2f6 ×3, #f4f4f8 ×3            */
