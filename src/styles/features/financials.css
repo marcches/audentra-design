@@ -1009,8 +1009,11 @@
 }
 
 @media (width<=620px) {
+  /* Bleeds exactly to the column's edge: the outdent must equal `.content-wrap`'s
+     side padding at this width, or the row is wider than the page — it was 13
+     against 12, and the page scrolled sideways by 2px. */
   .group-tabs {
-    margin-inline: -13px;
+    margin-inline: calc(-1 * var(--space-6));
     padding-inline: var(--space-6);
   }
   .summary-figure.money .summary-figure-copy strong {

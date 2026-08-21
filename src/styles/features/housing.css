@@ -663,10 +663,6 @@
 .unlock-note strong {
   color: var(--ink);
 }
-.page-notice .state-card {
-  margin-bottom: var(--space-9);
-}
-
 /* My Financials names the room its estimate assumes — ENR-211 AC 8. */
 .ledger-sub th small {
   color: var(--muted);

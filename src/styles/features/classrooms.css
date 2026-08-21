@@ -43,7 +43,9 @@
   color: var(--muted);
   align-items: flex-start;
   gap: var(--space-4);
-  margin: -12px 0 var(--space-10);
+  /* No distance of its own: the shell's `.page-notice` owns the gap above
+     and below a notice, so this note cannot pull itself into the panel. */
+  margin: 0;
   font-size: var(--fs-copy);
   line-height: var(--lh-body);
   display: flex;
@@ -802,10 +804,6 @@
 @media (width<=620px) {
   .catalog-bar {
     gap: var(--space-3) var(--space-5);
-  }
-
-  .record-note {
-    margin: -8px var(--space-1) var(--space-9);
   }
 
   .requirement-head {

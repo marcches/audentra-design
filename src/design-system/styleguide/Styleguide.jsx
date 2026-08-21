@@ -150,7 +150,7 @@ const FAMILY = [
 ];
 
 const CONSTANT = [
-  ['hero-gap', 'what every section gets under the hero band'],
+  ['hero-gap', 'the one gap after the band — or after the panel tucked into it — before the next block'],
   ['hero-tuck', 'the extra the summary panel eats into the band, and only when it follows it directly'],
   ['band-outdent', 'how far the band reaches past the shared column on each side'],
   ['panel-pad', 'the summary panel’s own padding'],

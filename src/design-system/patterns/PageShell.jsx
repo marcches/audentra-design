@@ -35,6 +35,12 @@ import { heroFor } from '../../lib/navigation.js';
  * A page passes slots, not markup order, so it cannot get the order wrong. The
  * tuck between the hero and the summary is a rule about those two elements
  * being adjacent, which is now guaranteed rather than hoped for.
+ *
+ * The shell owns the distances too, since the Jam of 2026-08-21: `--hero-gap`
+ * after the band or the panel tucked into it, `--space-9` after the notice and
+ * after the tab row. The notice is wrapped in `.page-notice` for exactly that —
+ * a notice cannot bring its own distance, so a page cannot get the gap wrong
+ * the way three of them had.
  */
 export default function PageShell({
   destination,
@@ -85,7 +91,7 @@ export default function PageShell({
         </section>
       )}
 
-      {notice}
+      {notice ? <div className="page-notice">{notice}</div> : null}
       {tabs}
 
       {rail ? (

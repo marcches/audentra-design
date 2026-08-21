@@ -206,7 +206,7 @@
   --space-7: 14px;   /* a roomier block, where the content asks something      */
   --space-8: 16px;   /* card to card                                           */
   --space-9: 18px;   /* a card's own padding                                   */
-  --space-10: 22px;  /* a page region to the next — this is `--hero-gap`       */
+  --space-10: 22px;  /* a page region to the next                              */
   --space-11: 28px;  /* the top and the bottom of a page                       */
   --space-12: 36px;  /* a page's own top and bottom on a wide screen           */
   --space-13: 44px;  /* the widest step: the padding on a page's outer frame   */
@@ -270,9 +270,14 @@
 
   /* Layout constants — facts about the page frame, not steps on a scale.
 
-     How the hero band meets what comes after it. The gap is what every section
-     gets; the tuck is the extra the summary panel eats into the band, which
-     only ever happens when it directly follows it.
+     How the hero band meets what comes after it. `--hero-gap` is the one gap
+     after the band — or after the summary panel tucked into it — before the
+     next block, on every section. The Jam of 2026-08-21 approved the 30 My
+     Enrollment had, and found it written as a raw 30px on the panel while a
+     band with no panel got 22: one idea, two values. `--hero-tuck` is the extra
+     the panel eats into the band, which only ever happens when it directly
+     follows it; under 620 it is 14px, set beside the other two constants that
+     shrink there in `patterns.css`.
 
      `--band-outdent` is how far the band reaches past the shared column on each
      side, and it is what makes the summary panel line up with the tabs and the
@@ -281,7 +286,7 @@
 
      `--safe-bottom` is the lower-right corner Edward owns on every page —
      ENR-175 AC 7. No page may put a primary action inside it. */
-  --hero-gap: 22px;
+  --hero-gap: 30px;
   --hero-tuck: 20px;
   --band-outdent: 22px;
   --panel-pad: 23px;

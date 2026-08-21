@@ -202,7 +202,7 @@ export default function HousingPage({
       summaryLabel="Your housing plan"
       notice={
         failure ? (
-          <div className="page-notice" role="alert">
+          <div role="alert">
             <StateCard
               variant="error"
               icon="alert"

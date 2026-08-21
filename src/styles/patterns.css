@@ -170,7 +170,7 @@
   border-radius: var(--radius-card);
   container: page-summary / inline-size;
   flex-direction: column;
-  margin: 0 0 var(--space-11);
+  margin: 0 0 var(--hero-gap);
   display: flex;
   position: relative;
 }
@@ -239,7 +239,16 @@
    Jam of 2026-08-20 circled. `PageShell` renders the summary directly after the
    hero, so this selector matches exactly when the overlap is meant. */
 .page-hero + .page-summary {
-  margin: calc(-1 * (var(--hero-gap) + var(--hero-tuck))) 0 30px;
+  margin: calc(-1 * (var(--hero-gap) + var(--hero-tuck))) 0 var(--hero-gap);
+}
+
+/* The notice slot. A caveat true of the whole section sits one card-gap above
+   what it qualifies, and the shell draws that gap rather than the notice. It
+   used to be three distances for one position: the amber gate strip sat flush
+   on the first card, the catalogue note on My Classrooms pulled itself 12px up
+   into the panel, and the tab row kept its own 18. Jam of 2026-08-21. */
+.page-notice {
+  margin: 0 0 var(--space-9);
 }
 
 /* Which leaf of a group you are reading. It sits directly above what it
@@ -1939,6 +1948,7 @@ footer a {
   :root {
     --band-outdent: 8px;
     --panel-pad: 16px;
+    --hero-tuck: 14px;
   }
   .page-hero {
     border-radius: var(--radius-card);
@@ -1970,17 +1980,9 @@ footer a {
   .orbit-ring {
     inset: 12px;
   }
-  .page-summary {
-    margin: 0 0 25px;
-  }
-
   .summary-main {
     gap: var(--space-7);
     padding: var(--space-8);
-  }
-
-  .page-hero + .page-summary {
-    margin: calc(-1 * (var(--hero-gap) + 14px)) 0 25px;
   }
   .progress-summary p {
     line-height: var(--lh-heading);
