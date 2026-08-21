@@ -434,17 +434,33 @@
    surface. It used to be a 25px grey pill beside 37px white chips and a 38px
    icon button — three shapes on one row. Round two of the Jam of 2026-08-21. */
 .concept-pill {
-  color: var(--muted);
+  color: var(--purple-dark);
+  cursor: pointer;
   letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   background: var(--surface);
+  border: 1px solid var(--purple-line);
   border-radius: var(--radius-tile);
   align-items: center;
+  gap: var(--space-3);
   height: var(--control-height);
   padding: 0 var(--space-5);
   font-size: var(--fs-small);
   font-weight: var(--fw-heavy);
   display: inline-flex;
+}
+
+/* Switched to a state other than ready: the selected surface, and the state's
+   name beside the label in running case. */
+.concept-pill.switched {
+  background: var(--purple-soft);
+}
+
+.pill-state {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-bold);
 }
 
 .topbar-actions {
@@ -494,19 +510,21 @@
  * reward and never a distraction from an overdue requirement."
  *
  * The rule that settles it, and the reason there is exactly one crimson below:
- * THE INTERRUPTION MAY SPEND COLOUR; THE REWARD MAY NOT. Every points surface
- * in this block is ink, muted and line. That is ENR-162 AC 6 enforced by the
- * colour budget rather than left to whoever writes the next rule.
+ * THE INTERRUPTION MAY SPEND COLOUR; THE REWARD MAY NOT. The points chip wears
+ * the family's ink and nothing of its own — no tint, no badge, no accent that
+ * the pill and the bell do not also wear. The one hue that singles anything out
+ * in this corner is the bell's crimson, and it is spent only when something in
+ * the feed needs her. That is ENR-162 AC 6 enforced by the colour budget rather
+ * than left to whoever writes the next rule.
  *
  * Moved here from `features/housing.css` on 2026-08-21: the topbar is the
  * frame's, not a section's. The panel a chip opens is `Popover` (patterns.css). */
 
 /* One chip, two tenants, so the bell and the balance cannot drift apart. */
 .topbar-chip {
-  color: var(--ink);
   cursor: pointer;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--purple-line);
   border-radius: var(--radius-tile);
   align-items: center;
   gap: var(--space-3);
@@ -518,10 +536,6 @@
   position: relative;
 }
 
-.topbar-chip:hover {
-  border-color: var(--line-strong);
-}
-
 .bell-chip {
   justify-content: center;
   width: var(--control-height);
@@ -529,8 +543,49 @@
 }
 
 .points-chip svg {
-  color: var(--muted);
   flex: none;
+}
+
+/* ── One family ──────────────────────────────────────────────────────────────
+ * The pill, the points chip, the bell and the menu are the product's secondary
+ * control — the ink and the line `.secondary-button` and `.advisor-action`
+ * already wear: purple-dark on paper, a purple hairline, the wash under a
+ * pointer, and the purple-soft fill every selected thing in the product takes
+ * while the control's panel is open. Before 2026-08-21 they were grey-lined
+ * white boxes with muted glyphs — the one control family in the frame that was
+ * not the product's (Marco: "os botões do topbar, pra ficar mais audentra"). */
+.topbar-chip,
+.concept-pill,
+.topbar > .icon-button {
+  color: var(--purple-dark);
+  border-color: var(--purple-line);
+  transition:
+    color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+
+.topbar-chip:hover,
+.concept-pill:hover,
+.topbar > .icon-button:hover {
+  background: var(--purple-wash);
+  border-color: var(--purple);
+}
+
+/* Open: the selected surface, so the control that owns the panel is the one
+   that looks pressed — and the hint has already stood down. */
+.topbar-chip[aria-expanded="true"],
+.concept-pill[aria-expanded="true"] {
+  background: var(--purple-soft);
+  border-color: var(--purple);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar-chip,
+  .concept-pill,
+  .topbar > .icon-button {
+    transition: none;
+  }
 }
 
 .chip-figure {
@@ -542,11 +597,13 @@
   color: var(--muted);
 }
 
-/* The count. Ink for news; crimson only when something in the feed needs her —
-   findable without being anxious as a rule and not as an intention. */
+/* The count. Purple for news — the product's count on a control, the sidebar's
+   `.nav-count`, made solid so it holds on the chip's edge; crimson only when
+   something in the feed needs her. Findable without being anxious as a rule
+   and not as an intention. */
 .bell-count {
   color: var(--on-ink);
-  background: var(--ink);
+  background: var(--purple);
   border: 2px solid var(--surface);
   border-radius: var(--radius-pill);
   place-items: center;

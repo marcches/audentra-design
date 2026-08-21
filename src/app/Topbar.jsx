@@ -17,10 +17,12 @@ import { FRAME_STATES } from '../lib/preview-state.js';
  * AC 6 — points never compete with an outstanding required action — starts to
  * break.
  *
- * **The interruption may spend colour; the reward may not.** The bell's dot is
- * crimson only when something in the feed needs her and ink when it is only
- * news, which is *findable without being anxious* as a rule rather than as an
- * intention. The points chip carries no accent at all.
+ * **The interruption may spend colour; the reward may not.** The bell's count
+ * is crimson only when something in the feed needs her and the family's purple
+ * when it is only news, which is *findable without being anxious* as a rule
+ * rather than as an intention. The points chip carries nothing the pill and the
+ * bell do not also carry: the three are one control family (`chrome.css`), and
+ * the only hue that singles one of them out is that crimson.
  *
  * This component computes nothing. It is handed a view model, so a figure it
  * shows cannot drift from the figure the pages show.

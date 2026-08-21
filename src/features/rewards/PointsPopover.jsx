@@ -25,12 +25,12 @@ import { ladderFor, nextReward } from './logic.js';
  * reward redemption mechanics out of scope, and `design-workflow.md` §1 is
  * explicit that out of scope is not built smaller. A row here is information.
  *
- * Nothing on the chip changed, and inside the panel the only accent is the
- * purple the product already spends on a step's points and on the next step.
- * The topbar sits two chips away from the bell, which spends crimson when
- * something needs her — AC 6 says points must never compete with an
- * outstanding required action, and the colour budget is how that is enforced
- * rather than hoped for.
+ * The chip wears the topbar family's ink and nothing of its own, and inside
+ * the panel the only accent is the purple the product already spends on a
+ * step's points and on the next step. The topbar sits two chips away from the
+ * bell, which spends crimson when something needs her — AC 6 says points must
+ * never compete with an outstanding required action, and the colour budget is
+ * how that is enforced rather than hoped for.
  */
 const LEDGER_SHOWN = 3;
 

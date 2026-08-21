@@ -64,28 +64,8 @@
   position: relative;
 }
 
-.concept-pill {
-  cursor: pointer;
-  border: 1px solid var(--line);
-  gap: var(--space-3);
-}
-
-.concept-pill:hover {
-  color: var(--ink);
-}
-
-.concept-pill.switched {
-  color: var(--purple-dark);
-  background: var(--purple-soft);
-  border-color: var(--purple-line);
-}
-
-.pill-state {
-  letter-spacing: 0;
-  text-transform: none;
-  font-size: var(--fs-meta);
-  font-weight: var(--fw-bold);
-}
+/* The pill itself — its surface, its states, its family — is in `chrome.css`
+   with the topbar's other controls; here is only what opens under it. */
 
 .preview-scrim {
   z-index: var(--z-popover-scrim);

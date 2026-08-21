@@ -118,3 +118,27 @@ session): `.topbar *` at 1440 and 500 on `#/enrollment`, `.rows-label *` and the
 - [x] Every state reachable: ready, loading, error, empty, rewards-off, balance unavailable, no awards
 - [x] `npm run build` clean; topbar/Profile capture 0 differ; screens checked at 1440 and 390
 - [x] `Esc`, scrim click and focus return still work; `Tab` reaches every control in both panels
+
+---
+
+# Round two, the same afternoon: the buttons
+
+Marco: *"só faltou atualizar os botões do topbar, pra ficar mais audentra, de resto ficou fantástico."*
+
+The three controls — the preview pill, the points chip, the bell — were grey-lined white boxes with
+muted glyphs and an ink badge. The product's secondary control is not that: `.secondary-button` is
+purple-dark on purple-wash with a purple-line hairline, `.advisor-action` is purple-dark on paper with
+the same hairline. The topbar was the one control family in the frame that was not the product's.
+
+- **One family** (`chrome.css`, *One family*): `.topbar-chip`, `.concept-pill` and the topbar's
+  `IconButton` take `purple-dark` ink and a `purple-line` hairline on paper; `purple-wash` under a
+  pointer with the line going `purple`; `purple-soft` while the control's panel is open
+  (`aria-expanded`), so the control that owns the panel is the one that looks pressed.
+- **The bell's count** is `purple` for news — the sidebar's `.nav-count` made solid so it holds on the
+  chip's edge — and crimson when something needs her. Ink went: a black dot on a white box was the
+  generic look.
+- **The points chip** carries nothing the other two do not: the spark is the family's ink, the figure is
+  bold, *pts* is muted. ENR-162 AC 6 is kept by the family, not by greying one member of it — the only
+  hue that singles a control out in this corner is the bell's crimson.
+- The pill's interactive rules (`cursor`, `border`, `gap`, `switched`, `.pill-state`) moved from
+  `navigation.css` into the family block; `navigation.css` keeps only the menu that opens under it.
