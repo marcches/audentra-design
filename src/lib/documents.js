@@ -140,9 +140,19 @@ export function unreadDecisions(requirements) {
   return requirements.filter((item) => latestDecision(item)?.unread).length;
 }
 
-export function markDecisionRead(requirements, id) {
+/**
+ * The key a decision is read under. One namespace with the notification feed,
+ * because they are the same event: the panel's row and the unread mark on My
+ * Documents both describe the office deciding, and two read states for one
+ * event is a discrepancy the student cannot resolve. ENR-161 AC 3.
+ */
+export function decisionKey(id) {
+  return `decision:${id}`;
+}
+
+function clearUnread(requirements, ids) {
   return requirements.map((item) => {
-    if (item.id !== id) return item;
+    if (!ids.includes(item.id)) return item;
     const list = item.submissions ?? [];
     if (list.length === 0) return item;
     const last = list[list.length - 1];
@@ -155,6 +165,23 @@ export function markDecisionRead(requirements, id) {
       ],
     };
   });
+}
+
+export function markDecisionRead(requirements, id) {
+  return clearUnread(requirements, [id]);
+}
+
+/**
+ * ENR-161 AC 3 — the read state persists. Applied when a record is built, so a
+ * decision opened before a reload comes back read. Storage that cannot be read
+ * falls back to everything unread, which is the safe direction: showing a
+ * student something twice is recoverable, hiding it is not.
+ */
+export function applyReadDecisions(requirements, readIds) {
+  const ids = requirements
+    .filter((item) => readIds.includes(decisionKey(item.id)))
+    .map((item) => item.id);
+  return ids.length === 0 ? requirements : clearUnread(requirements, ids);
 }
 
 /**

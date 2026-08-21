@@ -208,6 +208,7 @@ export default function MyCampusLife({
     required.length === 0 ? null : (
       <RequiredStrip
         events={required}
+        previewState={previewState}
         onOpen={(value, node) => openItem(value, 'event', node)}
       />
     );

@@ -10,6 +10,7 @@ export default function TaskDrawer({
   onTab,
   onClose,
   onComplete,
+  rewardsOn = true,
   onOpenPoints,
   onToast,
   fileReady,
@@ -48,18 +49,23 @@ export default function TaskDrawer({
           <h2 id="drawer-title">{task.title}</h2>
           <p className="drawer-description">{task.description}</p>
 
-          <div className="drawer-reward">
-            <div>
-              <Icon name="spark" size={18} />
-              <span>
-                <strong>Earn {task.points} points today</strong>
-                <small>That becomes {task.tomorrow} tomorrow</small>
-              </span>
+          {/* ENR-162 AC 5. Rewards off leaves no orphaned control: the drawer
+              keeps its action and loses the panel, rather than holding an empty
+              one where the points used to be. */}
+          {rewardsOn && (
+            <div className="drawer-reward">
+              <div>
+                <Icon name="spark" size={18} />
+                <span>
+                  <strong>Earn {task.points} points today</strong>
+                  <small>That becomes {task.tomorrow} tomorrow</small>
+                </span>
+              </div>
+              <button onClick={onOpenPoints} aria-label="Learn how points work">
+                <Icon name="info" size={17} />
+              </button>
             </div>
-            <button onClick={onOpenPoints} aria-label="Learn how points work">
-              <Icon name="info" size={17} />
-            </button>
-          </div>
+          )}
 
           <div className="drawer-tabs" role="tablist">
             <button

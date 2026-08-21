@@ -112,6 +112,7 @@ export default function Health({
       <RecordCard
         requirement={requirement}
         task={task}
+        previewState={previewState}
         unavailable={unavailable}
         onOpen={() => setOpen(true)}
         onRetry={onRetry}

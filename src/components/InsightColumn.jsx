@@ -4,20 +4,25 @@ import MomentumCard from './MomentumCard.jsx';
 export default function InsightColumn({
   earnedPoints,
   availableToday,
-  completedCount,
+  nextReward,
+  rewardsOn = true,
   unavailable = false,
   onResume,
   onOpenPoints,
 }) {
   return (
     <>
-      <MomentumCard
-        earnedPoints={earnedPoints}
-        availableToday={availableToday}
-        completedCount={completedCount}
-        unavailable={unavailable}
-        onOpenPoints={onOpenPoints}
-      />
+      {/* ENR-162 AC 5. An institution with rewards off leaves no card behind,
+          and the rail closes over the gap rather than holding an empty one. */}
+      {rewardsOn && (
+        <MomentumCard
+          earnedPoints={earnedPoints}
+          availableToday={availableToday}
+          next={nextReward}
+          unavailable={unavailable}
+          onOpenPoints={onOpenPoints}
+        />
+      )}
 
       <div className="skipped-card">
         <div className="skipped-top">

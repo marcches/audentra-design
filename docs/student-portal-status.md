@@ -15,10 +15,11 @@ project = ENR AND labels = persona-student AND labels = design
 project = ENR AND labels = persona-student AND issuetype = História AND statusCategory != Done
 ```
 
-**The headline: every screen the board asks for is built.** Fifty-three cards carry
+**The headline: the student portal is feature-complete against the board.** Fifty-three cards carry
 `persona-student`; fourteen of them carry `design` and are screens. Thirteen are in this repo and all
-thirteen render. What is left is three pieces of behaviour that no screen card covers, one small
-follow-up, and a large pile of acceptance.
+thirteen render. The three pieces of behaviour no screen card covered — ENR-161, ENR-162 and
+ENR-214 — were specced and built on 2026-08-20. What is left is one small follow-up and a large pile
+of acceptance.
 
 ---
 
@@ -51,70 +52,66 @@ page nobody owns** — see §2.4.
 
 ## 2. What is genuinely left
 
-Four items. Three need a card written; one is a follow-up small enough to ride along with anything.
+One item. The other three landed on 2026-08-20 and are recorded below with what they settled.
 
-### 2.1 ENR-161 — See what changed since I was last here · no surface exists
+### 2.1 ~~ENR-161 — See what changed since I was last here~~ — landed
 
-`Prioritized`, under ENR-148, served on paper by ENR-167 (QA). In practice the shell answers almost
-none of it, and removing the Messages bell in `7b7a47e` made that visible rather than causing it.
+Built as the second pass on ENR-167, whose design brief already named notifications and points and
+whose first pass built neither. Spec:
+`.scratch/ENR-167-student-portal-shell/spec-notifications-and-points.md`.
 
-| AC | State |
-|---|---|
-| 1 · unread indicator visible from every section | **partial** — the sidebar carries `openSteps`, `decisions` and `required` on every page, but those count outstanding *work*, not *changes* |
-| 2 · each notification names what changed, when, and links to the item | **missing** — no notification object exists |
-| 3 · opening the item marks it read, and the read state **persists** | **fails** — `markDecisionRead` (`src/lib/documents.js:143`) rewrites React state only. A reload restores the unread mark. The only things this repo persists are Edward's threads and the sidebar group collapse, both via `localStorage` |
-| 4 · categories: action required, action completed, record changed | **missing** |
-| 5 · no notification implies a reply will reach a person | holds vacuously — nothing invites a reply |
-| 6 · a stale notification explains itself | **missing** |
-| 7 · external delivery respects contact preference | out of reach — no mail in this prototype |
+The bell is back, and this time it has something behind it: a panel ranked into **needs you** and
+**also new** rather than three equal tabs, every row naming what changed, which office and when.
+What it settled, beyond the card:
 
-**ENR-158 AC5** depends on the same missing half: My Documents landed the unread mark, the sidebar
-count and the toast, and left the notification itself for whoever builds this.
+- **Read state persists**, and there is one of it. `lib/notifications.js` owns a `localStorage`
+  store, and `markDecisionRead` in `lib/documents.js` writes the same keys — so a decision opened on
+  My Documents is read in the panel and survives a reload. That is AC 3, which failed outright
+  before, and it closes the half of **ENR-158 AC 5** My Documents left open.
+- **A colour rule for the corner**: the interruption may spend colour, the reward may not. The bell
+  is crimson only when something in the feed needs her and ink when it is only news — the brief's
+  *findable without being anxious* as a rule rather than an intention.
+- **AC 6 renders**: a withdrawn item stays in the feed, says why, and links nowhere.
 
-AC3 is the one worth fixing regardless of how big the rest gets — a read mark that a refresh undoes
-is worse than no read mark, because the student learns not to trust it.
+AC 7 — external delivery respecting a contact preference — stays out of reach. No mail here.
 
-### 2.2 ENR-162 — See my points and what they are worth · half built
+### 2.2 ~~ENR-162 — See my points and what they are worth~~ — landed
 
-`Prioritized`, under ENR-148. `MomentumCard.jsx` exists and is good; it is in the wrong place and
-says half of what the story asks.
+Same pass. Marco chose the **reward catalogue** reading of AC 1: a point's institution-defined value
+is what it redeems for, and Aster states no exchange rate because it has none.
 
-| AC | State |
-|---|---|
-| 1a · balance visible **from every section** | **fails** — `MomentumCard` sits inside `InsightColumn`, which only `EnrollmentPage` renders. Twelve of thirteen destinations show no balance |
-| 1b · expressed in points **and in its institution defined value** | **fails** — the card says `1,234 pts` and nothing else. No monetary or institution-defined value exists anywhere in the repo |
-| 2 · points attributed to the requirement that earned them | met — every task carries `points`, and the completed list shows them per item |
-| 3 · values come from published configuration, never hard coded | prototype boundary — they are literals in `data.js`, with no configuration object to read from |
-| 4 · earned points are not recalculated when configuration changes | untestable while AC3 stands |
-| 5 · an institution that disables rewards leaves nothing behind | **fails** — there is no `rewardsEnabled` flag. `MomentumCard`'s `unavailable` prop is a *load failure* ("your balance didn't load this time"), which is a different state and says the opposite thing |
-| 6 · points never compete visually with an outstanding required action | holds today, and only by accident: the card is in the rail of the one page that lists those actions. Promoting the balance to the shell is exactly where this AC starts to bite |
+- The balance moved to the topbar, so it is on all thirteen sections instead of one. `MomentumCard`
+  stopped repeating it and kept what only My Enrollment can say — how far the balance is from the
+  next thing it reaches, and what today's steps are worth.
+- `rewards-data.js` is the published configuration and `data.js` holds the **award ledger**. Nothing
+  recomputes a balance from the configuration, which is AC 4 as structure: history cannot be
+  recalculated because history does not read it.
+- **Nothing is redeemable.** ENR-148 puts redemption mechanics out of scope, so a catalogue row is
+  information and carries no control.
+- `rewards-off` in the preview menu turns the whole programme off — no chip, no card, no points line
+  on a task card or in the drawer, and no gap where any of them were.
 
-Medium card: move the balance into the shell, give it the institution value, add the disabled state.
-AC6 is the design problem, not the plumbing.
+One divergence recorded rather than smoothed: below 820px the chip shows the balance and the value
+moves one tap away into the popover. AC 1 asks for both everywhere.
 
-### 2.3 ENR-214 — Know when an unmet requirement will block class registration · not started
+### 2.3 ~~ENR-214 — Know when an unmet requirement will block class registration~~ — landed
 
-`Backlog`, `wave-mvp-demo`, under ENR-145, **no design card on the board**. The newest student story
-and the only one that is neither built nor covered by a screen card.
+Written against the história, since ENR-164 serves only AUD-155 and AUD-156 and `issue-tracker.md`
+forbids opening a Jira issue unasked. Spec: `.scratch/ENR-214-registration-gate/spec.md`.
 
-*Blocked* already means something in this repo, and it is not this. ENR-156 gave us `lockedTasks` —
-a step whose **prerequisite** is unmet (`'Complete "Tell us where you'll live" first'`). ENR-214 is a
-different gate: a requirement that is open to act on right now, and whose being unmet will refuse
-class registration later.
-
-Buildable here — ACs 1, 2 and 6: mark the gating requirement wherever it appears, state *what* it
-blocks and *by when*, and show a requirement in review as pending rather than met. `lib/documents.js`
-already distinguishes `checking` from `in review`, so AC6 is nearly free.
-
-Not buildable here — ACs 3, 4, 5 and 7: refusal at the registration call, enforcement below the
-interface, the gate lifting on acceptance, and which requirements gate being configuration. All
-backend.
-
-**One concrete thing to reconcile:** the gate is already written into the product, on another screen,
-unlinked. `src/campus-data.js:24` — *"Every new student attends one orientation session. If you miss
-all of them, the Registrar holds your course registration until you attend a make-up session."* That
-session is a required event on My Campus Life, and nothing in the checklist says it gates
-registration. ENR-214 is the card that joins them.
+- **The gate is not the lock.** ENR-156's `lockedTasks` is a step she *cannot start*; a gating
+  requirement is one she *can act on now* that will refuse something later. They share no words —
+  the chip says *blocks*, never *blocked*.
+- **The orphan is adopted.** `campus-data.js:24` has said the Registrar holds course registration for
+  the orientation session since ENR-189, and `documents-data.js` has said class registration opens
+  once the immunization record clears since ENR-206. Both were copy nothing read. They are now the
+  two entries in `registration-data.js`, and the same chip renders from them on My Enrollment, My
+  Documents, Health and My Campus Life.
+- **AC 6 holds**: submitting does not lift the gate. The chip stays and reads *in review*; only
+  acceptance removes it, which `registration-open` and `health-settled` both make checkable.
+- ACs 3, 4, 5 and part of 7 are declared out of reach, not faked. There is no registration call here
+  to refuse, and a simulated refusal would teach a Jam the gate is enforced where it is enforced
+  nowhere.
 
 ### 2.4 ENR-160 AC3 — the financial document link · small follow-up
 
@@ -187,7 +184,7 @@ ENR-174 AC1's Academic group (dissolved by the Jam) and ENR-210 AC1's fourth hou
 
 ## 6. Order
 
-**Specced on 2026-08-20, both ready to build:**
+**Specced and built on 2026-08-20. Both landed; what is left is a Jam signature.**
 
 1. **ENR-161 + ENR-162** — one pass, because they share a corner and ENR-167's own design brief says
    so. No new card was needed: ENR-167 already serves both and landed only half of its brief. Spec:
@@ -198,8 +195,16 @@ ENR-174 AC1's Academic group (dissolved by the Jam) and ENR-210 AC1's fourth hou
    `issue-tracker.md` forbids opening a Jira issue unasked. The divergence is recorded in the file's
    front matter. Gated by the immunization record and the orientation session, both of which the
    product already carries. Spec: `.scratch/ENR-214-registration-gate/spec.md`.
-3. **ENR-160 AC3** — one `section` field on the financial document tasks. Not specced; it rides along
-   with anything, and §8 of the ENR-214 spec names it so it stops being invisible.
+3. **ENR-160 AC3** — one `section` field on the financial document tasks. **Still open**, and now the
+   only thing on this page that is. It rides along with anything; §8 of the ENR-214 spec names it so
+   it stops being invisible.
+
+**One thing the build found that the spec did not.** The `waiting` gate state — the institution is
+the holder, nothing is needed from the student — is correct and currently unreachable, because the
+orientation session is always outstanding and always hers to act on, so the set of gating items can
+never be all-Aster. It renders the moment an institution gates only document requirements, which is
+a one-line change to `gatedBy`. Left in rather than removed: the state is right, and deleting correct
+logic because this particular configuration cannot reach it would be the wrong trade.
 
 After those, the student portal is feature-complete against the board as it stands, and everything
 remaining is a Jam signature.

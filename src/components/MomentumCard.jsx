@@ -1,13 +1,21 @@
 import Icon from '../Icon.jsx';
 
 /**
- * Lives in the insight rail on My Enrollment. One component rather than two
- * copies, so the balance can never be phrased two ways on two pages.
+ * Lives in the insight rail on My Enrollment.
+ *
+ * It used to hold the balance. ENR-167's second pass put the balance in the
+ * topbar, where ENR-162 AC 1 needs it — visible from every section, not from
+ * one of thirteen — so this card stopped repeating it. One figure, one place:
+ * the same rule the rest of the portal runs on, and the reason the sidebar
+ * refuses to count a document decision twice.
+ *
+ * What is left is what only this page can say: how far the balance is from the
+ * next thing it reaches, and what today's steps are worth.
  */
 export default function MomentumCard({
   earnedPoints,
   availableToday,
-  completedCount,
+  next,
   onOpenPoints,
   unavailable = false,
 }) {
@@ -19,7 +27,13 @@ export default function MomentumCard({
         </span>
         <div>
           <span>Your momentum</span>
-          <strong>{unavailable ? '—' : `${earnedPoints.toLocaleString()} pts`}</strong>
+          <strong>
+            {unavailable
+              ? 'Balance unavailable'
+              : next
+                ? `${next.away.toLocaleString()} pts to ${next.label.toLowerCase()}`
+                : 'Every reward within reach'}
+          </strong>
         </div>
       </div>
 
@@ -30,11 +44,11 @@ export default function MomentumCard({
       ) : (
         <>
           <div className="level-track">
-            <span style={{ width: `${Math.min(88, 54 + completedCount * 4)}%` }} />
+            <span style={{ width: `${next ? Math.max(6, 100 - Math.round((next.away / next.cost) * 100)) : 100}%` }} />
           </div>
           <div className="level-labels">
-            <span>Settling in</span>
-            <span>{Math.max(0, 850 - earnedPoints)} to Trailblazer</span>
+            <span>{earnedPoints.toLocaleString()} earned</span>
+            <span>{next ? `${next.cost.toLocaleString()} pts` : 'All reached'}</span>
           </div>
           <div className="today-reward">
             <span>

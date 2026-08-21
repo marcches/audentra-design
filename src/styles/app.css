@@ -11418,3 +11418,557 @@ footer a {
   font-weight: var(--fw-regular);
   display: block;
 }
+
+/* ============================================================================
+   The topbar corner — ENR-167 second pass, serving ENR-161 and ENR-162.
+
+   The brief: "navigation, notifications, points and the route to a person
+   compete for the same corner. The unread indicator must be findable without
+   being anxious. Points are a reward and never a distraction from an overdue
+   requirement."
+
+   The rule that settles it, and the reason there is exactly one crimson below:
+   THE INTERRUPTION MAY SPEND COLOUR; THE REWARD MAY NOT. Every points surface
+   in this block is ink, muted and line. That is ENR-162 AC 6 enforced by the
+   colour budget rather than left to whoever writes the next rule.
+   ========================================================================= */
+
+.topbar-pop {
+  position: relative;
+}
+
+/* One chip, two tenants, so the bell and the balance cannot drift apart. */
+.topbar-chip {
+  color: var(--ink);
+  cursor: pointer;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  align-items: center;
+  gap: 6px;
+  height: 37px;
+  padding: 0 10px;
+  font-family: inherit;
+  font-size: var(--fs-copy);
+  display: inline-flex;
+  position: relative;
+}
+
+.topbar-chip:hover {
+  border-color: #d9dae6;
+}
+
+.bell-chip {
+  justify-content: center;
+  width: 37px;
+  padding: 0;
+}
+
+.points-chip svg {
+  color: var(--muted);
+  flex: none;
+}
+
+.chip-figure {
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.chip-unit, .chip-reach {
+  color: var(--muted);
+}
+
+/* The count. Ink for news; crimson only when something in the feed needs her —
+   findable without being anxious as a rule and not as an intention. */
+.bell-count {
+  color: #fff;
+  background: var(--ink);
+  border: 2px solid var(--surface);
+  border-radius: 99px;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  display: grid;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+}
+
+.bell-count.needs-you {
+  background: var(--crimson);
+}
+
+/* The panel. Same layer pair as the preview menu two chips along, so the three
+   things this corner can open can never stack on one another. */
+.pop-scrim {
+  z-index: var(--z-popover-scrim);
+  cursor: default;
+  background: 0 0;
+  border: 0;
+  position: fixed;
+  inset: 0;
+}
+
+.pop-panel {
+  z-index: var(--z-popover);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  flex-direction: column;
+  width: 344px;
+  max-height: min(560px, calc(100vh - 96px));
+  display: flex;
+  position: absolute;
+  top: calc(100% + 9px);
+  right: 0;
+  overflow: hidden auto;
+  box-shadow: var(--shadow-soft);
+}
+
+.pop-head {
+  background: var(--card-zone);
+  border-bottom: 1px solid var(--line);
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  display: flex;
+  position: sticky;
+  top: 0;
+}
+
+.pop-head h2 {
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
+  margin: 0;
+}
+
+/* In the header, and with no destructive neighbour: a student must not be able
+   to throw away a decision she has not read. */
+.pop-action {
+  color: var(--purple);
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+}
+
+.pop-action:hover {
+  text-decoration: underline;
+}
+
+.pop-state {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 22px 15px;
+  display: flex;
+}
+
+.pop-state p {
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.pop-foot {
+  color: var(--muted);
+  background: var(--card-zone);
+  border-top: 1px solid var(--line);
+  margin: auto 0 0;
+  padding: 11px 15px;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+}
+
+.pop-foot a, .pop-foot .link-button {
+  color: var(--purple);
+  align-items: center;
+  gap: 4px;
+  font-weight: var(--fw-bold);
+  text-decoration: none;
+  display: inline-flex;
+}
+
+.pop-foot a:hover, .pop-foot .link-button:hover {
+  text-decoration: underline;
+}
+
+/* --- What changed — ENR-161 ------------------------------------------------
+   Two groups rather than three equal tabs. AC 4 categories are the data; the
+   split is the ranking, so the reader is not asked to sort a feed the product
+   could have sorted. A group with no items renders no heading. */
+
+.note-group h3 {
+  color: var(--muted);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 14px 15px 6px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-bold);
+}
+
+.note-list {
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.note-row a, .note-row.note-gone {
+  color: inherit;
+  border-radius: 12px;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0 7px;
+  padding: 9px 8px;
+  text-decoration: none;
+  display: flex;
+}
+
+.note-row a:hover {
+  background: var(--canvas);
+}
+
+.note-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.note-body strong {
+  font-size: var(--fs-copy);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  display: block;
+}
+
+.note-body small {
+  color: var(--muted);
+  margin-top: 2px;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  display: block;
+}
+
+.note-row svg {
+  color: var(--muted);
+  flex: none;
+  margin-top: 3px;
+}
+
+/* The unread mark. It never carries the category as well: one surface saying
+   two things in one colour is why the tinted-row pattern was rejected. */
+.note-dot {
+  background: var(--ink);
+  border-radius: 99px;
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: 7px;
+}
+
+/* AC 6. It stays in the feed, because deleting it would answer what changed
+   with silence — but it is text, and it leads nowhere because there is nowhere. */
+.note-gone {
+  cursor: default;
+}
+
+.note-gone .note-body strong {
+  color: var(--muted);
+  font-weight: var(--fw-regular);
+}
+
+.note-skeleton .note-body i {
+  background: var(--canvas);
+  border-radius: 6px;
+  height: 11px;
+  display: block;
+}
+
+.note-skeleton .note-body i:first-child {
+  width: 78%;
+}
+
+.note-skeleton .note-body i:last-child {
+  width: 44%;
+  margin-top: 7px;
+}
+
+/* --- What a point is worth — ENR-162 --------------------------------------- */
+
+.points-balance {
+  color: var(--muted);
+  align-items: baseline;
+  gap: 5px;
+  margin: 0;
+  padding: 16px 15px 0;
+  font-size: var(--fs-copy);
+  display: flex;
+}
+
+.points-balance strong {
+  color: var(--ink);
+  font-size: var(--fs-figure);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.points-lede {
+  color: var(--muted);
+  margin: 4px 0 0;
+  padding: 0 15px;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+}
+
+.points-ladder {
+  padding: 16px 15px 4px;
+}
+
+.ladder-track {
+  background: var(--canvas);
+  border-radius: 99px;
+  height: 6px;
+  position: relative;
+}
+
+.ladder-fill {
+  background: var(--ink);
+  border-radius: 99px;
+  height: 100%;
+  display: block;
+}
+
+.ladder-mark {
+  background: var(--canvas);
+  outline: 2px solid var(--surface);
+  border-radius: 99px;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: -1px;
+  transform: translateX(-50%);
+}
+
+.ladder-mark.reached {
+  background: var(--ink);
+}
+
+.ladder-list {
+  flex-direction: column;
+  gap: 7px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+/* Not reached yet is stated by weight, not by a colour that would read as a
+   warning. Nothing on a catalogue row is a control — redemption is out of
+   scope on ENR-148, so there is nothing here to press. */
+.ladder-list li {
+  color: var(--muted);
+  justify-content: space-between;
+  gap: 12px;
+  font-size: var(--fs-small);
+  display: flex;
+}
+
+.ladder-list li.reached {
+  color: var(--ink);
+  font-weight: var(--fw-bold);
+}
+
+.ladder-cost {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+/* AC 2 — every award attributed to the requirement that earned it. */
+.points-awards {
+  border-top: 1px solid var(--line);
+  margin-top: 16px;
+  padding: 13px 15px 15px;
+}
+
+.points-awards h3 {
+  color: var(--muted);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-bold);
+}
+
+.points-awards ul {
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.points-awards li {
+  align-items: baseline;
+  gap: 9px;
+  font-size: var(--fs-small);
+  display: flex;
+}
+
+.points-awards li span:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.award-when {
+  color: var(--muted);
+  flex: none;
+}
+
+.award-points {
+  flex: none;
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.award-more {
+  color: var(--muted);
+  margin: 8px 0 0;
+  font-size: var(--fs-small);
+}
+
+@media (width<=820px) {
+  .pop-panel {
+    width: min(344px, calc(100vw - 24px));
+  }
+
+  /* AC 1 second half drops here. The value is one tap away in the popover
+     instead of on the chip — the divergence is recorded on the card. */
+  .chip-reach {
+    display: none;
+  }
+}
+
+@media (width<=620px) {
+  .points-chip .chip-unit {
+    display: none;
+  }
+
+  /* The panel is anchored to a chip that is now near the screen edge; let it
+     use the full width rather than hang off it. */
+  .pop-panel {
+    width: calc(100vw - 20px);
+    position: fixed;
+    top: 62px;
+    right: 10px;
+  }
+}
+
+/* ============================================================================
+   The registration gate — ENR-214.
+
+   Colour is spent once, at the top. The notice carries the escalation for the
+   whole section; the chip on a card is a FACT about that step, not a second
+   alarm. A card already wears a priority badge, and three coloured chips in one
+   row is texture rather than information.
+   ========================================================================= */
+
+/* AC 2 — what is blocked, and by when, above everything. */
+.gate-notice {
+  border-radius: 14px;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 15px;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+.gate-notice p {
+  flex: 1;
+  margin: 0;
+}
+
+.gate-notice svg {
+  flex: none;
+}
+
+.gate-notice.soon {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+/* The one escalation this card spends: inside a week, a deadline stops being
+   a fact and becomes the most important thing on the page. */
+.gate-notice.urgent {
+  color: var(--crimson);
+  background: var(--crimson-soft);
+}
+
+/* Waiting on Aster, and unavailable. Neither is hers to act on, so neither
+   gets a colour that asks her to. */
+.gate-notice.muted {
+  color: var(--muted);
+  background: var(--canvas);
+}
+
+.gate-notice.soon p, .gate-notice.urgent p {
+  color: var(--ink);
+}
+
+.gate-notice .link-button {
+  color: inherit;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  font-weight: var(--fw-bold);
+  display: inline-flex;
+}
+
+/* AC 1 — the mark, wherever the requirement appears. A chip in the row that
+   already holds standing; never a border, never a left bar on a rounded card. */
+.gate-chip {
+  color: var(--ink);
+  background: var(--canvas);
+  border-radius: 8px;
+  align-items: center;
+  align-self: flex-start;
+  gap: 6px;
+  width: fit-content;
+  margin: 0 0 9px;
+  padding: 4px 9px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  display: inline-flex;
+}
+
+/* The flag is the only colour on the chip, and it is the same amber the notice
+   uses when there is still time. */
+.gate-chip svg {
+  color: var(--amber);
+  flex: none;
+}
+
+/* AC 6. In review is not met, and the chip says where the requirement actually
+   is rather than disappearing the moment something was sent. */
+.gate-detail {
+  color: var(--muted);
+  font-weight: var(--fw-regular);
+}
+
+.document-row .gate-chip, .requirement-card .gate-chip {
+  margin: 7px 0 0;
+}

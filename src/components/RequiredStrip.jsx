@@ -1,4 +1,6 @@
 import Icon from '../Icon.jsx';
+import GateChip from './GateChip.jsx';
+import { configFor, isGating } from '../lib/registration.js';
 import { dateTile, weekdayDate } from '../lib/campus-helpers.js';
 
 /**
@@ -35,7 +37,11 @@ import { dateTile, weekdayDate } from '../lib/campus-helpers.js';
  * [Circle](https://mobbin.com/screens/bbb7b785-2793-4264-9123-5a7a24f8191b):
  * date, title, place under it, the control at the trailing edge.
  */
-export default function RequiredStrip({ events, onOpen }) {
+export default function RequiredStrip({ events, previewState = 'ready', onOpen }) {
+  // ENR-214 AC 1. The note on this session has said the Registrar holds course
+  // registration for it since ENR-189, and nothing outside this page knew. The
+  // strip asks whether the id gates; it never names one.
+  const gateConfig = configFor(previewState);
   return (
     <section className="section-card required-strip" aria-labelledby="required-heading">
       <h2 className="required-strip-head" id="required-heading">
@@ -78,6 +84,7 @@ export default function RequiredStrip({ events, onOpen }) {
                   {event.time}
                 </span>
                 <span className="required-row-title">{event.title}</span>
+                {isGating(event.id, gateConfig) && <GateChip />}
                 <span className="required-row-meta">
                   <span className="required-row-where">
                     <Icon name="pin" size={12} /> {event.location ?? 'Location to be announced'}

@@ -1,5 +1,7 @@
 import Icon from '../../Icon.jsx';
 import StateCard from '../StateCard.jsx';
+import GateChip from '../GateChip.jsx';
+import { configFor, isGating } from '../../lib/registration.js';
 import { filesLabel, officeOf, stateInfo, stateOf } from '../../lib/documents.js';
 
 /**
@@ -26,7 +28,14 @@ import { filesLabel, officeOf, stateInfo, stateOf } from '../../lib/documents.js
  * This is the one card on the page that spends colour, and only while it is the
  * one asking.
  */
-export default function RecordCard({ requirement, task, unavailable, onOpen, onRetry }) {
+export default function RecordCard({
+  requirement,
+  task,
+  previewState = 'ready',
+  unavailable,
+  onOpen,
+  onRetry,
+}) {
   if (unavailable || !requirement) {
     return (
       <section className="section-card" aria-labelledby="record-title">
@@ -72,6 +81,13 @@ export default function RecordCard({ requirement, task, unavailable, onOpen, onR
         <span className={`status-chip ${info.tone}`}>{info.label}</span>
       </div>
 
+      {/* ENR-214 AC 1. The record's own entry has said "Class registration opens
+          once your record clears" since ENR-206 with nothing reading it; the
+          chip is that sentence, from configuration, on every surface at once. */}
+      {isGating(requirement.id, configFor(previewState)) && state !== 'accepted' && (
+        <GateChip state={state} since={requirement.submissions?.at(-1)?.sent ?? null} />
+      )}
+
       <div className="record-state">
         <p className="record-line">
           {state === 'checking' && <i className="pulse" aria-hidden="true" />}
@@ -93,8 +109,10 @@ export default function RecordCard({ requirement, task, unavailable, onOpen, onR
             only where it means something: on the thing that is still asking. */}
         {asking && task?.due && (
           <p className="record-due">
-            <Icon name="calendar" size={14} /> Required before class registration · Health Services
-            asks for it by {task.due}
+            {/* The gate clause left this line when the chip above took it —
+                it was hard-coded here, and which requirements gate is
+                configuration (AC 7). */}
+            <Icon name="calendar" size={14} /> Health Services asks for it by {task.due}
           </p>
         )}
       </div>

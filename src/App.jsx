@@ -6,7 +6,7 @@ import TaskDrawer from './components/TaskDrawer.jsx';
 import InfoModal from './components/InfoModal.jsx';
 import EnrollmentPage from './components/EnrollmentPage.jsx';
 import MyCampusLife, { CAMPUS_PREVIEW_STATES } from './components/MyCampusLife.jsx';
-import { requiredEventCount } from './campus-data.js';
+import { campusEvents, requiredEventCount } from './campus-data.js';
 import PageShell from './components/PageShell.jsx';
 import PageSkeleton from './components/PageSkeleton.jsx';
 import PageError from './components/PageError.jsx';
@@ -26,12 +26,18 @@ import { healthAnswerFor } from './health-data.js';
 import { offices } from './help-data.js';
 import {
   addSubmission,
+  applyReadDecisions,
   checkingOne,
+  decisionKey,
   finishChecking,
   markDecisionRead,
   officeOf,
   unreadDecisions,
 } from './lib/documents.js';
+import { notifications as notificationFeed } from './notifications-data.js';
+import { markAllRead, markRead, readIds as storedReadIds, unreadCount } from './lib/notifications.js';
+import { balanceFrom, nextReward, rewardsEnabled, withinReach } from './lib/rewards.js';
+import { configFor, gateItems, gateState, gatingTaskIds } from './lib/registration.js';
 import Edward from './components/edward/Edward.jsx';
 import { buildRecord } from './lib/edward.js';
 import { identityFor } from './lib/profile-helpers.js';
@@ -62,6 +68,16 @@ import {
 const CHECK_MS = 4200;
 const SEND_MS = 700;
 
+/**
+ * ENR-161 AC 3. A record is built with the decisions she has already opened
+ * already marked read, so a reload does not hand her back an unread mark she
+ * cleared yesterday. Applied wherever a record is built — including on a
+ * preview change, which is a different student but the same browser.
+ */
+function withReads(record, ids = storedReadIds()) {
+  return { ...record, requirements: applyReadDecisions(record.requirements, ids) };
+}
+
 export default function App() {
   const [tasks, setTasks] = useState(initialTasks);
   const [completed, setCompleted] = useState(initialCompleted);
@@ -82,10 +98,16 @@ export default function App() {
   // the screen at a time" survives an overlay App does not hold — ENR-181.
   const [sectionOverlay, setSectionOverlay] = useState(false);
 
+  // ENR-161 AC 3 — the read state persists. One store for the notification
+  // panel and for the unread mark on a document decision, because they are the
+  // same event and two read states for one event is a discrepancy she cannot
+  // resolve.
+  const [readIds, setReadIds] = useState(storedReadIds);
+
   // ENR-206. One record, read by My Documents and by Health; one answer, which
   // never leaves Health. Both are here because both have to survive a route
   // change — see `submitDocument` and `answerAccommodation` below.
-  const [record, setRecord] = useState(() => documentsFor(readPreviewState()));
+  const [record, setRecord] = useState(() => withReads(documentsFor(readPreviewState())));
   const [sendingId, setSendingId] = useState(null);
   const [failedId, setFailedId] = useState(null);
   const [answer, setAnswer] = useState(() => healthAnswerFor(readPreviewState()));
@@ -121,9 +143,34 @@ export default function App() {
   const viewReviewing = isEmpty ? [] : reviewing;
   const viewLocked = isEmpty ? [] : lockedTasks;
 
-  const earnedPoints = viewCompleted.reduce((total, item) => total + item.points, 0);
+  // ENR-162. The balance is added up from the award ledger and never from the
+  // configuration — AC 4 as structure rather than as discipline: a change to
+  // what a requirement is worth cannot reach a point already earned, because
+  // nothing on this path reads what a requirement is worth.
+  const earnedPoints = balanceFrom(viewCompleted);
   const availableToday = viewTasks.reduce((total, task) => total + task.points, 0);
   const progress = Math.round((viewCompleted.length / TOTAL_STEPS) * 100);
+
+  // AC 5. The institution's switch, and a preview of it that needs no code
+  // change to look at. Everything points renders is behind this one boolean, so
+  // turning it off cannot leave an orphaned control anywhere.
+  const rewardsOn = rewardsEnabled() && preview !== 'rewards-off';
+  const upcoming = rewardsOn && !unavailable ? nextReward(earnedPoints) : null;
+
+  // ENR-161. The feed the panel and the bell both read.
+  const feed = isEmpty ? [] : notificationFeed;
+  const unread = unavailable ? null : unreadCount(feed, readIds);
+
+  // ENR-214. Which requirements hold class registration is configuration, so
+  // the preview that gates nothing is the real code path with an empty list
+  // rather than a branch that skips it — AC 7 tested by the state itself.
+  const gate = useMemo(() => {
+    const config = configFor(preview);
+    const items = isEmpty
+      ? []
+      : gateItems({ requirements: record.requirements, events: campusEvents, config });
+    return { items, state: gateState(items), taskIds: gatingTaskIds(items) };
+  }, [record, preview, isEmpty]);
 
   // My Financials opens on a package that is still pending — the state the
   // card's guardrail is about. `aid-final` is the same page once it settles.
@@ -224,7 +271,7 @@ export default function App() {
   // A preview state is a different student, so the record and the answer are
   // re-read rather than carried across.
   useEffect(() => {
-    setRecord(documentsFor(preview));
+    setRecord(withReads(documentsFor(preview)));
     setAnswer(healthAnswerFor(preview));
     setSendingId(null);
     setFailedId(null);
@@ -307,12 +354,22 @@ export default function App() {
     }, SEND_MS);
   }
 
+  /**
+   * ENR-161 AC 3 and ENR-158 AC 5. One event, one read state: opening a decision
+   * on My Documents writes the same store the notification panel reads, so the
+   * two can never disagree and neither forgets on a reload.
+   */
   function markDocumentRead(id) {
     setFailedId(null);
+    setReadIds((ids) => markRead(ids, decisionKey(id)));
     setRecord((current) => ({
       ...current,
       requirements: markDecisionRead(current.requirements, id),
     }));
+  }
+
+  function openNotification(item) {
+    setReadIds((ids) => markRead(ids, item.id));
   }
 
   /**
@@ -471,6 +528,9 @@ export default function App() {
           totalSteps={TOTAL_STEPS}
           earnedPoints={earnedPoints}
           availableToday={availableToday}
+          nextReward={upcoming}
+          rewardsOn={rewardsOn}
+          gate={gate}
           unavailable={unavailable}
           onSort={setSort}
           onOpenSmart={() => setSmartModal(true)}
@@ -696,6 +756,26 @@ export default function App() {
           onOpenNav={() => setNavOpen(true)}
           menuRef={menuButton}
           identity={identity}
+          points={
+            rewardsOn
+              ? {
+                  balance: earnedPoints,
+                  awarded: viewCompleted,
+                  withinReach: unavailable ? 0 : withinReach(earnedPoints),
+                  unavailable,
+                  onOpenPoints: () => setPointsModal(true),
+                }
+              : null
+          }
+          notifications={{
+            feed,
+            readIds,
+            unread,
+            state: state === 'error' ? 'error' : state === 'loading' ? 'loading' : 'ready',
+            onOpen: openNotification,
+            onMarkAll: () => setReadIds((ids) => markAllRead(ids, feed)),
+            onRetry: () => choosePreview('ready'),
+          }}
           previewState={preview}
           previewStates={
             inFinancials
@@ -734,6 +814,7 @@ export default function App() {
           onTab={setDrawerTab}
           onClose={() => setActiveTask(null)}
           onComplete={completeTask}
+          rewardsOn={rewardsOn}
           onOpenPoints={() => setPointsModal(true)}
           onToast={setToast}
           fileReady={fileReady}

@@ -49,6 +49,10 @@ export const PREVIEW_STATES = [
   ['onboarding-answered', 'Answered at onboarding', 'Living on campus, three residences already ranked.'],
   ['deadline-passed', 'After the housing deadline', 'The submitted shortlist, and Housing Services assigning.'],
   ['room-assigned', 'Room assigned', 'A room that is not the first preference — and is still valid.'],
+  // ENR-167 second pass and ENR-214. Listed here too, so a `?state=` link to
+  // either survives a reload — `readPreviewState` validates against this list.
+  ['rewards-off', 'Rewards off', 'An institution that does not run a points programme.'],
+  ['registration-open', 'Nothing gates registration', 'An institution that holds registration for nothing.'],
   ['partial', 'Partial data', 'The catalog loaded; your transcript could not be checked.'],
   ['error', 'Error', 'The published catalog could not be loaded at all.'],
   ['aid-final', 'Aid finalized', 'My Financials with the federal loan approved and nothing outstanding.'],
@@ -67,6 +71,15 @@ export const FRAME_STATES = [
   ['partial', 'Partial data', 'The sections opened; their counts did not arrive.'],
   ['error', 'Error', 'The sections could not be loaded.'],
   ['empty', 'Empty', 'A student with nothing in this section yet.'],
+  // ENR-162 AC 5 and ENR-214. Two switches an institution owns, and both have
+  // to leave nothing behind — no empty area, no orphaned control, no gap where
+  // something used to be. A state nobody can open is a state nobody verified,
+  // so they are offered on every page rather than described in a spec. Neither
+  // is loading, error, empty or partial, so every page renders exactly as it
+  // does when ready; what reads them is the shell and the checklist, from the
+  // raw preview value, the way ENR-188 already does.
+  ['rewards-off', 'Rewards off', 'An institution that does not run a points programme.'],
+  ['registration-open', 'Nothing gates registration', 'An institution that holds registration for nothing.'],
 ];
 
 const FRAME_IDS = new Set(FRAME_STATES.map(([id]) => id));

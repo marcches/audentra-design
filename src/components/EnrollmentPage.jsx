@@ -2,6 +2,7 @@ import Icon from '../Icon.jsx';
 import AdvisorBar from './AdvisorBar.jsx';
 import SummaryFigure from './SummaryFigure.jsx';
 import InsightColumn from './InsightColumn.jsx';
+import GateNotice from './GateNotice.jsx';
 import PageShell from './PageShell.jsx';
 import TaskCard from './TaskCard.jsx';
 
@@ -26,6 +27,9 @@ export default function EnrollmentPage({
   totalSteps,
   earnedPoints,
   availableToday,
+  nextReward,
+  rewardsOn,
+  gate,
   unavailable,
   onSort,
   onOpenSmart,
@@ -57,11 +61,25 @@ export default function EnrollmentPage({
           <AdvisorBar onContact={onContact} />
         </>
       }
+      /* ENR-214 AC 2. One line true of the whole section, above the cards:
+         what is blocked, and by when. */
+      notice={
+        <GateNotice
+          state={gate.state}
+          items={gate.items}
+          unavailable={unavailable}
+          onShow={() => {
+            const first = document.querySelector('.task-card.gating');
+            first?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }}
+        />
+      }
       rail={
         <InsightColumn
           earnedPoints={earnedPoints}
           availableToday={availableToday}
-          completedCount={completed.length}
+          nextReward={nextReward}
+          rewardsOn={rewardsOn}
           unavailable={unavailable}
           onResume={onResume}
           onOpenPoints={onOpenPoints}
@@ -93,6 +111,9 @@ export default function EnrollmentPage({
         <div className="card-rows task-list">
           {tasks.map((task, index) => (
             <TaskCard
+              rewardsOn={rewardsOn}
+              gates={gate.taskIds.has(task.id)}
+              gateState={gate.items.find((item) => item.taskId === task.id)}
               key={task.id}
               task={task}
               recommended={index === 0 && sort === 'smart'}
@@ -204,9 +225,15 @@ export default function EnrollmentPage({
                 : `${completed.length} steps completed`}
             </strong>
             <span>
+              {/* ENR-162 AC 5: with rewards off, the group still counts steps —
+                  it just stops being about points, and nothing is left empty. */}
               {completed.length === 0
-                ? 'Each step you finish is listed here with the points it earned.'
-                : `${earnedPoints.toLocaleString()} Momentum points earned`}
+                ? rewardsOn
+                  ? 'Each step you finish is listed here with the points it earned.'
+                  : 'Each step you finish is listed here.'
+                : rewardsOn
+                  ? `${earnedPoints.toLocaleString()} Momentum points earned`
+                  : 'Everything you have already finished.'}
             </span>
           </div>
           {completed.length > 0 && <Icon name="chevron" size={19} />}

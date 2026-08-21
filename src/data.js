@@ -1,4 +1,5 @@
 import { responseDeadline } from './housing-data.js';
+import { rewards } from './rewards-data.js';
 
 export const TOTAL_STEPS = 14;
 
@@ -8,7 +9,13 @@ export const PORTAL_TODAY = '2026-08-20';
 /** A deadline this many days out or closer is escalated on screen. ENR-160 AC 6. */
 export const ESCALATION_WINDOW = 14;
 
-export const initialTasks = [
+/**
+ * The checklist. No task carries a points figure any more — ENR-162 AC 3 asks
+ * for point values to come from the published configuration and never to be
+ * hard coded, so `rewards-data.js` holds them and `withValues` reads them in.
+ * A task the configuration says nothing about is worth nothing and says so.
+ */
+const TASKS = [
   {
     id: 'deposit',
     category: 'Your offer',
@@ -17,8 +24,6 @@ export const initialTasks = [
       'Pay your $500 enrollment deposit to confirm that you’re joining Aster’s incoming class.',
     due: 'Nov 16',
     daysLeft: 88,
-    points: 100,
-    tomorrow: 99,
     minutes: 4,
     action: 'Pay deposit',
     kind: 'external',
@@ -48,8 +53,6 @@ export const initialTasks = [
       'Aster’s Financial Aid office needs to confirm the income you reported before your federal loan can be finalized.',
     due: 'Sep 2',
     daysLeft: 13,
-    points: 95,
-    tomorrow: 94,
     minutes: 6,
     action: 'Upload documents',
     kind: 'upload',
@@ -80,8 +83,6 @@ export const initialTasks = [
       'Sign the Master Promissory Note on the federal student aid website so Aster can release your loan money.',
     due: 'Sep 30',
     daysLeft: 41,
-    points: 80,
-    tomorrow: 79,
     minutes: 8,
     action: 'Sign agreement',
     kind: 'external',
@@ -112,8 +113,6 @@ export const initialTasks = [
       'Add the contact details you didn’t have during welcome setup. It’s okay to update them later.',
     due: 'Nov 23',
     daysLeft: 95,
-    points: 72,
-    tomorrow: 71,
     minutes: 2,
     action: 'Add details',
     kind: 'profile',
@@ -134,8 +133,6 @@ export const initialTasks = [
       'Upload your immunization record so Aster University Health Services can verify the required vaccines before arrival.',
     due: 'Nov 30',
     daysLeft: 102,
-    points: 83,
-    tomorrow: 82,
     minutes: 5,
     action: 'Open Health',
     kind: 'upload',
@@ -169,8 +166,6 @@ export const initialTasks = [
     // a literal here that happened to agree with the move-in step below.
     due: responseDeadline.label,
     daysLeft: responseDeadline.daysLeft,
-    points: 68,
-    tomorrow: 67,
     minutes: 3,
     action: 'Choose housing plan',
     kind: 'form',
@@ -194,6 +189,13 @@ export const initialTasks = [
   },
 ];
 
+function withValues(task) {
+  const value = rewards.values[task.id];
+  return { ...task, points: value?.points ?? 0, tomorrow: value?.tomorrow ?? 0 };
+}
+
+export const initialTasks = TASKS.map(withValues);
+
 export const lockedTasks = [
   {
     title: 'Choose your move-in time',
@@ -209,6 +211,12 @@ export const lockedTasks = [
   },
 ];
 
+/**
+ * The award ledger — ENR-162 AC 4. `points` here is **what she was given at the
+ * time**, and nothing ever re-reads `rewards-data.js` to recompute it. That is
+ * why a change to what a requirement is worth cannot reach a point she has
+ * already earned: history does not read the configuration.
+ */
 export const initialCompleted = [
   { title: 'Accept your offer', date: 'Aug 7', points: 150 },
   { title: 'Confirm your identity', date: 'Aug 7', points: 100 },
@@ -223,7 +231,7 @@ export const initialReviewing = [
     description: 'Aster received your transcript and is reviewing it now.',
     submitted: 'Submitted Aug 6',
     eta: 'Usually 2–3 business days',
-    points: 60,
+    points: rewards.reviewing['final-transcript'],
   },
 ];
 

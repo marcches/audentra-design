@@ -121,6 +121,22 @@ const paths = {
       <path d="M12 10v4M12 17h.01" />
     </>
   ),
+  // ENR-161. Open at the foot rather than a closed bell shape: the count sits
+  // on the trailing edge and a closed outline fights it for the same corner.
+  bell: (
+    <>
+      <path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.4 2H4.6z" />
+      <path d="M10 21.5h4" />
+    </>
+  ),
+  // ENR-214. A flag, not a warning triangle: a gating requirement is a fact
+  // about a step, and the triangle already means an error somewhere else.
+  flag: (
+    <>
+      <path d="M6 21V4" />
+      <path d="M6 4.8h11l-2.2 4 2.2 4H6z" />
+    </>
+  ),
   users: (
     <>
       <circle cx="9.5" cy="8" r="3.4" />

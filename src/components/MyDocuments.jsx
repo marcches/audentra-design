@@ -7,6 +7,7 @@ import StateCard from './StateCard.jsx';
 import DocumentRow, { IssuedRow } from './documents/DocumentRow.jsx';
 import DocumentDrawer from './documents/DocumentDrawer.jsx';
 import DocumentsRail from './documents/DocumentsRail.jsx';
+import { configFor, isGating } from '../lib/registration.js';
 import {
   checkingOne,
   filesLabel,
@@ -64,6 +65,8 @@ export default function MyDocuments({
   onOpenTask = () => {},
   onRetry = () => {},
 }) {
+  // ENR-214 AC 1 — a requirement that holds registration is marked here too.
+  const gateConfig = configFor(previewState);
   const [openId, setOpenId] = useState(null);
 
   const unavailable = previewState === 'partial';
@@ -210,6 +213,7 @@ export default function MyDocuments({
                 key={requirement.id}
                 requirement={requirement}
                 task={taskFor(requirement)}
+                gating={isGating(requirement.id, gateConfig)}
                 onOpen={openDocument}
               />
             ))}
@@ -251,6 +255,7 @@ export default function MyDocuments({
                     key={requirement.id}
                     requirement={requirement}
                     task={taskFor(requirement)}
+                    gating={isGating(requirement.id, gateConfig)}
                     onOpen={openDocument}
                   />
                 ))}

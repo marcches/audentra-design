@@ -1,9 +1,19 @@
 import Icon from '../Icon.jsx';
+import GateChip from './GateChip.jsx';
 import { kindIcon, priorityLabel } from '../lib/task-helpers.js';
 
-export default function TaskCard({ task, recommended, onOpen }) {
+export default function TaskCard({
+  task,
+  recommended,
+  rewardsOn = true,
+  gates = false,
+  gateState = null,
+  onOpen,
+}) {
   return (
-    <article className={`task-card ${recommended ? 'recommended' : ''}`}>
+    <article
+      className={`task-card ${recommended ? 'recommended' : ''} ${gates ? 'gating' : ''}`}
+    >
       {recommended && (
         <div className="recommended-banner">
           <span>
@@ -29,6 +39,10 @@ export default function TaskCard({ task, recommended, onOpen }) {
           </div>
           <h3>{task.title}</h3>
           <p>{task.description}</p>
+          {/* ENR-214 AC 1. Ranked above the facts and never sharing their row:
+              flat construction is not flat content, and this is the one thing
+              about this step that is not true of the others. */}
+          {gates && <GateChip state={gateState?.state} since={gateState?.since} />}
           <div className="task-facts">
             <span>
               <Icon name="calendar" size={15} /> Due {task.due} <b>· {task.daysLeft} days</b>
@@ -45,12 +59,17 @@ export default function TaskCard({ task, recommended, onOpen }) {
         </div>
 
         <div className="task-action">
-          <div className="point-reward">
-            <span>
-              <Icon name="spark" size={14} /> {task.points} pts today
-            </span>
-            <small>{task.tomorrow} tomorrow</small>
-          </div>
+          {/* ENR-162 AC 5. An institution with rewards off leaves no orphaned
+              control behind, and a points line on a card nobody can spend is
+              exactly that. The action keeps its place; only the reward goes. */}
+          {rewardsOn && (
+            <div className="point-reward">
+              <span>
+                <Icon name="spark" size={14} /> {task.points} pts today
+              </span>
+              <small>{task.tomorrow} tomorrow</small>
+            </div>
+          )}
           <button
             className={recommended ? 'primary-button' : 'secondary-button'}
             onClick={() => onOpen(task)}

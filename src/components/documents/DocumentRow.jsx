@@ -1,4 +1,5 @@
 import Icon from '../../Icon.jsx';
+import GateChip from '../GateChip.jsx';
 import { officeOf, stateInfo, stateOf } from '../../lib/documents.js';
 import { deadlineLabel, escalation } from '../../lib/money.js';
 
@@ -19,7 +20,7 @@ import { deadlineLabel, escalation } from '../../lib/money.js';
  * emptiness is the hierarchy: the eye runs down the column and stops only where
  * there is something to do.
  */
-export default function DocumentRow({ requirement, task, onOpen }) {
+export default function DocumentRow({ requirement, task, gating = false, onOpen }) {
   const office = officeOf(requirement);
   const state = stateOf(requirement);
   const info = stateInfo(requirement);
@@ -46,6 +47,9 @@ export default function DocumentRow({ requirement, task, onOpen }) {
           {requirement.title}
           {decision?.unread && <i className="document-new" aria-hidden="true" />}
         </strong>
+        {/* ENR-214 AC 1 — the same mark, on every surface the requirement
+            appears on. AC 6 keeps it here while the record is in review. */}
+        {gating && state !== 'accepted' && <GateChip state={state} />}
         <span className="document-state">
           {state === 'checking' && <i className="pulse" aria-hidden="true" />}
           {state === 'accepted' && decision?.on
