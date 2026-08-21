@@ -1,29 +1,29 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import Icon from './Icon.jsx';
-import Sidebar from './components/Sidebar.jsx';
-import Topbar from './components/Topbar.jsx';
-import TaskDrawer from './components/TaskDrawer.jsx';
-import InfoModal from './components/InfoModal.jsx';
-import EnrollmentPage from './components/EnrollmentPage.jsx';
-import MyCampusLife, { CAMPUS_PREVIEW_STATES } from './components/MyCampusLife.jsx';
-import { campusEvents, requiredEventCount } from './campus-data.js';
-import PageShell from './components/PageShell.jsx';
-import PageSkeleton from './components/PageSkeleton.jsx';
-import PageError from './components/PageError.jsx';
-import SectionPlaceholder from './components/SectionPlaceholder.jsx';
-import FinancialsOverview from './pages/FinancialsOverview.jsx';
-import FinancialsAid from './pages/FinancialsAid.jsx';
-import FinancialsPayments from './pages/FinancialsPayments.jsx';
-import MyClassrooms from './components/MyClassrooms.jsx';
-import MyProfile from './components/MyProfile.jsx';
-import MyDocuments, { DOCUMENT_PREVIEW_STATES } from './components/MyDocuments.jsx';
-import Appointments, { APPOINTMENT_PREVIEW_STATES } from './components/Appointments.jsx';
-import HelpPage, { HELP_PREVIEW_STATES } from './components/HelpPage.jsx';
-import HousingPage, { HOUSING_PREVIEW_STATES } from './components/HousingPage.jsx';
-import Health, { HEALTH_PREVIEW_STATES, answerToast } from './components/Health.jsx';
-import { documentsFor } from './documents-data.js';
-import { healthAnswerFor } from './health-data.js';
-import { offices } from './help-data.js';
+import Icon from './design-system/Icon.jsx';
+import Sidebar from './app/Sidebar.jsx';
+import Topbar from './app/Topbar.jsx';
+import TaskDrawer from './features/enrollment/TaskDrawer.jsx';
+import InfoModal from './design-system/patterns/InfoModal.jsx';
+import EnrollmentPage from './features/enrollment/EnrollmentPage.jsx';
+import CampusPage, { CAMPUS_PREVIEW_STATES } from './features/campus/CampusPage.jsx';
+import { campusEvents, requiredEventCount } from './features/campus/data.js';
+import PageShell from './design-system/patterns/PageShell.jsx';
+import PageSkeleton from './design-system/patterns/PageSkeleton.jsx';
+import PageError from './design-system/patterns/PageError.jsx';
+import SectionPlaceholder from './design-system/patterns/SectionPlaceholder.jsx';
+import OverviewPage from './features/financials/OverviewPage.jsx';
+import AidPage from './features/financials/AidPage.jsx';
+import PaymentsPage from './features/financials/PaymentsPage.jsx';
+import ClassroomsPage from './features/classrooms/ClassroomsPage.jsx';
+import ProfilePage from './features/profile/ProfilePage.jsx';
+import DocumentsPage, { DOCUMENT_PREVIEW_STATES } from './features/documents/DocumentsPage.jsx';
+import AppointmentsPage, { APPOINTMENT_PREVIEW_STATES } from './features/appointments/AppointmentsPage.jsx';
+import HelpPage, { HELP_PREVIEW_STATES } from './features/help/HelpPage.jsx';
+import HousingPage, { HOUSING_PREVIEW_STATES } from './features/housing/HousingPage.jsx';
+import HealthPage, { HEALTH_PREVIEW_STATES, answerToast } from './features/health/HealthPage.jsx';
+import { documentsFor } from './features/documents/data.js';
+import { healthAnswerFor } from './features/health/data.js';
+import { offices } from './features/help/data.js';
 import {
   addSubmission,
   applyReadDecisions,
@@ -33,16 +33,16 @@ import {
   markDecisionRead,
   officeOf,
   unreadDecisions,
-} from './lib/documents.js';
-import { notifications as notificationFeed } from './notifications-data.js';
-import { markAllRead, markRead, readIds as storedReadIds, unreadCount } from './lib/notifications.js';
-import { balanceFrom, nextReward, rewardsEnabled, withinReach } from './lib/rewards.js';
-import { configFor, gateItems, gateState, gatingTaskIds } from './lib/registration.js';
-import Edward from './components/edward/Edward.jsx';
-import { buildRecord } from './lib/edward.js';
-import { identityFor } from './lib/profile-helpers.js';
-import { sortTasks } from './lib/task-helpers.js';
-import { buildLedger } from './lib/money.js';
+} from './features/documents/logic.js';
+import { notifications as notificationFeed } from './features/notifications/data.js';
+import { markAllRead, markRead, readIds as storedReadIds, unreadCount } from './features/notifications/logic.js';
+import { balanceFrom, nextReward, rewardsEnabled, withinReach } from './features/rewards/logic.js';
+import { configFor, gateItems, gateState, gatingTaskIds } from './features/registration/logic.js';
+import Edward from './features/edward/Edward.jsx';
+import { buildRecord } from './features/edward/logic.js';
+import { identityFor } from './features/profile/logic.js';
+import { sortTasks } from './features/enrollment/logic.js';
+import { buildLedger } from './features/financials/logic.js';
 import { DEFAULT_ROUTE, destinationByRoute, isRouteHash } from './lib/navigation.js';
 import {
   FINANCIALS_STATES,
@@ -62,7 +62,7 @@ import {
   initialReviewing,
   initialTasks,
   lockedTasks,
-} from './data.js';
+} from './features/enrollment/data.js';
 
 /** The machine's part of the wait. Long enough to be seen, short enough not to be a wait. */
 const CHECK_MS = 4200;
@@ -550,7 +550,7 @@ export default function App() {
     // `no-matches` means something here and nothing to the frame.
     if (current.id === 'my-classrooms') {
       return (
-        <MyClassrooms
+        <ClassroomsPage
           destination={current}
           state={preview}
           onToast={setToast}
@@ -562,7 +562,7 @@ export default function App() {
     // ENR-184. `empty` means a record opened today rather than a section with
     // nothing in it, so this page reads the raw preview value too.
     if (current.id === 'profile') {
-      return <MyProfile destination={current} state={preview} onToast={setToast} />;
+      return <ProfilePage destination={current} state={preview} onToast={setToast} />;
     }
 
     // ENR-183. Two of this page's states are its own — a student with nothing
@@ -570,7 +570,7 @@ export default function App() {
     // — so it also reads the raw preview value.
     if (current.id === 'appointments') {
       return (
-        <Appointments
+        <AppointmentsPage
           destination={current}
           previewState={preview}
           onToast={setToast}
@@ -599,7 +599,7 @@ export default function App() {
     // reads the raw preview value too.
     if (current.id === 'my-documents') {
       return (
-        <MyDocuments
+        <DocumentsPage
           destination={current}
           previewState={preview}
           record={record}
@@ -621,7 +621,7 @@ export default function App() {
     // other module — ADR-0001.
     if (current.id === 'health') {
       return (
-        <Health
+        <HealthPage
           destination={current}
           previewState={preview}
           requirement={immunization}
@@ -659,7 +659,7 @@ export default function App() {
     // The route chooses the tab; the required band sits above both.
     if (current.group === 'campus') {
       return (
-        <MyCampusLife
+        <CampusPage
           destination={current}
           previewState={preview}
           tab={current.id}
@@ -692,7 +692,7 @@ export default function App() {
 
       if (current.id === 'financials-overview') {
         return (
-          <FinancialsOverview
+          <OverviewPage
             {...shared}
             documents={financialDocs}
             depositDays={byId.deposit?.daysLeft}
@@ -703,7 +703,7 @@ export default function App() {
 
       if (current.id === 'financials-aid') {
         return (
-          <FinancialsAid
+          <AidPage
             {...shared}
             blockers={byId}
             onExplainProgress={() => setProgressModal(true)}
@@ -712,7 +712,7 @@ export default function App() {
       }
 
       return (
-        <FinancialsPayments
+        <PaymentsPage
           {...shared}
           onPay={payHandoff}
           onChangePlan={changePlan}
