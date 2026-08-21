@@ -1070,9 +1070,6 @@
   .summary-figure.money .summary-figure-copy strong {
     font-size: var(--fs-display);
   }
-  .ledger-card, .schedule-card, .progress-preview, .billed-split {
-    padding: var(--space-8);
-  }
   .ledger-group th, .ledger-total th {
     font-size: var(--fs-copy);
   }

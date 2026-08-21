@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import Card from '../../design-system/primitives/Card.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import TermTip from './TermTip.jsx';
 import { paymentPlan } from '../enrollment/data.js';
@@ -22,7 +23,7 @@ const MARK = {
  */
 export default function ScheduleList({ schedule, ledger, unavailable, onChangePlan, onRetry }) {
   return (
-    <section className="schedule-card" aria-labelledby="schedule-title">
+    <Card aria-labelledby="schedule-title">
       <div className="card-heading">
         <span className="card-icon">
           <Icon name="calendar" size={19} />
@@ -85,6 +86,6 @@ export default function ScheduleList({ schedule, ledger, unavailable, onChangePl
           </p>
         </>
       )}
-    </section>
+    </Card>
   );
 }

@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import Card from '../../design-system/primitives/Card.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import FinancialsPage from './FinancialsPage.jsx';
 import ScheduleList from './ScheduleList.jsx';
@@ -45,7 +46,7 @@ export default function PaymentsPage({
 
   return (
     <FinancialsPage {...frame}>
-      <section className="billed-split" aria-labelledby="billed-title">
+      <Card aria-labelledby="billed-title">
         <div className="card-heading">
           <span className="card-icon">
             <Icon name="receipt" size={19} />
@@ -80,7 +81,7 @@ export default function PaymentsPage({
           Together they make the {formatMoney(ledger.balance)} estimated balance on your Overview.
           Only the left-hand figure ever arrives as a bill.
         </p>
-      </section>
+      </Card>
 
       <ScheduleList
         schedule={snapshot.schedule}

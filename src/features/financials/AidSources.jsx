@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import Card from '../../design-system/primitives/Card.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import TermTip from './TermTip.jsx';
 import { formatCredit, formatMoney } from './logic.js';
@@ -26,7 +27,7 @@ const STATUS = {
  */
 export default function AidSources({ snapshot, ledger, onOpenBlocker, blockers }) {
   return (
-    <section className="ledger-card aid-card" aria-labelledby="aid-title">
+    <Card aria-labelledby="aid-title">
       <div className="card-heading">
         <span className="card-icon">
           <Icon name="award" size={19} />
@@ -86,6 +87,6 @@ export default function AidSources({ snapshot, ledger, onOpenBlocker, blockers }
         <span>Accepted so far</span>
         <strong>{formatMoney(ledger.aidAccepted)}</strong>
       </div>
-    </section>
+    </Card>
   );
 }

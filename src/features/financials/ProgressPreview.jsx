@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import Card from '../../design-system/primitives/Card.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
 import TermTip from './TermTip.jsx';
 import { share } from './logic.js';
@@ -23,7 +24,7 @@ function chipFor(metric, started) {
  */
 export default function ProgressPreview({ progress, unavailable, onExplain, onRetry }) {
   return (
-    <section className="progress-preview" aria-labelledby="progress-title">
+    <Card variant="progress-preview" aria-labelledby="progress-title">
       <div className="card-heading">
         <span className="card-icon">
           <Icon name="chart" size={19} />
@@ -96,6 +97,6 @@ export default function ProgressPreview({ progress, unavailable, onExplain, onRe
           </button>
         </>
       )}
-    </section>
+    </Card>
   );
 }

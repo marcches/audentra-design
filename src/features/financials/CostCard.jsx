@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import Card from '../../design-system/primitives/Card.jsx';
 import TermTip from './TermTip.jsx';
 import { costOfAttendance } from '../enrollment/data.js';
 import { formatCredit, formatMoney } from './logic.js';
@@ -28,7 +29,7 @@ const HOUSING_BASIS = {
 
 export default function CostCard({ ledger, snapshot, year, children }) {
   return (
-    <section className="ledger-card" aria-labelledby="cost-title">
+    <Card aria-labelledby="cost-title">
       <div className="card-heading">
         <span className="card-icon">
           <Icon name="receipt" size={19} />
@@ -161,6 +162,6 @@ export default function CostCard({ ledger, snapshot, year, children }) {
           your balance. It has never been counted as zero.
         </p>
       )}
-    </section>
+    </Card>
   );
 }

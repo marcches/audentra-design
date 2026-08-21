@@ -2398,12 +2398,13 @@ footer a {
  * reaches across for it or writes its own. Deleting My Financials would have
  * taken the card system with it.
  *
- * One thing here is still not right, and is left visible rather than fixed
- * quietly: `.section-card, .ledger-card, .schedule-card, .progress-preview,
- * .billed-split` is one selector naming five things that are one thing. My
- * Financials named four variants of a card and they should collapse into
- * `.section-card` — but that is a change to markup on three pages, not a
- * move, so it belongs in its own commit with the screens open.
+ * The card selector used to read `.section-card, .ledger-card, .schedule-card,
+ * .progress-preview, .billed-split` — one rule naming five things that were one
+ * thing. `.ledger-card`, `.schedule-card` and `.billed-split` had no rules of
+ * their own at all; they existed only to ride this selector. They are gone, and
+ * the five sections that carried them go through the `Card` primitive now.
+ * `.progress-preview` survives as a modifier because it has exactly one rule of
+ * its own; `.aid-card` was on a section and defined nowhere, so it went too.
  * ==========================================================================*/
 
 /* --- the state cards --- */
@@ -2490,8 +2491,7 @@ footer a {
    column is one of these; nothing sits loose on the canvas any more. The two
    numbers are published as variables because the rows inside have to meet them
    exactly — see `.card-rows`. */
-.section-card,
-.ledger-card, .schedule-card, .progress-preview, .billed-split {
+.section-card {
   --card-pad: 20px;
   --card-radius: 18px;
   border: 1px solid var(--line);
@@ -2568,11 +2568,7 @@ footer a {
    three margins (12px, 14px, 16px) stop being three. */
 .section-card > .status-heading:first-child,
 .section-card > .card-heading:first-child,
-.section-card > .section-heading:first-child,
-.ledger-card > .card-heading:first-child,
-.schedule-card > .card-heading:first-child,
-.progress-preview > .card-heading:first-child,
-.billed-split > .card-heading:first-child {
+.section-card > .section-heading:first-child {
   background: var(--card-zone);
   border-bottom: 1px solid var(--line);
   border-radius: calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0 0;
