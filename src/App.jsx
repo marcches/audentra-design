@@ -39,7 +39,6 @@ import {
   decisionKey,
   finishChecking,
   markDecisionRead,
-  needsYou,
   officeOf,
 } from './features/documents/logic.js';
 import { notifications as notificationFeed } from './features/notifications/data.js';
@@ -200,14 +199,13 @@ export default function App() {
   const urgentDoc = [...financialDocs].sort((a, b) => a.daysLeft - b.daysLeft)[0] ?? null;
   const byId = useMemo(() => Object.fromEntries(tasks.map((t) => [t.id, t])), [tasks]);
 
-  // A sidebar badge counts only what needs action from the student, and it is
-  // the same count the page's own subhead gives (UX writing 6.6). A decision she
-  // has not opened still reaches her somewhere other than the page it happened
-  // on — ENR-158 AC 5 — through the bell, which counts unread updates.
-  const decisions = unavailable ? null : needsYou(record.requirements).length;
+  // A sidebar badge counts only what needs action from the student (UX writing
+  // 6.6). My Documents has no row since the Jam of 2026-08-21; what needs her
+  // there is counted on its entry card on Profile and on the page, and a
+  // decision she has not opened reaches her through the bell — ENR-158 AC 5.
   const badges = unavailable
     ? {}
-    : { openSteps: viewTasks.length, decisions, required: requiredEventCount(preview) };
+    : { openSteps: viewTasks.length, required: requiredEventCount(preview) };
 
   // Edward reads the same objects the pages render — never a copy of them, so a
   // figure it says out loud cannot drift from the figure on screen. ENR-181.
@@ -586,7 +584,7 @@ export default function App() {
     // ENR-184. `empty` means a record opened today rather than a section with
     // nothing in it, so this page reads the raw preview value too.
     if (current.id === 'profile') {
-      return <ProfilePage destination={current} state={preview} onToast={pushToast} />;
+      return <ProfilePage destination={current} state={preview} record={record} onToast={pushToast} />;
     }
 
     // ENR-183. Two of this page's states are its own — a student with nothing

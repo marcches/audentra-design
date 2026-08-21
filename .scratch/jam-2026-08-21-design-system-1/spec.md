@@ -1,5 +1,5 @@
 Jira: none — design-system feedback, asked for directly (2026-08-21); no open card owns it
-Status: in-progress (2026-08-21)
+Status: built (2026-08-21) — round two open, see §5
 Labels: design-system, persona-student, screen-all
 Jam: https://jam.dev/c/b37ab33d-80c8-4208-887f-c61bcb336076 — "the space" under the summary panel,
      standardised as My Enrollment has it; Housing moves under Health; My Documents leaves the
@@ -51,58 +51,74 @@ notice up by hand. Three values for one idea.
 
 ### Done when
 
-- [ ] `--hero-gap: 30px`, `--hero-tuck` overridden at ≤620, no raw `30px`/`25px`/`14px`/`-12px` left
+- [x] `--hero-gap: 30px`, `--hero-tuck` overridden at ≤620, no raw `30px`/`25px`/`14px`/`-12px` left
       in the shell rules
-- [ ] `PageShell` renders `.page-notice` around a non-null notice; `.page-notice { margin: 0 0 var(--space-9) }`
-- [ ] Every route: panel/hero → next = 30 at 1440 and at 390; notice/tabs → body = 18
-- [ ] Before/after capture at 1440 and 390: the only diffs are the rows above, plus the known 7-element
+- [x] `PageShell` renders `.page-notice` around a non-null notice; `.page-notice { margin: 0 0 var(--space-9) }`
+- [x] Every route: panel/hero → next = 30 at 1440 and at 390; notice/tabs → body = 18
+- [x] Before/after capture at 1440 and the phone width (Chrome DevTools will not go under 500 wide — ≤620 rules, same block): the only diffs are the rows above, plus the known 7-element
       flake (a GroupTabs width settling, three styleguide icon boxes)
-- [ ] Styleguide: the `hero-gap` row in "Layout constants" reads the new meaning
+- [x] Styleguide: the `hero-gap` row in "Layout constants" reads the new meaning
 
 ## 3. The sidebar
 
 Order, from the Jam (1:34): My Enrollment · Appointments · My Classrooms · Health · Housing ·
 My Financials · My Campus Life; foot: Help · profile chip. Two things she did not see:
 
-- **Accessibility** — split out of Health by the UX-writing pass of the same morning (ADR-0003,
-  other session). It goes **directly after Health**, then Housing: the two were one section yesterday.
-- **My Classrooms** is being renamed *My Degree* by the same pass; the row is the same row.
+- **My Classrooms** is *My Degree* since the UX-writing pass of the same morning; the row is the
+  same row.
+- **Accessibility** — split out of Health by the same pass (ADR-0003), as a sidebar row after Health.
+  Marco's call during the build: *nobody asked for it; the sidebar is the Jam's list.* So the row is
+  gone and the page is not: the destination carries `parent: 'health'`, lives at
+  `#/health/accessibility`, keeps the Health row active, and is reached from an entry card under the
+  immunization record. ADR-0003 gains a dated note; its substance (a page of its own, no badge, the
+  answer reaches no other module) is untouched.
 
-ADR 0002 gains a dated note: "last in the sidebar" stops being a consequence; "not a leaf of My
+ADR 0002 gains a dated note too: "last in the sidebar" stops being a consequence; "not a leaf of My
 Campus Life" still holds, and that is what the ADR is for.
 
 ### Done when
 
-- [ ] `NAV` in `navigation.js`: enrollment, appointments, classrooms, health, accessibility, housing,
-      financials group, campus group; `my-documents` row gone
-- [ ] Comment on the Housing row and ADR 0002 updated
-- [ ] Sidebar renders the order at 1440 and in the ≤820 sheet
+- [x] `NAV` in `navigation.js`: enrollment, appointments, classrooms, health, housing, financials
+      group, campus group — exactly the Jam's list; no `my-documents` and no `accessibility` row
+- [x] Comment on the Housing row, ADR 0002 and ADR-0003 updated
+- [x] Sidebar renders the order at 1440 (DOM check: *My Enrollment · Appointments · My Degree ·
+      Health · Housing · [My Financials] · [My Campus Life]*)
 
-## 4. My Documents, inside the profile
+## 4. My Documents, inside the profile — and the one shape for "a section under a section"
 
 Shape (Q4–Q6, references in `references.md`): the page stays a page — its own hero, summary, rail,
-preview states — and moves under the profile:
+preview states — and moves under the profile. The mechanism is the same one Accessibility now uses,
+so it exists once:
 
+- **`parent`** on a destination in `navigation.js`: no sidebar row; the parent's row (or the profile
+  chip) is `active` and `aria-current` while the child is open; reached from the parent's page and
+  from deep links.
+- **`EntryCard`** (`design-system/patterns/EntryCard.jsx`, on the styleguide beside the three card
+  heads): the way in — `CardHead kind="card"` with the destination's label and lede and the live
+  count, then `CardFoot.entry-foot` with what stands there today and one `secondary-button` link.
+  Deel's person page is the reference. Head, then foot, nothing between: a door, not a copy of the
+  room.
 - **Route** `#/profile/documents`; `#/my-documents` falls through to the 404 the way `#/dashboard`
-  did. Destination `id` stays `my-documents` (App, Edward, notifications and preview states key on it).
-  It carries `parent: 'profile'` and `kind: 'profile'`, no `badge`: the count it carried moves to the
-  card on the profile and is otherwise the bell's and My Enrollment's (Q5).
-- **Eyebrow** `Profile · My Documents`. Title and lede stay whatever the UX-writing pass sets.
-- **Sidebar**: the profile chip is `active` (and `aria-current`) while the current destination is
-  `profile` or has `parent: 'profile'`.
-- **Profile page**: a new **first card** in the main column — *Your documents* — icon `file`, the
-  standing (*what needs you*, *on record*, *sent to you by Aster*) as `card-rows`, and one action
-  that opens the page. The documents row leaves *What lives somewhere else*: it no longer lives
-  somewhere else. `ProfilePage` receives `record` from `App`, so the figures are the record's and
-  never a copy.
-- **Every deep link** (`#/my-documents` in 12 places) → `#/profile/documents`.
+  did. Destination `id` stays `my-documents` (App, Edward, notifications and preview states key on
+  it). No `badge`: the count moved to the entry card and the page; the bell carries the unread
+  decision (ENR-158 AC 5); My Enrollment counts the steps (Q5).
+- **Eyebrow** `Profile · My Documents` (and `Health · Accessibility` on the other one). Title and
+  lede stay whatever the UX-writing pass set.
+- **Profile page**: the entry card is the **first block** of the main column, its standing sentence
+  is `standingLede()` in `documents/logic.js` — the same function that writes the My Documents hero
+  lede, moved there so the two cannot drift — read from the `record` App now hands the page. The
+  documents row leaves *What lives somewhere else*: it no longer lives somewhere else.
+- **Every deep link** (`#/my-documents` in 9 places) → `#/profile/documents`.
 
 ### Done when
 
-- [ ] No `my-documents` row in the sidebar; `#/profile/documents` renders `DocumentsPage`
-- [ ] Profile shows the documents card first, with live figures, and the signpost row is gone
-- [ ] Chip active on both routes; `grep -rn '#/my-documents' src` returns nothing
-- [ ] Keyboard: the card's action is a link, reachable and announced
+- [x] No `my-documents` row in the sidebar; `#/profile/documents` renders `DocumentsPage`
+- [x] Profile shows the documents card first, with live figures (*2 documents need something from
+      you…*, count 2), and the signpost row is gone
+- [x] Chip active on both routes; Health row active on `#/health/accessibility`;
+      `grep -rn '#/my-documents' src` returns nothing; `#/my-documents` and `#/accessibility` → 404
+- [x] The card's action is a link, reachable and announced; `EntryCard` is on the styleguide
+- [x] `npm run build` clean
 
 ## 5. Out of scope here — round two, own spec, same day
 

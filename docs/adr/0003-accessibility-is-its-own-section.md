@@ -44,3 +44,11 @@ the question once, in its health step — that is where the answer is first give
 about both things — and the Accessibility page is where the answer lives afterwards. If a staff
 view of accommodations ever arrives (ENR-212), it inherits this section's rule, not Health's: the
 record may travel, the answer may not.
+
+## Amended 2026-08-21, later the same day
+
+The route stays; the sidebar row does not. Marco read the Jam of 2026-08-21 as the whole list —
+nobody asked for an Accessibility section in the navigation — so the destination carries
+`parent: 'health'` in `navigation.js`: no row, the Health row is active while it is open, and the
+way in is an `EntryCard` under the immunization record on Health, at `#/health/accessibility`. The
+substance of this ADR (a page of its own, no badge, the answer reaches no other module) is untouched.

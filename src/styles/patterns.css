@@ -2301,6 +2301,22 @@ footer a {
   padding: var(--space-6) var(--card-pad);
 }
 
+/* The foot of an entry card — `EntryCard`: what stands there today on the
+   left, the one way in on the right. The sentence gives way first; the control
+   never wraps its label. */
+.entry-foot {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-6);
+  display: flex;
+}
+
+.entry-foot > span {
+  color: var(--muted);
+  flex: 1 1 240px;
+}
+
 /* --- the link button --- */
 
 .link-button {

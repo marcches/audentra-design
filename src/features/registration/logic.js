@@ -78,7 +78,7 @@ export function gateItems({ requirements = [], events = [], config = registratio
           // mark it on My Enrollment too without the card knowing an id.
           taskId: requirement.taskId ?? null,
           since: requirement.submissions?.at(-1)?.sent ?? null,
-          route: '#/my-documents',
+          route: '#/profile/documents',
         };
       }
 

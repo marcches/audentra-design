@@ -1,9 +1,12 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
 import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
+import EntryCard from '../../design-system/patterns/EntryCard.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
+import { destinationById } from '../../lib/navigation.js';
+import { checkingOne, needsYou, standing, standingLede } from '../documents/logic.js';
 import FieldRow from './FieldRow.jsx';
 import PermissionGrant from './PermissionGrant.jsx';
 import ProfileRail from './ProfileRail.jsx';
@@ -26,19 +29,34 @@ import { buildProfile, grantsFor, identityFor, runsFor } from './logic.js';
  * family authorization onboarding captured now lives here, because this is
  * where a student goes looking for it. And the academic documents panel that
  * duplicated My Documents is gone: what is held elsewhere is named and routed
- * to, never copied — one record, one place, ENR-174 AC 4.
+ * to, never copied — one record, one place, ENR-174 AC 4. Since the Jam of
+ * 2026-08-21 My Documents lives *under* this page: the first card is its way
+ * in, with the record's own standing on it — read from the same record App
+ * hands My Documents, never a copy.
  *
  * Like My Classrooms, this page reads the raw preview value rather than
  * `frameState`: `empty` means "a record opened today" here, which is a real
  * state of this screen and not the frame's idea of nothing.
  */
-export default function ProfilePage({ destination, state, onToast }) {
+export default function ProfilePage({ destination, state, record, onToast }) {
   const { groups, version, updated, ownership, blanks } = useMemo(
     () => buildProfile(state),
     [state],
   );
   const identity = identityFor(state);
   const unchecked = state === 'partial';
+
+  // The documents standing, from the record itself. `partial` reads as unread,
+  // not as settled, the way My Documents reads it.
+  const documents = destinationById('my-documents');
+  const requirements = record?.requirements ?? [];
+  const mine = unchecked ? [] : needsYou(requirements);
+  const documentsStanding = standingLede({
+    unavailable: unchecked,
+    mine,
+    checking: unchecked ? null : checkingOne(requirements),
+    figures: standing(unchecked ? [] : requirements),
+  });
 
   const [channel, setChannel] = useState('portal');
   const [choiceOpen, setChoiceOpen] = useState(false);
@@ -200,6 +218,19 @@ export default function ProfilePage({ destination, state, onToast }) {
         />
       }
     >
+      {/* The way in to My Documents, first: it is the one block on this page
+          that can need something from her. */}
+      <EntryCard
+        id="documents"
+        icon={documents.icon}
+        title={documents.label}
+        note={documents.lede}
+        count={mine.length}
+        standing={documentsStanding}
+        href={documents.route}
+        action="Open My Documents"
+      />
+
       {groups.map((group) => (
         <section className="section-card" key={group.id} aria-labelledby={`${group.id}-title`}>
           <div className="status-heading">

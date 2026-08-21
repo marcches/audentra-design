@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Icon from '../Icon.jsx';
 import Card, { CardFoot, CardHead, CardRows } from '../primitives/Card.jsx';
+import EntryCard from '../patterns/EntryCard.jsx';
 import AnchorCard from '../primitives/AnchorCard.jsx';
 import Button, { IconButton } from '../primitives/Button.jsx';
 import Drawer from '../primitives/Drawer.jsx';
@@ -543,6 +544,17 @@ export default function Styleguide({ onToast }) {
                 </div>
               </CardRows>
             </Card>
+
+            <EntryCard
+              id="sg-entry"
+              icon="file"
+              title="An entry card"
+              note="The way in to a section that lives under this one — head, then foot, nothing between. The card is a door, not a copy of the room."
+              count={2}
+              standing="What stands there today, beside the one way in."
+              href="#/styleguide"
+              action="Open it"
+            />
           </div>
         </Section>
 

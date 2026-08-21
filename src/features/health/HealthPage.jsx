@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { enrollmentAdvisor } from '../enrollment/data.js';
+import EntryCard from '../../design-system/patterns/EntryCard.jsx';
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
+import { destinationById } from '../../lib/navigation.js';
 import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
 import RecordCard from './RecordCard.jsx';
 import HealthRail from './HealthRail.jsx';
@@ -17,7 +19,8 @@ import { registration } from '../registration/data.js';
  * and a history. The accommodation question ENR-206 built beside it moved to a
  * section of its own, Accessibility, on 2026-08-21 (ADR-0003): filed under
  * Health it read as a medical matter, which is the one thing the question says
- * Aster is not asking about.
+ * Aster is not asking about. It has no sidebar row — the sidebar is the Jam's
+ * list — so the entry card under the record is its way in.
  *
  * The section's one figure is the **record's state** and nothing else.
  *
@@ -60,6 +63,7 @@ export default function HealthPage({
   onOverlay = () => {},
   onRetry = () => {},
 }) {
+  const accessibility = destinationById('accessibility');
   const [open, setOpen] = useState(false);
 
   const unavailable = previewState === 'partial';
@@ -115,6 +119,16 @@ export default function HealthPage({
         unavailable={unavailable}
         onOpen={() => setOpen(true)}
         onRetry={onRetry}
+      />
+
+      <EntryCard
+        id="accessibility"
+        icon={accessibility.icon}
+        title={accessibility.label}
+        note={accessibility.lede}
+        standing="Yours to answer, or not. Not right now is a complete answer, and nothing here is a medical matter."
+        href={accessibility.route}
+        action="Open Accessibility"
       />
 
       {open && requirement && (

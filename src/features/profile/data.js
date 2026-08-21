@@ -128,17 +128,11 @@ export const session = {
 /**
  * The academic documents panel this page used to carry duplicated My Documents.
  * ENR-190 names that as a divergence, so the fix is a route rather than a copy:
- * the record is one thing, and the section that owns it is named here.
+ * the record is one thing, and the section that owns it is named here. Since the
+ * Jam of 2026-08-21 My Documents lives under this page — its entry card is the
+ * first block — so this list holds only what is genuinely elsewhere.
  */
 export const elsewhere = [
-  {
-    id: 'documents',
-    icon: 'file',
-    label: 'The files you sent Aster',
-    note: 'Transcripts, forms, and letters, and everything Aster sent you.',
-    route: '#/my-documents',
-    where: 'My Documents',
-  },
   {
     id: 'academic',
     icon: 'book',

@@ -58,7 +58,7 @@ export default function HealthRail({ unavailable, onToast }) {
           </p>
           <a
             className="link-button"
-            href="#/my-documents"
+            href="#/profile/documents"
             onClick={() => onToast(`${published.title} is on your record in My Documents.`)}
           >
             <Icon name="file" size={14} /> {published.title}

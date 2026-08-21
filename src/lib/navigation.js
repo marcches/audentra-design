@@ -21,6 +21,12 @@
  * `built` says a card owns that screen. Whether it renders is decided by the
  * page registry in `App.jsx` — a destination whose page has not landed yet
  * shows its placeholder, which is its honest state.
+ *
+ * `parent` says a destination lives under another one. It has no sidebar row
+ * of its own; the parent's row stays active while it is open; it is reached
+ * from an `EntryCard` on the parent's page and from deep links. My Documents
+ * lives under Profile and Accessibility under Health — the Jam of 2026-08-21,
+ * and Marco's instruction the same morning.
  */
 
 export const GROUPS = {
@@ -73,15 +79,17 @@ export const DESTINATIONS = [
   {
     id: 'my-documents',
     label: 'My Documents',
-    route: '#/my-documents',
+    route: '#/profile/documents',
     icon: 'file',
-    // ENR-158 AC 5, the half a portal with no mail server can honour: a
-    // decision she has not opened is counted here, so it reaches her somewhere
-    // other than the page it happened on.
-    badge: 'decisions',
+    // Under Profile since the Jam of 2026-08-21: no sidebar row, the profile
+    // chip is the way in. No badge either — the count of what needs her sits on
+    // the entry card on Profile and on the page, My Enrollment already counts
+    // the steps, and the bell carries a decision she has not opened
+    // (ENR-158 AC 5).
+    parent: 'profile',
     lede: 'Everything you have sent Aster, and everything Aster has sent you.',
     hero: {
-      kicker: 'My Documents',
+      kicker: 'Profile · My Documents',
       title: 'Everything on file.',
       lede: 'Everything you have sent Aster, and everything Aster has sent you, in one place.',
     },
@@ -151,15 +159,20 @@ export const DESTINATIONS = [
   {
     id: 'accessibility',
     label: 'Accessibility',
-    route: '#/accessibility',
+    route: '#/health/accessibility',
     icon: 'accessibility',
+    // A page of its own (ADR-0003) but not a sidebar row: Marco took the row
+    // out on 2026-08-21 — the sidebar is the Jam's list and nobody asked for a
+    // section — so it lives under Health and is reached from the entry card
+    // under the record.
+    parent: 'health',
     // Its own section, not a card inside Health — ADR-0003. And no badge, ever:
     // any counter that could include the accommodation question would turn a
     // complete "not right now" into a pending item, which is the one thing this
     // section exists to avoid (ADR-0001, ENR-208 AC 3).
     lede: 'One question that’s yours to answer, or not.',
     hero: {
-      kicker: 'Accessibility · Accessibility Services',
+      kicker: 'Health · Accessibility',
       title: 'Accommodations, if you want them.',
       lede: 'One question that’s yours to answer, or not.',
       motif: 'accessibility',
@@ -350,8 +363,9 @@ export function onboardingStepFrom(hash) {
 
 /**
  * The sidebar, in order — Laura's, from the Jam of 2026-08-21: what I must do,
- * what I sent and who I talk to, my degree, my health and the question beside it,
- * where I will live, then the money and the rest of my life at Aster.
+ * who I talk to, my degree, my health, where I will live, then the money and the
+ * rest of my life at Aster. My Documents left the list for the profile that
+ * morning, and Accessibility never joined it (see `parent` above).
  *
  * Messages is gone. It was never a card: it arrived in the product base as a
  * decorative row and ENR-180 kept it because the topbar bell needed somewhere to
@@ -370,15 +384,13 @@ export function onboardingStepFrom(hash) {
  */
 export const NAV = [
   { kind: 'link', id: 'my-enrollment' },
-  { kind: 'link', id: 'my-documents' },
   { kind: 'link', id: 'appointments' },
   { kind: 'link', id: 'my-classrooms' },
   { kind: 'link', id: 'health' },
-  { kind: 'link', id: 'accessibility' },
-  // After Health and Accessibility, before the money: the Jam of 2026-08-21 put
-  // it here, among the sections about the student herself. It used to sit last,
-  // under My Campus Life. It is a link, not a leaf of the group below it —
-  // ADR 0002, amended the same day.
+  // After Health, before the money: the Jam of 2026-08-21 put it here, among
+  // the sections about the student herself. It used to sit last, under My
+  // Campus Life. It is a link, not a leaf of the group below it — ADR 0002,
+  // amended the same day.
   { kind: 'link', id: 'housing' },
   {
     kind: 'group',

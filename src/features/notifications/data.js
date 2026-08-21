@@ -28,7 +28,7 @@ export const notifications = [
     title: 'Verify your household income · sent back',
     office: 'financial-services',
     when: '2026-08-15',
-    route: '#/my-documents',
+    route: '#/profile/documents',
   },
   {
     id: 'transcript-received',
@@ -36,7 +36,7 @@ export const notifications = [
     title: 'Aster received your final transcript',
     office: 'registrar',
     when: '2026-08-12',
-    route: '#/my-documents',
+    route: '#/profile/documents',
   },
   {
     id: 'housing-form-withdrawn',
@@ -63,6 +63,6 @@ export const notifications = [
     title: 'Your proof of address was accepted',
     office: 'admissions',
     when: '2026-07-30',
-    route: '#/my-documents',
+    route: '#/profile/documents',
   },
 ];

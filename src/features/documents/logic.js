@@ -316,3 +316,24 @@ export function checkingOne(requirements) {
 export function rejectedOne(requirements) {
   return requirements.find((item) => stateOf(item) === 'changes-requested') ?? null;
 }
+
+/**
+ * The one sentence about where the record stands today — the lede under the My
+ * Documents hero, and the foot of the entry card on Profile (Jam of
+ * 2026-08-21). Written once so the two cannot drift.
+ */
+export function standingLede({ unavailable, mine, checking, figures }) {
+  if (unavailable) {
+    return 'Everything you have sent Aster, and everything Aster has sent you. What Aster decided could not be read just now, so nothing below is shown as settled.';
+  }
+  if (checking) {
+    return 'Something you just sent is still being checked. You can leave this page. It keeps going without you.';
+  }
+  if (mine.length > 0) {
+    return `${mine.length === 1 ? 'One document needs' : `${mine.length} documents need`} something from you. Everything else is with Aster or settled.`;
+  }
+  if (figures.withAster > 0) {
+    return 'Nothing needs you. What is left is with Aster, and each one says who is holding it.';
+  }
+  return 'Everything Aster asked for has been accepted. This is the whole record, both directions.';
+}

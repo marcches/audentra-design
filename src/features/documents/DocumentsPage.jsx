@@ -17,6 +17,7 @@ import {
   onRecord,
   rejectedOne,
   standing,
+  standingLede,
   unreadDecisions,
 } from './logic.js';
 
@@ -114,7 +115,7 @@ export default function DocumentsPage({
     onMarkRead(requirement.id);
   }
 
-  const hero = { lede: heroLede({ unavailable, mine, checking, figures }) };
+  const hero = { lede: standingLede({ unavailable, mine, checking, figures }) };
 
   return (
     <PageShell
@@ -306,21 +307,6 @@ export default function DocumentsPage({
 }
 
 /** The band's only dynamic line; everything else about the hero lives in `navigation.js`. */
-function heroLede({ unavailable, mine, checking, figures }) {
-  if (unavailable) {
-    return 'Everything you have sent Aster, and everything Aster has sent you. What Aster decided could not be read just now, so nothing below is shown as settled.';
-  }
-  if (checking) {
-    return 'Something you just sent is still being checked. You can leave this page. It keeps going without you.';
-  }
-  if (mine.length > 0) {
-    return `${mine.length === 1 ? 'One document needs' : `${mine.length} documents need`} something from you. Everything else is with Aster or settled.`;
-  }
-  if (figures.withAster > 0) {
-    return 'Nothing needs you. What is left is with Aster, and each one says who is holding it.';
-  }
-  return 'Everything Aster asked for has been accepted. This is the whole record, both directions.';
-}
 
 /** The sentence under the figure: what the number means today. */
 function standingLine({ unavailable, figures, unread }) {

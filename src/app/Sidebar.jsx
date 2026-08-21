@@ -32,7 +32,10 @@ function NavBadge({ count, noun }) {
 function NavRow({ id, activeId, badges, leaf, onNavigate }) {
   const item = destinationById(id);
   if (!item) return null;
-  const active = item.id === activeId;
+  // A row is the way in for its own page and for the pages that live under it
+  // — My Documents under Profile, Accessibility under Health — so the student
+  // always sees which section she is in.
+  const active = item.id === activeId || destinationById(activeId)?.parent === item.id;
 
   return (
     <li>
@@ -47,12 +50,6 @@ function NavRow({ id, activeId, badges, leaf, onNavigate }) {
         </span>
         {item.label}
         {item.badge === 'openSteps' && <NavBadge count={badges.openSteps} noun="steps still open" />}
-        {item.badge === 'decisions' && (
-          <NavBadge
-            count={badges.decisions}
-            noun={badges.decisions === 1 ? 'document that needs you' : 'documents that need you'}
-          />
-        )}
         {item.badge === 'required' && (
           <NavBadge
             count={badges.required}
@@ -88,6 +85,8 @@ export default function Sidebar({
   const panel = useRef(null);
   const help = destinationById(UTILITY_ID);
   const profile = destinationById(PROFILE_ID);
+  // The chip is the way in to the profile and to what lives under it.
+  const onProfile = activeId === profile.id || destinationById(activeId)?.parent === profile.id;
 
   // A collapsed group never hides where the student is.
   useEffect(() => {
@@ -260,9 +259,9 @@ export default function Sidebar({
           {help.label}
         </a>
         <a
-          className={`profile-chip${activeId === profile.id ? ' active' : ''}`}
+          className={`profile-chip${onProfile ? ' active' : ''}`}
           href={profile.route}
-          aria-current={activeId === profile.id ? 'page' : undefined}
+          aria-current={onProfile ? 'page' : undefined}
           onClick={onNavigate}
         >
           <span className="avatar" aria-hidden="true">

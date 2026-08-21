@@ -285,7 +285,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
                       </li>
                     ))}
                   </ul>
-                  <a className="secondary-button" href="#/my-documents">
+                  <a className="secondary-button" href="#/profile/documents">
                     Send a record <Icon name="arrow" size={15} />
                   </a>
                 </div>
