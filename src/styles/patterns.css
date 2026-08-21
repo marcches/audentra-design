@@ -2564,12 +2564,19 @@ footer a {
      `See the 2 steps →` and the line it belongs to cannot both keep their
      measure, and the sentence is the part that has to stay readable. It is the
      control that moves, never the control that wraps — see the button rule
-     above. */
+     above.
+
+     So the basis is the row minus the mark, not the whole row. Written as a
+     flat `100%` the *sentence* is what breaks to its own line: nothing fits
+     beside a 16px `flex: none` mark, so the mark is left alone on the first
+     line and `.notice-action`'s indent then lines up under nothing. Taking off
+     the mark and the gap it sits behind leaves the copy where it was and spends
+     the wrap on the control, which is the only part meant to move. */
   .notice {
     flex-wrap: wrap;
   }
   .notice-copy {
-    flex: 1 0 100%;
+    flex: 1 0 calc(100% - var(--notice-mark) - var(--space-5));
   }
   .notice-action {
     align-self: flex-start;
