@@ -69,7 +69,16 @@
   font-size: 19px;
 }
 
+/* The one part of the sidebar that scrolls. Thirteen destinations plus the foot
+   block outgrow a short screen; it used to be the whole `aside` that scrolled,
+   brand and foot included, and at 731px tall the portal's own name had scrolled
+   away (Jam of 2026-08-21, 1:01). Now the list gives, and the brand above and
+   the profile chip below stay where they are. */
 .main-nav {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   flex-direction: column;
   gap: var(--space-2);
   display: flex;
@@ -209,14 +218,17 @@
   top: 0;
 }
 
+/* One of the topbar's controls, so it takes the family's height, radius and
+   surface. It used to be a 25px grey pill beside 37px white chips and a 38px
+   icon button — three shapes on one row. Round two of the Jam of 2026-08-21. */
 .concept-pill {
-  color: #777187;
+  color: var(--muted);
   letter-spacing: var(--ls-caps);
   text-transform: uppercase;
-  background: var(--line-soft);
-  border-radius: var(--radius-pill);
+  background: var(--surface);
+  border-radius: var(--radius-tile);
   align-items: center;
-  height: 25px;
+  height: var(--control-height);
   padding: 0 var(--space-5);
   font-size: var(--fs-small);
   font-weight: var(--fw-heavy);
@@ -239,8 +251,8 @@
   background: var(--surface);
   border-radius: var(--radius-tile);
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: var(--control-height);
+  height: var(--control-height);
   transition: all .16s;
   display: grid;
 }

@@ -89,6 +89,11 @@ const COLOUR_GROUPS = [
     tokens: ['teal', 'teal-line', 'teal-soft'],
   },
   {
+    title: 'The browser’s furniture',
+    note: 'The thumb of every scrollbar, and selected text. A default the browser paints is still a colour on the page, so the two are named here and nowhere else.',
+    tokens: ['scrollbar-thumb', 'selection'],
+  },
+  {
     title: 'Translucent — the two glass surfaces and the scrim',
     note: 'The only tokens with alpha, so each swatch sits half on paper and half on ink: an alpha you cannot judge against both is an alpha nobody can judge. `--glass` was being retyped as a raw #ffffffeb for as long as it had no swatch here.',
     tokens: ['glass', 'scrim'],
@@ -155,6 +160,9 @@ const CONSTANT = [
   ['hero-tuck', 'the extra the summary panel eats into the band, and only when it follows it directly'],
   ['band-outdent', 'how far the band reaches past the shared column on each side'],
   ['panel-pad', 'the summary panel’s own padding'],
+  ['hero-min', 'the band’s height on every section — a two-line lede fits, a one-line one does not shrink it'],
+  ['panel-min', 'the summary panel’s body on every section — three meta lines fit, one does not shrink it'],
+  ['control-height', 'a topbar control: the preview pill, a chip, an icon button'],
   ['safe-bottom', 'the corner Edward owns. No page may put a primary action inside it'],
   ['toast-bottom', 'where a toast sits'],
   ['tip-gap', 'a tooltip to the control it points at'],

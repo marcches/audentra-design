@@ -134,6 +134,12 @@
   --line-soft: var(--ink-100);        /* was #eff0f4 ×7, #f0f1f4 ×2            */
   --line-strong: var(--ink-200);      /* was #d9dbe6 ×2, #d6d8e4 ×2            */
 
+  /* The browser's own furniture, in the product's colours: the thumb of every
+     scrollbar, and selected text. A default the browser paints is still a
+     colour on the page — round two of the Jam of 2026-08-21. */
+  --scrollbar-thumb: var(--ink-200);
+  --selection: var(--purple-tint);
+
   /* The accent, and the roles a hue needs. Every status hue below has the same
      shape, which is the point: a screen that needs "the line around an amber
      tint" must find it by the same name it found the purple one. */
@@ -290,6 +296,16 @@
   --hero-tuck: 20px;
   --band-outdent: 22px;
   --panel-pad: 23px;
+  /* The shell holds still between sections — round two of the Jam of
+     2026-08-21. The band is `--hero-min` tall on every route (a two-line lede
+     fits; a one-line one does not shrink it), the summary panel's body is at
+     least `--panel-min` (three meta lines fit), and every control in the topbar
+     — the preview pill, a chip, an icon button — is `--control-height`. Before
+     this the band was 172 or 183, the panel 102 to 114, the controls 25, 37 and
+     38, and the page started somewhere different on each route. */
+  --hero-min: 184px;
+  --panel-min: 114px;
+  --control-height: 38px;
   --safe-bottom: 76px;
   --toast-bottom: 25px;
   /* The tooltip's three measurements. They are constants rather than steps

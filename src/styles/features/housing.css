@@ -699,7 +699,7 @@
   border-radius: var(--radius-tile);
   align-items: center;
   gap: var(--space-3);
-  height: 37px;
+  height: var(--control-height);
   padding: 0 var(--space-5);
   font-family: inherit;
   font-size: var(--fs-copy);
@@ -713,7 +713,7 @@
 
 .bell-chip {
   justify-content: center;
-  width: 37px;
+  width: var(--control-height);
   padding: 0;
 }
 

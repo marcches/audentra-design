@@ -48,11 +48,11 @@
 
 /* --- the navigation itself --- */
 
-/* Thirteen destinations plus the foot block outgrow a short screen. Without
-   this the drawer simply hides Clubs, Help and the profile chip. */
+/* The sidebar itself never scrolls: the list inside it does (`.main-nav`,
+   chrome.css), so the brand and the profile chip are always where she left
+   them. Round two of the Jam of 2026-08-21. */
 .sidebar {
-  overscroll-behavior: contain;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .brand-row .brand-name {
