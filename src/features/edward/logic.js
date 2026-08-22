@@ -36,7 +36,7 @@ import { openTimes } from '../appointments/logic.js';
 import { GUIDANCE, PAGE_QUESTIONS } from './data.js';
 import { deadlineLabel, escalation, formatMoney } from '../financials/logic.js';
 import { destinationById } from '../../lib/navigation.js';
-import { organisationById } from '../campus/data.js';
+import { campusPublisher, organisationById } from '../campus/data.js';
 import { shortDate as campusShortDate } from '../campus/logic.js';
 
 /** The two people an answer can end at. There are no others in the portal. */
@@ -447,6 +447,18 @@ const ANSWERS = {
       ],
       source: guidanceSource('Aster Student Life’s club listing'),
       route: pageRoute('clubs', 'Open the clubs'),
+    };
+  },
+
+  /** Who publishes the campus board, and who to reach there — the rail's door on My Campus Life. */
+  'campus-publisher'() {
+    return {
+      body: [
+        `${campusPublisher.office} publishes every event and organization on My Campus Life. Aster staff write it in the campus life editor; the portal only shows it, and it was updated ${campusPublisher.updated}.`,
+        `${campusPublisher.coordinator.name}, ${campusPublisher.coordinator.role}, is the person there. Nothing you read or open on that page changes your interests, your progress or your points.`,
+      ],
+      source: guidanceSource('Aster Student Life’s board'),
+      route: pageRoute('events', 'Open My Campus Life'),
     };
   },
 

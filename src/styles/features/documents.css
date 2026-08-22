@@ -776,3 +776,10 @@
 .documents-section .panel-foot {
   margin-bottom: 0;
 }
+
+/* Inline, a document row is a row in a content column: its title takes the
+   row step and weight every other row title wears, not the panel's 13.5px. */
+.documents-section .document-body strong {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
+}

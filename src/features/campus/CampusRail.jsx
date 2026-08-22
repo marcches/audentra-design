@@ -1,5 +1,8 @@
 import Icon from '../../design-system/Icon.jsx';
 import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
+import EdwardAsk from '../../design-system/patterns/EdwardAsk.jsx';
+import { EDWARD } from '../edward/data.js';
+import { openEdward } from '../edward/door.js';
 
 export default function CampusRail({ interests, publisher, onToast }) {
   return (
@@ -47,16 +50,23 @@ export default function CampusRail({ interests, publisher, onToast }) {
             {publisher.coordinator.role}
           </span>
         </div>
-        <button
-          className="secondary-button"
+        {/* The way to the person who publishes this is the Edward door (Part A
+            §12, the sweep of 2026-08-22): the question written and unsent, and
+            his escalation reaches Student Life — never a direct line first. */}
+        <EdwardAsk
+          label="Ask Student Life"
+          mark={EDWARD.mark}
           onClick={() =>
-            onToast(
-              `A message to ${publisher.coordinator.name} would open here. Nothing is sent yet.`,
-            )
+            openEdward({
+              question: `Who publishes what’s on My Campus Life, and how do I reach ${publisher.office}?`,
+              context: {
+                label: 'My Campus Life · Where this comes from',
+                intent: 'campus-publisher',
+                office: 'student-life',
+              },
+            })
           }
-        >
-          <Icon name="mail" size={16} /> Ask Student Life
-        </button>
+        />
       </div>
     </>
   );
