@@ -45,6 +45,12 @@ that rebuilds, not one that gets retouched.
 ❓ **Q3 — Typography.** ➡️ Geist for brand and product; Geist Mono for code and specimens. Satoshi
 retired. The identity is carried by the Symbol, the three colours and the gradient, not by type.
 Plan B, only if the Vercel association ever bites: a display face for brand headlines only. ADR 0008.
+**Reversed by Marco on 2026-08-22, while chapter 05 was being built:** the brand keeps the agency
+book's typography, Satoshi for headings and Inter for text; no monospace face anywhere (values and
+code are Inter with formatting); Geist stays the product's typeface, and the book documents the
+split. ADR 0011 supersedes 0008. Chapter 05 pages 45, 47, 48, 49, 52 were rebuilt; the `Book/*`
+styles now bind to `font/heading` / `font/body` / `font/value`, and `font/heading` reads Inter until
+someone with Satoshi installed sets it in Figma (the MCP runtime cannot load it).
 
 ❓ **Q4 — The three colours and the gradient** (corrected after the audit). ➡️ The three are
 Purple `#6A38FF`, Blue `#1E5BFF`, Teal `#02CDC7`; Navy and White are the two canvases; Teal 700 is a

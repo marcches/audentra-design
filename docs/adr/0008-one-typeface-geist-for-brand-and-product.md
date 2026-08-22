@@ -1,7 +1,8 @@
 # 0008. One typeface — Geist — for the brand and the product; Satoshi is retired
 
 Date: 2026-08-22
-Status: accepted
+Status: superseded by ADR 0011 (same day — Marco kept the agency book's Satoshi and Inter for the
+brand; Geist stays the product's typeface)
 
 ## Context
 

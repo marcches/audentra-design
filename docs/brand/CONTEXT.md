@@ -81,9 +81,20 @@ not here).
 
 ### Type and voice
 
+**Satoshi**:
+The brand's headline face: Display, H1, H2, H3, in Bold, on every brand surface. Never running
+text, never inside the product (ADR 0011).
+_Avoid_: display font, brand font (it is one of two).
+
+**Inter**:
+The brand's text face: lead, body, captions, labels, values, in Regular, Medium, and Semi Bold.
+Values and code are Inter with their own formatting; the brand has no monospace face.
+_Avoid_: body font, a mono face for code.
+
 **Geist**:
-The one typeface, for the brand and the product alike; Geist Mono for code and specimens (ADR 0008).
-_Avoid_: Satoshi (retired before it was ever rendered), Inter (the deck's placeholder).
+The product's typeface, sans and mono, by the product's own decision. It appears in the portal and
+the staff tools and nowhere the brand speaks for itself; the book maps the split (ADR 0011).
+_Avoid_: the brand font.
 
 **Voice**:
 "Close, not cool" — how Audentra and every surface it builds sound. Defined in the UX writing spec

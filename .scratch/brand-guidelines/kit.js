@@ -9,11 +9,17 @@
 const PAGE_ID = '64:2';                       // Brand Guidelines v2
 const page = await figma.getNodeByIdAsync(PAGE_ID);
 await figma.setCurrentPageAsync(page);
-for (const [f, s] of [['Geist','Bold'],['Geist','SemiBold'],['Geist','Medium'],['Geist','Regular'],['Geist Mono','Regular'],['Geist Mono','Medium']]) await figma.loadFontAsync({ family: f, style: s });
+// Typography per ADR 0011: the Book/* styles are Satoshi (headings) + Inter (text, values); the MCP
+// runtime cannot load Satoshi, so the heading styles resolve to Inter through the `font/heading`
+// variable until it is set in Figma. Load Inter (and Geist only for product samples).
+for (const [f, s] of [['Inter','Bold'],['Inter','Semi Bold'],['Inter','Medium'],['Inter','Regular'],['Geist','Regular']]) await figma.loadFontAsync({ family: f, style: s });
 const vars = {}; for (const v of await figma.variables.getLocalVariablesAsync('COLOR')) vars[v.name] = v;
 const ts = {}; for (const s of await figma.getLocalTextStylesAsync()) ts[s.name] = s;
 const ps = {}; for (const s of await figma.getLocalPaintStylesAsync()) ps[s.name] = s;
-const paintOf = name => figma.variables.setBoundVariableForPaint({ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }, 'color', vars[name]);
+// The base paint carries the variable's resolved colour, not black: an instance override bound to the
+// same variable as its main component rendered black when the base was black (page 27, 2026-08-22).
+const resolveColor = (v) => { let val = Object.values(v.valuesByMode)[0]; let guard = 0; while (val && val.type === 'VARIABLE_ALIAS' && guard++ < 8) { const target = Object.values(vars).find(x => x.id === val.id); val = target ? Object.values(target.valuesByMode)[0] : null; } return val && val.r !== undefined ? { r: val.r, g: val.g, b: val.b } : { r: 0, g: 0, b: 0 }; };
+const paintOf = name => figma.variables.setBoundVariableForPaint({ type: 'SOLID', color: resolveColor(vars[name]) }, 'color', vars[name]);
 const fill = (node, name) => { node.fills = [paintOf(name)]; return node; };
 const stroke = (node, name, w = 1) => { node.strokes = [paintOf(name)]; node.strokeWeight = w; return node; };
 // text(parent, chars, styleName, fillVar, {x, y, w, align}) — w makes it wrap (HEIGHT auto-resize)

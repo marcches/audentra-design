@@ -37,11 +37,17 @@ collection (`font/heading` = Inter etc.) is left alone — it belongs to the v1 
 
 ## Styles
 
-Text (Geist; size / line-height % / tracking %): Book/Display Bold 104/100/−2.5 · Book/H1 Bold
-64/104/−2 · Book/H2 SemiBold 40/112/−1.5 · Book/H3 SemiBold 28/120/−1 · Book/Lead Regular
-26/140/−0.5 · Book/Body Regular 20/150 · Book/Body strong SemiBold 20/150 · Book/Caption Medium
-16/140 · Book/Label Medium 14/120/+4 UPPER · Book/Mono (Geist Mono) Regular 18/150 · Book/Mono small
-Regular 14/140 · Book/Page number Medium 16/120.
+Text (size / line-height % / tracking %), after Marco's typography decision of 2026-08-22 (ADR
+0011 — Satoshi headings, Inter text, no mono): Book/Display Satoshi Bold 104/100/−2.5 · Book/H1
+Satoshi Bold 64/104/−2 · Book/H2 Satoshi Bold 40/112/−1.5 · Book/H3 Satoshi Bold 28/120/−1 ·
+Book/Lead Inter Regular 26/140/−0.5 · Book/Body Inter Regular 20/150 · Book/Body strong Inter Semi
+Bold 20/150 · Book/Caption Inter Medium 16/140 · Book/Label Inter Medium 14/120/+4 UPPER ·
+Book/Value Inter Medium 18/150/+1 · Book/Value small Inter Medium 14/140/+1 · Book/Page number
+Inter Medium 16/120. Each style's family is bound to the `Typography` collection: headings →
+`font/heading`, text → `font/body`, values → `font/value` (renamed from `font/mono`, now "Inter").
+**`font/heading` reads "Inter" because the MCP runtime loads Google Fonts only; set it to "Satoshi"
+in Figma's Variables panel and every heading follows.** Texts with an explicit `fontName` override
+(specimens, misuse demos) do not follow the variable and were rebuilt by hand.
 Paint: `Brand gradient` (Purple 0 · Purple 0.42 · Blue 0.72 · Teal 1, transform
 `[[0.5,0.5,0],[-0.5,0.5,0.5]]`) · `Brand gradient / Deep` (Navy 0 · Navy 0.15 · Purple 0.42 ·
 Blue 0.72 · Teal 1).
@@ -64,9 +70,9 @@ row: x = (i % 6) · 2080, y = ⌊i / 6⌋ · 1320, i = the page index from 0.
 | 00 Cover and Contents | 3 | done | 01 Cover `66:2` · 02 Contents `66:20` · 03 How to use this book `66:84` |
 | 01 Brand | 8 | done | 04 divider `68:18` · 05 Story `68:31` · 06 Positioning `70:15` · 07 Personality and principles `70:65` · 08 Audiences `70:130` · 09 Promise and tagline `71:15` · 10 Accessibility as a principle `71:46` · 11 Brand at a glance `71:70` |
 | 02 Marks | 14 | done | 12 divider `73:33` · 13 Logo family `73:52` · 14 Symbol construction `74:156` · 15 Logo construction `74:226` · 16 The four masters `73:144` · 17 Versions and backgrounds `75:214` · 18 Clear space `75:437` · 19 Minimum sizes `75:518` · 20 Placement `76:484` · 21 Symbol alone `76:600` · 22 Misuse I `77:601` · 23 Misuse II `77:780` · 24 Attribution `76:668` · 25 Do and don’t `77:920`. Construction, clear-space and minimum-size diagrams were harvested from v1 frames 22:299 / 22:153 / 22:362 / 22:436 (cloned, moved, restyled to variables and Book/Mono small). |
-| 03 Color | 11 | pending | |
-| 04 Gradient | 7 | pending | |
-| 05 Typography | 9 | pending | |
+| 03 Color | 11 | done | 26 divider `79:750` · 27 The palette `79:766` · 28 Proportions `79:810` · 29 Specifications `80:768` · 30 Tints and shades `80:840` · 31 Neutrals `80:894` · 32 State colours `81:775` · 33 Approved pairings and contrast `81:817` (ratios computed in-script from the hex values) · 34 Colour in the product `81:909` (added variable `product/teal-500` #1A6984) · 35 Dark canvas `82:777` · 36 Misuse `82:818` |
+| 04 Gradient | 7 | done | 37 divider (on the gradient) `83:790` · 38 The construction `83:802` · 39 Where it lives `83:855` · 40 The deep form `84:871` · 41 With type and the White master `84:927` · 42 With photography `84:964` (photo placeholder until chapter 07) · 43 Misuse `84:1002` |
+| 05 Typography | 9 | done (rebuilt for ADR 0011) | 44 divider `85:910` · 45 Satoshi and Inter `90:910` · 46 Hierarchy scale `85:947` (relabelled) · 47 Weights `90:933` · 48 Values and code `90:976` · 49 Web stack and fallbacks `90:1018` · 50 Numerals and details `87:910` · 51 Type on canvases `87:939` · 52 Misuse `90:1042` |
 | 06 Voice | 7 | pending | |
 | 07 Imagery | 8 | pending | |
 | 08 Iconography | 6 | pending | |

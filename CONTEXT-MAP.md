@@ -17,7 +17,8 @@ second; the first must never learn what a *clear space* is.
 - **Brand → Student enrollment**: the brand appears inside the product only as an *attribution*
   ("Powered by Audentra") — the institution is the host and does the speaking (ADR 0009). The
   product's purple accent is the brand's Purple tuned for screens, not a second brand colour.
-- **Student enrollment → Brand**: the product's visual language (Geist, the token scales, the flat
+- **Student enrollment → Brand**: the product's visual language (the token scales, the flat
   surfaces, Phosphor) is the language the brand book itself is written in — the book is built to
-  look like the product, not the other way round (ADR 0008 for the typeface).
+  look like the product, not the other way round. Typography is the one deliberate split: Satoshi
+  and Inter for the brand, Geist in the product (ADR 0011).
 - Decisions that bind both live in `docs/adr/`.
