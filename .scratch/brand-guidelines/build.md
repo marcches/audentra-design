@@ -73,7 +73,7 @@ row: x = (i % 6) · 2080, y = ⌊i / 6⌋ · 1320, i = the page index from 0.
 | 03 Color | 11 | done | 26 divider `79:750` · 27 The palette `79:766` · 28 Proportions `79:810` · 29 Specifications `80:768` · 30 Tints and shades `80:840` · 31 Neutrals `80:894` · 32 State colours `81:775` · 33 Approved pairings and contrast `81:817` (ratios computed in-script from the hex values) · 34 Colour in the product `81:909` (added variable `product/teal-500` #1A6984) · 35 Dark canvas `82:777` · 36 Misuse `82:818` |
 | 04 Gradient | 7 | done | 37 divider (on the gradient) `83:790` · 38 The construction `83:802` · 39 Where it lives `83:855` · 40 The deep form `84:871` · 41 With type and the White master `84:927` · 42 With photography `84:964` (photo placeholder until chapter 07) · 43 Misuse `84:1002` |
 | 05 Typography | 9 | done (rebuilt for ADR 0011) | 44 divider `85:910` · 45 Satoshi and Inter `90:910` · 46 Hierarchy scale `85:947` (relabelled) · 47 Weights `90:933` · 48 Values and code `90:976` · 49 Web stack and fallbacks `90:1018` · 50 Numerals and details `87:910` · 51 Type on canvases `87:939` · 52 Misuse `90:1042` |
-| 06 Voice | 7 | pending | |
+| 06 Voice | 7 | done | 53 divider `93:910` · 54 How we sound `93:922` · 55 Tone guidance `93:946` · 56 Language guidelines `93:969` · 57 Writing guidelines `94:913` · 58 Before and after `94:950` · 59 Rules for product copy `94:996` (content migrated verbatim from v1 frames 12–18) |
 | 07 Imagery | 8 | pending | |
 | 08 Iconography | 6 | pending | |
 | 09 Motion | 5 | pending | |
