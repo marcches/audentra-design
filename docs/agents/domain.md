@@ -8,6 +8,10 @@ This is a **single-context** repo: one `CONTEXT.md` and one `docs/adr/` at the r
 
 - **`CONTEXT.md`** at the repo root — the glossary and ubiquitous language.
 - **`docs/adr/`** — read ADRs that touch the area you're about to work in.
+- **`docs/domain/us-enrollment.md`** — how a US campus runs new-student enrollment, sourced: the
+  journey, the offices, the words, the regulatory frame. It binds by default (ADR 0006).
+- **`docs/domain/aster.md`** — the sample institution's facts: type, calendar, today's date, offices
+  and people, persona. Every date and name in `src/` derives from it (ADR 0007).
 - **`README.md`** — carries the current domain model of the enrollment checklist (task shape,
   state collections) and the design tokens until `CONTEXT.md` exists.
 

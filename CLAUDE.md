@@ -1,6 +1,8 @@
 # Audentra — agent instructions
 
-Enrollment platform for educational institutions. This repo is the **product base**: the design
+Enrollment platform for **US colleges and universities** — the company is American, so are the
+customers, and the product is held to how a US campus conducts, names and times things, not to a
+generic default (ADR 0006). This repo is the **product base**: the design
 system and the student-facing portal, in React 19 + Vite, plain CSS, no TypeScript.
 
 Work arrives as **Jira cards** (`ENR`), gets built here, and comes back as **Jam** feedback.
@@ -65,6 +67,13 @@ screens needed had no names and no components, so each screen invented its own f
   face. Marks — Aster's crest and Audentra's
   symbol — live in `design-system/marks/`. The one illustration is `<Spot>`.
 - **Accessibility and responsive behaviour are part of done**, not a follow-up.
+- **Before naming an office, a step, a deadline, a date or the order of steps, read
+  `docs/domain/us-enrollment.md` and `docs/domain/aster.md`.** The first is how a US campus runs
+  new-student enrollment, sourced; the second is what Aster, the sample institution, has decided for
+  itself — calendar, offices, persona, today’s date. They bind by default: a screen whose order,
+  office, deadline or word contradicts them is wrong even if it looks better. The product departs
+  from the standard only in *experience*, never in vocabulary, calendar, what an office does or what
+  FERPA, Title IV and the ADA require — and every departure is an ADR that names it (ADR 0006).
 
 Full contract, including how a page is composed and how a card is read: `docs/agents/design-workflow.md`.
 

@@ -9,6 +9,13 @@ Started 2026-08-20 while specifying [ENR-165](https://audentra.atlassian.net/bro
 a glossary and nothing else — no layout, no data shapes, no decisions. Those live in the spec under
 `.scratch/`, and the ones that are hard to reverse live in `docs/adr/`.
 
+Aster is a US university, and Audentra is built for US colleges and universities (ADR 0006). So a
+word here is the word a US campus uses with its students — *hold*, *office*, *deposit*, *Class of
+2030* — and where the two disagree the US word wins unless an ADR says why not. The standard
+itself — the journey, the offices, the regulatory frame, sourced — is `docs/domain/us-enrollment.md`;
+what Aster has decided for itself is `docs/domain/aster.md`. This file stays a glossary: it says what
+a word means here, never what Aster’s dates are.
+
 ## Language
 
 ### Evidence the student sends
@@ -138,14 +145,14 @@ _Avoid_: Request, unqualified (that is Help's word); booking request; proposed t
 
 **Office**:
 The team at Aster that owns a document requirement and makes the decision on its submissions —
-the Admissions Office, the Financial Aid Office, Housing Services, Student Health Services, the
+the Admissions Office, the Financial Aid Office, Residential Life, Student Health Services, the
 Office of the Registrar. The student is told which one holds their file, always by name, and each
 office has exactly one name: *Office of the Registrar* on first mention in a page and *the
 Registrar* after; *Student Health Services* first and *Health Services* after; *Financial Aid
 Office* always, with *the* before it in running text (*the Financial Aid Office needs…*). An office
 that publishes times for conversations — the Admissions Office, the Financial Aid Office, the
-Academic Advising Office — carries the same name on Appointments, with the department after a comma
-where one handles this student (*Academic Advising Office, Computer Science*). Two were renamed
+Academic Advising — carries the same name on Appointments, with the department after a comma
+where one handles this student (*Academic Advising, Computer Science*). Two were renamed
 2026-08-21 (appointments changes, 8.11): *Student Financial Services* merged aid with billing, and
 the office the checklist names is the one that verifies income to release a federal loan, which is
 financial aid; *Student Health Services* is what a US student reads on every campus, and *Student
@@ -158,7 +165,28 @@ a name for whoever is on the other side.
 _Avoid_: Department, team, staff. Aster Registrar, the Registrar's Office (the name is the Office
 of the Registrar). Student Financial Services, Financial Services, financial aid office (the name is
 the Financial Aid Office). Aster University Health Services, Student Health Office (the name is
-Student Health Services).
+Student Health Services). Housing Services, Housing Office, University Housing (the name is
+Residential Life). Bursar's Office, Student Accounts, Student Financials (the name is the Office of
+the Bursar). Academic Advising Office.
+
+**Hold**:
+A block an office places on the student’s record that stops one thing — registering for classes,
+most often — until that office lifts it. It carries the office’s name and its reason, and it lifts
+when the thing it names is done: an immunization hold when Student Health Services accepts the
+record, an advising hold after the advising meeting, a bursar hold when the balance is settled. The
+portal shows a hold, says who placed it and what lifts it, and never lifts one itself — that is the
+office’s act, the same way a decision is a reviewer’s. A hold is not a locked step: a locked step
+cannot be started yet; a held registration is refused later unless an open step is done now
+(ENR-214). Added 2026-08-22 (US-standard brief, Q6): it is the word a US Registrar uses, and the
+thing the registration gate is made of.
+_Avoid_: Block; blocker (the staff board’s word for what stops a task); gate (the screen’s view of
+the holds, not a thing on the record); flag; restriction; lock, locked (a Step’s standing).
+Three more changed 2026-08-22 (US-standard brief, Q8; `docs/domain/us-enrollment.md` §3): *Housing
+Services* became **Residential Life** — the name a US residential campus gives the office, and
+"Housing Services" was read on none; the bill gained an owner, the **Office of the Bursar** on first
+mention and *the Bursar* after, because aid and billing are two offices once Student Financial
+Services was un-merged; and *Academic Advising Office* dropped *Office*, since a campus names its
+advising by the department.
 
 **Step**:
 One item on the My Enrollment checklist: something the student does, named as a verb phrase —
@@ -201,7 +229,71 @@ _Avoid_: Wellbeing, well-being.
 **Advisor**:
 The named person who holds this student's file and is reachable from every section's summary panel.
 An advisor is not a reviewer: they can chase a decision, not make one.
-_Avoid_: Counselor, agent, contact.
+_Avoid_: Counselor, agent, contact. Adviser — the spelling is *advisor*, always (Purdue and UT spell it so; Michigan's *adviser* is not ours).
+
+### Words the campus uses, adopted 2026-08-22
+
+Taken from `docs/domain/us-enrollment.md` (US-standard brief, round 2). Each is the word a US campus
+says to an admitted student; where the portal had another, the old one is under _Avoid_.
+
+**First-year**:
+A student in her first year at Aster. The campus word and the only one — *freshman* has been retired
+on the campuses the standard was read from. *Incoming* and *new student* are the neutral words for
+the months before classes.
+_Avoid_: Freshman, fresher, newcomer.
+
+**Enrollment deposit**:
+The payment that turns an admitted candidate into a student who is coming: one amount, one date and a
+stated refundability — $500, by May 1, non-refundable at Aster — owned by Admissions, not Financial
+Aid, because it confirms the offer rather than pays for anything. Paying it is what opens the campus
+account, the housing application and orientation. On the prototype’s today it is completed (ADR 0007).
+_Avoid_: Deposit, unqualified (Aster takes no housing deposit, but a reader will ask); acceptance fee,
+tuition deposit, matriculation deposit (other campuses’ names for it); "lock in your place".
+
+**Orientation**:
+The required program, run by New Student Programs under Student Life, at which a first-year meets her
+academic advisor and registers for her first semester, having taken her placement tests beforehand.
+She books one *session* from those published; a student who misses every session has her
+registration held until a make-up. It is not the portal’s setup flow (those are *setup steps*) and
+not move-in week.
+_Avoid_: Onboarding (the portal’s word for its own flow), induction, welcome week (the days after
+move-in, where nothing is registered), orientation day.
+
+**Verification**:
+Financial Aid confirming what the FAFSA said, because the Department of Education or Aster selected
+the file: named documents by a date, and until it is complete a federal loan is originated but not
+paid. It never implies wrongdoing, and the step that carries it says what is asked, by when, and what
+is held.
+_Avoid_: Income check, audit, proof of income, income verification (the campus says *verification*
+alone; "household income" is the step’s gloss, not the name).
+
+**Master Promissory Note**:
+The contract a first-time borrower signs once for her federal loans. With *entrance counseling* — the
+short course the same borrower completes once — it is one of the two things a first loan needs before
+it disburses; each is its own step because each is its own federal requirement.
+_Avoid_: Loan agreement (the step’s gloss, not the name), loan contract, promissory note unqualified,
+MPN on first mention.
+
+**Bill**:
+The Bursar’s statement of what the term costs after aid is applied — issued about four weeks before
+classes, due about two, and the last gate before the first day: an unpaid bill is a *bursar hold*. A
+parent sees it only as an *authorized payer* the student named.
+_Avoid_: Invoice, statement, e-bill (other campuses’ names); tuition (a line on the bill, not the
+bill); balance (the figure, not the document).
+
+**Payment plan**:
+Paying the bill in four monthly installments for a setup fee, instead of at once by the due date.
+The campus noun; the installments are numbered and dated.
+_Avoid_: 4-month plan, installment plan (a variant Aster does not use), financing, tuition plan.
+
+**FERPA release**:
+The student’s written consent naming a person and the categories of her record that person may see —
+the bill, grades, housing, the checklist — and nothing she did not name. Under FERPA the record is
+hers from the day she enrolls, so a parent sees nothing without it; an *authorized payer* is the
+release’s shape for the bill. The setup step that collects it is this, and says so.
+_Avoid_: Family permissions (the setup step’s old name), proxy access, guest access, authorized user
+(other campuses’ mechanisms), consent form; authorization unqualified (the backlog’s *authorization
+category* is a category of this release).
 
 ### On the other side of the desk
 
@@ -244,14 +336,16 @@ the fourth is the absence of an answer, said out loud, and it leaves the plan op
 campus* opens the shortlist. It is the student's to set and to change, up to the response deadline.
 _Avoid_: Housing choice, housing preference (that is the other thing, below), housing status.
 
-**Residence**:
-A building Housing Services publishes in the catalogue, carrying its room types, its own annual rate
+**Residence hall**:
+A building Residential Life publishes in the catalogue, carrying its room types, its own annual rate
 and its own meal plan. How many exist is the institution's business — eight here, three or forty
 elsewhere — and nothing in the interface may assume a number.
-_Avoid_: Hall, dorm, property, building (that is a field *of* a residence).
+_Avoid_: Residence, unqualified (the US noun is the two words — a campus says *residence hall* and
+never *dorm* in its own voice; renamed 2026-08-22, US-standard brief, Q11); hall; dorm; property;
+building (that is a field *of* a residence hall).
 
 **Preference**:
-One residence at one position in the shortlist. It states what the student would like; it establishes
+One residence hall at one position in the shortlist. It states what the student would like; it establishes
 no claim on a room, and an assignment that does not match it is still a valid assignment. This is the
 word the interface uses, and it is why a preference is never called a *request*: `Help request` below
 already owns that word, and it points the other way — there the student is asking Aster, here Aster

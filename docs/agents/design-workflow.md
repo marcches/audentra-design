@@ -63,12 +63,17 @@ Always cite the `mobbin_url` as a markdown link — for the file and when report
 `.scratch/ENR-<n>-<slug>/spec.md`, front matter as in `docs/agents/issue-tracker.md`. Body:
 
 1. **What this screen answers** — one sentence, from the card.
-2. **Layout** — regions, in reading order, each with the Mobbin reference it came from.
-3. **States** — loading, empty, error, permission-denied, and every state the `Guardrails` imply.
-4. **Interactions** — what each control does and what it must never do.
-5. **Data** — which fields of the section’s `data.js` (or a new shape) it reads.
-6. **Out of scope** — copied from the card.
-7. **Done when** — the card's `Closes when`, made checkable.
+2. **Domain** — where this screen sits in the US journey (`docs/domain/us-enrollment.md`): the
+   office that owns it and what that office decides, its place in the order and its deadline window,
+   the words the campus uses for it; and which facts of `docs/domain/aster.md` it reads — today’s
+   date, the term, the named offices and people. Name the convention and cite the line. A layout
+   that contradicts it is wrong before it is drawn.
+3. **Layout** — regions, in reading order, each with the Mobbin reference it came from.
+4. **States** — loading, empty, error, permission-denied, and every state the `Guardrails` imply.
+5. **Interactions** — what each control does and what it must never do.
+6. **Data** — which fields of the section’s `data.js` (or a new shape) it reads.
+7. **Out of scope** — copied from the card.
+8. **Done when** — the card's `Closes when`, made checkable.
 
 ## 4. The page anatomy — five slots, one order
 
