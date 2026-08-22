@@ -38,6 +38,15 @@ IDs are recorded for speed, not as gospel — confirm with
 `mcp__plugin_atlassian_atlassian__getTransitionsForJiraIssue` before transitioning, since only the
 transitions valid from the card's current status are offered.
 
+## Statuses past the gate
+
+The table above covers the statuses that gate work. The `ENR` workflow continues past
+`Ready for Development` with statuses the triage roles do not name — read on 2026-08-22:
+`Prioritized` (stories the backlog has committed to), `Development`, `QA`, and `Review` again, before
+`Concluído`. A design card in `QA` is **built and under review**: feedback on it (a Jam, a stakeholder
+document) is a QA finding and goes into the card's `.scratch/` folder as a changes brief, with a pointer
+comment on the card. It is not re-triaged from `Initiated`, and an agent does not move it backwards.
+
 ## Notes
 
 - `wontfix` has no exact equivalent in this workflow. A card that is genuinely rejected goes to
