@@ -1,6 +1,21 @@
 import { responseDeadline, standardMeals, standardRate } from '../housing/data.js';
 import { rewards } from '../rewards/data.js';
 
+/**
+ * The six categories a step belongs to, in the order the checklist groups them —
+ * one source (the rename of 2026-08-22): every `category` below is one of these,
+ * Appointments reads them for its conversation types, and Profile for the
+ * per-category channel (the review of 2026-08-21, C1.6).
+ */
+export const CHECKLIST_CATEGORIES = [
+  'Your offer',
+  'Your financials',
+  'Your health',
+  'Your details',
+  'Your campus life',
+  'Your degree',
+];
+
 export const TOTAL_STEPS = 20;
 
 /** Every date in the portal is read against this day — Monday, June 15, 2026 (ADR 0007, `docs/domain/aster.md` §2). Matches `CAMPUS_TODAY` in campus/data.js. */

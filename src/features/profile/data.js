@@ -191,6 +191,14 @@ export const fieldGroups = [
         newBlank: 'Not set · Aster is calling you Amelia',
       },
       {
+        id: 'photo',
+        label: 'Photo',
+        owner: 'student',
+        value: 'On file · the one on your campus card',
+        note: 'The one place your photograph appears in the portal is the head of this page. You upload it; nobody else sees it here.',
+        newBlank: 'Not set · your initials are used until you add one',
+      },
+      {
         id: 'pronouns',
         label: 'Pronouns',
         owner: 'student',
@@ -268,13 +276,13 @@ export const fieldGroups = [
         // No campus address before Residential Life assigns a room (Jul 20); until
         // then Aster writes home. The room, once assigned, is what fills this.
         value: null,
-        blank: 'Not set · Aster writes to your home address until your room is assigned',
-        newBlank: 'Not set · Aster writes to your home address until your room is assigned',
+        blank: 'Not set · Aster writes to your permanent address until your room is assigned',
+        newBlank: 'Not set · Aster writes to your permanent address until your room is assigned',
         verify: null,
       },
       {
         id: 'home-address',
-        label: 'Home address',
+        label: 'Permanent address',
         owner: 'student',
         value: '84 Rosewood Lane, Fall River, MA 02720',
         verify: {
@@ -284,12 +292,90 @@ export const fieldGroups = [
         },
       },
       {
+        id: 'mailing-address',
+        label: 'Mailing address',
+        owner: 'student',
+        // Only where it differs from the permanent one (C1.9); until she sets
+        // one, mail goes to the permanent address and the row says so.
+        value: null,
+        blank: 'Same as your permanent address',
+        newBlank: 'Same as your permanent address',
+      },
+      {
         id: 'aster-email',
         label: 'Aster email',
         owner: 'it',
         value: 'm.johnson@aster.edu',
         note: 'Yours for life, and official mail always goes here as well.',
       },
+    ],
+  },
+];
+
+/**
+ * Where she came from — C1.8 of the review of 2026-08-21. The schools and colleges before Aster,
+ * as their transcripts say: coursework, grades and credits, presented as a record rather than a
+ * form, each transcript with the state of the Registrar's reading of it. Owned here and read by
+ * My Degree, whose potential matches cite a line of it by `id` (`#/profile/origins?line=<id>`).
+ * `requirementId` points at the document in My Documents where one exists; the IB transcript
+ * arrived with the application.
+ */
+export const priorRecord = [
+  {
+    id: 'northside-hs',
+    name: 'Northside High School',
+    kind: 'High school',
+    where: 'Fall River, MA',
+    years: '2022–2026',
+    transcript: {
+      label: 'Final high school transcript',
+      requirementId: 'final-transcript',
+      state: 'under-review',
+      received: 'Jun 12, 2026',
+    },
+    lines: [
+      { id: 'hs-calc-bc', course: 'AP Calculus BC', term: '2025–26', grade: 'A', credits: '1.0', note: 'AP exam score 5' },
+      { id: 'hs-physics-c', course: 'AP Physics C: Mechanics', term: '2025–26', grade: 'A−', credits: '1.0', note: 'AP exam score 5' },
+      { id: 'hs-english-12', course: 'English 12 Honors', term: '2025–26', grade: 'A', credits: '1.0' },
+      { id: 'hs-us-gov', course: 'U.S. Government', term: '2025–26', grade: 'A−', credits: '0.5' },
+      { id: 'hs-spanish-4', course: 'Spanish IV', term: '2024–25', grade: 'A', credits: '1.0' },
+      { id: 'hs-chem', course: 'Chemistry Honors', term: '2024–25', grade: 'B+', credits: '1.0' },
+    ],
+  },
+  {
+    id: 'ib',
+    name: 'International Baccalaureate',
+    kind: 'Diploma Programme',
+    where: 'at Northside High School',
+    years: '2024–2026',
+    transcript: {
+      label: 'IB Diploma transcript',
+      requirementId: null,
+      state: 'reviewed',
+      received: 'Aug 6, 2025 · with your application',
+    },
+    lines: [
+      { id: 'ib-spanish-b-hl', course: 'Spanish B, Higher Level', term: 'May 2026', grade: '6', credits: null, note: 'Cited by a potential match on My Degree' },
+      { id: 'ib-math-aa-hl', course: 'Mathematics: Analysis and Approaches, Higher Level', term: 'May 2026', grade: '6', credits: null },
+      { id: 'ib-physics-sl', course: 'Physics, Standard Level', term: 'May 2026', grade: '5', credits: null },
+      { id: 'ib-english-sl', course: 'English A: Literature, Standard Level', term: 'May 2026', grade: '6', credits: null },
+    ],
+  },
+  {
+    id: 'northside-college',
+    name: 'Northside College',
+    kind: 'Dual enrollment',
+    where: 'Fall River, MA',
+    years: 'Spring 2026',
+    transcript: {
+      label: 'Northside College transcript',
+      requirementId: 'dual-enrollment-transcript',
+      state: 'reviewed',
+      received: 'May 28, 2026',
+    },
+    lines: [
+      { id: 'nc-csci-140', course: 'CSCI 140 Introduction to Computing', term: 'Spring 2026', grade: 'A−', credits: '3', note: 'Cited by a potential match on My Degree' },
+      { id: 'nc-arts-150', course: 'ARTS 150 Introduction to Drawing', term: 'Spring 2026', grade: 'A', credits: '3', note: 'Transferred in full' },
     ],
   },
 ];

@@ -35,6 +35,10 @@
 export const GROUPS = {
   financials: 'My Financials',
   campus: 'My Campus Life',
+  // Profile is sectioned, not scrolled, since the review of 2026-08-21 (C1.3):
+  // five leaves under one hero, reached from the person card — never a row in
+  // the sidebar's list.
+  profile: 'Profile',
 };
 
 /**
@@ -56,6 +60,12 @@ export const GROUP_HEROES = {
     title: 'Find your people.',
     lede: 'Events, clubs, and the people who run them. One session is required. Everything else is yours to choose.',
     motif: 'users',
+  },
+  profile: {
+    kicker: 'Profile',
+    title: 'What Aster knows about you.',
+    lede: 'Some of it is yours to change. The rest belongs to an office, and this page says which one.',
+    // No motif: the hero's figure is the student's own photograph (C1.1).
   },
 };
 
@@ -267,9 +277,12 @@ export const DESTINATIONS = [
   {
     id: 'profile',
     label: 'Profile',
+    tab: 'About me',
     route: '#/profile',
     icon: 'profile',
     kind: 'profile',
+    group: 'profile',
+    built: true,
     lede: 'The record Aster keeps about you.',
     hero: {
       kicker: 'Profile',
@@ -279,6 +292,49 @@ export const DESTINATIONS = [
     appears: 'The details Aster holds about you appear here.',
     produces: 'Some you control; the rest an office changes for you.',
     next: 'my-enrollment',
+    built: true,
+  },
+  // The other four sections of Profile (C1.3). They share the hero, the legend
+  // and the rail; the tab row under the hero is what changes. `kind: 'profile'`
+  // keeps them out of every list that treats Profile as the person card.
+  {
+    id: 'profile-contact',
+    label: 'Contact and communication',
+    route: '#/profile/contact',
+    icon: 'mail',
+    kind: 'profile',
+    group: 'profile',
+    lede: 'Where Aster reaches you, and which channel it uses first.',
+    built: true,
+  },
+  {
+    id: 'profile-access',
+    label: 'Who can see what',
+    route: '#/profile/access',
+    icon: 'users',
+    kind: 'profile',
+    group: 'profile',
+    lede: 'The people you let see your record, category by category.',
+    built: true,
+  },
+  {
+    id: 'profile-documents',
+    label: 'My documents',
+    route: '#/profile/documents',
+    icon: 'file',
+    kind: 'profile',
+    group: 'profile',
+    lede: 'Everything you have sent Aster, and everything Aster has sent you.',
+    built: true,
+  },
+  {
+    id: 'profile-origins',
+    label: 'Where I came from',
+    route: '#/profile/origins',
+    icon: 'graduation',
+    kind: 'profile',
+    group: 'profile',
+    lede: 'The schools and colleges before Aster, as their transcripts say.',
     built: true,
   },
 ];

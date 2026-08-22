@@ -874,15 +874,15 @@ export default function Styleguide({ onToast }) {
         >
           <div className="sg-grid">
             <Block
-              title="Avatar — four sizes, two states"
-              note="xs 24 · sm 32 · md 40 · lg 56. The name is beside it, so the image is decorative; pass alone when it is not."
+              title="Avatar — five sizes, two states"
+              note="xs 24 · sm 32 · md 40 · lg 56 · xl 96, the last for the one place a photograph of the student leads a page: the Profile hero. The name is beside it, so the image is decorative; pass alone when it is not."
             >
               <div className="sg-people-row">
-                {['xs', 'sm', 'md', 'lg'].map((size) => (
+                {['xs', 'sm', 'md', 'lg', 'xl'].map((size) => (
                   <Avatar key={size} person={STUDENT} size={size} />
                 ))}
                 <span className="sg-people-sep" aria-hidden="true" />
-                {['xs', 'sm', 'md', 'lg'].map((size) => (
+                {['xs', 'sm', 'md', 'lg', 'xl'].map((size) => (
                   <Avatar key={size} person={NO_PHOTO} size={size} />
                 ))}
               </div>

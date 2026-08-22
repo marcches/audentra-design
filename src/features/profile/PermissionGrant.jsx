@@ -1,6 +1,7 @@
 import Icon from '../../design-system/Icon.jsx';
 import Avatar from '../../design-system/primitives/Avatar.jsx';
 import { RECORD_CATEGORIES } from './data.js';
+import { sharedNames } from './logic.js';
 
 /**
  * One authorization the student granted during onboarding — ENR-179 AC 8, in
@@ -12,9 +13,10 @@ import { RECORD_CATEGORIES } from './data.js';
  *   · every one of the seven categories is listed, granted or not, so a student
  *     sees what is *not* shared as plainly as what is — a list of three ticked
  *     categories cannot answer "what else could she see?";
- *   · nothing stands between the student and withdrawing consent. A checkbox
- *     takes effect on change and `Revoke all access` on click; there is no
- *     confirm step, because revocation takes effect immediately.
+ *   · nothing stands between the student and narrowing consent: a checkbox
+ *     takes effect on change. Ending it altogether asks once, naming the
+ *     person and what they will stop seeing (the review of 2026-08-21, C1.5) —
+ *     the page holds that confirmation, this card only asks for it.
  */
 export default function PermissionGrant({ grant, onToggle, onRevoke }) {
   const firstName = grant.person.name.split(' ')[0];
@@ -44,8 +46,11 @@ export default function PermissionGrant({ grant, onToggle, onRevoke }) {
       {/* Every category is listed, granted or not: a list of the three ticked
           ones cannot answer "what else could she see?" — ENR-144. */}
       <fieldset className="permission-set">
+        {/* A count works when what it counts follows — the legend states what is
+            shared, by name, and the seven boxes under it show what is not (C1.5). */}
         <legend>
-          What {firstName} can see · {grant.granted.length} of {RECORD_CATEGORIES.length}
+          <strong>What {firstName} can see</strong> · {grant.granted.length} of{' '}
+          {RECORD_CATEGORIES.length}: {sharedNames(grant)}
         </legend>
         <div className="permission-grid">
           {RECORD_CATEGORIES.map((category) => {

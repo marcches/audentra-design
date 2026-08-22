@@ -20,12 +20,14 @@ import Icon from '../Icon.jsx';
  *             band is the same height on every route (`--hero-min`)
  *   motif     the section's icon in the orbit, outline on purpose — a two-tone
  *             glyph's back layer turns to mud on a gradient disc
+ *   figure    a person where the motif would be — the student's own photograph
+ *             on Profile, with the control that changes it under it
  *   focusable the title takes focus when a flow moves to its next question,
  *             so a keyboard user is moved to it instead of left at the foot of
  *             the last one; the ref is the `h1`
  */
 const PageHero = forwardRef(function PageHero(
-  { flag, kicker, title, lede, motif, focusable = false },
+  { flag, kicker, title, lede, motif, figure, focusable = false },
   ref,
 ) {
   return (
@@ -47,7 +49,13 @@ const PageHero = forwardRef(function PageHero(
         <p className="hero-lede">{lede}</p>
       </div>
 
-      {motif && (
+      {/* A person in the motif's place — Profile, where the student's own
+          photograph leads the page (the review of 2026-08-21, C1.1). It is the
+          one place a photograph of the student appears, uploaded by her; every
+          other band keeps its glyph in the orbit. */}
+      {figure ? <div className="hero-figure">{figure}</div> : null}
+
+      {motif && !figure && (
         <div className="hero-motif" aria-hidden="true">
           <div className="orbit-ring ring-one" />
           <div className="orbit-ring ring-two" />

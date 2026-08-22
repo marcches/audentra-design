@@ -574,3 +574,193 @@
     justify-content: center;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * The review of 2026-08-21 — whose right it is (C10.1), the channel per kind
+ * (C1.6), where she came from (C1.8), the confirmation (C1.5)
+ * ------------------------------------------------------------------ */
+
+.access-right {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-7);
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  display: flex;
+}
+.access-right svg {
+  color: var(--purple-dark);
+  flex: none;
+  margin-top: var(--space-1);
+}
+
+/* One default, per-category overrides, behind a closed disclosure. */
+.channel-overrides {
+  border-top: 1px solid var(--line);
+  margin: 0 calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad));
+  padding: 0 var(--card-pad);
+}
+.channel-overrides-toggle {
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-6) 0;
+  display: flex;
+}
+.channel-overrides-chevron {
+  color: var(--muted);
+  align-items: center;
+  transition: transform .17s;
+  display: inline-flex;
+}
+.channel-overrides-chevron.open {
+  transform: rotate(180deg);
+}
+.channel-overrides-copy {
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  display: flex;
+}
+.channel-overrides-copy strong {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+}
+.channel-overrides-copy small {
+  color: var(--muted);
+  font-size: var(--fs-micro);
+}
+.channel-rows {
+  padding: 0 0 var(--space-7);
+}
+.channel-row {
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3) var(--space-6);
+  padding: var(--space-5) 0;
+  display: flex;
+}
+.channel-row-label {
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-body);
+  display: inline-flex;
+}
+.channel-row-label small {
+  color: var(--muted);
+  background: var(--line-soft);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semi);
+}
+.channel-rows-note {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: var(--space-5) 0 0;
+  font-size: var(--fs-micro);
+  line-height: var(--lh-body);
+  display: flex;
+}
+
+/* Where she came from — a record, not a form: the transcript's reading at the
+   head, the coursework as a table, the cited line drawn. */
+.origin-standing {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  margin-left: auto;
+  display: flex;
+}
+.origin-standing small {
+  color: var(--muted);
+  text-align: right;
+  font-size: var(--fs-micro);
+}
+.origin-table-wrap {
+  contain: inline-size;
+  margin: 0 calc(-1 * var(--card-pad));
+  padding: 0 var(--card-pad);
+  overflow-x: auto;
+}
+.origin-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 520px;
+}
+.origin-table th {
+  color: var(--muted);
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  padding: 0 var(--space-4) var(--space-4) 0;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+.origin-table td {
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+  padding: var(--space-5) var(--space-4) var(--space-5) 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+.origin-table tr:last-child td {
+  border-bottom: 0;
+}
+.origin-table td small {
+  color: var(--muted);
+  margin-top: var(--space-1);
+  font-size: var(--fs-micro);
+  display: block;
+}
+.origin-table th.numeric,
+.origin-table td.numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  padding-right: 0;
+}
+.origin-table tr.cited td {
+  background: var(--purple-soft);
+}
+.origin-table tr.cited td:first-child {
+  border-radius: var(--radius-chip) 0 0 var(--radius-chip);
+  padding-left: var(--space-4);
+}
+.origin-table tr.cited td:last-child {
+  border-radius: 0 var(--radius-chip) var(--radius-chip) 0;
+  padding-right: var(--space-4);
+}
+.origin-foot {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-body);
+  display: flex;
+}
+.origin-foot svg {
+  flex: none;
+  margin-top: var(--space-1);
+}
+.origin-foot a {
+  color: var(--purple-dark);
+}
+
+/* The confirmation's two buttons, in the modal. */
+.modal-actions {
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+  display: flex;
+}

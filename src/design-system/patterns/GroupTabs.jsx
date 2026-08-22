@@ -29,7 +29,7 @@ export default function GroupTabs({ group, activeId }) {
             aria-current={active ? 'page' : undefined}
           >
             <Icon name={leaf.icon} size={16} />
-            {leaf.label}
+            {leaf.tab ?? leaf.label}
           </a>
         );
       })}

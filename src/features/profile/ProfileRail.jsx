@@ -1,6 +1,6 @@
 import Icon from '../../design-system/Icon.jsx';
 import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
-import { RECORD_CATEGORIES, offices, session } from './data.js';
+import { offices, session } from './data.js';
 
 /**
  * The profile rail: the standing on access, the way out, and the offices that
@@ -13,8 +13,9 @@ import { RECORD_CATEGORIES, offices, session } from './data.js';
  */
 export default function ProfileRail({ grants, onSignOut, onAsk }) {
   const people = grants?.length ?? 0;
-  const shared = grants ? new Set(grants.flatMap((grant) => grant.granted)).size : 0;
-  const until = grants?.[0]?.endsOn;
+  // The count of categories is the section's to state, by name (C1.5); the
+  // rail says who, and until when.
+  const first = grants?.[0];
 
   return (
     <>
@@ -26,7 +27,7 @@ export default function ProfileRail({ grants, onSignOut, onAsk }) {
               ? 'this couldn’t be checked just now'
               : people === 0
                 ? 'nobody else has been given access'
-                : `${shared} of ${RECORD_CATEGORIES.length} categories, until ${until}`}
+                : `${first.person.name}, until ${first.endsOn}`}
           </small>
         </strong>
 

@@ -624,10 +624,11 @@ export default function App() {
     // 2026-08-21, so everything the panel needs to send a file — the record,
     // the clock, the read marks — is handed down from here, where it has lived
     // since ENR-206, rather than being held by whichever screen is showing it.
-    if (current.id === 'profile') {
+    if (current.id === 'profile' || current.group === 'profile') {
       return (
         <ProfilePage
           destination={current}
+          tab={current.id}
           state={preview}
           record={record}
           tasks={viewTasks}
@@ -813,7 +814,7 @@ export default function App() {
 
       <Sidebar
         open={navOpen}
-        activeId={current?.id}
+        activeId={current?.group === 'profile' ? 'profile' : current?.id}
         identity={identity}
         badges={badges}
         state={state}

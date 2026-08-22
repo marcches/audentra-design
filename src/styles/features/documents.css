@@ -682,11 +682,13 @@
  * margin keeps working untouched. Retyping the margin against `--space-11`
  * would have been the same number written a second place it could drift from. */
 
-.documents-drawer .panel-run {
+.documents-drawer .panel-run,
+.documents-section .panel-run {
   padding-top: var(--space-10);
 }
 
-.documents-drawer .panel-label {
+.documents-drawer .panel-label,
+.documents-section .panel-label {
   align-items: center;
   gap: var(--space-4);
   margin: 0 0 var(--space-6);
@@ -703,7 +705,8 @@
 
 /* A notice inside a run is about that run, so it gets the same treatment the
    drawer already gives one docked at its head. */
-.documents-drawer .panel-run > .notice {
+.documents-drawer .panel-run > .notice,
+.documents-section .panel-run > .notice {
   border-radius: var(--radius-row);
   margin: 0 0 var(--space-8);
   padding: var(--space-6) var(--space-7);
@@ -712,7 +715,8 @@
 /* The retention guardrail, under the record it is about. It was a card in the
    rail; a foot is what is left when the column it stood in is gone, and it is
    the more honest place for a sentence that qualifies everything above it. */
-.documents-drawer .panel-foot {
+.documents-drawer .panel-foot,
+.documents-section .panel-foot {
   color: var(--muted);
   align-items: flex-start;
   gap: var(--space-4);
@@ -722,7 +726,8 @@
   display: flex;
 }
 
-.documents-drawer .panel-foot svg {
+.documents-drawer .panel-foot svg,
+.documents-section .panel-foot svg {
   flex: none;
   margin-top: var(--space-1);
 }
@@ -755,4 +760,19 @@
 
 .documents-drawer .document-row:has(.document-trail:empty) {
   row-gap: 0;
+}
+
+/* The same runs as a section of Profile (C1.3): the card's own head, then the
+   runs with the card's padding rather than the drawer's inset. */
+.documents-section .panel-run:first-of-type {
+  padding-top: var(--space-7);
+}
+.documents-section .panel-run .card-rows {
+  border-radius: 0;
+  margin-bottom: 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.documents-section .panel-foot {
+  margin-bottom: 0;
 }

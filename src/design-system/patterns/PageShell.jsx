@@ -77,11 +77,11 @@ export default function PageShell({
 }) {
   // Copy comes from the destination model; a page overrides only what it has to
   // say dynamically — how many sessions are required, whether a board is empty.
-  const { flag, kicker, title, lede, motif } = { ...heroFor(destination), ...hero };
+  const { flag, kicker, title, lede, motif, figure } = { ...heroFor(destination), ...hero };
 
   return (
     <>
-      <PageHero flag={flag} kicker={kicker} title={title} lede={lede} motif={motif} />
+      <PageHero flag={flag} kicker={kicker} title={title} lede={lede} motif={motif} figure={figure} />
 
       {summary && (
         <section className="page-summary" aria-label={summaryLabel}>

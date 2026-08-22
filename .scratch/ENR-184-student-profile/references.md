@@ -77,3 +77,48 @@ Four searches, `platform: web`, `mode: deep`. The third one decided the hardest 
   [Pipedrive — Your devices](https://mobbin.com/screens/7ed47d98-c70b-4186-ac34-5a9b8bf02028) — session
   tables with IP addresses and device history. Rejected: a device manager is a screen of its own, and the
   card asks for one sign out with a reason, not a security console.
+
+## The review of 2026-08-21 — the photograph, the sections, the named share, the channel per kind — 2026-08-22
+
+Three searches, web, deep; images examined.
+
+### Her photograph leads the page, with the control that changes it
+
+- [Clay — your profile](https://mobbin.com/screens/4e8696fd-6354-482f-a8e9-1c889dbbf368) — the
+  picture at the head with *Upload new picture* beside it, the details as tabs under. **Taken**: the
+  photograph in the hero with its control under it; the sections as a tab row.
+- [Skillshare — profile](https://mobbin.com/screens/e76d27b0-9688-49dd-8e48-1ea37d7c9ea5) and
+  [Dribbble — profile](https://mobbin.com/screens/be47aed5-b051-4dd5-ba73-be7be131b6ed) — the
+  person's photo leads, tabs under it. **Taken** for the composition.
+- [Uxcel — profile](https://mobbin.com/screens/378305be-4652-42ba-86d5-ece2a9bd757b) — an initial
+  in a disc where no photo is uploaded, and *Upload file*. **Taken** for the fallback: initials
+  in the monogram treatment and *Add a photo*.
+- **Rejected**: [Tripadvisor](https://mobbin.com/screens/5560a9db-7ea2-4081-be06-8f39d6f4bbf7),
+  [Substack](https://mobbin.com/screens/d8c68254-602d-476d-8dfa-2de7fc0f2b74),
+  [Sora](https://mobbin.com/screens/c17d7f0e-63ff-496c-a949-5154bdbcf649),
+  [Magnific](https://mobbin.com/screens/58bc841f-d4c4-47fa-a8e3-4d79bca41341) — cover images and
+  social counts; a record is not a feed.
+
+### Ending access asks once, and names the person and what they stop seeing
+
+- [Luma — remove person](https://mobbin.com/screens/2dc6cce9-9c04-41d6-afd8-197c081eb972) — "Are
+  you sure you want to remove jdoe? They will no longer receive your emails or event invitations."
+  **Taken**: the question names the person and the consequence, two buttons, nothing else.
+- [GitBook — remove member](https://mobbin.com/screens/4ca026b0-b99a-488d-aa73-5d1d52f86a30) — the
+  same shape, the consequence in one line. **Taken.**
+- **Rejected**: [Twist](https://mobbin.com/screens/3a2e59e0-3752-4d46-8b83-0c86cb9485bf) — a
+  "Yes, I'm absolutely sure" checkbox on top of the button, a second confirm pointed the wrong
+  way; [Attio](https://mobbin.com/screens/2a6947a5-4c3d-4210-b24f-f919efcd1dca),
+  [Descript](https://mobbin.com/screens/7d774740-6c5c-4ec7-833f-3b1b1cecf6df) — generic
+  "are you sure" that name nothing.
+
+### One default, per-category overrides — rows, not a grid
+
+- [Deel — notification categories](https://mobbin.com/screens/f31abe66-b620-4f8b-89ae-9d7395320dc7)
+  — one row per category, the channels chosen inside it, a default above. **Taken** for the
+  disclosure's rows.
+- **Rejected**: [Navan](https://mobbin.com/screens/25759a94-8a7c-453e-8460-190f9fd32d62),
+  [Assembly](https://mobbin.com/screens/c2d30c9b-c5a1-4e49-9bf6-fe253d5b5410),
+  [Air](https://mobbin.com/screens/e6f97962-c24c-478b-b416-08830dc5b062),
+  [Sprout Social](https://mobbin.com/screens/437bf230-ef2b-4a92-9f08-147a1a37750c) — matrices of
+  checkboxes; the decision of 2026-08-22 said not a grid.

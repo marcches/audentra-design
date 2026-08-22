@@ -48,7 +48,9 @@ export function identityFor(state) {
     displayName: `${firstName} ${record.familyName}`,
     initials: `${firstName[0]}${record.familyName[0]}`,
     name: `${firstName} ${record.familyName}`,
-    photo: record.photo ?? null,
+    // A record opened today has no photograph yet: the hero shows her initials
+    // and the control that adds one (C1.1).
+    photo: state === 'empty' ? null : (record.photo ?? null),
     standing: record.standing,
     // True when the portal is using the legal name because it has nothing else.
     usingLegalName: !preferred,
@@ -138,4 +140,26 @@ export function runsFor(group) {
 
 export function categoryById(id) {
   return RECORD_CATEGORIES.find((category) => category.id === id) ?? null;
+}
+
+/* ------------------------------------------------------------------ *
+ * The review of 2026-08-21 — what is shared, by name (C1.5); the channel per kind (C1.6)
+ * ------------------------------------------------------------------ */
+
+/** "enrollment status, billing and financial aid" — the categories a grant shares, in a sentence. */
+export function sharedNames(grant) {
+  const names = RECORD_CATEGORIES.filter((category) => grant.granted.includes(category.id)).map(
+    (category) => category.name.toLowerCase(),
+  );
+  if (names.length === 0) return 'nothing';
+  if (names.length === 1) return names[0];
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  // The serial comma: "billing and payments" is one category, and without it
+  // three read as four.
+  return `${names.slice(0, -1).join(', ')}, and ${names[names.length - 1]}`;
+}
+
+/** The channel one kind of message uses: its override, else the default she chose at onboarding. */
+export function channelFor(category, overrides, defaultId) {
+  return overrides[category] ?? defaultId;
 }

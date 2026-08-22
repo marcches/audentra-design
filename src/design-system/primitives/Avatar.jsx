@@ -9,7 +9,7 @@
  * in the product had a place to put one.
  *
  * So this is the one disc. It shows `person.photo` when there is one and the
- * initials when there is not, at four sizes, and it is the *only* way a person
+ * initials when there is not, at five sizes, and it is the *only* way a person
  * is drawn. Who gets a photo is a rule, not a per-screen choice
  * (`docs/agents/design-workflow.md`, People):
  *
@@ -23,7 +23,8 @@
  * The photo is decorative when the name is printed beside it, which is nearly
  * always; pass `alone` when it is not, and the name becomes the alt text.
  */
-const SIZES = { xs: 24, sm: 32, md: 40, lg: 56 };
+/** `xl` is the one place a photograph of the student leads a page: the Profile hero (C1.1). */
+const SIZES = { xs: 24, sm: 32, md: 40, lg: 56, xl: 96 };
 
 export default function Avatar({ person, size = 'md', alone = false, className }) {
   const px = SIZES[size] ?? SIZES.md;
