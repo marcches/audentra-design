@@ -194,3 +194,40 @@ first page built.
   the two that most need it.
 - **Templates do not exist** — deck, letterhead, envelope, card, signature snippet. Page 54 says so
   rather than pointing at a file that is not there.
+
+## v3.1 — rebuilt after Marco's review, 2026-08-22
+
+Marco's verdict on v3: it followed the spec but lost quality against v2 — too much text, one cadence
+on every page (a lead paragraph, a purple callout, tiles of small Inter), artifacts shrunk (swatch
+450×80, logo at 130 px, specimen at 96 px), 1,444 text nodes in 59 frames. And it leaned on the
+product as it is today (Geist, the "tuned" accent, `--teal-500`, the token table copied from
+`tokens.css`). Two rules from that review bind from here on:
+
+1. **The book is the rule the repository follows, never a description of the product.** Chapter 10
+   is prescriptive: the product inherits the palette, Inter, Satoshi where it speaks large, the
+   marks and the voice; it owns components, density, spacing, radius and motion. ADR 0011 carries a
+   second amendment; `tokens.css` is untouched — that is a card.
+2. **Follow the spec, but with quality.** The spec binds decisions (D1–D22, chapters, what leaves);
+   it does not bind diagramming. Where it squeezed a page, the page may breathe.
+
+The grammar (recipe `kit-v31.js`, same foundations, same page architecture and grid):
+
+- **One artifact per page, at scale** — it owns at least half the band: marks at 860/700/140 px on
+  the family page, swatches 260×360, specimens at 280 px, photographs 544×260, canvases 1112×400.
+- **A word budget.** Lead = one sentence (Book/Lead). Then one short paragraph *or* up to three
+  one-line rules (Body strong + Body). Captions one line. No labeled-paragraph stacks.
+- **Callout at most once per chapter** (three in the book: p05 large text, p16 the one exception,
+  p31 the boundary). **No ADR numbers or file paths in page copy** — pointers live on p52 and p54.
+- **Eight constructions**, each chapter using at least three: hero (p04, p26), canvas (p24, p26),
+  grid (p06, p09, p35), misuse (p18, p27, p33), ladder (p08, p30, p31, p36), swatch wall (p20, p21,
+  p22, p23, p25), table (p10, p11, p52, p47), split (p29, p37, p51, p54).
+
+Pages rebuilt from the band down: 04, 05, 06, 08, 09, 10, 11, 13, 20–26, 29–32, 35–37, 42, 46, 51,
+52, 54, 55, 57, 58. Leads trimmed, artifacts kept: 14, 15, 16, 17, 39, 40, 43 (labels de-overlapped),
+44 (even tiles), 47, 48, 49. Kept as they were: cover, contents, the twelve dividers, 18, 27, 33.
+Closer corrected: the Logo (White) replaces the Primary logo so the tagline appears once, as type in
+Bold.
+
+Sweep at the end: 59 frames, 0 missing, 0 duplicate, 1,121 top-level blocks, **0 past y 960, 0
+outside x 120–1800**, 0 page-number mismatches, 0 Slate-as-text on paper, 0 ADR mentions outside
+p52, 0 file paths outside p52/p54, 1,422 text nodes.

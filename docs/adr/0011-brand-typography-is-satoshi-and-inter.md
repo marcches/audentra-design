@@ -60,3 +60,24 @@ these are they.
 
 The tagline set as type follows this rule and therefore never appears in Satoshi on a surface that
 renders on someone else's machine — see ADR 0013.
+
+## Amendment, 2026-08-22 (later) — the product inherits the brand
+
+Marco's review of the v3 book set the direction the book had been missing: **the brand book is the
+rule the whole repository follows, not a description of the product as it is today.** The v3 book
+had described the product's typefaces, its tuned purple and its `--teal-500` as "three deliberate
+differences"; that was the product leading the brand, and it is reversed.
+
+- **The product adopts the brand's typography.** Inter for every UI string, value and label;
+  Satoshi Bold where the product speaks large — a hero, an empty state, onboarding's first screen.
+  The "never inside the product UI" clause of the Decision above is withdrawn; the rest of the rule
+  (weights, the 20 px boundary, no monospace) applies to the product as it does to every surface.
+- **Geist is retired** from `src/styles/tokens.css` and the styleguide when the card that
+  implements this lands. Until then the product is simply out of date, the way any surface is
+  between an edition of the book and its adoption.
+- **The product's color tokens carry the brand's values** — `--purple` is `#6A38FF`, `--teal` is
+  `#02CDC7` — and the product's own decisions (components and states, density, spacing, radius,
+  motion) remain its own. Chapter 10 of the v3 book, pages 51–52, is the map.
+
+The title of this ADR is left as written so the history reads; the decision it records about the
+product is superseded by this amendment.
