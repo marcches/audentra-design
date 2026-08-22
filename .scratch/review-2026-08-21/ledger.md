@@ -146,7 +146,7 @@ State vocabulary: **stands** (as written), **amended** (by a later part), **supe
 | C1.7 | My Documents under Profile, nav included | **done** | — |
 | C1.8 | Previous-institution record section | stands; **home is open** (Profile default, My Degree the alternative) | ENR-184 (needs-info) |
 | C1.9 | "Campus address", "Permanent address", "Mailing address" | stands | ENR-184 |
-| C2.1–2.3 | Dates say their kind; completed rows drop description; category on every row | stands | ENR-164 |
+| C2.1, C2.2, C2.3 | Dates say their kind; completed rows drop description; category on every row | stands | ENR-164 |
 | C3 | Semantic status colour portal-wide; purple stops meaning status | stands — foundation, then every screen's pills consume | foundations |
 | C4 | Gap banner → first block, one token | stands — `--hero-gap` | foundations |
 | C5 | Edward inline at a task, context loaded, prefilled-unsent | stands — control is a pattern (ENR-181); task rows host it (ENR-164); voice is a wish | ENR-181, ENR-164 |
@@ -159,6 +159,7 @@ State vocabulary: **stands** (as written), **amended** (by a later part), **supe
 | C10.1 | FERPA: the section says these are her records, hers to share and withdraw | stands | ENR-184 |
 | C10.2 | Financials: tooltips as well as pagination — F5's "what could change it" | stands | ENR-166 |
 | C10.3 | Journeys rename; task icon and action label configurable | **staff (ENR-121)**; constraint here: no student screen hardcodes a task icon or action label | constraint, all cards |
+| C11.1, C11.2 | Profile checked against the build: done (C1.4, C1.7, locked-vs-editable, the rail) and still open (C1.1, C1.3, C1.5's count, C1.6, C1.8, C1.9) | as the C1.x rows above | ENR-184 |
 | C11.3 | Profile values at 15px → `--fs-h2`, 400 student-owned / 600 institution-owned | stands | ENR-184 |
 | C11.4 | Keep "Profile · Version 4 · Updated …" and "8 of 12 details are yours" | stands (keep) | ENR-184 |
 | C12 | Praised, do not touch: My Enrollment as a whole, Appointments states, progress chart, Financials pagination | keep | — |
@@ -181,7 +182,8 @@ State vocabulary: **stands** (as written), **amended** (by a later part), **supe
 
 ### 3.4 `my-financials-changes-audentra.md`
 
-F1, F3–F16 **stand**; F2 **amended by B3.1**; plus B3.2, B4.5, C10.2. §9.0 (figure rule) and §9
+F1, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15, F16 **stand**; F2 **amended by
+B3.1**; plus B3.2, B4.5, C10.2. §9.0 (figure rule) and §9
 (section 17/600, row 17/400) → **foundations**; 9.1 Appointments **done**; 9.2 My Degree → ENR-188;
 9.3 Health → ENR-206 (verify; likely moot); 9.4 Housing → ENR-207. Card: **ENR-166**.
 
