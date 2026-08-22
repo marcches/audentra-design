@@ -50,7 +50,9 @@ export const GROUP_HEROES = {
     motif: 'wallet',
   },
   campus: {
-    kicker: 'Campus life · Published by Aster Student Life',
+    // The kicker opens with the navigation's own label — ENR-174 AC 4, one
+    // concept one name — decided 2026-08-22 with the Health rename (C9).
+    kicker: 'My Campus Life · Published by Aster Student Life',
     title: 'Find your people.',
     lede: 'Events, clubs, and the people who run them. One session is required. Everything else is yours to choose.',
     motif: 'users',
@@ -106,7 +108,7 @@ export const DESTINATIONS = [
     icon: 'degree',
     lede: 'What your degree asks of you, and the courses that satisfy each requirement.',
     hero: {
-      kicker: 'Academic · BA Computer Science',
+      kicker: 'My Degree · BA Computer Science',
       title: 'What your degree asks of you.',
       lede: 'Every requirement your program sets, and the courses that satisfy each one. This is Aster’s reading of your record, not the record itself.',
       motif: 'book',
@@ -119,7 +121,11 @@ export const DESTINATIONS = [
 
   {
     id: 'health',
-    label: 'Health',
+    // "My Health and Wellness" since 2026-08-22 (the walkthrough of 2026-08-20,
+    // C9): the "My …" form the rest of the navigation uses, and a name that
+    // stops the section reading as a medical record alone — it carries a
+    // record and a question. Title case, as every other row (ENR-174 AC 5).
+    label: 'My Health and Wellness',
     route: '#/health',
     // Not a heart and not a cross: this section is not a medical record, and the
     // first thing a student reads must not suggest it is.
@@ -132,7 +138,7 @@ export const DESTINATIONS = [
     // came back onto this page as a panel the same afternoon.
     lede: 'Health Services needs your immunization record before you can register. Accessibility Services has a question you can answer whenever you want, or not at all.',
     hero: {
-      kicker: 'Health',
+      kicker: 'My Health and Wellness',
       title: 'One record, and one question.',
       lede: 'Health Services needs your immunization record before you can register. Accessibility Services has a question you can answer whenever you want, or not at all.',
       motif: 'shield',
@@ -309,7 +315,7 @@ export const PANELS = {
   },
   accessibility: {
     id: 'accessibility',
-    owner: 'Health',
+    owner: 'My Health and Wellness',
     label: 'Accessibility',
     icon: 'accessibility',
     lede: 'One question that’s yours to answer, or not.',

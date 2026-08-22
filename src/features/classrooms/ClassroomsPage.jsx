@@ -204,8 +204,11 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
   // that is not settled, so the eyebrow states the gap instead.
   const hero = {
     kicker: unknownProgram
-      ? 'Academic · Program not assigned yet'
-      : `Academic · ${program.name} · ${program.classOf}`,
+      // Opens with the navigation's label — ENR-174 AC 4, one concept one name
+      // (2026-08-22, with the Health rename). "Academic" was the kicker's word
+      // while the row said "My Degree".
+      ? 'My Degree · Program not assigned yet'
+      : `My Degree · ${program.name} · ${program.classOf}`,
   };
 
   /**
