@@ -268,6 +268,6 @@ none of these is hard to reverse; the one that was (time request → callback) i
 | --- | --- | --- |
 | 1a foundations | **built 2026-08-22** (`2761ff4`) — proof in `brief.md` "Done" | — |
 | 1b Edward door, check, escalation, inline ask | **built 2026-08-22** — proof in `ENR-181-edward-floating-control/changes-2026-08-22.md` "Done"; Mobbin references recorded first | — |
-| 1c category rename | not started | ENR-164 |
+| 1c category rename | **built 2026-08-22** — one source (`enrollment/data.js`) + the conversation types; glossary entry **Category** records the My/Your decision. Side-finding: `d14f807` (the US-calendar commit, a parallel session) removed the *Your offer* tasks from the checklist, so Appointments' "Enrollment step" conversation type — category *Your offer* — is no longer offered (a type whose category the checklist does not know is not shown). Flagged, not fixed here: the category a deposited student's enrollment step belongs to is that session's call | ENR-164 |
 | 2 screens | not started | each card |
 | 3 sweep | not started | — |

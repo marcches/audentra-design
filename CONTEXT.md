@@ -173,6 +173,19 @@ Out of the MVP, mock only, since the review call of 2026-08-21; named 2026-08-22
 _Avoid_: Appointment (that is what she books); check-in (fine in speech, not as the noun on the
 screen); periodic meeting; recurring meeting; session.
 
+**Category** (of a checklist task):
+Which part of her enrollment a task belongs to — one of six, written once in the enrollment data and
+read by every screen that groups by it, so the checklist and Appointments cannot drift: *Your offer*
+· *Your financials* · *Your health* · *Your details* · *Your campus life* · *Your degree*. Renamed
+2026-08-22 to one form (the review call of 2026-08-21, §6.3: "Money and aid" beside "Your degree"
+read as two voices). The navigation says *My Financials* and the category says *Your financials*,
+and that is a decision, not an accident: navigation is the student's own filing; a category is
+content addressed to her, and it speaks to her. A conversation type on Appointments carries one of
+these, and a type whose category the checklist does not know is not shown.
+_Avoid_: Section (that is the navigation's word); topic (that is Help's); group; tag; "Money and aid",
+"About you", "Campus life", "Health and wellness" as category names (the last is still one of the
+seven FERPA record categories, which are a different list).
+
 **Office**:
 The team at Aster that owns a document requirement and makes the decision on its submissions —
 the Admissions Office, the Financial Aid Office, Residential Life, Student Health Services, the

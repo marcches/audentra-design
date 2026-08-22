@@ -44,7 +44,7 @@ export const conversationTypes = [
   },
   {
     id: 'financial-aid',
-    category: 'Money and aid',
+    category: 'Your financials',
     label: 'Financial aid',
     blurb: 'Your package, what a figure means, or what happens to it if something changes.',
     team: 'Financial Aid Office',

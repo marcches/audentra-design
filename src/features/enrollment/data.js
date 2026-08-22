@@ -74,7 +74,7 @@ const TASKS = [
   },
   {
     id: 'housing',
-    category: 'Campus life',
+    category: 'Your campus life',
     title: 'Choose your housing plan',
     description:
       'Tell Aster whether you’ll live on campus, commute, arrange your own housing, or want help deciding.',
@@ -105,7 +105,7 @@ const TASKS = [
   },
   {
     id: 'income-verification',
-    category: 'Money and aid',
+    category: 'Your financials',
     title: 'Verify your household income',
     description:
       'The Financial Aid Office selected your FAFSA for verification and needs last year’s tax documents. Your federal loan stays pending until they do.',
@@ -138,7 +138,7 @@ const TASKS = [
   },
   {
     id: 'health',
-    category: 'Health and wellness',
+    category: 'Your health',
     title: 'Send your immunization record',
     description:
       'Student Health Services needs your immunization record. Their hold on your class registration lifts once they accept it, and you register at orientation on Jul 14.',
@@ -173,7 +173,7 @@ const TASKS = [
   },
   {
     id: 'profile',
-    category: 'About you',
+    category: 'Your details',
     title: 'Finish your setup',
     description:
       'Add the contact details you didn’t have during setup. You can change them any time.',
@@ -193,7 +193,7 @@ const TASKS = [
   },
   {
     id: 'entrance-counseling',
-    category: 'Money and aid',
+    category: 'Your financials',
     title: 'Complete loan entrance counseling',
     description:
       'A one-time course on the federal student aid website about what borrowing means: interest, repayment, what you owe and when. Your first federal loan can’t be paid out until it’s done.',
@@ -223,7 +223,7 @@ const TASKS = [
   },
   {
     id: 'loan-agreement',
-    category: 'Money and aid',
+    category: 'Your financials',
     title: 'Sign your Master Promissory Note',
     description:
       'The Master Promissory Note is the contract for your federal loan: your promise to repay it. Aster can’t pay the loan out without it.',
@@ -253,7 +253,7 @@ const TASKS = [
   },
   {
     id: 'insurance',
-    category: 'Health and wellness',
+    category: 'Your health',
     title: 'Enroll in or waive the student health plan',
     description:
       'Massachusetts requires every student to have health insurance. You’re enrolled in Aster’s plan, and its premium is on your fall bill, unless you waive it with comparable coverage by Aug 1, 11:59 p.m. ET.',
@@ -291,7 +291,7 @@ export const initialTasks = TASKS.map(withValues);
 export const lockedTasks = [
   {
     title: 'Pay your fall bill',
-    category: 'Money and aid',
+    category: 'Your financials',
     kind: 'external',
     description: 'The Bursar issues your fall bill on Jul 24: what’s due after your aid, with the payment plan as an option.',
     prerequisite: 'Waiting for the Bursar to issue the bill',
