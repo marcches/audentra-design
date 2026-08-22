@@ -87,7 +87,7 @@ reads). What differs:
   after `cc2dd21` it is an `EntryRow` in a headless `Card` (the H4 design). Verify in the browser;
   do not build 9.3 blind.
 - **ADR 0005** ("a student can ask a team for a time", accepted 2026-08-21, confirmed by Marco in
-  grilling) is reversed by Part A §3/§8.2 and ENR-178 (Prioritized). **ADR 0008 supersedes it**
+  grilling) is reversed by Part A §3/§8.2 and ENR-178 (Prioritized). **ADR 0010 supersedes it**
   (written in this triage). `state: 'requested'` becomes the callback state.
 - **The onboarding build spec** (§4.6, §5.4) cited by B4.1 and C4b is not in this repo. Its edit is
   external.
@@ -105,7 +105,7 @@ State vocabulary: **stands** (as written), **amended** (by a later part), **supe
 | § | Item | Final state | Card |
 | --- | --- | --- | --- |
 | 1–2 | Appointments, Help, Edward are one escalation: Edward → "did that answer it?" → inquiry / book / callback; chat out of MVP | stands; **§10 clarifies** booking and callback are alternatives, not steps | ENR-181 (the prompt), story under ENR-190 (human) |
-| 3 | Callback replaces "ask for a time"; book directly where a calendar exists | stands; **§8.2**: not a change of direction but a return to ENR-178 | ENR-183 + ADR 0008 |
+| 3 | Callback replaces "ask for a time"; book directly where a calendar exists | stands; **§8.2**: not a change of direction but a return to ENR-178 | ENR-183 + ADR 0010 |
 | 4 | Appointments doc: A2 superseded, A7 narrowed (callback), §9 "Ask for a time" tab superseded, 8.7 superseded, A9 amended (labels), A6 amended (band case 3 → escalation); everything else stands | stands | ENR-183 |
 | 5 | Periodic advisor meetings: institution-scheduled; confirm / reschedule / can't make it; shares the appointment card, none of the booking flow | **out of MVP, mock only**, needs its own story (§7.3) | prototype branch + story (human) |
 | 6.1 | Rejected strings → US campus English ("Academic Advising doesn't have times posted right now", "No times posted", "Request a callback", "Email me when times are posted", "Book a time", "How this works") | stands | ENR-183 (+ `InfoModal` title) |
@@ -205,34 +205,50 @@ Card: **ENR-189**.
 | --- | --- | --- |
 | ENR-210 AC1 → four values; AC3 names all four | Jira edit | human (not done; Marco deferred Jira writes on 2026-08-22) |
 | Story "Student · Get to a person when the assistant cannot resolve it" (§11 draft) under ENR-190 | Jira create | human |
-| Story for periodic advisor meetings (§5, §7.3), mock-only | Jira create | human |
+| Story for the *advising meeting* (§5, §7.3), mock-only — the institution-scheduled meeting, confirm / reschedule / decline | Jira create | human |
 | Onboarding build spec §5.4 (four values) and §4.6 (emblems/images) | external document | human |
-| ADR 0005 → superseded by ADR 0008 (callback, not time request) | `docs/adr/` | **done in this triage** |
+| ADR 0005 → superseded by ADR 0010 (callback, not time request) | `docs/adr/` | **done in this triage** |
 | `CONTEXT.md` "Time request" → "Callback request" | `CONTEXT.md` | done in this triage (surgical; a peer session is editing the same file) |
 | Journeys name + configurable task icon/action (C10.3) | staff portal, ENR-121 | out of this repo |
 | Pointer comments on the nine cards | Jira comments | not done (deferred) |
 
-## 5. Open decisions — for `/grill-with-docs`, not for the implementer
+## 5. Decisions — grilled and settled 2026-08-22 (`/grill-with-docs`, Marco accepted every recommendation)
 
-1. **C1.6** Communication preferences: a full category × channel grid, or one default with
-   per-category overrides where the institution varies its channel? (Doc recommends deciding first;
-   proposed default: the second.)
-2. **C1.8** Previous-institution record: Profile ("what she provided is profile") or My Degree
-   ("the evidence behind a credit match")? Proposed default: Profile, linked from the credit match.
-3. **Imagery in the prototype**: residence images (G1) and club emblems (C4b) are "published by the
-   office" in the product and forbidden to be stock or generated. In this prototype, what stands in —
-   building exteriors from Unsplash with provenance in `SOURCES.md`, as the portraits do, or the
-   monogram/initials fallback everywhere until real assets exist?
-4. **Housing summary panel**: G4 (the page states its own obligation status in every state) is
-   required by the doc and by ENR-210 AC5/AC6. G5/G6 put it in a summary panel with the advisor;
-   the Jam of 2026-08-21 removed that panel on the grounds the plan card *is* the figure. Proposed:
-   G4's status line is mandatory (summary foot or `notice`); whether the panel and the advisor block
-   come back is Marco's call.
-5. **Periodic meetings mock**: how much of it, and on which branch — `/prototype`.
-6. **Responsive**: the docs say "out of scope" (meaning: not inspected); CLAUDE.md says responsive is
-   part of done. Proposed: keep responsive in every card.
-7. **C9 capitalisation**: "My health and wellness" (doc) vs "My Health and Wellness" (nav
-   convention, ENR-174 AC5). Proposed: title case.
+1. **C1.6 Communication preferences → one default + per-category override, for every category.**
+   The onboarding keeps asking one value and it becomes the default; Profile's *Contact and
+   communication* offers, behind a closed disclosure, one row per checklist category with the default
+   pre-selected. Not a grid; not "only where the institution varies" (opaque to the student).
+2. **C1.8 Previous-institution record → Profile owns it** (*Where I came from*), **My Degree reads
+   it**: "See the evidence" on a potential match opens the record at that line. The data already
+   exists in two features (the final high school transcript requirement; the IB / Northside College
+   transcript evidence).
+3. **Imagery in the prototype → residence halls get stock building photography** (Unsplash exteriors
+   and shared spaces, chosen by hand, `public/residences/SOURCES.md` as `people/SOURCES.md`; bedrooms
+   only with a caption naming the room type; never people, never generated; monogram fallback);
+   **clubs' emblems are the duotone glyph tile that `OrgRow` already renders**, initials when none.
+   Written into CLAUDE.md ("a place may carry a photograph of the place, never of people").
+4. **Housing summary panel → returns** (G4–G6): figure = the plan's standing, support = deadline or
+   assignment, second line = "n of 3 residences ranked", `AdvisorBar` with the scope line. Passes the
+   workflow's test the way Health did; the Jam's objection was to the old figure. Recorded in
+   `docs/agents/design-workflow.md`.
+5. **Advising meeting mock → one institution-scheduled meeting in *Your conversations*** on
+   Appointments, own preview state, states *scheduled by the office → confirmed / reschedule requested
+   / declined*, three actions; reschedule is a request to the office, not a picker; on
+   `prototype/periodic-meetings` via `/prototype`, never on `main`. Term: **Advising meeting**
+   (glossary). Story: human.
+6. **Responsive → in, on every card.** "Out of scope" in the documents meant "not inspected".
+7. **C9 → "My Health and Wellness"** in the nav row and the hero kicker; and the other kickers align
+   to the nav label in the same commit ("My Degree · BA Computer Science", "My Campus Life ·
+   Published by Aster Student Life"); My Enrollment's "Class of 2031" with its flag stays — it is the
+   one hero that states a fact about her standing, by design.
+8. **Glossary → *Inquiry* replaces *Help request*; *Escalation* and *Advising meeting* added;
+   *Callback request* already in** (`CONTEXT.md`). Code names (`features/help`, `HelpPage`) are not
+   the glossary and do not change — Help has no work (C6).
+
+Residual assumptions, stated so they are not silent: the *Where I came from* record shows what she
+sent as received, with each transcript's review state, not only accepted transcripts; the scope
+line's slot on Housing's panel is the implementer's (the Health precedent is the model). No new ADR:
+none of these is hard to reverse; the one that was (time request → callback) is ADR 0010.
 
 ## 6. Execution order
 
@@ -241,5 +257,5 @@ Card: **ENR-189**.
 | 1a | Foundations: `StatusPill` semantic colours + blue, `--hero-gap`, figure rule (`--fs-figure` retired), section/row weights, the 15px and 13.5px sweeps, styleguide — `review-2026-08-21/brief.md` | every screen |
 | 1b | Edward is the door + escalation prompt + inline-at-task — ENR-181 | 183, 188, 189, 207 (B4.2), 164 (C5) |
 | 1c | Category labels rename — ENR-164 (one source; Appointments follows) | — |
-| 2 | ENR-166, ENR-207, ENR-189, ENR-184 in parallel; ENR-183 after 1b + ADR 0008; ENR-188, ENR-164 (C2), ENR-206 small | — |
+| 2 | ENR-166, ENR-207, ENR-189, ENR-184 in parallel; ENR-183 after 1b + ADR 0010; ENR-188, ENR-164 (C2), ENR-206 small | — |
 | 3 | Cross-screen sweep: 15px only on the brand line, 13.5px only on navigation, two figure treatments, no status at `--fs-micro`, no route to a person before Edward except `Book a time`, no hardcoded task icon/action label, categories identical on checklist and Appointments; capture at 1440/390 | — |

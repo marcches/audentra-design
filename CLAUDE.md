@@ -64,7 +64,14 @@ screens needed had no names and no components, so each screen invented its own f
   from `public/people/` — stock portraits (Unsplash, provenance in `SOURCES.md`) chosen for the
   role, so an advisor looks like staff and a student looks college-age; never a generated face —
   and initials when none is on file; offices, residences, organisations and other sites never get a
-  face. Marks — Aster's crest and Audentra's
+  face. **A place may carry a photograph of the place, never of people**: a residence hall's
+  exterior or a shared space, published by the office that owns it — in this prototype, stock
+  building photography from Unsplash, chosen by hand, provenance in `public/residences/SOURCES.md`
+  the way `public/people/SOURCES.md` does it; never a staged bedroom without a caption naming the
+  room type, never a photograph of students, never generated; the monogram is the fallback. **An
+  organisation's emblem is its published mark** — in this prototype a duotone glyph in a tile,
+  initials when none is published — never a photograph, never a drawn one-off (decided 2026-08-22,
+  `.scratch/review-2026-08-21/ledger.md` §5). Marks — Aster's crest and Audentra's
   symbol — live in `design-system/marks/`. The one illustration is `<Spot>`.
 - **Accessibility and responsive behaviour are part of done**, not a follow-up.
 - **Before naming an office, a step, a deadline, a date or the order of steps, read

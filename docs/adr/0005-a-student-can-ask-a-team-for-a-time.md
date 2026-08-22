@@ -1,7 +1,7 @@
 # 0005. A student can ask a team for a time
 
 Date: 2026-08-21
-Status: superseded by [0008](0008-a-callback-request-not-a-time-request.md) on 2026-08-22 — the
+Status: superseded by [0010](0010-a-callback-request-not-a-time-request.md) on 2026-08-22 — the
 stakeholder review call of 2026-08-21 rejected time requests, and ENR-178 (Prioritized) had already
 ruled them out; the second path is a callback request, offered through Edward, not a control on the
 Appointments row.

@@ -155,7 +155,7 @@ its standing, and a person who owns the subject. Nine sections had a panel befor
 | Section | Why it lost the panel |
 | --- | --- |
 | Appointments | `Fri 12 Sep · 10:00` is the first row of `Your conversations` below it, and the person beside it is the person in that row. |
-| My Housing | the figure was the plan she chose, which is what `PlanPanel` is. |
+| My Housing | the figure was the plan she chose, which is what `PlanPanel` is. **Returns with ENR-207's changes of 2026-08-22** (decided in grilling, 2026-08-22): the figure is not the plan but the plan's *standing* — recorded at onboarding, on her checklist with its deadline, recorded here, submitted, room assigned — which moves, and which ENR-210 AC 5/6 require the section to state in every state; the enrollment advisor with a scope line, as Health. The Jam's objection was to the old figure, not to the panel. |
 | Health | the figure, the label and the line were `RecordCard`'s heading, state chip and gate chip — the only card on the page. **Back the same evening** (the changes of 2026-08-21): the page carries two things, a record and a question, so the panel summarises two — the record's state and deadline as the figure, the question's state as the foot, the enrollment advisor with a scope line. |
 | My Profile | `12 of 20 details are yours` is a legend, not a standing: nothing in it moves and nothing in it is pending. |
 | Help | ENR-177 AC 3 forbids this screen to name a person, so its right cell held a button instead. A section that cannot fill the second cell does not have a panel. |

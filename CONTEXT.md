@@ -129,19 +129,49 @@ progress figure, and a planned course is marked *planned* where it sits and noth
 same quarantine a potential match gets, applied to the student's own not-yet.
 _Avoid_: Schedule, cart, enrolment, registration, wishlist, saved courses.
 
-**Help request**:
-A question the student raised with an office through Help. It travels the other way from a document
-requirement: the student is waiting on Aster because they asked, not because Aster asked.
-_Avoid_: Request, unqualified; ticket; case.
+**Inquiry**:
+A question the student raised with an office, from the portal — since 2026-08-22 from Edward's
+escalation prompt, which is where a question that Edward could not answer goes; the Help page was
+the door before and is no longer designed as one. It travels the other way from a document
+requirement: the student is waiting on Aster because they asked, not because Aster asked. Receipt is
+confirmed at once; it carries a state she can check later that names no assignee or team; the reply
+arrives in the portal and email only says a reply is waiting; a resolved inquiry reopens when she
+replies (ENR-177). Renamed from *Help request* 2026-08-22: the thing outlived the screen it was named
+for, and the backlog's word for it was always *inquiry*.
+_Avoid_: Help request; request, unqualified (that is the callback's word now); ticket; case; message
+(that is what Edward's answer is, not what she sends an office).
 
-**Time request**:
-What a student sends from Appointments when none of a team's published times work: a sentence about
-when she could meet, and what it is about, addressed to the team that owns the topic. It is not a
-booking and never becomes a time on a calendar by itself — it waits on the team, and nothing is
-booked until they answer; while it waits it is shown as *Requested* among her conversations, and she
-can cancel it. It is the second path, and the screen says so: picking a published time books on the
-spot, a time request does not. Added 2026-08-21 (ADR 0005).
-_Avoid_: Request, unqualified (that is Help's word); booking request; proposed time; slot request.
+**Callback request**:
+What a student sends, from Edward's escalation prompt, to an office that has no times posted: when
+she is usually free and what it is about, so that someone from that office gets in touch. It is not
+a booking and never becomes a time on a calendar by itself — it waits on the office, and nothing is
+booked until they answer; while it waits it is shown as *Callback requested* among her
+conversations, with the reply time that office publishes, and the reply arrives in the portal. It
+exists only where no calendar is connected: where an office has posted times, the student books one
+directly and no callback is offered. Replaces *Time request* (ADR 0005, 2026-08-21), which let the
+student propose a time; ENR-178 forbids that and the review call of 2026-08-21 chose the callback.
+Added 2026-08-22 (ADR 0010).
+_Avoid_: Time request; ask for a time; booking request; proposed time; slot request.
+
+**Escalation**:
+The one ordered way a student reaches a person, from anywhere in the portal: Edward answers from
+her own record; he asks once whether that answered it; if not, he offers the routes the responsible
+office actually has — an *inquiry* always, a *booking* from posted times where the office has some,
+a *callback request* where it has none — and whatever she already told him travels with the route.
+No route to a person appears before Edward; the one exception is booking from posted times, which
+is a resolution and not a route. Booking and callback are alternatives, not steps. Decided on the
+review call of 2026-08-21 (ADR 0010; `.scratch/review-2026-08-21/`).
+_Avoid_: Support flow; help flow; handoff; ticket; escalating (as something the student does — she
+chooses a route, the portal does not "escalate" her).
+
+**Advising meeting**:
+A meeting the institution schedules with the student — an academic advisor's once- or twice-a-term
+check-in — as opposed to an *appointment*, which the student books. Her move is to confirm, to ask
+to reschedule, or to say she cannot make it; she does not pick the time, and a reschedule is a
+request to the office, not a picker. It shares the appointment card and nothing of the booking flow.
+Out of the MVP, mock only, since the review call of 2026-08-21; named 2026-08-22.
+_Avoid_: Appointment (that is what she books); check-in (fine in speech, not as the noun on the
+screen); periodic meeting; recurring meeting; session.
 
 **Office**:
 The team at Aster that owns a document requirement and makes the decision on its submissions —
@@ -162,6 +192,12 @@ An office may also be a team that owns no requirement and decides nothing, and i
 what a section routes to it**: Accessibility Services receives an *accommodation answer* and
 contacts the student. It is still an office, because the student is owed the same thing either way —
 a name for whoever is on the other side.
+Three more changed 2026-08-22 (US-standard brief, Q8; `docs/domain/us-enrollment.md` §3): *Housing
+Services* became **Residential Life** — the name a US residential campus gives the office, and
+"Housing Services" was read on none; the bill gained an owner, the **Office of the Bursar** on first
+mention and *the Bursar* after, because aid and billing are two offices once Student Financial
+Services was un-merged; and *Academic Advising Office* dropped *Office*, since a campus names its
+advising by the department.
 _Avoid_: Department, team, staff. Aster Registrar, the Registrar's Office (the name is the Office
 of the Registrar). Student Financial Services, Financial Services, financial aid office (the name is
 the Financial Aid Office). Aster University Health Services, Student Health Office (the name is
@@ -181,12 +217,6 @@ cannot be started yet; a held registration is refused later unless an open step 
 thing the registration gate is made of.
 _Avoid_: Block; blocker (the staff board’s word for what stops a task); gate (the screen’s view of
 the holds, not a thing on the record); flag; restriction; lock, locked (a Step’s standing).
-Three more changed 2026-08-22 (US-standard brief, Q8; `docs/domain/us-enrollment.md` §3): *Housing
-Services* became **Residential Life** — the name a US residential campus gives the office, and
-"Housing Services" was read on none; the bill gained an owner, the **Office of the Bursar** on first
-mention and *the Bursar* after, because aid and billing are two offices once Student Financial
-Services was un-merged; and *Academic Advising Office* dropped *Office*, since a campus names its
-advising by the department.
 
 **Step**:
 One item on the My Enrollment checklist: something the student does, named as a verb phrase —
@@ -347,11 +377,11 @@ building (that is a field *of* a residence hall).
 **Preference**:
 One residence hall at one position in the shortlist. It states what the student would like; it establishes
 no claim on a room, and an assignment that does not match it is still a valid assignment. This is the
-word the interface uses, and it is why a preference is never called a *request*: `Help request` below
-already owns that word, and it points the other way — there the student is asking Aster, here Aster
-is deciding. The word is still correct in Housing for the thing it names — changing an assignment
-after the deadline is done *by raising a help request* — which is exactly why it cannot also mean the
-shortlist.
+word the interface uses, and it is why a preference is never called a *request*: *callback request*
+above already owns that word, and an *inquiry* points the other way — there the student is asking
+Aster, here Aster is deciding. The word is still correct in Housing for the thing it names — changing
+an assignment after the deadline is done *by raising an inquiry* — which is exactly why it cannot
+also mean the shortlist.
 _Avoid_: Request; choice; pick; selection.
 
 **Shortlist**:

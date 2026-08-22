@@ -1,4 +1,4 @@
-# 0008. A callback request, not a time request
+# 0010. A callback request, not a time request
 
 Date: 2026-08-22
 Status: accepted — supersedes [0005](0005-a-student-can-ask-a-team-for-a-time.md)
