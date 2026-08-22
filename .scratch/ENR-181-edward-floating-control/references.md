@@ -76,3 +76,69 @@ sheet and the grounded answer were each researched on their own.
 - The sheet geometry itself is **not** taken from Mobbin: it is copied from this repo's own
   `.task-drawer` at `width<=620px` — `min(88vh,760px)`, radius `23px 23px 0 0`, `sheetIn`. A second
   sheet idiom would be the exact inconsistency this card is meant to remove.
+
+## The door, the check and the inline ask — 2026-08-22 (changes brief of the same date)
+
+Four searches, web, deep: the prompt after an answer, the hand-off to a person, the inline control on
+a row, and a support-bot escalation flow. Images examined, not metadata.
+
+### "Did that answer it?" — a question, not a rating
+
+- [Microsoft Copilot](https://mobbin.com/screens/f615a6bc-d64b-49f9-98b3-5d896a782c3b) — a
+  **titled prompt block under the answer**, separated by a hairline, with two outlined pill buttons
+  ("Good" / "Bad"). We take the shape: a short question in the assistant's voice and two quiet
+  buttons, the prompt being its own block rather than icons in the answer's action row.
+- [PayPal assistant](https://mobbin.com/screens/b0e23e51-32c4-4101-a4f3-0af779cf087b) — "Is there
+  anything else I can help you with today?" is asked *as a message*, answered by a quick reply
+  ("No"), and the answer leads somewhere. We take the conversational placement: Edward asks once,
+  after the answer, and *Not really* is what opens the routes.
+
+**Rejected:** thumbs up/down in the action row ([Bard](https://mobbin.com/screens/1967f0ff-557d-481c-9ea9-8a5e861082c0),
+[Mistral Le Chat](https://mobbin.com/screens/421b789e-fcc0-4ca3-bf6d-e977bb9932d7)) and the "what was
+wrong" chip matrices that follow them — ENR-176's register is whether *she* got what she needed, not
+a rating of the model; and a matrix of reasons is a survey, which the card forbids as the loudest
+thing on a 380px surface.
+
+### The routes — stacked, in the assistant's turn, and the absence stated
+
+- [Klook support](https://mobbin.com/screens/293a68c2-2a91-417b-96e0-c7b834a7d734) — the bot offers
+  **stacked full-width buttons inside its own bubble** ("Something I want to book" … "Talk to
+  someone"). We take the shape whole: the routes are rows in Edward's turn, the same row the
+  suggestions already use, so "what you can do next" always looks the same in Edward.
+- [PayPal assistant](https://mobbin.com/screens/b0e23e51-32c4-4101-a4f3-0af779cf087b) — when live
+  help is not there, the bot **says so and says when** ("All our agents are currently offline… They
+  will return on Thursday…") before offering the alternatives. We take the rule: where an office has
+  no times posted, Edward states it and offers the callback in the booking's place, with the reply
+  time that office publishes (Part A §3.4, §7.2).
+- [Blue Apron](https://mobbin.com/flows/f526847e-2cc4-49e5-a6e6-908180ece220) — offline → "we'd
+  like to help you as soon as we are back online… Submit a Form": the same stated absence, one
+  alternative, one button. Confirms the above.
+
+**Rejected:** [Loops](https://mobbin.com/screens/96bb79c3-291c-414c-b42e-18003346e9fe) — three
+side-by-side cards (Live chat / Slack / Email): too wide for the window, and it makes three routes
+look like peers when booking and callback are alternatives to each other (Part A §10).
+[Resend Help](https://mobbin.com/flows/68dcf300-7409-433d-8f90-8e5b54f0ad51) and Blue Apron's
+"Talk to a human" from the first message — a route to a person before the assistant has answered,
+which Part A §12.1 forbids. [Zoho CRM](https://mobbin.com/screens/a14af107-a391-4ad4-b84c-c0b55b0adf9d)
+— an error that names an e-mail address to write to: ENR-177 AC 6.
+[Intercom Fin](https://mobbin.com/screens/ccf5c1b1-cfc6-45cb-97d8-dd29fd6655b6) — the admin's
+"hands over or escalates" settings, not the student's view; kept only as confirmation that
+"follows up — confirm whether the user still needs assistance" is how the category names the check.
+
+### The inline ask — a quiet mark and one word, in the row's action area
+
+- [Workable](https://mobbin.com/screens/676c70e1-1b71-401a-8335-962b9bb53eba) — a tiny "✦ AI" pill
+  beside the content, next to "Edit ▾" and "Change tone ▾": the assistant is offered where the thing
+  is, as the smallest control on the line. We take the size and the register.
+- [Remote](https://mobbin.com/screens/44344cb5-9817-4d0e-b696-e8ba936b2f82) — "✦ Revise with AI" as
+  a text button beside a field. We take the text-button form: the mark, a short label, never a
+  primary button.
+- [Fabric](https://mobbin.com/screens/61d7d915-b6d3-4f7b-8544-ed2701fdce96) — the assistant panel's
+  composer carries a **"Current file" context chip** over the input. Our `edward-context-chip`
+  already does this for the page; the door sets it to the item the control came from.
+
+**Rejected:** [Trello](https://mobbin.com/screens/288bd04c-0aae-4928-b0fb-db4b44912466) — AI inside
+the editor with Discard / Refine / Insert / Replace: it acts on content, and Edward never acts
+(ENR-176 AC 5). [Coda](https://mobbin.com/screens/d085bc38-7a20-4dfd-b3e1-0e853c8fbe75) — "auto
+select with AI" on a status field: same. [Mural](https://mobbin.com/screens/9dfc2233-6356-479b-a6ee-2a23490f0d2c)
+— a right-click menu of AI actions: a context menu hides the control from keyboard and touch.

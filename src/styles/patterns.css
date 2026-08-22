@@ -4259,3 +4259,28 @@ a.pop-row:focus-visible {
   font-size: var(--fs-copy);
   font-weight: var(--fw-medium);
 }
+
+/* --- the inline ask (EdwardAsk) — C5 of the walkthrough, 2026-08-22 ---------
+ *
+ * The mark and one word, as a text button: the smallest control on the line
+ * (Workable's "✦ AI", Remote's "Revise with AI"). The mark is drawn here and not
+ * borrowed from Edward's own stylesheet, so the pattern stands on its own. */
+
+.edward-ask {
+  align-items: center;
+  gap: var(--space-2);
+  display: inline-flex;
+}
+
+.edward-ask-mark {
+  color: var(--on-ink);
+  background: var(--grad-purple);
+  border-radius: var(--radius-chip);
+  flex: none;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-bold);
+  display: grid;
+}

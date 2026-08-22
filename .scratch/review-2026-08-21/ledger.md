@@ -261,3 +261,13 @@ none of these is hard to reverse; the one that was (time request → callback) i
 | 1c | Category labels rename — ENR-164 (one source; Appointments follows) | — |
 | 2 | ENR-166, ENR-207, ENR-189, ENR-184 in parallel; ENR-183 after 1b + ADR 0010; ENR-188, ENR-164 (C2), ENR-206 small | — |
 | 3 | Cross-screen sweep: 15px only on the brand line, 13.5px only on navigation, two figure treatments, no status at `--fs-micro`, no route to a person before Edward except `Book a time`, no hardcoded task icon/action label, categories identical on checklist and Appointments; capture at 1440/390 | — |
+
+## 7. Progress
+
+| Wave | State | Where |
+| --- | --- | --- |
+| 1a foundations | **built 2026-08-22** (`2761ff4`) — proof in `brief.md` "Done" | — |
+| 1b Edward door, check, escalation, inline ask | **built 2026-08-22** — proof in `ENR-181-edward-floating-control/changes-2026-08-22.md` "Done"; Mobbin references recorded first | — |
+| 1c category rename | not started | ENR-164 |
+| 2 screens | not started | each card |
+| 3 sweep | not started | — |

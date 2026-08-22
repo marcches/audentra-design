@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
 import { IconButton } from '../../design-system/primitives/Button.jsx';
 import { EDWARD, seededConversations } from './data.js';
-import { answerFor, suggestionsFor } from './logic.js';
+import { answerFor, escalationFor, suggestionsFor } from './logic.js';
+import { onEdwardOpen, stashHandoff } from './door.js';
 import { GROUPS } from '../../lib/navigation.js';
 import { TWO_PANE_QUERY, useIsSheet, useMedia, useOverlay } from '../../lib/overlay.js';
 import EdwardComposer from './EdwardComposer.jsx';
@@ -71,6 +72,10 @@ export default function Edward({
   const [voice, setVoice] = useState('idle');
   const [playing, setPlaying] = useState(null);
   const [lastAsk, setLastAsk] = useState(null);
+  // What a door brought in: the chip's label, the office the question is for
+  // and the hint the answer can use. Part A §12 — see `door.js`.
+  const [doorContext, setDoorContext] = useState(null);
+  const [focusPending, setFocusPending] = useState(false);
 
   const panel = useRef(null);
   const launcher = useRef(null);
@@ -81,7 +86,7 @@ export default function Edward({
   const isSheet = useIsSheet();
   const twoPane = useMedia(TWO_PANE_QUERY);
   const loading = state === 'loading';
-  const context = contextOn ? contextLabel(page) : null;
+  const context = contextOn ? (doorContext?.label ?? contextLabel(page)) : null;
 
   const active = conversations.find((item) => item.id === activeId) ?? conversations[0];
   const messages = active?.messages ?? [];
@@ -103,6 +108,36 @@ export default function Edward({
   useEffect(() => {
     if (dialogOpen) setOpen(false);
   }, [dialogOpen]);
+
+  // The door — Part A §12.2. A screen opens Edward with the question written
+  // and *not sent*: a fresh conversation, the chip naming the item, the input
+  // focused with the cursor at the end. She sends it, or fixes it first.
+  useEffect(
+    () =>
+      onEdwardOpen(({ question, context: brought }) => {
+        startConversation();
+        setDoorContext(brought ?? null);
+        setContextOn(true);
+        setDraft(question ?? '');
+        setOpen(true);
+        setFocusPending(true);
+      }),
+    [],
+  );
+
+  useEffect(() => {
+    if (!open || !focusPending) return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      const field = document.getElementById('edward-input');
+      if (field) {
+        field.focus();
+        const end = field.value.length;
+        field.setSelectionRange(end, end);
+      }
+      setFocusPending(false);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [open, focusPending]);
 
   // The pill is not in the DOM while the window is open, so the hand-back is
   // ours rather than `useOverlay`'s. Same shape as the nav menu button in App.
@@ -139,6 +174,18 @@ export default function Edward({
     const question = text.trim();
     if (!question || loading) return;
 
+    // What the door knew travels with the question — the office and the hint —
+    // so the answer, and the escalation after it, are about the right thing.
+    const carried = doorContext
+      ? {
+          intent: doorContext.intent,
+          taskId: doorContext.taskId,
+          office: doorContext.office,
+          topic: doorContext.topic,
+        }
+      : {};
+    const fullHint = { ...carried, ...hint };
+
     const student = {
       id: nextId('student'),
       role: 'student',
@@ -153,17 +200,65 @@ export default function Edward({
       messages: [...item.messages, student, { id: thinkingId, role: 'edward', kind: 'thinking' }],
     }));
     setDraft('');
-    setLastAsk({ question, hint });
+    setLastAsk({ question, hint: fullHint });
 
     later(() => {
-      const answer = answerFor(question, record, hint);
+      const answer = answerFor(question, record, fullHint);
       if (answer.kind === 'error') setDraft(question);
       patchActive((item) => ({
         messages: item.messages.map((message) =>
-          message.id === thinkingId ? { ...answer, id: thinkingId, role: 'edward' } : message,
+          message.id === thinkingId
+            ? {
+                ...answer,
+                id: thinkingId,
+                role: 'edward',
+                office: fullHint.office ?? null,
+                topic: fullHint.topic ?? null,
+              }
+            : message,
         ),
       }));
     }, 700);
+  }
+
+  /**
+   * "Did that answer it?" — Part A §6.4, asked once after an answer. *Yes*
+   * leaves nothing behind; *Not really* appends the escalation: the routes the
+   * responsible office actually has, and nothing that does not exist.
+   */
+  function resolve(messageId, value) {
+    const message = messages.find((item) => item.id === messageId);
+    if (!message || message.resolved) return;
+    const escalation =
+      value === 'no'
+        ? escalationFor({ intent: message.intent, office: message.office, topic: message.topic })
+        : null;
+    patchActive((item) => ({
+      messages: [
+        ...item.messages.map((entry) => (entry.id === messageId ? { ...entry, resolved: value } : entry)),
+        ...(escalation ? [{ id: nextId('edward'), role: 'edward', kind: 'escalation', ...escalation }] : []),
+      ],
+    }));
+  }
+
+  /**
+   * A route hands the student to the page that does the thing — with what she
+   * already told Edward, so she does not start over (§6.4). Edward never sends
+   * anything himself: the inquiry, the booking and the callback are the page's.
+   */
+  function escalate(route, escalation) {
+    const lastQuestion = [...messages].reverse().find((item) => item.role === 'student')?.text ?? null;
+    stashHandoff({
+      kind: route.kind,
+      route: route.route,
+      topic: route.topic ?? null,
+      topicId: route.topicId ?? null,
+      office: escalation.office,
+      question: lastQuestion,
+      context,
+    });
+    setOpen(false);
+    onRoute({ route: route.route });
   }
 
   function retry() {
@@ -307,6 +402,8 @@ export default function Edward({
               onRoute={follow}
               onContact={onContact}
               onRetry={retry}
+              onResolve={resolve}
+              onEscalate={escalate}
               bottomRef={bottom}
             />
             <EdwardComposer

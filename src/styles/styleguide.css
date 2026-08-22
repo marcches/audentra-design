@@ -756,3 +756,19 @@
   gap: var(--space-5);
   display: flex;
 }
+
+/* Edward's section: a row the inline ask sits in, and the window's width for the check and the routes. */
+.sg-row-demo {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-5);
+  max-width: 480px;
+  padding: var(--space-5) 0;
+  display: flex;
+}
+
+.sg-edward-demo {
+  max-width: 380px;
+}

@@ -17,6 +17,7 @@ import SummaryFigure from '../patterns/SummaryFigure.jsx';
 import AdvisorBar from '../patterns/AdvisorBar.jsx';
 import Avatar from '../primitives/Avatar.jsx';
 import StatusPill from '../primitives/StatusPill.jsx';
+import EdwardAsk from '../patterns/EdwardAsk.jsx';
 import NavItem, { NavGroup, NavSkeleton, ProfileChip } from '../primitives/NavItem.jsx';
 import Spot from '../patterns/Spot.jsx';
 import PageSkeleton from '../patterns/PageSkeleton.jsx';
@@ -1772,6 +1773,83 @@ export default function Styleguide({ onToast }) {
               ) : null}
             </p>
           </div>
+        </Section>
+
+        <Section
+          id="sg-edward"
+          title="Edward — the door, the check and the inline ask"
+          rule="Since the review of 2026-08-21 no route to a person appears before Edward. A screen that used to offer a direct line to an office opens him instead, with the question written and not sent; after an answer he asks once whether it answered it; and when it did not, he offers only the routes the responsible office actually has — an inquiry always, a booking where times are posted, a callback where they are not, with the absence stated. Booking from posted times is the one exception to the rule: it is a resolution, not a route. References in ENR-181's references.md: Copilot, PayPal, Klook, Workable, Remote, Fabric."
+        >
+          <Block
+            title="The inline ask"
+            note="A quiet control on a row — the mark and one word, a text button, never primary. The row writes the question in the student's voice from its own data and calls openEdward({ question, context }) from features/edward/door.js; Edward opens with it in the input, unsent, the chip naming the item."
+          >
+            <div className="sg-row-demo">
+              <span>Choose your orientation session</span>
+              <EdwardAsk
+                mark="E"
+                label="Ask Edward"
+                onClick={() =>
+                  onToast({
+                    tone: 'success',
+                    title: 'Edward would open here',
+                    body: 'With “Which orientation session should I pick, and what does it unlock?” written and not sent.',
+                  })
+                }
+              />
+            </div>
+          </Block>
+          <Block
+            title="The check"
+            note="After an answer, once, on the latest answer only: a question in Edward's voice and two quiet buttons — its own block under the answer, not thumbs in the action row. Yes leaves nothing behind. Not really is what opens the routes."
+          >
+            <div className="edward-answer sg-edward-demo">
+              <p>
+                Your next step is choosing an orientation session — it is the one due Jun 26, and it
+                is what opens class registration.
+              </p>
+              <div className="edward-check" role="group" aria-label="Did that answer it?">
+                <p>Did that answer it?</p>
+                <div>
+                  <button className="secondary-button" type="button">
+                    Yes
+                  </button>
+                  <button className="secondary-button" type="button">
+                    Not really
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Block>
+          <Block
+            title="The routes"
+            note="Stacked rows in Edward's turn — the suggestion row, reused — and the absence stated: where the office has no times posted, a callback stands in for the booking and says the reply time the office publishes, never one the portal invented. An inquiry is always offered; the reply arrives in the portal. Whatever she told Edward travels with the route."
+          >
+            <div className="edward-answer edward-escalation sg-edward-demo">
+              <p className="edward-escalation-lead">Let’s get you to a person.</p>
+              <p className="edward-escalation-office">
+                Academic Advising is the office for this. They don’t have times posted right now, so
+                a callback stands in for a booking.
+              </p>
+              <div className="edward-routes">
+                <button className="edward-suggestion" type="button">
+                  <span>Send Academic Advising an inquiry</span>
+                  <Icon name="arrow" size={15} />
+                </button>
+                <button className="edward-suggestion" type="button">
+                  <span>
+                    Request a callback
+                    <small>They usually get back within 3 business days.</small>
+                  </span>
+                  <Icon name="arrow" size={15} />
+                </button>
+              </div>
+              <p className="edward-route-note">
+                <Icon name="pin" size={12} /> Whatever you already told Edward goes with it, so you
+                don’t start over.
+              </p>
+            </div>
+          </Block>
         </Section>
 
         <Section

@@ -51,9 +51,16 @@ export default function EdwardThread({
   onRoute,
   onContact,
   onRetry,
+  onResolve,
+  onEscalate,
   bottomRef,
 }) {
   if (loading) return <Skeleton />;
+
+  // The check is asked once, on the latest answer only — an older turn stops
+  // asking the moment a newer one exists (Part A §6.4: "asked once and easy to
+  // dismiss").
+  const lastId = messages[messages.length - 1]?.id ?? null;
 
   return (
     <div className="edward-thread" role="log" aria-live="polite" aria-label="Conversation with Edward">
@@ -85,6 +92,9 @@ export default function EdwardThread({
           onRoute={onRoute}
           onContact={onContact}
           onRetry={onRetry}
+          onResolve={onResolve}
+          onEscalate={onEscalate}
+          isLast={message.id === lastId}
         />
       ))}
 

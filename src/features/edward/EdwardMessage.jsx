@@ -40,7 +40,17 @@ function PersonCard({ who, onContact }) {
   );
 }
 
-export default function EdwardMessage({ message, playing, onPlay, onRoute, onContact, onRetry }) {
+export default function EdwardMessage({
+  message,
+  playing,
+  onPlay,
+  onRoute,
+  onContact,
+  onRetry,
+  onResolve,
+  onEscalate,
+  isLast = false,
+}) {
   if (message.role === 'student') {
     return (
       <article className="edward-turn student">
@@ -80,6 +90,46 @@ export default function EdwardMessage({ message, playing, onPlay, onRoute, onCon
           <button className="secondary-button" onClick={onRetry}>
             <Icon name="refresh" size={15} /> Try again
           </button>
+        </div>
+      </article>
+    );
+  }
+
+  // Part A §6.4 — the turn after "Not really": the office named, the absence
+  // of posted times stated where it holds, and only the routes that exist. The
+  // routes are the suggestion row, reused, so what you can do next always looks
+  // the same in Edward (Klook, in the references).
+  if (message.kind === 'escalation') {
+    return (
+      <article className="edward-turn edward">
+        <div className="edward-answer edward-escalation">
+          <p className="edward-escalation-lead">Let’s get you to a person.</p>
+          <p className="edward-escalation-office">
+            {message.office.name} is the office for this.
+            {message.posted
+              ? ''
+              : ' They don’t have times posted right now, so a callback stands in for a booking.'}
+          </p>
+          <div className="edward-routes">
+            {message.routes.map((route) => (
+              <button
+                key={route.kind}
+                className="edward-suggestion"
+                onClick={() => onEscalate(route, message)}
+              >
+                <span>
+                  {route.label}
+                  {route.kind === 'callback' && route.reply ? (
+                    <small>They usually get back within {route.reply}.</small>
+                  ) : null}
+                </span>
+                <Icon name="arrow" size={15} />
+              </button>
+            ))}
+          </div>
+          <p className="edward-route-note">
+            <Icon name="pin" size={12} /> {message.note}
+          </p>
         </div>
       </article>
     );
@@ -131,6 +181,23 @@ export default function EdwardMessage({ message, playing, onPlay, onRoute, onCon
             )}
           </button>
         </div>
+
+        {/* Asked once, after the answer, in Edward's voice — a question, not a
+            rating (Copilot's prompt block, not Bard's thumbs). Yes leaves nothing
+            behind; Not really is what opens the routes. */}
+        {isLast && !message.resolved && (
+          <div className="edward-check" role="group" aria-label="Did that answer it?">
+            <p>Did that answer it?</p>
+            <div>
+              <button className="secondary-button" onClick={() => onResolve(message.id, 'yes')}>
+                Yes
+              </button>
+              <button className="secondary-button" onClick={() => onResolve(message.id, 'no')}>
+                Not really
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </article>
   );

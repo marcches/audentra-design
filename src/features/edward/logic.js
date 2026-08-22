@@ -30,6 +30,9 @@ import {
   financialAidAdvisor,
 } from '../enrollment/data.js';
 import { program } from '../classrooms/data.js';
+import { offices } from '../help/data.js';
+import { conversationTypes, publishedTimes } from '../appointments/data.js';
+import { openTimes } from '../appointments/logic.js';
 import { GUIDANCE, PAGE_QUESTIONS } from './data.js';
 import { deadlineLabel, escalation, formatMoney } from '../financials/logic.js';
 import { destinationById } from '../../lib/navigation.js';
@@ -469,7 +472,7 @@ const PHRASES = [
   ['program', ['my degree', 'my program', 'my major', 'requirements', 'my classes', 'my courses', 'credits to graduate']],
   ['progress', ['academic progress', 'keep my aid', 'satisfactory progress', 'gpa', 'completion pace']],
   ['events', ['required event', 'campus event', 'orientation session', 'do i have to attend', 'clubs']],
-  ['advisor', ['who do i talk to', 'who should i talk', 'my advisor', 'talk to a person', 'speak to someone', 'contact', 'who can help']],
+  ['advisor', ['who do i talk to', 'who should i talk', 'my advisor', 'talk to a person', 'speak to someone', 'contact', 'who can help', 'get in touch', 'how do i reach', 'who decides']],
   ['points', ['momentum point', 'points work', 'how do points', 'what are points']],
   ['privacy', ['what can you see', 'what do you know about me', 'can you see', 'my privacy', 'another student']],
 ];
@@ -564,5 +567,87 @@ function noAnswer(person) {
       'I can read your record and the guidance Aster publishes, so anything outside those two is a question for a person.',
     ],
     person,
+  };
+}
+
+/* ------------------------------------------------------------------ *
+ * The escalation — Part A of the review of 2026-08-21 (ADR 0010), built 2026-08-22
+ * ------------------------------------------------------------------ */
+
+/** Which office an answer's person belongs to, in Help's vocabulary of offices. */
+const OFFICE_OF_PERSON = { enrollment: 'admissions', aid: 'financial-services' };
+/** Which conversation type books with which office — and the other way round. Academic Advising
+ *  books (`academic`) but is not one of Help's offices, so it has no key here on purpose. */
+const TYPE_OF_OFFICE = { admissions: 'enrollment', 'financial-services': 'financial-aid' };
+const OFFICE_OF_TYPE = { enrollment: 'admissions', 'financial-aid': 'financial-services' };
+/** The Help topic an inquiry to that office opens on. */
+const HELP_TOPIC_OF_OFFICE = {
+  'financial-services': 'money',
+  bursar: 'bill',
+  admissions: 'other',
+  housing: 'housing',
+  health: 'health',
+  registrar: 'program',
+  accessibility: 'other',
+};
+
+/**
+ * "Academic Advising", "the Registrar", "Admissions" — the office as a US campus
+ * says it in running text, which is not how its letterhead says it (Part A §6.1:
+ * "the Academic Advising Office hasn't opened a calendar yet" is not US English).
+ */
+export function runningName(name) {
+  if (!name) return '';
+  if (name.startsWith('Office of the ')) return `the ${name.slice('Office of the '.length)}`;
+  return name.replace(/ Office$/, '');
+}
+
+/**
+ * What Edward offers when the student says the answer did not settle it — only
+ * the routes the responsible office actually has, never one that does not exist:
+ *
+ *   - an **inquiry**, always — it arrives in the portal and the reply does too
+ *     (ENR-177; email only says a reply is waiting);
+ *   - a **booking** from posted times, where the office has posted some;
+ *   - a **callback request** where it has not — the absence is stated, and the
+ *     reply time is the one that office publishes, never a constant of ours
+ *     (§7.2, §8.3).
+ *
+ * Booking and callback are alternatives, not steps (§10). The office is named
+ * in every route (ENR-177 AC 7). `office` is a Help office key, `topic` a
+ * conversation type — a door passes whichever it knows; an answer passes its
+ * intent, which names a person, which names an office.
+ */
+export function escalationFor({ intent = null, office = null, topic = null } = {}) {
+  const type = topic ? (conversationTypes.find((item) => item.id === topic) ?? null) : null;
+  const key = office ?? (type ? (OFFICE_OF_TYPE[type.id] ?? null) : OFFICE_OF_PERSON[personFor(intent)]);
+  const helpOffice = key ? (offices[key] ?? null) : null;
+  const bookable =
+    type ??
+    (key && TYPE_OF_OFFICE[key]
+      ? (conversationTypes.find((item) => item.id === TYPE_OF_OFFICE[key]) ?? null)
+      : null);
+  const fullName = helpOffice?.name ?? bookable?.team ?? offices.admissions.name;
+  const name = runningName(fullName);
+  const reply = helpOffice?.reply ?? null;
+  const posted = bookable ? openTimes(publishedTimes, bookable.id) > 0 : false;
+
+  const routes = [
+    {
+      kind: 'inquiry',
+      label: `Send ${name} an inquiry`,
+      route: '#/help',
+      topicId: HELP_TOPIC_OF_OFFICE[key] ?? (bookable?.id === 'academic' ? 'program' : 'other'),
+    },
+    posted
+      ? { kind: 'booking', label: `Book a time with ${name}`, route: '#/appointments', topic: bookable.id }
+      : { kind: 'callback', label: 'Request a callback', route: '#/appointments', topic: bookable?.id ?? null, reply },
+  ];
+
+  return {
+    office: { key, name, fullName, reply },
+    posted,
+    routes,
+    note: 'Whatever you already told Edward goes with it, so you don’t start over.',
   };
 }

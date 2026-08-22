@@ -589,6 +589,10 @@
 .edward-field textarea {
   color: var(--ink);
   resize: none;
+  /* A question the door wrote can run to two lines; the field grows to show it
+     whole (up to the max-height below) rather than clipping what she is about
+     to send — 2026-08-22. Browsers without `field-sizing` keep one row. */
+  field-sizing: content;
   background: 0 0;
   border: 0;
   flex: 1;
@@ -868,4 +872,70 @@
   .edward-launcher, .edward-suggestion, .edward-field {
     transition: none;
   }
+}
+
+/* --- the check, and the routes — Part A §6.4 and §12 (2026-08-22) ----------
+ *
+ * After an answer, once, Edward asks whether it answered it: a short question
+ * in his voice and two quiet buttons, its own block under the answer and not a
+ * pair of thumbs in the action row (Copilot's prompt block; PayPal's "anything
+ * else?" as a message — the references). "Not really" appends an escalation
+ * turn: the office named, the absence of posted times stated where it holds,
+ * and the routes as the rows the suggestions already use (Klook), so "what you
+ * can do next" always looks the same in Edward. The note under them is §6.4's
+ * promise that the context travels. */
+
+.edward-check {
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  display: flex;
+}
+
+.edward-check p {
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--fs-copy);
+}
+
+.edward-check div {
+  gap: var(--space-3);
+  display: flex;
+}
+
+.edward-escalation-lead {
+  margin: 0 0 var(--space-2);
+  font-weight: var(--fw-semi);
+}
+
+.edward-escalation-office {
+  color: var(--muted);
+  margin: 0 0 var(--space-5);
+  font-size: var(--fs-copy);
+}
+
+.edward-routes {
+  flex-direction: column;
+  gap: var(--space-2);
+  display: flex;
+}
+
+.edward-routes .edward-suggestion small {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-regular);
+  display: block;
+}
+
+.edward-route-note {
+  color: var(--muted);
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-5) 0 0;
+  font-size: var(--fs-meta);
+  display: flex;
 }
