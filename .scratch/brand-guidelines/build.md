@@ -79,6 +79,25 @@ row: x = (i % 6) · 2080, y = ⌊i / 6⌋ · 1320, i = the page index from 0.
 | 09 Motion | 5 | done | 74 divider `102:916` · 75 Principles `102:926` · 76 Durations and ease `102:945` · 77 Reduced motion `102:985` · 78 Examples `102:1008` |
 | 10 Layout and composition | 6 | done | 79 divider `103:919` · 80 The grid of this book `103:930` · 81 Composition on brand surfaces `103:963` · 82 Web, slide, and document grids `103:992` · 83 Spacing and radius `103:1028` · 84 Examples `103:1149` |
 | 11 Co-branding | 8 | done | 85 divider `104:919` · 86 Roles `104:932` · 87 The attribution inside the host’s surface `104:1027` · 88 Login and emails `105:955` · 89 Lockup geometry `105:1039` · 90 Client logo walls and lists `106:978` · 91 Referential phrasing `106:1029` · 92 For the client’s brand office `106:1112` (Aster crest drawn from AsterMark.jsx geometry) |
-| 12 Applications | 10 | pending | |
-| 13 Brand → Product | 5 | pending | |
-| 14 Assets and governance | 7 | pending | |
+| 12 Applications | 10 | done | 93 divider `109:982` · 94 The student portal `109:997` · 95 Onboarding `109:1017` · 96 Staff tools `109:1037` · 97 Email signature `110:981` · 98 Transactional email `110:1019` · 99 Slides `110:1063` · 100 Social `111:1078` · 101 Business card `111:1127` · 102 Stationery `111:1216`. Product screens: headless Chrome 1440×900 from the running dev server (routes my-enrollment, onboarding, appointments, health) and the staff board file; uploaded to the Assets page section `109:981` (hashes enrollment 504fcfc4…, onboarding 5a1ab61a…, appointments eda55906…, health e91041db…, staff e8acc908…) |
+| 13 Brand → Product | 5 | done | 103 divider `108:978` · 104 One language, two surfaces `108:988` · 105 The tokens map `108:1013` · 106 Type and icons in the product `108:1074` · 107 The design system file `108:1102` |
+| 14 Assets and governance | 7 | done | 108 divider `112:1193` · 109 Asset library `112:1205` · 110 Naming and versioning `113:1193` · 111 Trademark and legal line `113:1234` · 112 Contacts and approvals `113:1255` · 113 What’s new `113:1301` · 114 Closer `113:1352` |
+
+## Status at 2026-08-22, end of the build session
+
+All 114 frames exist on page `64:2`, named `NN Title`, on the grid, each page-number text equal to
+its frame number (final audit: 114 frames, 0 missing, 0 duplicates, 6 stray empty frames removed).
+Every page was screenshot-verified at 0.4× as it was built. Total calls: foundations + kit +
+~45 `use_figma` build calls.
+
+**Open items (marked `[confirm: …]` in the book)**: the legal entity for the trademark line (pages
+98, 102, 111, 114); the brand contact and approver (92, 107, 111, 112); the templates' location
+(109); the next review date (113). Filling them is version 2.1.
+
+**One manual step in Figma**: set the `Typography` collection's `font/heading` variable to
+"Satoshi" (the MCP runtime cannot load it); every heading style follows. Pages whose specimens were
+set with explicit fonts (45, 47, 52) should then be re-read once; the body "Aa" on 45 is bound to the
+style and will flip too.
+
+**Cleanup left on purpose**: the Prototype — gradient page (A and B marked discarded, B′ and C
+chosen) and the v1 archive page stay in the file as history.
