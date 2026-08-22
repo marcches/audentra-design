@@ -52,3 +52,44 @@ export function sortTasks(tasks, mode) {
   }
   return list;
 }
+
+/**
+ * A date on a row says what kind of date it is — C2.1 of the walkthrough of
+ * 2026-08-20 ("is it due, or is it coming up?"). A calendar date on a locked
+ * step is its due date; a phrase ("At orientation") already says when.
+ */
+export function dueLabel(due) {
+  if (!due) return '';
+  return /^[A-Z][a-z]{2} \d{1,2}$/.test(due) ? `Due ${due}` : due;
+}
+
+/** The Help office a step's office maps to — the key Edward's escalation understands. */
+const HELP_OFFICE_OF = {
+  'Financial Aid Office': 'financial-services',
+  'Admissions Office': 'admissions',
+  'Residential Life': 'housing',
+  'Student Health Services': 'health',
+  'Office of the Registrar': 'registrar',
+  'Accessibility Services': 'accessibility',
+};
+
+/**
+ * What the inline ask hands to Edward — C5 of the walkthrough of 2026-08-20,
+ * through the door of Part A §12: the question in the student's voice, naming
+ * the step, written and not sent; and the context that spares her re-explaining
+ * — the step, its office, its deadline travel with it.
+ */
+export function edwardAskFor(task) {
+  const office = HELP_OFFICE_OF[task.office] ?? null;
+  const topic = /^Academic Advising/.test(task.office ?? '') ? 'academic' : null;
+  return {
+    question: `What exactly do I need to do for “${task.title}”, and what happens if I miss ${task.due}?`,
+    context: {
+      label: `My Enrollment · ${task.title}`,
+      intent: 'task',
+      taskId: task.id,
+      office,
+      topic,
+    },
+  };
+}

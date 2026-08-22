@@ -299,6 +299,7 @@ export const lockedTasks = [
   },
   {
     title: 'Choose your move-in time',
+    category: 'Your campus life',
     kind: 'housing',
     description: 'Your arrival window appears after Residential Life assigns your room on Jul 20.',
     prerequisite: 'Complete ‘Choose your housing plan’ first',
@@ -309,8 +310,8 @@ export const lockedTasks = [
     // Appointments groups its conversations by the checklist's categories (A9 of
     // the appointments changes, 2026-08-21), and academic advising is a
     // conversation, so the step that names it carries the category it sits in.
-    // It is invisible here — a locked row prints no category — and it is the
-    // one place the category is decided.
+    // Since 2026-08-22 a locked row prints its category too (C2.3), and this is
+    // still the one place the category is decided.
     category: 'Your degree',
     kind: 'meeting',
     description: 'You meet your advisor at your orientation session and register for fall classes there.',
@@ -328,14 +329,17 @@ export const lockedTasks = [
  * The dates follow `docs/domain/aster.md` §2 and §4: the offer accepted and the
  * deposit paid by May 1, the account on May 4, and setup walked on Jun 8.
  */
+// Every row carries its category since the walkthrough of 2026-08-20 (C2.3):
+// the category is what ties a step to the screen that owns it, and a finished
+// step is still a step of its part of the enrollment.
 export const initialCompleted = [
-  { title: 'Accept your offer', kind: 'decision', date: 'Apr 30', points: 150 },
-  { title: 'Pay your $500 enrollment deposit', kind: 'external', date: 'May 1', points: 100 },
-  { title: 'Set up your Aster account', kind: 'profile', date: 'May 4', points: 40 },
-  { title: 'Confirm your identity', kind: 'identity', date: 'Jun 8', points: 100 },
-  { title: 'Choose your preferred name', kind: 'profile', date: 'Jun 8', points: 78 },
-  { title: 'Set communication preferences', kind: 'preferences', date: 'Jun 8', points: 60 },
-  { title: 'Review your admission details', kind: 'review', date: 'Jun 8', points: 40 },
+  { title: 'Accept your offer', category: 'Your offer', kind: 'decision', date: 'Apr 30', points: 150 },
+  { title: 'Pay your $500 enrollment deposit', category: 'Your offer', kind: 'external', date: 'May 1', points: 100 },
+  { title: 'Set up your Aster account', category: 'Your details', kind: 'profile', date: 'May 4', points: 40 },
+  { title: 'Confirm your identity', category: 'Your details', kind: 'identity', date: 'Jun 8', points: 100 },
+  { title: 'Choose your preferred name', category: 'Your details', kind: 'profile', date: 'Jun 8', points: 78 },
+  { title: 'Set communication preferences', category: 'Your details', kind: 'preferences', date: 'Jun 8', points: 60 },
+  { title: 'Review your admission details', category: 'Your offer', kind: 'review', date: 'Jun 8', points: 40 },
 ];
 
 export const initialReviewing = [

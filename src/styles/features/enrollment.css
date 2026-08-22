@@ -355,3 +355,22 @@
     margin-top: -7px;
   }
 }
+
+/* Every row carries its category — C2.3 of the walkthrough of 2026-08-20. The
+   same small caps the active card's meta row uses, so a category reads the
+   same whether the step is open, waiting or done. */
+.compact-eyebrow {
+  color: var(--faint);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  margin: 0 0 var(--space-1);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semi);
+  display: block;
+}
+
+/* The inline ask under the card's actions — C5. Quiet, after "How this works",
+   never heavier than it. */
+.task-action .edward-ask {
+  margin-top: var(--space-2);
+}

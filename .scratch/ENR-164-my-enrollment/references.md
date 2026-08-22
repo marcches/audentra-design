@@ -66,3 +66,35 @@ compresses into one horizontal row, and what belongs at the top of a rail once t
 - [Jira — people profile](https://mobbin.com/screens/69749b02-5134-4de3-8082-387518ec9a84) — a full
   profile column with job title, department, organization and location stacked as labelled rows. Right
   for a profile page, wrong for a progress strip: it re-inflates the card the Jam just asked to reduce.
+
+## Completed and upcoming rows — 2026-08-22 (walkthrough C2.1–C2.3)
+
+Two searches, web, deep. Images examined.
+
+### A completed row is one line: the title, the mark, and what it earned with its unit
+
+- [Portrait — points dashboard](https://mobbin.com/screens/d10dd04d-6cd8-4f6f-a584-c58e4edf4c6f) — a
+  completed row is the tick, the title and a **"+200" chip** on the same line; no description. We take
+  the one-line shape and the earned figure as a chip with its sign.
+- [Coinbase — Learning rewards](https://mobbin.com/screens/834b6b4e-dcfe-4577-8a6c-293c1c77fa5c) — each
+  finished lesson reads "✓ Complete" with **"+1.32 SGD"** trailing: the state said in a word and the
+  reward carrying its unit. We take "what it earned" as a figure with a unit, never a bare number.
+- [Todoist — completed project](https://mobbin.com/screens/bfe932cc-b85e-4c92-9be7-96b13e738c82) — the
+  date sits under the title as a small fact ("7 Feb"), and the achievement toast says "500 Karma
+  points earned!" We take the fact line, and word it: the stakeholder's question was exactly whether
+  "Aug 7" was a due date or a completion date, so the row says *Completed Aug 7*.
+
+**Rejected:** strikethrough titles (Todoist, [Coda](https://mobbin.com/screens/30708d25-edbb-4781-9ea4-05208c4dd412))
+— done must not read as deleted; [Upwork](https://mobbin.com/screens/707fa0fd-0ce5-4773-9487-d2bcb53e2f92)'s
+"2 Connects · 2 minutes" trailing facts on *open* rows — the time estimate and the points are the
+checklist's mechanic for what is still to do, and C2.2 drops them from what is done.
+
+### A date beside a task says what kind of date it is
+
+- [Coda — to-do list](https://mobbin.com/screens/30708d25-edbb-4781-9ea4-05208c4dd412) and
+  [GitHub Projects](https://mobbin.com/screens/23104f8d-e1f2-41fa-aec4-1e0146711504) — the date's kind
+  is a column header ("Due date"). A row in a card has no header, so the word goes **on the value**:
+  *Due Jul 1*, *Opens Jan 12*, *Completed Aug 7*.
+- [Wrike — My to-do](https://mobbin.com/screens/1e5121ad-3b30-4f39-81f5-b90f32bed471) — "22 May"
+  beside a task with a separate status column: the bare date the stakeholder could not read ("is it
+  due, or is it coming up?"). **Rejected** as the thing to avoid.

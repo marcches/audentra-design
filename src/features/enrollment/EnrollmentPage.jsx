@@ -10,7 +10,7 @@ import Tooltip from '../../design-system/primitives/Tooltip.jsx';
 import StatusPill from '../../design-system/primitives/StatusPill.jsx';
 import Card, { CardHead, CardRows } from '../../design-system/primitives/Card.jsx';
 import TaskCard from './TaskCard.jsx';
-import { kindIcon } from './logic.js';
+import { dueLabel, kindIcon } from './logic.js';
 
 /**
  * My Enrollment — the screen ENR-164 approved in Jam, and the one the Jam of
@@ -250,13 +250,19 @@ export default function EnrollmentPage({
                     <Icon name={kindIcon(item.kind)} size={21} weight="duotone" />
                   </div>
                   <div className="compact-copy">
+                    {/* The category on every row, active or not — C2.3 of the
+                        walkthrough of 2026-08-20: it is what ties a step to the
+                        screen that owns it. */}
+                    {item.category ? <span className="compact-eyebrow">{item.category}</span> : null}
                     <h3>{item.title}</h3>
                     <p>{item.description}</p>
                     <div className="prerequisite">
                       <Icon name="arrow" size={14} /> {item.prerequisite}
                     </div>
                   </div>
-                  <span className="locked-due">{item.due}</span>
+                  {/* A date says what kind of date it is — C2.1: "is it due, or
+                      is it coming up?" A bare "Jan 12" answered neither. */}
+                  <span className="locked-due">{dueLabel(item.due)}</span>
                 </article>
               ))}
             </CardRows>
@@ -300,14 +306,17 @@ export default function EnrollmentPage({
                   <Icon name={kindIcon(item.kind)} size={21} weight="duotone" />
                 </div>
                 <div className="compact-copy">
+                  {item.category ? <span className="compact-eyebrow">{item.category}</span> : null}
                   <h3>{item.title}</h3>
+                  {/* One sentence: what it was, when it completed, what it
+                      earned — and no description (C2.1, C2.2). */}
                   <div className="compact-meta">
                     <span>Completed {item.date}</span>
                   </div>
                 </div>
                 {rewardsOn ? (
                   <span className="earned">
-                    <Icon name="spark" size={13} /> +{item.points}
+                    <Icon name="spark" size={13} /> +{item.points} pts
                   </span>
                 ) : null}
               </article>

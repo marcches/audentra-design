@@ -1,7 +1,10 @@
 import Icon from '../../design-system/Icon.jsx';
 import ActionBand from '../../design-system/patterns/ActionBand.jsx';
+import EdwardAsk from '../../design-system/patterns/EdwardAsk.jsx';
 import GateChip from '../registration/GateChip.jsx';
-import { kindIcon, priorityLabel } from './logic.js';
+import { EDWARD } from '../edward/data.js';
+import { openEdward } from '../edward/door.js';
+import { edwardAskFor, kindIcon, priorityLabel } from './logic.js';
 
 export default function TaskCard({
   task,
@@ -79,6 +82,11 @@ export default function TaskCard({
           <button className="text-button" onClick={() => onOpen(task, 'how')}>
             How this works
           </button>
+          {/* Edward at the task — C5 of the walkthrough of 2026-08-20, through
+              the door of Part A §12: help with the step itself, with the step's
+              context already loaded and the question written, not sent. Not a
+              route to a person; that is what Edward offers after, if he must. */}
+          <EdwardAsk mark={EDWARD.mark} onClick={() => openEdward(edwardAskFor(task))} />
         </div>
       </div>
     </article>
