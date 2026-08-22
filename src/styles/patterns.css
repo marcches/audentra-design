@@ -4292,3 +4292,45 @@ a.pop-row:focus-visible {
   border-radius: 0 0 var(--radius-card) var(--radius-card);
   margin: 0;
 }
+
+/* A photograph of a place in a tile of fixed ratio — `PlaceTile`. One ratio on
+   every size so a catalogue lines up whatever the institution published, the
+   picture cropped to fill; the detail (`full`) is wider and carries its caption.
+   The fallback is the monogram `.org-tile`, unchanged. */
+.place-tile {
+  flex: none;
+  aspect-ratio: 4 / 3;
+  background: var(--purple-soft);
+  border-radius: var(--radius-tile);
+  width: 96px;
+  display: block;
+  overflow: hidden;
+}
+.place-tile.sm {
+  border-radius: var(--radius-chip);
+  width: 64px;
+}
+.place-tile.lg {
+  border-radius: var(--radius-row);
+  width: 128px;
+}
+.place-tile img,
+.place-photo img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.place-photo {
+  margin: 0 0 var(--space-7);
+}
+.place-photo img {
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-row);
+  background: var(--purple-soft);
+}
+.place-photo figcaption {
+  color: var(--muted);
+  margin-top: var(--space-3);
+  font-size: var(--fs-micro);
+}

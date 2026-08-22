@@ -16,6 +16,7 @@ import StepRail from '../patterns/StepRail.jsx';
 import SummaryFigure from '../patterns/SummaryFigure.jsx';
 import AdvisorBar from '../patterns/AdvisorBar.jsx';
 import Avatar from '../primitives/Avatar.jsx';
+import PlaceTile from '../primitives/PlaceTile.jsx';
 import StatusPill from '../primitives/StatusPill.jsx';
 import EdwardAsk from '../patterns/EdwardAsk.jsx';
 import NavItem, { NavGroup, NavSkeleton, ProfileChip } from '../primitives/NavItem.jsx';
@@ -235,6 +236,12 @@ const ADVISOR = {
   name: 'Tomás Okafor',
   office: 'Admissions Office',
   photo: '/people/tomas-okafor.webp',
+};
+
+const PLACE = {
+  src: '/residences/alcott.webp',
+  alt: 'Alcott House, the east door',
+  caption: 'The bike racks by the east door',
 };
 
 const STUDENT = { name: 'Maya Johnson', initials: 'MJ', photo: '/people/maya-johnson.webp' };
@@ -863,7 +870,7 @@ export default function Styleguide({ onToast }) {
         <Section
           id="sg-people"
           title="People, marks, and the one illustration"
-          rule="A person is Avatar; a thing is a glyph; an office is a name. People Aster knows are drawn with Avatar — the photo on the record, initials when there is none. The photos are stock portraits chosen for the role, so an advisor looks like staff and a student looks college-age — never a generated face. Provenance in public/people/SOURCES.md."
+          rule="A person is Avatar; a thing is a glyph; an office is a name; a place may carry a photograph of the place, never of people. People Aster knows are drawn with Avatar — the photo on the record, initials when there is none. The photos are stock portraits chosen for the role, so an advisor looks like staff and a student looks college-age — never a generated face. Provenance in public/people/SOURCES.md."
         >
           <div className="sg-grid">
             <Block
@@ -882,6 +889,27 @@ export default function Styleguide({ onToast }) {
               <p className="sg-note">
                 Maya has a photo on her record; Renata — a family member on a permission — does not,
                 and will not: Aster holds no photo of her. Both are the same primitive.
+              </p>
+            </Block>
+            <Block
+              title="PlaceTile — a place’s photograph, three sizes, and the monogram when there is none"
+              note="sm 64 · md 96 · lg 128, one ratio (4:3), cropped to fill; full is the detail’s 16:10 with a caption naming what it shows. A residence hall, a building, a site — what the institution published, never a specific room, never stock standing for a person. No picture on file → the .org-tile monogram, never a grey rectangle."
+            >
+              <div className="sg-people-row">
+                {['sm', 'md', 'lg'].map((size) => (
+                  <PlaceTile key={size} image={PLACE} initials="AH" size={size} />
+                ))}
+                <span className="sg-people-sep" aria-hidden="true" />
+                {['sm', 'md', 'lg'].map((size) => (
+                  <PlaceTile key={size} image={null} initials="AH" size={size} />
+                ))}
+              </div>
+              <div className="sg-place-full">
+                <PlaceTile image={PLACE} initials="AH" size="full" />
+              </div>
+              <p className="sg-note">
+                Housing’s residence halls are the one place this is used today; provenance of the
+                stand-in photographs in public/residences/SOURCES.md.
               </p>
             </Block>
             <Block

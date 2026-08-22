@@ -1,12 +1,11 @@
 import Icon from '../../design-system/Icon.jsx';
 import AnchorCard from '../../design-system/primitives/AnchorCard.jsx';
-import { longDate } from '../campus/logic.js';
-import { guideById, offices } from '../help/data.js';
+import { offices } from '../help/data.js';
 import { responseDeadline } from './data.js';
 import { STAGES } from './logic.js';
 
 /**
- * The rail: what happens next, who is doing it, and what a preference is actually worth.
+ * The rail: what happens next, who is doing it, and — in one sentence — what a preference is worth.
  *
  * The **stage tracker** is the answer to the hardest state on this card. After the response deadline
  * the section stops offering ranking, and the brief says that must read as the process moving on
@@ -20,14 +19,15 @@ import { STAGES } from './logic.js';
  * waiting on anybody, and a progress tracker sitting on step one would invent a wait that does not
  * exist yet.
  *
- * The second card is the long version of the influence sentence — the short one lives on the
- * shortlist panel — followed by the institution's own guide, rendered as `help-data.js` publishes it
- * and with its date. Aster already said half of this on 2026-08-08; paraphrasing it here would give
- * the student two versions of one promise.
+ * The second card used to be two essays — the long version of the influence sentence and the whole
+ * of "Changing your housing answer" — and the review of 2026-08-21 (G9) found them saying what the
+ * main column already says, at length, in the place a student scans for a fact. The card keeps its
+ * title, says the thing once, and the fuller explanation and the guide sit behind *How housing
+ * decisions work*, the way "How points work" does on the checklist. No explanation appears in full
+ * in both columns.
  */
-export default function HousingRail({ deadlinePassed, assignment, stage }) {
+export default function HousingRail({ deadlinePassed, assignment, stage, onHow }) {
   const office = offices.housing;
-  const guide = guideById('housing-answer');
 
   return (
     <>
@@ -79,26 +79,12 @@ export default function HousingRail({ deadlinePassed, assignment, stage }) {
       <div className="provenance-card">
         <span className="panel-label">What a preference is worth</span>
         <p>
-          You are telling {office.name} what you would like, in the order you would like it. They
-          decide, and they may place you somewhere you didn’t name. That’s what makes this a
-          preference and not a booking.
+          You tell {office.name} what you’d like, in order. They decide, and they may place you
+          somewhere you didn’t name.
         </p>
-        <p>
-          Your order still matters. They read it first to last, and a residence hall you never name is
-          one you won’t be considered for.
-        </p>
-
-        {guide && (
-          <div className="guide-quote">
-            <strong>{guide.topic}</strong>
-            {guide.body.map((paragraph) => (
-              <p key={paragraph.slice(0, 24)}>{paragraph}</p>
-            ))}
-            <span className="guide-meta">
-              Published by {office.name} · updated {longDate(guide.updated)}
-            </span>
-          </div>
-        )}
+        <button type="button" className="text-button" onClick={onHow}>
+          How housing decisions work <Icon name="arrow" size={14} />
+        </button>
       </div>
     </>
   );

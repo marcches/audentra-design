@@ -37,7 +37,13 @@ const POINT_RULES = [
   'Your deadline never changes—and points never affect admission decisions.',
 ];
 
-export default function InfoModal({ variant, onClose }) {
+/**
+ * The rules of the system, behind a link — "How points work", "How this works", "How housing
+ * decisions work". Four variants carry their own content; a page with a rule of its own passes
+ * `kicker`, `icon`, `title` and `children` and the modal stays the same shape, so the design
+ * system never learns a section's copy to draw its frame (the housing review of 2026-08-21, G9).
+ */
+export default function InfoModal({ variant, kicker, icon = 'info', title, onClose, children }) {
   const panel = useRef(null);
   useOverlay(panel, { onClose });
 
@@ -47,7 +53,15 @@ export default function InfoModal({ variant, onClose }) {
       <div className="info-modal" ref={panel}>
         <IconButton className="modal-close" name="close" label="Close" onClick={onClose} />
 
-        {variant === 'booking' ? (
+        {children ? (
+          <>
+            <span className={`modal-kicker ${variant ?? ''}`}>
+              <Icon name={icon} size={16} /> {kicker}
+            </span>
+            <h2 id="info-title">{title}</h2>
+            {children}
+          </>
+        ) : variant === 'booking' ? (
           <>
             <span className="modal-kicker">
               <Icon name="calendar" size={16} /> Appointments

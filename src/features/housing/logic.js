@@ -11,7 +11,14 @@
  * withdrawn; an absent one is a stage that has passed, which is what the stage tracker says.
  */
 import { formatMoney } from '../financials/logic.js';
-import { planOptions, residences, standardMeals, standardRate } from './data.js';
+import {
+  housingOffice,
+  planOptions,
+  residences,
+  responseDeadline,
+  standardMeals,
+  standardRate,
+} from './data.js';
 
 /** Fixed by the institution, whatever the size of the catalogue. ENR-211 AC 1. */
 export const SHORTLIST_MAX = 3;
@@ -161,4 +168,160 @@ export function stageOf({ deadlinePassed, assignment }) {
   if (assignment) return 2;
   if (deadlinePassed) return 1;
   return 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * The review of 2026-08-21 — the standing (G4, G5), the band (G7), the filters (G10)
+ * ------------------------------------------------------------------ */
+
+/**
+ * What the page is asking of her, said once, in the summary panel (G4; copy §6.1). The figure
+ * is the plan's *standing*, which moves — which is what lets the panel come back after the Jam
+ * of 2026-08-21 removed one whose figure was the plan itself. The line under it is the deadline
+ * with its days, or the assignment.
+ *
+ * `ready`, `empty` and `partial` are the skipped-at-onboarding case: Housing is always present
+ * in the portal and becomes work only because she did not answer it while accepting her offer
+ * (rule 1). An onboarding answer of *off campus* is recorded and still owes one question (G2).
+ * Needing help deciding is not a decision, so it stays on the checklist (ENR-210 AC 4).
+ */
+export function planStanding({ plan, planSource, deadlinePassed, assignment }) {
+  const until = `${responseDeadline.label} · ${responseDeadline.daysLeft} days`;
+  if (assignment) {
+    const residence = residenceById(assignment.residenceId);
+    return {
+      status: 'Room assigned',
+      tone: 'done',
+      line: `${residence.name}, ${assignment.room}. Move in ${assignment.moveIn}.`,
+      asking: false,
+    };
+  }
+  if (deadlinePassed) {
+    return {
+      status: 'Submitted',
+      tone: 'quiet',
+      line: `${housingOffice} is assigning rooms from what you submitted.`,
+      asking: false,
+    };
+  }
+  if (plan === 'off-campus') {
+    return {
+      status: 'Recorded at onboarding',
+      tone: 'wait',
+      line: `You said off campus. One question left below — due ${until}.`,
+      asking: true,
+    };
+  }
+  if (planIsAnswered(plan)) {
+    return planSource === 'onboarding'
+      ? {
+          status: 'Recorded at onboarding',
+          tone: 'done',
+          line: `Nothing is being asked of you here. You can change it until ${until}.`,
+          asking: false,
+        }
+      : { status: 'Recorded', tone: 'done', line: `Yours to change until ${until}.`, asking: false };
+  }
+  if (plan === 'undecided') {
+    return {
+      status: 'On your checklist',
+      tone: 'wait',
+      line: `${housingOffice} will help you decide. Due ${until}.`,
+      asking: true,
+    };
+  }
+  return {
+    status: 'On your checklist',
+    tone: 'wait',
+    line: `You skipped this while accepting your offer. Due ${until}.`,
+    asking: true,
+  };
+}
+
+/** The panel's second line — "3 of 3 residences ranked" — only where the plan is on campus (G5). */
+export function rankedLine({ plan, shortlist }) {
+  return opensShortlist(plan) ? `${shortlist.length} of ${SHORTLIST_MAX} residences ranked` : null;
+}
+
+/**
+ * The band — G7, and the rule is this screen's. A rejected change names itself and the button
+ * retries; an unanswered first question names the deadline and focuses it; a plan on campus with
+ * slots open names them and scrolls to the catalogue. It never asks for something the deadline
+ * has closed, never renders after a room, and never says *rank* where there is nothing to rank.
+ * `kind` says which card hosts it: the plan card or the shortlist panel.
+ */
+export function bandFor({ plan, shortlist, catalogue, deadlinePassed, assignment, failure }) {
+  if (assignment || deadlinePassed) return null;
+  if (failure) {
+    return {
+      kind: 'retry',
+      icon: 'alert',
+      label: `${housingOffice} didn’t accept that change`,
+      action: { label: 'Try again', icon: 'refresh' },
+    };
+  }
+  if (!planIsAnswered(plan)) {
+    return {
+      kind: 'plan',
+      icon: 'flag',
+      label: `Your housing plan is due ${responseDeadline.label}`,
+      action: { label: 'Choose your plan' },
+    };
+  }
+  if (opensShortlist(plan) && shortlistState(shortlist) !== 'complete' && catalogue?.length > 0) {
+    return {
+      kind: 'shortlist',
+      icon: 'spark',
+      label: `You’ve ranked ${shortlist.length} of ${SHORTLIST_MAX} residences`,
+      action: { label: 'Rank residences' },
+    };
+  }
+  return null;
+}
+
+/**
+ * The filters — G10. Three, and they are the attributes the cards show: the room type, the meal
+ * plan, and a ceiling on the lowest rate. A value that would return nothing with the other two as
+ * they are is disabled and says so, never an empty list — `countWith` is the number Walmart prints
+ * on its chip, read here to grey the chip rather than to decorate it.
+ */
+export const ROOM_KINDS = [
+  ['single', 'Single'],
+  ['double', 'Shared double'],
+  ['triple', 'Shared triple'],
+  ['suite', 'Suite'],
+  ['studio', 'Studio'],
+];
+export const MEAL_PLANS = [
+  ['included', 'Meal plan included'],
+  ['optional', 'Self-catered'],
+];
+export const PRICE_CEILINGS = [11000, 13000, 15000];
+export const NO_FILTERS = { kind: null, meals: null, ceiling: null };
+
+export function matchesFilters(residence, { kind, meals, ceiling }) {
+  if (kind && !residence.rooms.some((room) => room.kind === kind)) return false;
+  if (meals === 'included' && !residence.meals.included) return false;
+  if (meals === 'optional' && residence.meals.included) return false;
+  if (ceiling && rateFrom(residence) > ceiling) return false;
+  return true;
+}
+
+export function filterCatalogue(catalogue, filters) {
+  return catalogue.filter((residence) => matchesFilters(residence, filters));
+}
+
+export function countWith(catalogue, filters, key, value) {
+  return filterCatalogue(catalogue, { ...filters, [key]: value }).length;
+}
+
+export function activeFilterCount(filters) {
+  return Object.values(filters).filter(Boolean).length;
+}
+
+/** The two sorts — the rate and the walk, the pair students actually trade against each other. */
+export function orderCatalogue(catalogue, sort) {
+  return [...catalogue].sort((a, b) =>
+    sort === 'walk' ? a.walk - b.walk : rateFrom(a) - rateFrom(b),
+  );
 }

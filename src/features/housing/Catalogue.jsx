@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import Icon from '../../design-system/Icon.jsx';
-import ResidenceRow from './ResidenceRow.jsx';
 import StateCard from '../../design-system/patterns/StateCard.jsx';
+import CatalogueFilters from './CatalogueFilters.jsx';
+import CompareTable from './CompareTable.jsx';
+import ResidenceRow from './ResidenceRow.jsx';
 import { housingOffice } from './data.js';
-import { SHORTLIST_MAX, rateFrom } from './logic.js';
+import { NO_FILTERS, SHORTLIST_MAX, filterCatalogue, orderCatalogue } from './logic.js';
 
 /**
  * The published catalogue.
@@ -12,9 +15,11 @@ import { SHORTLIST_MAX, rateFrom } from './logic.js';
  * not read it, so the plan question above still works and nothing already answered is affected.
  * Empty is an institution that has published nothing yet, which is not a failure at all.
  *
- * Sorting is the only affordance here, and it exists because the two fields students actually trade
- * against each other are the rate and the walk. It is not a filter: eight rows, or forty, are meant
- * to be read.
+ * Two ways to read it since the review of 2026-08-21 (B4.3, G10): the **list**, one card per hall
+ * with its picture, and the **compare** view, the same halls as columns of the attributes the cards
+ * show, which is where the filters live. The two sorts — the rate and the walk, the pair students
+ * actually trade against each other — apply to both. Eight rows, or forty, are meant to be read;
+ * a filter narrows the compare view and never to nothing.
  */
 export default function Catalogue({
   catalogue,
@@ -24,20 +29,46 @@ export default function Catalogue({
   readOnly,
   onAdd,
   onOpen,
+  onSeeShortlist,
   onToast,
 }) {
+  const [view, setView] = useState('list');
+  const [filters, setFilters] = useState(NO_FILTERS);
+
+  const head = (
+    <div className="status-heading">
+      <span className="status-icon accent" aria-hidden="true">
+        <Icon name="buildings" size={20} />
+      </span>
+      <div>
+        <h2 id="catalogue-heading">Residences</h2>
+        <p>Published by {housingOffice}</p>
+      </div>
+      {catalogue?.length > 0 && (
+        <div className="sort-group" aria-label="Order the residence halls">
+          <button
+            className={sort === 'rate' ? 'selected' : ''}
+            aria-pressed={sort === 'rate'}
+            onClick={() => onSort('rate')}
+          >
+            <Icon name="receipt" size={15} /> Lowest rate
+          </button>
+          <button
+            className={sort === 'walk' ? 'selected' : ''}
+            aria-pressed={sort === 'walk'}
+            onClick={() => onSort('walk')}
+          >
+            <Icon name="pin" size={15} /> Closest
+          </button>
+        </div>
+      )}
+    </div>
+  );
+
   if (catalogue === null) {
     return (
       <section className="section-card" aria-labelledby="catalogue-heading">
-        <div className="status-heading">
-          <span className="status-icon accent" aria-hidden="true">
-            <Icon name="buildings" size={20} />
-          </span>
-          <div>
-            <h2 id="catalogue-heading">Residences</h2>
-            <p>Published by {housingOffice}</p>
-          </div>
-        </div>
+        {head}
         <StateCard
           variant="error"
           icon="alert"
@@ -58,15 +89,7 @@ export default function Catalogue({
   if (catalogue.length === 0) {
     return (
       <section className="section-card" aria-labelledby="catalogue-heading">
-        <div className="status-heading">
-          <span className="status-icon accent" aria-hidden="true">
-            <Icon name="buildings" size={20} />
-          </span>
-          <div>
-            <h2 id="catalogue-heading">Residences</h2>
-            <p>Published by {housingOffice}</p>
-          </div>
-        </div>
+        {head}
         <StateCard icon="home" title="No residence halls published yet">
           {housingOffice} publishes the residence halls open to your year here, each with its rooms, its
           rate and its meal plan. They appear on this page as soon as they are published. You don’t
@@ -76,37 +99,38 @@ export default function Catalogue({
     );
   }
 
-  const ordered = [...catalogue].sort((a, b) =>
-    sort === 'walk' ? a.walk - b.walk : rateFrom(a) - rateFrom(b),
-  );
+  const ordered = orderCatalogue(catalogue, sort);
+  const shown = view === 'compare' ? filterCatalogue(ordered, filters) : ordered;
   const full = shortlist.length >= SHORTLIST_MAX;
 
   return (
     <section className="section-card" aria-labelledby="catalogue-heading">
-      <div className="status-heading">
-        <span className="status-icon accent" aria-hidden="true">
-          <Icon name="buildings" size={20} />
-        </span>
-        <div>
-          <h2 id="catalogue-heading">Residences</h2>
-          <p>Published by {housingOffice}</p>
-        </div>
-        <div className="sort-group" aria-label="Order the residence halls">
+      {head}
+
+      <div className="catalogue-tools">
+        <div className="sort-group" aria-label="How to read the residence halls">
           <button
-            className={sort === 'rate' ? 'selected' : ''}
-            aria-pressed={sort === 'rate'}
-            onClick={() => onSort('rate')}
+            type="button"
+            className={view === 'list' ? 'selected' : ''}
+            aria-pressed={view === 'list'}
+            onClick={() => setView('list')}
           >
-            <Icon name="receipt" size={15} /> Lowest rate
+            <Icon name="rows" size={15} /> List
           </button>
           <button
-            className={sort === 'walk' ? 'selected' : ''}
-            aria-pressed={sort === 'walk'}
-            onClick={() => onSort('walk')}
+            type="button"
+            className={view === 'compare' ? 'selected' : ''}
+            aria-pressed={view === 'compare'}
+            onClick={() => setView('compare')}
           >
-            <Icon name="pin" size={15} /> Closest
+            <Icon name="columns" size={15} /> Compare
           </button>
         </div>
+        {view === 'compare' && (
+          <span className="view-count" aria-live="polite">
+            {shown.length} of {catalogue.length} residence halls
+          </span>
+        )}
       </div>
 
       {readOnly && (
@@ -116,19 +140,35 @@ export default function Catalogue({
         </p>
       )}
 
-      <div className="card-rows residence-list">
-        {ordered.map((residence) => (
-          <ResidenceRow
-            key={residence.id}
-            residence={residence}
-            rankIndex={shortlist.indexOf(residence.id)}
+      {view === 'compare' ? (
+        <>
+          <CatalogueFilters catalogue={ordered} filters={filters} onChange={setFilters} />
+          <CompareTable
+            residences={shown}
+            shortlist={shortlist}
             canAdd={!full}
             readOnly={readOnly}
             onAdd={onAdd}
             onOpen={onOpen}
+            onSeeShortlist={onSeeShortlist}
           />
-        ))}
-      </div>
+        </>
+      ) : (
+        <div className="card-rows residence-list">
+          {shown.map((residence) => (
+            <ResidenceRow
+              key={residence.id}
+              residence={residence}
+              rankIndex={shortlist.indexOf(residence.id)}
+              canAdd={!full}
+              readOnly={readOnly}
+              onAdd={onAdd}
+              onOpen={onOpen}
+              onSeeShortlist={onSeeShortlist}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

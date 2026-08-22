@@ -86,18 +86,28 @@ export const planOptions = [
  * screen breaking when a school publishes forty of these.
  *
  * `rooms` is what actually carries a price. `rate` is derived, never stored: see `rateFrom` in
- * `lib/housing.js`, so a room type cannot be added without the row's figure following it.
+ * `logic.js`, so a room type cannot be added without the row's figure following it. Each room
+ * carries a `kind` — single, double, triple, suite, studio — which is what the catalogue filters
+ * on (G10): a filter reads an attribute the card already shows, never one of its own.
+ *
+ * `image` is what Residential Life published for the hall (G1, rule 4 of the review of 2026-08-21):
+ * the building or a shared space, never a specific room, with a caption naming what it shows —
+ * a bedroom, were one ever published, would name its room type there. A hall with no picture on
+ * file carries `image: null` and the card falls back to the monogram. The files are stock
+ * exteriors standing in for the institution's, with their provenance in `public/residences/SOURCES.md`.
+ * `includes` is what every rate at that hall covers (ENR-211 AC 2).
  */
 export const residences = [
   {
     id: 'alcott',
     name: 'Alcott House',
     initials: 'AH',
+    image: { src: '/residences/alcott.webp', alt: 'Alcott House, the east door', caption: 'The bike racks by the east door' },
     area: 'Main campus, east side',
     walk: 6,
     rooms: [
-      { label: 'Shared double', rate: 12400 },
-      { label: 'Single', rate: 13900 },
+      { label: 'Shared double', kind: 'double', rate: 12400 },
+      { label: 'Single', kind: 'single', rate: 13900 },
     ],
     meals: { included: true, amount: standardMeals },
     summary: 'The oldest hall still in use, and the one closest to the library.',
@@ -105,16 +115,18 @@ export const residences = [
       'Four floors around a courtyard, with the common room where your building’s hall meeting is ' +
       'held in the first week. Rooms are furnished; bathrooms are shared between four.',
     features: ['Laundry on every floor', 'Common room and kitchenette', 'Bike store'],
+    includes: ['Furnished room', 'Utilities and Wi-Fi', 'Laundry on the floor'],
   },
   {
     id: 'brackenridge',
     name: 'Brackenridge Hall',
     initials: 'BH',
+    image: { src: '/residences/brackenridge.webp', alt: 'Brackenridge Hall across the north lawn', caption: 'Across the north lawn' },
     area: 'North campus',
     walk: 14,
     rooms: [
-      { label: 'Shared triple', rate: 10400 },
-      { label: 'Shared double', rate: 11200 },
+      { label: 'Shared triple', kind: 'triple', rate: 10400 },
+      { label: 'Shared double', kind: 'double', rate: 11200 },
     ],
     meals: { included: true, amount: standardMeals },
     summary: 'The cheapest rooms on campus, and the largest of them.',
@@ -122,30 +134,34 @@ export const residences = [
       'Built as staff housing in the 1950s and converted since. Rooms are noticeably bigger than ' +
       'the newer halls, bathrooms are shared between six, and the walk is the trade.',
     features: ['Music practice rooms', 'Laundry in the basement', 'Late bus stop outside'],
+    includes: ['Furnished room', 'Utilities and Wi-Fi', 'Late bus pass'],
   },
   {
     id: 'coyne',
     name: 'Coyne House',
     initials: 'CH',
+    image: { src: '/residences/coyne.webp', alt: 'Coyne House from the west lawn', caption: 'From the west lawn' },
     area: 'Main campus, west side',
     walk: 4,
-    rooms: [{ label: 'Single with ensuite', rate: 15800 }],
+    rooms: [{ label: 'Single with ensuite', kind: 'single', rate: 15800 }],
     meals: { included: true, amount: standardMeals },
     summary: 'Singles with their own bathroom, and the shortest walk to anywhere.',
     about:
       'Opened in 2024. Every room is a single with an ensuite, which is why it is the most ' +
       'expensive and why it is the first to fill.',
     features: ['Ensuite in every room', 'Study rooms bookable by the hour', 'Step-free entrance'],
+    includes: ['Furnished room with ensuite', 'Utilities and Wi-Fi', 'Weekly cleaning of shared spaces'],
   },
   {
     id: 'dunmore',
     name: 'Dunmore Court',
     initials: 'DC',
+    image: { src: '/residences/dunmore.webp', alt: 'Dunmore Court, the courtyard between the flats', caption: 'The courtyard between the flats' },
     area: 'South campus',
     walk: 9,
     rooms: [
-      { label: 'Room in a six-person suite', rate: 12900 },
-      { label: 'Room in a four-person suite', rate: 13600 },
+      { label: 'Room in a six-person suite', kind: 'suite', rate: 12900 },
+      { label: 'Room in a four-person suite', kind: 'suite', rate: 13600 },
     ],
     meals: { included: false, amount: standardMeals },
     summary: 'Self-catered flats with a shared kitchen, for people who would rather cook.',
@@ -153,16 +169,18 @@ export const residences = [
       'Flats of four or six with a full kitchen and a living room. No meal plan is included in the ' +
       'rate. You can add one, or you can shop and cook, which most people here do.',
     features: ['Full kitchen in every suite', 'Living room per suite', 'Laundry in the courtyard'],
+    includes: ['Furnished room', 'Utilities and Wi-Fi', 'Kitchen and living room in the suite'],
   },
   {
     id: 'elmsworth',
     name: 'Elmsworth Hall',
     initials: 'EH',
+    image: { src: '/residences/elmsworth.webp', alt: 'Elmsworth Hall among the trees', caption: 'From the path, in spring' },
     area: 'North campus',
     walk: 11,
     rooms: [
-      { label: 'Shared double', rate: 12400 },
-      { label: 'Single', rate: 13700 },
+      { label: 'Shared double', kind: 'double', rate: 12400 },
+      { label: 'Single', kind: 'single', rate: 13700 },
     ],
     meals: { included: true, amount: standardMeals },
     summary: 'Two quiet floors, kept quiet by agreement rather than by rule.',
@@ -170,16 +188,18 @@ export const residences = [
       'The same rooms and the same rate as Alcott, further out and considerably quieter. The top ' +
       'two floors are quiet floors, which residents sign up to rather than are assigned to.',
     features: ['Two quiet floors', 'Laundry on every floor', 'Reading room'],
+    includes: ['Furnished room', 'Utilities and Wi-Fi', 'Laundry on the floor'],
   },
   {
     id: 'fairholt',
     name: 'Fairholt House',
     initials: 'FH',
+    image: { src: '/residences/fairholt.webp', alt: 'Fairholt House across the lawn', caption: 'Across the lawn, in the fall' },
     area: 'Riverside',
     walk: 18,
     rooms: [
-      { label: 'Shared triple', rate: 9800 },
-      { label: 'Shared double', rate: 10900 },
+      { label: 'Shared triple', kind: 'triple', rate: 9800 },
+      { label: 'Shared double', kind: 'double', rate: 10900 },
     ],
     meals: { included: true, amount: standardMeals },
     summary: 'The furthest out, the cheapest, and the only one on the river.',
@@ -187,30 +207,34 @@ export const residences = [
       'Eighteen minutes on foot or six by the shuttle, which runs until midnight. In exchange it is ' +
       'the lowest rate Aster publishes and the rooms look over the water.',
     features: ['Shuttle every 15 minutes', 'River terrace', 'Laundry on two floors'],
+    includes: ['Furnished room', 'Utilities and Wi-Fi', 'Shuttle to campus'],
   },
   {
     id: 'garrow',
     name: 'Garrow Court',
     initials: 'GC',
+    image: { src: '/residences/garrow.webp', alt: 'Garrow Court, the front door', caption: 'The front door' },
     area: 'Main campus, north gate',
     walk: 7,
-    rooms: [{ label: 'Studio', rate: 14200 }],
+    rooms: [{ label: 'Studio', kind: 'studio', rate: 14200 }],
     meals: { included: false, amount: standardMeals },
     summary: 'Self-contained studios. Your own kitchen, your own bathroom, no flatmates.',
     about:
       'Twenty-eight studios, each with a kitchenette and a bathroom. Self-catered, so no meal plan ' +
       'is in the rate. Usually the choice of students who have lived away from home before.',
     features: ['Own kitchenette and bathroom', 'Bike store', 'Step-free entrance'],
+    includes: ['Furnished studio', 'Utilities and Wi-Fi', 'Own kitchenette and bathroom'],
   },
   {
     id: 'kestrel',
     name: 'Kestrel House',
     initials: 'KH',
+    image: { src: '/residences/kestrel.webp', alt: 'Kestrel House from the plaza', caption: 'The step-free entrance, from the plaza' },
     area: 'Main campus, east side',
     walk: 12,
     rooms: [
-      { label: 'Shared double, step-free', rate: 12200 },
-      { label: 'Single, step-free', rate: 13100 },
+      { label: 'Shared double, step-free', kind: 'double', rate: 12200 },
+      { label: 'Single, step-free', kind: 'single', rate: 13100 },
     ],
     meals: { included: true, amount: standardMeals },
     summary: 'Designed step-free throughout, with wider doors and adjustable furniture.',
@@ -218,6 +242,7 @@ export const residences = [
       'Every room, corridor and shared space is step-free, and rooms can be fitted out on request ' +
       'before you arrive. Open to any student; ask Residential Life about a specific adjustment.',
     features: ['Step-free throughout', 'Adjustable-height furniture', 'Accessible laundry'],
+    includes: ['Furnished room', 'Utilities and Wi-Fi', 'Fit-out on request before you arrive'],
   },
 ];
 
@@ -239,7 +264,9 @@ const ASSIGNMENT = {
 };
 
 /**
- * One shape per preview state. `catalogue: null` is the partial case — the plan loaded and the
+ * One shape per preview state. `plan: 'off-campus'` is an onboarding answer the portal does not
+ * guess at (G2): it is shown as recorded and the one question that separates commuting from
+ * arranging her own housing is asked, once. `catalogue: null` is the partial case — the plan loaded and the
  * published catalogue did not, which is a different thing from a catalogue that is empty because
  * Residential Life has not published one.
  */
@@ -273,6 +300,16 @@ export function housingFor(previewState) {
         catalogue: residences,
         deadlinePassed: true,
         assignment: ASSIGNMENT,
+        failure: null,
+      };
+    case 'onboarding-off-campus':
+      return {
+        plan: 'off-campus',
+        planSource: 'onboarding',
+        shortlist: [],
+        catalogue: residences,
+        deadlinePassed: false,
+        assignment: null,
         failure: null,
       };
     case 'send-fails':

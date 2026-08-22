@@ -772,3 +772,9 @@
 .sg-edward-demo {
   max-width: 380px;
 }
+
+/* The place photograph at full width — capped so the demo is a tile, not a banner. */
+.sg-place-full {
+  max-width: 360px;
+  margin-top: var(--space-6);
+}

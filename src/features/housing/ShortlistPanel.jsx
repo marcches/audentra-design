@@ -1,5 +1,7 @@
 import Icon from '../../design-system/Icon.jsx';
 import { IconButton } from '../../design-system/primitives/Button.jsx';
+import PlaceTile from '../../design-system/primitives/PlaceTile.jsx';
+import ActionBand from '../../design-system/patterns/ActionBand.jsx';
 import { housingOffice, responseDeadline } from './data.js';
 import { formatMoney } from '../financials/logic.js';
 import {
@@ -28,8 +30,12 @@ import {
  * A keyboard-accessible drag is machinery on top of the thing that already works for three items.
  * There is no `Save order` button: ENR-211 AC 3 says a ranking saves on its own, so a state where an
  * order exists on screen but not in the record must not be constructible.
+ *
+ * A partial shortlist is a state of its own (ENR-211 AC 9, B4.4 of the review of 2026-08-21): one
+ * or two ranked reads as "1 of 3 ranked", saves as partial, says so in the foot, and keeps the
+ * housing item outstanding until three are named or the deadline passes.
  */
-export default function ShortlistPanel({ shortlist, locked, onMove, onRemove, onOpen }) {
+export default function ShortlistPanel({ shortlist, locked, band, onBand, onMove, onRemove, onOpen }) {
   const state = shortlistState(shortlist);
   const rows = shortlist.map((id) => residenceById(id)).filter(Boolean);
 
@@ -47,6 +53,12 @@ export default function ShortlistPanel({ shortlist, locked, onMove, onRemove, on
           {rows.length} of {SHORTLIST_MAX} ranked
         </span>
       </div>
+
+      {/* The band when the page's rule points here — slots still open on a plan that is on
+          campus (G7, case 3). Its button scrolls to the catalogue, which is where ranking happens. */}
+      {band ? (
+        <ActionBand icon={band.icon} label={band.label} action={{ ...band.action, onClick: onBand }} />
+      ) : null}
 
       <div className="influence-note">
         <span>
@@ -78,9 +90,7 @@ export default function ShortlistPanel({ shortlist, locked, onMove, onRemove, on
                 className="shortlist-main"
                 onClick={(clickEvent) => onOpen(residence, clickEvent.currentTarget)}
               >
-                <span className="org-tile" aria-hidden="true">
-                  {residence.initials}
-                </span>
+                <PlaceTile image={residence.image} initials={residence.initials} size="sm" />
                 <span className="shortlist-copy">
                   <strong>{residence.name}</strong>
                   <small>

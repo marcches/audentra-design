@@ -78,3 +78,40 @@ only by accident."*
   [Coursera](https://mobbin.com/screens/f68cf153-c9e4-4e5b-8760-27d525a114f7) — **rejected.** Both
   carry the choice on illustrations this design system has no way to draw, and Coursera's cards
   explain nothing, which is the opposite of what a plan with a deadline needs.
+
+## The review of 2026-08-21 — G1 + B4.3, G10 — 2026-08-22
+
+Two searches, web, deep; images examined.
+
+### The hall's card leads with a picture; the detail carries rooms and rates
+
+- [Expedia — results](https://mobbin.com/screens/49ab28ab-5f16-420e-9aee-c8f10b734519) — each card
+  leads with the photograph, then the name, the place, the facts and the rate; a filter column on
+  the left filters by the attributes the cards show, with a price range. We take the card's
+  anatomy (picture leading, fixed ratio) and the rule that filters are the cards' own attributes.
+- [Zillow — listing](https://mobbin.com/screens/62ef5ddd-0469-4cc8-bdaa-5eefe66dd0f8) — the building's
+  facts, then "Available units" as a table of unit, size, date and price, with the actions in an
+  aside. We take the detail's shape: the building, then a rate table of room types.
+- [KAYAK — hotel prices](https://mobbin.com/screens/7449881d-c5fc-4fdd-9766-11d622f9729d) — room
+  types as groups, each with one photograph and its rate rows. We take "one picture per room type,
+  captioned", which is what G1 requires where a bedroom is shown.
+- [Tripadvisor — hotels](https://mobbin.com/screens/f56e04e3-da38-46ba-9765-d57ff8d74bd5) — sort and
+  filter chips above a grid of photographed cards. We keep our chip row for both.
+
+**Rejected:** [Shopify](https://mobbin.com/screens/8094bc0e-0387-417b-81ef-3ad7e29bcba7) and
+[Dribbble](https://mobbin.com/screens/73f76d09-9508-49ba-810e-8b2d13ff74e6) plan matrices — a
+residence is not a tier; and Tripadvisor's ratings and badges — a hall is not reviewed by the
+portal, and the catalogue is Residential Life's list, not a marketplace.
+
+### A filter that would return nothing is disabled, and says why
+
+- [Walmart — all filters](https://mobbin.com/screens/8df6d24a-9cda-46d8-a0bc-1a682ceeb583) — every
+  filter chip carries the count it would return ("Bottom (56)"). We take the count: a chip that
+  would return nothing with the other filters set is disabled and states it, which is G10's rule.
+
+**Rejected:** [Apollo](https://mobbin.com/screens/614b0e8b-c6c3-4a51-b0fd-85f97779de5f),
+[Twenty](https://mobbin.com/screens/b403408e-b983-4cd2-898c-708a2e962ad2),
+[Twingate](https://mobbin.com/screens/627a0610-5379-49b0-88c3-e64eddbf49ec),
+[Frame](https://mobbin.com/screens/2c70dd61-77e3-44af-bc48-1b378c3563ac),
+[Devin](https://mobbin.com/screens/ce9c1dd9-29e5-4464-827f-3255a8cabbe3) — sort/filter menus for
+data tables; the catalogue's attributes are three, and they belong on chips beside the two sorts.

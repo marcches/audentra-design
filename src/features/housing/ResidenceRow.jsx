@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import PlaceTile from '../../design-system/primitives/PlaceTile.jsx';
 import { formatMoney } from '../financials/logic.js';
 import { mealsLabel, ordinal, rateFrom } from './logic.js';
 
@@ -9,15 +10,26 @@ import { mealsLabel, ordinal, rateFrom } from './logic.js';
  * ENR-211 AC 2 asks that residences can be compared;
  * [Zillow](https://mobbin.com/screens/a8e8b6ba-4655-4505-8d1c-64f2386e12bf) and
  * [Navan](https://mobbin.com/screens/5a6271b9-66f8-4f3b-8339-c293c91b682b) both answer it with
- * disciplined columns rather than a compare mode, which is what survives a catalogue of forty.
+ * disciplined columns rather than a compare mode, which is what survives a catalogue of forty —
+ * and since the review of 2026-08-21 the catalogue also has a compare view, where the filters live.
  *
- * The tile is a monogram, as `OrgRow` already does for clubs. This design system has no image
- * library, and a grey rectangle promising a photograph that is never coming is worse than a letter.
+ * The leading slot is the hall's **picture** (G1, rule 4): what Residential Life published, fixed
+ * ratio, cropped to fill — the building, never a specific room. The monogram survives only as the
+ * fallback for a hall with no picture on file, as `OrgRow` does for clubs. Reference: Expedia's
+ * results card, the photograph leading (ENR-207 references.md).
  *
- * When the shortlist is full the action is disabled **with its reason on the row**. A dead button
- * with no explanation is the thing this repo keeps not doing.
+ * When the shortlist is full the row says so **and takes her there** (G8): the sentence is the
+ * action, because with a long catalogue the shortlist is off screen when she reads it.
  */
-export default function ResidenceRow({ residence, rankIndex, canAdd, readOnly, onAdd, onOpen }) {
+export default function ResidenceRow({
+  residence,
+  rankIndex,
+  canAdd,
+  readOnly,
+  onAdd,
+  onOpen,
+  onSeeShortlist,
+}) {
   const ranked = rankIndex >= 0;
 
   return (
@@ -26,9 +38,7 @@ export default function ResidenceRow({ residence, rankIndex, canAdd, readOnly, o
         className="residence-main"
         onClick={(clickEvent) => onOpen(residence, clickEvent.currentTarget)}
       >
-        <span className="org-tile" aria-hidden="true">
-          {residence.initials}
-        </span>
+        <PlaceTile image={residence.image} initials={residence.initials} size="md" />
 
         <span className="residence-copy">
           <span className="residence-title">
@@ -66,9 +76,9 @@ export default function ResidenceRow({ residence, rankIndex, canAdd, readOnly, o
               <Icon name="arrow" size={15} /> Add to shortlist
             </button>
           ) : (
-            <span className="action-reason">
-              <Icon name="info" size={14} /> Your shortlist is full. Remove one to add this
-            </span>
+            <button type="button" className="text-button shortlist-full" onClick={onSeeShortlist}>
+              <Icon name="info" size={14} /> Your shortlist is full. See your shortlist to swap one.
+            </button>
           )}
         </div>
       )}

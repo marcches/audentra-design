@@ -112,13 +112,19 @@ export default function EdwardMessage({
             {message.team && message.team !== message.office.name
               ? ` ${message.team} is who you talk to about it.`
               : ''}
+            {/* The absence of posted times is stated only where a calendar exists to
+                call from; an office with no conversation type — Residential Life,
+                Student Life, the Registrar — gets the inquiry alone, and the sentence
+                says where that goes (story AC 2). */}
             {message.posted
               ? ''
-              : ` ${
-                  message.team && message.team !== message.office.name
-                    ? `${message.team} doesn’t`
-                    : 'They don’t'
-                } have times posted right now, so a callback stands in for a booking.`}
+              : message.routes.some((route) => route.kind === 'callback')
+                ? ` ${
+                    message.team && message.team !== message.office.name
+                      ? `${message.team} doesn’t`
+                      : 'They don’t'
+                  } have times posted right now, so a callback stands in for a booking.`
+                : ' Your inquiry reaches them here, and so does their reply.'}
           </p>
           <div className="edward-routes">
             {message.routes.map((route) => (

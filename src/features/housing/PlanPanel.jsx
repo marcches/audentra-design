@@ -1,4 +1,6 @@
+import { useRef } from 'react';
 import Icon from '../../design-system/Icon.jsx';
+import ActionBand from '../../design-system/patterns/ActionBand.jsx';
 import { planOptions, responseDeadline } from './data.js';
 import { planById } from './logic.js';
 
@@ -16,11 +18,25 @@ import { planById } from './logic.js';
  *   below them          ENR-210 AC 7, what confirming a plan just did, stated where it was done.
  *                       [Uxcel](https://mobbin.com/screens/fb7799b3-75b1-486d-a8d3-fce715b245f4).
  *
+ * Since the review of 2026-08-21 two more things live here. The **band** (G7) sits under the head
+ * when the page's rule points at this card — the first question unanswered, or a change Residential
+ * Life did not accept — and its button focuses the question or retries. And an onboarding answer
+ * of **off campus** (G2) is shown as recorded and asked the one question that separates commuting
+ * from arranging her own housing, once: the portal does not guess.
+ *
  * After the response deadline the radios are **gone**, not disabled. A disabled radio is an offer
  * withdrawn; an absent one is a stage that has passed.
  */
-export default function PlanPanel({ plan, source, locked, onChoose }) {
+export default function PlanPanel({ plan, source, locked, band, onChoose, onRetry }) {
+  const group = useRef(null);
   const chosen = planById(plan);
+  const reconciling = plan === 'off-campus';
+
+  function focusQuestion() {
+    const input =
+      group.current?.querySelector('input:checked') ?? group.current?.querySelector('input');
+    input?.focus();
+  }
 
   if (locked) {
     return (
@@ -57,16 +73,30 @@ export default function PlanPanel({ plan, source, locked, onChoose }) {
         </span>
         <div>
           <h2 id="plan-heading">Where will you live?</h2>
-          <p>First question</p>
+          <p>{reconciling ? 'One question left' : 'First question'}</p>
         </div>
       </div>
 
+      {band ? (
+        <ActionBand
+          icon={band.icon}
+          label={band.label}
+          action={{ ...band.action, onClick: band.kind === 'retry' ? onRetry : focusQuestion }}
+        />
+      ) : null}
+
       <p className="panel-lede">
-        All four are real answers. Pick the one that’s true. You can change it until{' '}
-        {responseDeadline.full}.
+        {reconciling ? (
+          'At onboarding you said you’d live off campus. Two of the options below cover that. Which one is it?'
+        ) : (
+          <>
+            All four are real answers. Pick the one that’s true. You can change it until{' '}
+            {responseDeadline.full}.
+          </>
+        )}
       </p>
 
-      <div className="choice-panel" role="radiogroup" aria-labelledby="plan-heading">
+      <div className="choice-panel" role="radiogroup" aria-labelledby="plan-heading" ref={group}>
         {planOptions.map((option) => (
           <label key={option.id} className={plan === option.id ? 'chosen' : ''}>
             <input

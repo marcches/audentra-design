@@ -675,3 +675,213 @@
   font-weight: var(--fw-regular);
   display: block;
 }
+
+/* ------------------------------------------------------------------ *
+ * The review of 2026-08-21 — the catalogue's two views, the filters, the pictures
+ * ------------------------------------------------------------------ */
+
+/* The catalogue's tools: which view, and in the compare view how many the filters left. */
+.catalogue-tools {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+  margin: 0 0 var(--space-6);
+  display: flex;
+}
+.view-count {
+  color: var(--muted);
+  font-size: var(--fs-micro);
+}
+
+/* The filters — three groups of the sorts' chips, the count on each, and the
+   reason under them when a chip is greyed: no filter returns nothing (G10). */
+.catalogue-filters {
+  background: var(--card-zone);
+  border-radius: var(--radius-tile);
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0 0 var(--space-6);
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+}
+.catalogue-filter {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  display: flex;
+}
+.catalogue-filter > span:first-child {
+  color: var(--muted);
+  min-width: 80px;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+.catalogue-filter .sort-group {
+  flex-wrap: wrap;
+}
+.catalogue-filter .sort-group button small {
+  color: var(--muted);
+  margin-left: var(--space-2);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-regular);
+}
+.catalogue-filter .sort-group button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.catalogue-filters-foot {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3) var(--space-6);
+  display: flex;
+}
+.filter-reason {
+  color: var(--muted);
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--fs-micro);
+  line-height: var(--lh-body);
+  display: flex;
+}
+.filter-reason svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+/* The compare view — a table that scrolls inside its own box, never the page. */
+.compare-wrap {
+  /* Its width comes from the card, never from the table: without containment
+     the table's minimum width walks up the flex column and widens the page at
+     390 — the one thing wide content must never do. */
+  contain: inline-size;
+  margin: 0 calc(-1 * var(--card-pad));
+  padding: 0 var(--card-pad);
+  overflow-x: auto;
+}
+.compare-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 720px;
+}
+.compare-table th {
+  color: var(--muted);
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  padding: 0 var(--space-4) var(--space-4) 0;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+.compare-table td {
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+  padding: var(--space-5) var(--space-4) var(--space-5) 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+.compare-table tr:last-child td {
+  border-bottom: 0;
+}
+.compare-table tr.ranked td {
+  background: var(--purple-soft);
+}
+.compare-table tr.ranked td:first-child {
+  border-radius: var(--radius-chip) 0 0 var(--radius-chip);
+  padding-left: var(--space-4);
+}
+.compare-table tr.ranked td:last-child {
+  border-radius: 0 var(--radius-chip) var(--radius-chip) 0;
+}
+.compare-table td.numeric {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.compare-from {
+  font-size: var(--fs-body);
+}
+.compare-name {
+  align-items: center;
+  gap: var(--space-4);
+  display: flex;
+}
+.compare-name > span {
+  min-width: 0;
+}
+.compare-name button {
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-snug);
+}
+.compare-name small {
+  color: var(--muted);
+  margin-top: var(--space-1);
+  font-size: var(--fs-micro);
+  display: block;
+}
+.compare-rooms {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.compare-action {
+  white-space: nowrap;
+}
+.compare-action .secondary-button {
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
+}
+
+/* What every rate at a hall covers — under the rate table in the detail (ENR-211 AC 2). */
+.rate-includes {
+  color: var(--muted);
+  margin: var(--space-4) 0 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+.rate-includes strong {
+  color: var(--ink);
+  font-weight: var(--fw-medium);
+}
+
+/* The row that says the shortlist is full is the way to it (G8). */
+.residence-action .shortlist-full {
+  text-align: right;
+  white-space: normal;
+}
+.text-button.inline {
+  padding: 0;
+  display: inline;
+}
+
+/* A text button that carries a glyph keeps it on the line — the rail's link
+   and the undecided card's. */
+.provenance-card .text-button,
+.outcome-actions .text-button {
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  display: inline-flex;
+}
+.provenance-card .text-button {
+  margin-top: var(--space-4);
+}
+
+/* The undecided card's two routes — the door, and the rule behind a link. */
+.outcome-actions {
+  align-items: center;
+  gap: var(--space-4) var(--space-7);
+  flex-wrap: wrap;
+}

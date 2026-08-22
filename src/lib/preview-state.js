@@ -51,6 +51,7 @@ export const PREVIEW_STATES = [
   // timer. Same rule `lib/documents.js` follows: checking advances on a clock, a
   // person's decision never does.
   ['onboarding-answered', 'Answered at onboarding', 'Living on campus, three residence halls already ranked.'],
+  ['onboarding-off-campus', 'Off campus at onboarding', 'An onboarding answer the portal doesn’t guess at — one question, asked once.'],
   ['deadline-passed', 'After the housing deadline', 'The submitted shortlist, and Residential Life assigning.'],
   ['room-assigned', 'Room assigned', 'A room that isn’t the first preference, and is still valid.'],
   // ENR-163. The five onboarding adds. `empty`, `partial`, `loading` and

@@ -707,6 +707,7 @@ export default function App() {
           previewState={preview}
           onToast={pushToast}
           onOverlay={setSectionOverlay}
+          onContact={contactAdvisor}
         />
       );
     }

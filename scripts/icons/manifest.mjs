@@ -83,6 +83,10 @@ export const ICONS = {
   plus: 'plus',
   gauge: 'gauge',
   magnify: 'magnifying-glass',
+  // Housing, the review of 2026-08-21: the catalogue's two views — the list of
+  // cards and the compare table (B4.3).
+  rows: 'rows',
+  columns: 'columns',
 };
 
 export const WEIGHTS = ['regular', 'bold', 'fill', 'duotone'];

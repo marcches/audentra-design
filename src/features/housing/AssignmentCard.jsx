@@ -1,4 +1,5 @@
 import Icon from '../../design-system/Icon.jsx';
+import PlaceTile from '../../design-system/primitives/PlaceTile.jsx';
 import { residenceById } from './logic.js';
 
 /**
@@ -32,9 +33,7 @@ export default function AssignmentCard({ assignment, shortlist }) {
       </div>
 
       <div className="assignment-figure">
-        <span className="org-tile large" aria-hidden="true">
-          {residence.initials}
-        </span>
+        <PlaceTile image={residence.image} initials={residence.initials} size="lg" />
         <div>
           <strong>{residence.name}</strong>
           <span>{assignment.room}</span>

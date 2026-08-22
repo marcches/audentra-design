@@ -1,4 +1,7 @@
 import Icon from '../../design-system/Icon.jsx';
+import EdwardAsk from '../../design-system/patterns/EdwardAsk.jsx';
+import { EDWARD } from '../edward/data.js';
+import { openEdward } from '../edward/door.js';
 import { housingOffice, responseDeadline } from './data.js';
 
 /**
@@ -9,21 +12,35 @@ import { housingOffice, responseDeadline } from './data.js';
  * these is a `StateCard`. An empty state says something should be here and is not; every one of
  * these says the opposite — the page is complete, this is what your answer means.
  *
+ * Since the review of 2026-08-21 the *awaiting* card also states the catalogue's condition before
+ * the first question is answered (G3): an institution that has published nothing and a catalogue
+ * this portal could not read are different pages, and they used to render as the same one until the
+ * student picked *on campus* and found out.
+ *
  * `own-housing` is the one carrying the most weight. Arranging your own housing is a complete
  * answer, not an opt-out, so this panel must not carry a single pending mark, a muted treatment or
  * a "you can still change this" that reads as *you probably should*.
+ *
+ * `undecided` routes to a person, and the route is Edward (B4.2, Part A §12): the door opens with
+ * the question written, and his escalation is what reaches Residential Life. No direct line before
+ * him, and the plan stays open.
  */
-export default function PlanOutcome({ variant, onToast }) {
+export default function PlanOutcome({ variant, catalogue, onHow }) {
   if (variant === 'awaiting') {
+    const unread = catalogue === null;
+    const unpublished = Array.isArray(catalogue) && catalogue.length === 0;
     return (
       <section className="section-card outcome-card awaiting" aria-labelledby="next-heading">
         <span className="outcome-icon">
-          <Icon name="home" size={22} />
+          <Icon name={unread ? 'alert' : 'home'} size={22} />
         </span>
         <h2 id="next-heading">A second question opens if you live on campus</h2>
         <p>
-          Students living on campus rank three residence halls from the catalog {housingOffice}{' '}
-          publishes. It only applies if you live on campus.
+          {unread
+            ? 'The residence hall catalog couldn’t be loaded just now. Your plan is unaffected, and ranking opens again when it loads.'
+            : unpublished
+              ? `${housingOffice} hasn’t published any residence halls yet. If you live on campus you’ll rank three here once they do.`
+              : `Students living on campus rank three residence halls from the catalog ${housingOffice} publishes. It only applies if you live on campus.`}
         </p>
         <p className="outcome-meta">
           <Icon name="clock" size={14} /> Answer any time before {responseDeadline.full}.
@@ -86,26 +103,26 @@ export default function PlanOutcome({ variant, onToast }) {
       <h2 id="undecided-heading">Someone at {housingOffice} will help you decide</h2>
       <p>
         Nothing is recorded as your plan. Needing to decide is not a decision, and your checklist
-        still shows housing as open, with its deadline. Put the question to {housingOffice} and they
-        will help you decide.
+        still shows housing as open, with its deadline. Ask Edward and he’ll put you in touch with{' '}
+        {housingOffice}.
       </p>
       <p>
         The residence halls are below so you can read them while you decide. You cannot rank them yet:
         ranking opens once you answer that you are living on campus.
       </p>
       <div className="outcome-actions">
-        <a className="primary-button" href="#/help">
-          Ask {housingOffice} <Icon name="arrow" size={17} />
-        </a>
-        <button
-          className="secondary-button"
+        <EdwardAsk
+          label="Ask Edward who can help"
+          mark={EDWARD.mark}
           onClick={() =>
-            onToast(
-              `${housingOffice} publishes a guide on changing your housing answer. It is on the Help page.`,
-            )
+            openEdward({
+              question: `I can’t decide where to live next year. Who at ${housingOffice} can help me?`,
+              context: { label: 'Housing · Your plan', intent: 'advisor', office: 'housing' },
+            })
           }
-        >
-          <Icon name="file" size={16} /> Read their guide
+        />
+        <button type="button" className="text-button" onClick={onHow}>
+          <Icon name="info" size={15} /> How housing decisions work
         </button>
       </div>
     </section>
