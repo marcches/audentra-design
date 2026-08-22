@@ -7,10 +7,17 @@ import { formatMoney } from './logic.js';
  * The slot `.momentum-card` holds on My Enrollment: the dark card at the top of
  * the rail carrying the one hard number. Paying is out of scope for this card,
  * so the button hands off exactly as the enrollment deposit task already does.
+ *
+ * One framing on both tabs since the review of 2026-08-21 (F1): the deposit is
+ * a separate payment that came before the plan, and the plan is the
+ * installments — so the track counts installments, and the deposit is named as
+ * what it is. The figure is the dark card's lead (9.0), not a display figure.
  */
 export default function NextPaymentCard({ ledger, dueInDays, onPay }) {
   const next = ledger.nextPayment;
   if (!next) return null;
+
+  const depositPaid = ledger.deposit?.status === 'received';
 
   return (
     <AnchorCard
@@ -26,15 +33,15 @@ export default function NextPaymentCard({ ledger, dueInDays, onPay }) {
 
       <ol
         className="payment-track"
-        aria-label={`Payment ${ledger.nextPaymentIndex + 1} of ${ledger.paymentCount}`}
+        aria-label={`Installment ${ledger.nextInstallmentIndex + 1} of ${ledger.installmentCount}`}
       >
-        {Array.from({ length: ledger.paymentCount }, (_, index) => (
+        {Array.from({ length: ledger.installmentCount }, (_, index) => (
           <li
             key={index}
             className={
-              index < ledger.nextPaymentIndex
+              index < ledger.nextInstallmentIndex
                 ? 'done'
-                : index === ledger.nextPaymentIndex
+                : index === ledger.nextInstallmentIndex
                   ? 'next'
                   : ''
             }
@@ -42,7 +49,12 @@ export default function NextPaymentCard({ ledger, dueInDays, onPay }) {
         ))}
       </ol>
       <p className="payment-track-label">
-        Payment {ledger.nextPaymentIndex + 1} of {ledger.paymentCount}
+        Installment {ledger.nextInstallmentIndex + 1} of {ledger.installmentCount}
+        {ledger.deposit
+          ? depositPaid
+            ? ` · your ${formatMoney(ledger.deposit.amount)} deposit is paid`
+            : ` · your ${formatMoney(ledger.deposit.amount)} deposit comes first`
+          : ''}
       </p>
 
       <button className="primary-button full" onClick={onPay}>
@@ -50,8 +62,9 @@ export default function NextPaymentCard({ ledger, dueInDays, onPay }) {
       </button>
 
       <p className="next-payment-note">
-        {formatMoney(ledger.scheduleTotal)} scheduled across {ledger.paymentCount} payments this
-        year. Each one is an estimate and is recalculated if your aid changes.
+        {formatMoney(ledger.installmentTotal)} across {ledger.installmentCount} installments this
+        year{ledger.deposit ? `, after your ${formatMoney(ledger.deposit.amount)} deposit` : ''}.
+        Each installment is an estimate and is recalculated if your aid changes.
         <TermTip term="schedule" label="how installments are worked out" />
       </p>
     </AnchorCard>

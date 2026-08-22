@@ -1,8 +1,8 @@
 import PageShell from '../../design-system/patterns/PageShell.jsx';
 import GroupTabs from '../../design-system/patterns/GroupTabs.jsx';
-import AlertStrip from './AlertStrip.jsx';
+import ActionBand from '../../design-system/patterns/ActionBand.jsx';
 import BalanceStrip from './BalanceStrip.jsx';
-import { escalation } from './logic.js';
+import { deadlineLabel, escalation } from './logic.js';
 
 /**
  * The frame the three My Financials leaves share — Overview, Financial aid and
@@ -22,9 +22,20 @@ import { escalation } from './logic.js';
  * A leaf supplies only what its tab actually switches — the body, and the rail
  * beside it. It can no longer differ, because it is no longer asked.
  *
- * The same reading of `PageShell`'s rule holds on My Campus Life, where the two
- * leaves are one component and the required strip is passed once. This is that,
- * for a group whose leaves are three files.
+ * Since the review of 2026-08-21 (F7) what sits under the balance is the
+ * **band**, the same component the reference screen points with, docked where
+ * the shell docks a sentence that is true of the whole section — the panel's
+ * foot — because it is true of all three tabs. The rule that decides what it
+ * says is this screen's own:
+ *
+ *   1. a document is outstanding   → the nearest one by due date, and its action;
+ *   2. nothing outstanding, a
+ *      payment due                 → the payment, and `Make a payment`;
+ *   3. neither                     → no band at all. It never renders empty.
+ *
+ * A deadline inside the configured window (ENR-160 AC 6, B3.2) is escalated
+ * here as well as on its row: the band says the days and carries the alert
+ * glyph; the row's chip carries the state colour.
  */
 export default function FinancialsPage({
   destination,
@@ -33,14 +44,28 @@ export default function FinancialsPage({
   urgent,
   isEmpty,
   onOpenTask,
+  onPay,
   onContact,
   rail,
   children,
 }) {
-  // `AlertStrip` renders nothing when nothing is close, but from the outside
-  // `PageShell` cannot see that and would still draw the divider above an empty
-  // strip. Deciding it here keeps the foot of the panel honest.
-  const escalated = urgent && escalation(urgent.daysLeft) ? urgent : null;
+  const level = urgent ? escalation(urgent.daysLeft) : null;
+
+  const band = isEmpty
+    ? null
+    : urgent
+      ? {
+          icon: level === 'urgent' ? 'alert' : 'clock',
+          label: `${urgent.title} · ${deadlineLabel(urgent.daysLeft).toLowerCase()}`,
+          action: { label: urgent.shortAction ?? 'Open it', onClick: () => onOpenTask(urgent) },
+        }
+      : ledger.nextPayment
+        ? {
+            icon: 'calendar',
+            label: `Your ${ledger.nextPayment.label.toLowerCase()} is due ${ledger.nextPayment.date}`,
+            action: { label: 'Make a payment', icon: 'external', onClick: onPay },
+          }
+        : null;
 
   return (
     <PageShell
@@ -49,7 +74,7 @@ export default function FinancialsPage({
       summary={
         <BalanceStrip ledger={ledger} year={year} unknown={isEmpty} onContact={onContact} />
       }
-      notice={escalated ? <AlertStrip task={escalated} onOpen={onOpenTask} /> : null}
+      notice={band ? <ActionBand icon={band.icon} label={band.label} action={band.action} /> : null}
       tabs={<GroupTabs group="financials" activeId={destination.id} />}
       rail={rail}
     >

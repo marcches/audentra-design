@@ -742,6 +742,7 @@ export default function App() {
         unavailable,
         isEmpty,
         onOpenTask: openTaskFromSummary,
+        onPay: payHandoff,
         onContact: contactAid,
         onRetry: () => choosePreview('ready'),
       };

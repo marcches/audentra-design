@@ -1381,8 +1381,10 @@
   background: var(--purple-soft);
   border-radius: var(--radius-pill);
   padding: var(--space-2) var(--space-4);
-  font-size: var(--fs-micro);
+  font-size: var(--fs-small);
   font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
 }
 
 .skipped-card h3 {
@@ -4279,4 +4281,14 @@ a.pop-row:focus-visible {
   font-size: var(--fs-micro);
   font-weight: var(--fw-bold);
   display: grid;
+}
+
+/* --- zone: the band as the panel's foot ------------------------------------
+ *
+ * My Financials (F7, the review of 2026-08-21): what is true of all three tabs
+ * and points at the one thing to do is the band, docked where the shell docks a
+ * section-wide sentence. It takes the panel's bottom corners, as a notice does. */
+.summary-alert > .action-band {
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+  margin: 0;
 }

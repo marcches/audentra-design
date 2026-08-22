@@ -25,7 +25,7 @@ const STATUS = {
  * held, after [Whop](https://mobbin.com/screens/665c549f-5a6a-4fd1-bb81-0f5ce819f23f).
  * It is never rendered as a zero.
  */
-export default function AidSources({ snapshot, ledger, onOpenBlocker, blockers }) {
+export default function AidSources({ snapshot, ledger }) {
   return (
     <Card aria-labelledby="aid-title">
       <div className="card-heading">
@@ -48,7 +48,6 @@ export default function AidSources({ snapshot, ledger, onOpenBlocker, blockers }
       ) : (
         <ul className="aid-list">
           {snapshot.aid.map((item) => {
-            const blocker = item.blockedBy ? blockers[item.blockedBy] : null;
             return (
               <li className={`aid-row ${item.status}`} key={item.id}>
                 <div className="aid-row-main">
@@ -71,15 +70,12 @@ export default function AidSources({ snapshot, ledger, onOpenBlocker, blockers }
                   <span className={`aid-amount ${item.status}`}>{formatCredit(item.amount)}</span>
                 )}
 
+                {/* The row states the dependency; the action lives in the band
+                    under the balance, once (F2 as B3.1 corrected it, 2026-08-21). */}
                 {item.status === 'pending' && (
                   <p className="aid-blocked">
                     <Icon name="clock" size={14} />
                     Pending · {item.blockedNote}
-                    {blocker && (
-                      <button className="text-button" onClick={() => onOpenBlocker(blocker)}>
-                        {blocker.shortAction ?? 'Open it'}
-                      </button>
-                    )}
                   </p>
                 )}
               </li>

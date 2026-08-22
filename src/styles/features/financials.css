@@ -145,8 +145,8 @@
 .coverage-legend strong {
   color: var(--ink);
   font-family: var(--font-geist-mono);
-  font-size: var(--fs-body);
-  font-weight: var(--fw-semi);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-bold);
 }
 
 /* The ledger is a table so a screen reader pairs label with amount. */
@@ -222,7 +222,7 @@
 }
 
 .ledger-group .ledger-amount, .ledger-total .ledger-amount {
-  font-size: var(--fs-h4);
+  font-size: var(--fs-h2);
   font-weight: var(--fw-semi);
 }
 
@@ -1020,4 +1020,47 @@
   color: var(--muted);
   font-size: var(--fs-meta);
   font-weight: var(--fw-regular);
+}
+
+/* --- the review of 2026-08-21 ----------------------------------------------- */
+
+/* F12: a row with a due date is something she can act on, and it takes the
+   actionable row's title — the same as a task on the checklist — not the
+   demoted tier the reviewing rows use. */
+.doc-task .compact-copy h3 {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
+}
+
+/* F8: the two lines that follow her housing plan are marked the way an estimate
+   is marked — the same chip, a different word. */
+.estimate-chip.conditional {
+  color: var(--amber-ink);
+  background: var(--amber-soft);
+  border-color: var(--amber-line);
+}
+
+/* F6: before the first check the three rules are three lines, not three rows
+   of dashes in a table shaped like a report. */
+.rule-list {
+  color: var(--ink);
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: var(--space-7) 0 0;
+  padding: 0;
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+  list-style: none;
+  display: flex;
+}
+
+.rule-list li {
+  align-items: center;
+  gap: var(--space-3);
+  display: flex;
+}
+
+.rule-list svg {
+  color: var(--green);
+  flex: none;
 }

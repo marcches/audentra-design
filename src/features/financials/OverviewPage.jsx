@@ -4,7 +4,6 @@ import CoverageBar from './CoverageBar.jsx';
 import CostCard from './CostCard.jsx';
 import DocumentList from './DocumentList.jsx';
 import NextPaymentCard from './NextPaymentCard.jsx';
-import AidOpportunityCard from './AidOpportunityCard.jsx';
 import { daysUntil } from './logic.js';
 
 /**
@@ -32,7 +31,7 @@ export default function OverviewPage({
   onContact,
   onRetry,
 }) {
-  const frame = { destination, ledger, year, urgent, isEmpty, onOpenTask, onContact };
+  const frame = { destination, ledger, year, urgent, isEmpty, onOpenTask, onPay, onContact };
   // The next payment is whatever the schedule says it is — the fall installment on
   // Aug 12 today — and its distance is read off the schedule, not off a task.
   const dueInDays = ledger.nextPayment ? daysUntil(ledger.nextPayment.date) : null;
@@ -51,23 +50,16 @@ export default function OverviewPage({
   return (
     <FinancialsPage
       {...frame}
-      rail={
-        <>
-          <NextPaymentCard ledger={ledger} dueInDays={dueInDays} onPay={onPay} />
-          <AidOpportunityCard total={ledger.additionalTotal} />
-        </>
-      }
+      /* "Possible additional aid" lives on Financial aid, the tab about where
+         money comes from; Overview keeps its one table row with a link to it
+         (F4, the review of 2026-08-21). */
+      rail={<NextPaymentCard ledger={ledger} dueInDays={dueInDays} onPay={onPay} />}
     >
       <CostCard ledger={ledger} snapshot={snapshot} year={year}>
         <CoverageBar ledger={ledger} />
       </CostCard>
 
-      <DocumentList
-        documents={documents}
-        unavailable={unavailable}
-        onOpen={onOpenTask}
-        onRetry={onRetry}
-      />
+      <DocumentList documents={documents} unavailable={unavailable} onRetry={onRetry} />
     </FinancialsPage>
   );
 }

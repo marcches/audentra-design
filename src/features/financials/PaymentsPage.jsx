@@ -31,7 +31,7 @@ export default function PaymentsPage({
   onContact,
   onRetry,
 }) {
-  const frame = { destination, ledger, year, urgent, isEmpty, onOpenTask, onContact };
+  const frame = { destination, ledger, year, urgent, isEmpty, onOpenTask, onPay, onContact };
 
   if (isEmpty) {
     return (

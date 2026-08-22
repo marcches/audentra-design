@@ -93,3 +93,39 @@ never look like a bill*, *explanation beside the term*, *a preview that is not a
 - [Basecamp — mission control](https://mobbin.com/screens/b5267b11-e734-4fd9-a433-d45fc3e8d009) — a
   needle gauge reading `Some risk`. Rejected: a needle in a red zone is a verdict, which is exactly
   what the academic progress guardrail forbids.
+
+## The review of 2026-08-21 — F1, F5, F8, F13 — 2026-08-22
+
+Two searches, web, deep; images examined.
+
+### The cost table: group totals lead, the foot resolves
+
+- [Remote — cost estimate](https://mobbin.com/screens/afa282e1-0b81-42d9-888a-cf37f3a6858d) — each group
+  ("Monthly total cost", "Annual total cost") leads with its total in the heavier treatment and its
+  line items under it, lighter; the line that needs a word carries an ⓘ. We take the hierarchy F13
+  asks for — the figures that summarise the tab at the card-figure treatment, the lines at body —
+  and the marker on the line that can change (C10.2: the "what could change it" sits on the marker).
+- [Square — bill](https://mobbin.com/screens/37fbf9f1-89ff-4415-882b-183f00fc4f02) — the ledger ends in
+  Total / Amount Paid / Amount Due. We take the foot as the table's resolution, not a fourth figure.
+
+**Rejected:** [Fiverr](https://mobbin.com/screens/6a302bde-9823-478b-bbbc-ff95786fb3bc),
+[Mintlify](https://mobbin.com/screens/d3166501-51b5-4cf9-afa1-cbf677676b50),
+[Webflow](https://mobbin.com/screens/9d279af2-981b-44ba-8818-77da9034641a),
+[Elicit](https://mobbin.com/screens/9acedf1e-4ea2-4ebb-b50f-e4525b3e9cdf) — plan-comparison matrices;
+a cost of attendance is one column, not a choice between four.
+
+### The payment plan: the deposit is its own line, before the plan
+
+- [Contra — payment](https://mobbin.com/screens/cd783e4b-71b5-41fd-9265-40efa41b4ab2) — "First payment
+  $4,000.00 · due Sep 30" and, apart from it, "Deposit today". We take F1 whole: the deposit is a
+  separate payment that comes before the plan, on both tabs, in those words.
+- [Klarna — pay in 4](https://mobbin.com/screens/c2c82a03-1498-4880-befd-69b5a2294de0) — paid and
+  left-to-pay lead the block, then a vertical sequence with the paid one ticked and the next one
+  marked. We take the sequence reading "this one is done, this one is next" for the schedule.
+- [HoneyBook — payment plan](https://mobbin.com/screens/33ae38b9-039f-49fb-b142-117c47f7119a) — the
+  status is a word on the row ("Due", "Upcoming"). We take the word-on-the-row; ours is
+  "SCHEDULED · ESTIMATE" (F5), the same marker the balance card already uses.
+
+**Rejected:** [Square — payment schedule](https://mobbin.com/screens/6dbee736-ee72-48c6-a147-d8b3f61325bb)
+— a builder for deposit percentages, the merchant's tool; [Mercury](https://mobbin.com/screens/10c550ab-f499-4dbf-8bc2-d007a42c9e00)'s
+recurring-rule review — a schedule she sets, where ours is one Aster publishes.

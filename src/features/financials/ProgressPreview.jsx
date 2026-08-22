@@ -53,6 +53,24 @@ export default function ProgressPreview({ progress, unavailable, onExplain, onRe
             <Icon name="calendar" size={15} /> {progress.firstCheck}
           </p>
 
+          {/* Before the first check there is nothing to measure, so the block is
+              the sentence, the date of the first check and the three rules one
+              line each — no value columns, no bars. The table appears when there
+              is something in it (F6, the review of 2026-08-21). */}
+          {!progress.started ? (
+            <ul className="rule-list">
+              {progress.metrics.map((metric) => (
+                <li key={metric.id}>
+                  <Icon name="check" size={13} />
+                  <span>
+                    {metric.label}
+                    {metric.gloss ? `, ${metric.gloss}` : ''}, {metric.minimumLabel}
+                  </span>
+                  <TermTip term={metric.term} label={metric.label} />
+                </li>
+              ))}
+            </ul>
+          ) : (
           <ul className="metric-list">
             {progress.metrics.map((metric) => {
               const chip = chipFor(metric, progress.started);
@@ -87,6 +105,7 @@ export default function ProgressPreview({ progress, unavailable, onExplain, onRe
               );
             })}
           </ul>
+          )}
 
           <p className="preview-disclaimer">
             <Icon name="shield" size={16} />

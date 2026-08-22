@@ -26,11 +26,12 @@ export default function AidPage({
   unavailable,
   isEmpty,
   onOpenTask,
+  onPay,
   onExplainProgress,
   onContact,
   onRetry,
 }) {
-  const frame = { destination, ledger, year, urgent, isEmpty, onOpenTask, onContact };
+  const frame = { destination, ledger, year, urgent, isEmpty, onOpenTask, onPay, onContact };
 
   if (isEmpty) {
     return (
@@ -45,12 +46,7 @@ export default function AidPage({
 
   return (
     <FinancialsPage {...frame}>
-      <AidSources
-        snapshot={snapshot}
-        ledger={ledger}
-        blockers={blockers}
-        onOpenBlocker={onOpenTask}
-      />
+      <AidSources snapshot={snapshot} ledger={ledger} />
 
       <section className="opportunity-section" aria-labelledby="opportunity-title">
         <h2 id="opportunity-title" className="sr-only">

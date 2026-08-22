@@ -1,4 +1,4 @@
-import { responseDeadline } from '../housing/data.js';
+import { responseDeadline, standardMeals, standardRate } from '../housing/data.js';
 import { rewards } from '../rewards/data.js';
 
 export const TOTAL_STEPS = 20;
@@ -395,8 +395,11 @@ export const academicYear = {
 export const costOfAttendance = [
   { id: 'tuition', label: 'Tuition', amount: 41200, direct: true },
   { id: 'fees', label: 'Fees', amount: 2860, direct: true },
-  { id: 'housing', label: 'Housing', amount: 12400, direct: true },
-  { id: 'meals', label: 'Meals', amount: 6300, direct: true },
+  // Read from the housing data, not typed here — ENR-211 AC 8 / B4.5 of the
+  // review of 2026-08-21: neither screen holds its own housing number. The
+  // figure is the standard double's rate until Residential Life assigns a room.
+  { id: 'housing', label: 'Housing', amount: standardRate, direct: true, conditional: true },
+  { id: 'meals', label: 'Meals', amount: standardMeals, direct: true, conditional: true },
   { id: 'books', label: 'Books and supplies', amount: 1240, direct: false, estimate: true },
   { id: 'personal', label: 'Personal and travel', amount: 2000, direct: false, estimate: true },
 ];

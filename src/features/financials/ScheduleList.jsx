@@ -72,7 +72,19 @@ export default function ScheduleList({ schedule, ledger, unavailable, onChangePl
                   </span>
                   <span className="installment-date">{row.date}</span>
                   <span className="installment-label">{row.label}</span>
-                  <span className="installment-status">{mark.word}</span>
+                  {/* A scheduled installment is an estimate and says so on the
+                      row, with the same marker the balance uses, and what could
+                      change it one tap away (F5, C10.2 — the review of
+                      2026-08-21). The deposit is fixed and carries no marker. */}
+                  <span className="installment-status">
+                    {mark.word}
+                    {row.status === 'scheduled' ? (
+                      <>
+                        {' · Estimate'}
+                        <TermTip term="schedule" label="this installment" />
+                      </>
+                    ) : null}
+                  </span>
                   <span className="installment-amount">{formatMoney(row.amount)}</span>
                 </li>
               );

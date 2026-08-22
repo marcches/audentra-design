@@ -6,10 +6,16 @@ import { kindIcon } from '../enrollment/logic.js';
 /**
  * ENR-160. These are not a copy of the enrollment checklist — they are the same
  * task objects, filtered by `financial`. The count here and the count there are
- * the same number because they are the same list (AC 5), and `Open it` opens the
- * same drawer, so finishing one here finishes it there too.
+ * the same number because they are the same list (AC 5).
+ *
+ * Since the review of 2026-08-21 (F2 as B3.1 corrected it) the block stays in
+ * every state and carries its count, and its rows carry **no action**: the row
+ * states the document, its office, its deadline and its consequence, and says
+ * it is a checklist item with the checklist's own due date (F9); the action
+ * lives in the band under the balance, once. The one task was stated four
+ * times on this screen, three of them with a button.
  */
-export default function DocumentList({ documents, unavailable, onOpen, onRetry }) {
+export default function DocumentList({ documents, unavailable, onRetry }) {
   return (
     <section className="section-card doc-section" aria-labelledby="docs-title">
       <div className="status-heading">
@@ -49,7 +55,7 @@ export default function DocumentList({ documents, unavailable, onOpen, onRetry }
                 <div className="compact-copy">
                   <h3>{task.title}</h3>
                   <p className="doc-meta">
-                    {task.office} · due {task.due}
+                    {task.office} · due {task.due} · on your enrollment checklist
                   </p>
                   <p className="doc-consequence">
                     <Icon name="alert" size={13} /> {task.consequence}
@@ -59,9 +65,6 @@ export default function DocumentList({ documents, unavailable, onOpen, onRetry }
                   <span className={`deadline-chip${level ? ` ${level}` : ''}`}>
                     {deadlineLabel(task.daysLeft)}
                   </span>
-                  <button className="secondary-button" onClick={() => onOpen(task)}>
-                    Open it <Icon name="arrow" size={15} />
-                  </button>
                 </div>
               </article>
             );

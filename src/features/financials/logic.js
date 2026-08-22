@@ -56,7 +56,17 @@ export function buildLedger(snapshot) {
 
   const upcoming = snapshot.schedule.filter((row) => row.status !== 'received');
 
+  // One framing on both tabs — F1 of the review of 2026-08-21: the deposit is a
+  // separate payment that comes before the plan; the plan is the installments.
+  const deposit = snapshot.schedule.find((row) => row.id === 'deposit') ?? null;
+  const installments = snapshot.schedule.filter((row) => row.id !== 'deposit');
+  const openInstallments = installments.filter((row) => row.status !== 'received');
+
   return {
+    deposit,
+    installmentCount: installments.length,
+    installmentTotal: total(installments),
+    nextInstallmentIndex: installments.length - openInstallments.length,
     cost,
     billed,
     elsewhere,
@@ -74,11 +84,10 @@ export function buildLedger(snapshot) {
     coverage: [
       { key: 'aid', label: 'Aid accepted', amount: aidAccepted },
       { key: 'paid', label: 'You’ve paid', amount: paid },
-      {
-        key: 'open',
-        label: pending.length > 0 ? 'Still to cover, before your pending loan' : 'Still to cover',
-        amount: balance,
-      },
+      // One label for one figure, everywhere it appears (F3, the review of
+      // 2026-08-21); the pending-loan qualifier lives in the note under the
+      // table, where the pending rule is explained.
+      { key: 'open', label: 'Estimated remaining balance', amount: balance },
     ].filter((segment) => segment.amount > 0),
   };
 }

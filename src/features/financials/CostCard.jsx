@@ -19,12 +19,21 @@ import { formatCredit, formatMoney } from './logic.js';
  * ENR-207 / ENR-211 AC 8 — these two lines are the only place My Financials and Housing can
  * contradict each other. Residences carry their own rates, so this figure is true of one room type
  * and not of the catalogue; saying which one it assumes is what turns a difference into a
- * comparison. The figures do not move here — they move when Residential Life assigns a room, which
- * is what the balance strip has always said.
+ * comparison. Since the review of 2026-08-21 (F8, B4.5) the two rows are **marked as conditional**
+ * the way an estimate is marked, the amounts are read from the housing data rather than typed here,
+ * the basis says what would move them, and the link names the effect rather than the destination.
+ * The figures move when Residential Life assigns a room, which is what the balance strip has
+ * always said.
  */
 const HOUSING_BASIS = {
-  housing: 'Assumes a standard double room',
-  meals: 'Assumes the full meal plan',
+  housing: {
+    basis: 'Assumes a standard double room until Residential Life assigns yours',
+    link: 'See what a different room costs',
+  },
+  meals: {
+    basis: 'Assumes the full meal plan',
+    link: 'See what a different plan costs',
+  },
 };
 
 export default function CostCard({ ledger, snapshot, year, children }) {
@@ -62,7 +71,7 @@ export default function CostCard({ ledger, snapshot, year, children }) {
             <tr className="ledger-sub" key={item.id}>
               <th scope="row">
                 {item.label}
-                {HOUSING_BASIS[item.id] && <small>{HOUSING_BASIS[item.id]}</small>}
+                {HOUSING_BASIS[item.id] && <small>{HOUSING_BASIS[item.id].basis}</small>}
               </th>
               <td>
                 {item.estimate && (
@@ -71,9 +80,12 @@ export default function CostCard({ ledger, snapshot, year, children }) {
                     <TermTip term="estimate" label={item.label} />
                   </span>
                 )}
+                {item.conditional && (
+                  <span className="estimate-chip small conditional">If you keep this plan</span>
+                )}
                 {HOUSING_BASIS[item.id] && (
                   <a className="ledger-link" href="#/housing">
-                    Compare residence halls <Icon name="arrow" size={13} />
+                    {HOUSING_BASIS[item.id].link} <Icon name="arrow" size={13} />
                   </a>
                 )}
               </td>
@@ -120,9 +132,14 @@ export default function CostCard({ ledger, snapshot, year, children }) {
           </tr>
 
           <tr className="ledger-group soft">
-            <th scope="row">Possible additional aid</th>
+            <th scope="row">
+              Possible additional aid
+              <small>Not counted below until it is awarded</small>
+            </th>
             <td>
-              <span className="ledger-hint">Not counted below until it is awarded</span>
+              <a className="ledger-link" href="#/financials/aid">
+                See both options <Icon name="arrow" size={13} />
+              </a>
             </td>
             <td className="ledger-amount soft">up to {formatMoney(ledger.additionalTotal)}</td>
           </tr>
@@ -159,8 +176,8 @@ export default function CostCard({ ledger, snapshot, year, children }) {
       {snapshot.aid.some((item) => item.status === 'pending') && (
         <p className="ledger-foot">
           <Icon name="clock" size={15} />
-          Aid that is still pending is listed above without an amount, and is not subtracted from
-          your balance. It has never been counted as zero.
+          Your pending loan is not subtracted from this. Aid that is still pending is listed above
+          without an amount, and has never been counted as zero.
         </p>
       )}
     </Card>
