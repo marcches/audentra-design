@@ -427,6 +427,8 @@ export const creditMatches = [
       source: 'International Baccalaureate',
       detail: 'Spanish B, Higher Level · score 6',
       uploadedOn: 'Uploaded Aug 6 with your application',
+      // The line of her prior record this cites — Profile's *Where I came from* (C1.8).
+      line: 'ib-spanish-b-hl',
     },
     target: {
       requirementId: 'foreign-language',
@@ -452,6 +454,7 @@ export const creditMatches = [
       source: 'Northside College',
       detail: 'CSCI 140 Introduction to Computing · grade A−, Spring 2026, 3 credits',
       uploadedOn: 'Uploaded Aug 6 with your application',
+      line: 'nc-csci-140',
     },
     target: {
       requirementId: 'programming-foundations',

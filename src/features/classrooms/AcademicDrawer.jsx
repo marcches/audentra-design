@@ -179,6 +179,13 @@ function EvidenceBody({ match, onAsk, onClose, onOpenCredit }) {
             <dd>{received.charAt(0).toUpperCase() + received.slice(1)}</dd>
           </div>
         </dl>
+        {/* The evidence is a line of her own record — Profile's *Where I came
+            from* owns it and this opens it at that line (C1.8, decided 2026-08-22). */}
+        {match.evidence.line ? (
+          <a className="text-button evidence-link" href={`#/profile/origins?line=${match.evidence.line}`}>
+            See the line on your record <Icon name="arrow" size={14} />
+          </a>
+        ) : null}
       </section>
 
       <section className="evidence-block">

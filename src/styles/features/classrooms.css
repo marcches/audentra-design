@@ -1076,3 +1076,12 @@
     flex-direction: column;
   }
 }
+
+/* The evidence's line on her own record — a link out of the drawer. */
+.evidence-link {
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  padding: 0;
+  display: inline-flex;
+}
