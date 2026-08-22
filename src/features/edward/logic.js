@@ -631,6 +631,11 @@ export function escalationFor({ intent = null, office = null, topic = null } = {
   const name = runningName(fullName);
   const reply = helpOffice?.reply ?? null;
   const posted = bookable ? openTimes(publishedTimes, bookable.id) > 0 : false;
+  // The office that decides and the team she talks to can differ — a credit
+  // match is the Registrar's to decide and the academic advisor's to discuss
+  // (ENR-186 AC 3 and AC 6). The inquiry goes to the decider; the time, or the
+  // callback, is with the team. Each route names its own.
+  const team = bookable?.team ? runningName(bookable.team) : name;
 
   const routes = [
     {
@@ -640,12 +645,21 @@ export function escalationFor({ intent = null, office = null, topic = null } = {
       topicId: HELP_TOPIC_OF_OFFICE[key] ?? (bookable?.id === 'academic' ? 'program' : 'other'),
     },
     posted
-      ? { kind: 'booking', label: `Book a time with ${name}`, route: '#/appointments', topic: bookable.id }
-      : { kind: 'callback', label: 'Request a callback', route: '#/appointments', topic: bookable?.id ?? null, reply },
+      ? { kind: 'booking', label: `Book a time with ${team}`, route: '#/appointments', topic: bookable.id }
+      : {
+          kind: 'callback',
+          label: 'Request a callback',
+          route: '#/appointments',
+          topic: bookable?.id ?? null,
+          // The reply time is the office's published one; a team that is not
+          // one of Help's offices publishes none, and the route says nothing.
+          reply: team === name ? reply : null,
+        },
   ];
 
   return {
     office: { key, name, fullName, reply },
+    team,
     posted,
     routes,
     note: 'Whatever you already told Edward goes with it, so you don’t start over.',

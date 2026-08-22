@@ -708,7 +708,10 @@
 
 /* --- the academic rail --- */
 
-.program-card, .record-card {
+/* The program card is the rail's anchor since 2026-08-22 (the Housing changes
+   of 2026-08-21, §9.1): `AnchorCard` draws the ink; what is left here is the
+   lead and the facts on it. The record card keeps its own paper. */
+.record-card {
   background: var(--surface);
   border: 1px solid var(--line);
   box-shadow: var(--shadow-card);
@@ -740,31 +743,15 @@
   margin: var(--space-7) 0 var(--space-6);
 }
 
-.counts-review {
-  color: var(--amber);
-  align-items: flex-start;
-  gap: var(--space-3);
-  margin: 0;
-  font-size: var(--fs-copy);
-  line-height: var(--lh-body);
-  display: flex;
-}
-
-.counts-review svg {
-  flex: none;
-  margin-top: var(--space-1);
-}
-
-/* Under the under-review figure the sentence explains; it is not a warning.
-   Written with the anchor's own selector so it wins over the amber it sets. */
-.anchor-card .counts-figure + .counts-review.quiet {
-  color: var(--on-ink-muted);
-  margin-top: var(--space-5);
-}
-
-.program-card strong {
+/* The dark card's lead line — 17px bold, the one treatment a dark card's lead
+   has in the product (9.0). The program is a fact, so it is a name, not a
+   figure: no counter, no bar, no fraction. */
+.program-card .program-lead {
+  letter-spacing: var(--ls-snug);
   margin-top: var(--space-4);
   font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-heading);
   display: block;
 }
 
@@ -782,11 +769,12 @@
 }
 
 .program-facts dt {
-  color: var(--muted);
+  color: var(--on-ink-muted);
   font-size: var(--fs-copy);
 }
 
 .program-facts dd {
+  color: var(--on-ink);
   margin: 0;
   font-size: var(--fs-copy);
   font-weight: var(--fw-bold);

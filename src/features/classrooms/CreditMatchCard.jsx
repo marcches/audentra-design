@@ -1,4 +1,6 @@
 import Icon from '../../design-system/Icon.jsx';
+import EdwardAsk from '../../design-system/patterns/EdwardAsk.jsx';
+import { EDWARD } from '../edward/data.js';
 import { confidenceIcon, confidenceLabel, effectLine, matchEffect } from './logic.js';
 import { program } from './data.js';
 
@@ -95,9 +97,11 @@ export default function CreditMatchCard({
           <button type="button" className="secondary-button" onClick={() => onOpen(match)}>
             See the evidence <Icon name="arrow" size={15} />
           </button>
-          <button type="button" className="text-button" onClick={() => onAsk(match)}>
-            Ask the Registrar
-          </button>
+          {/* One route to a person, and it starts in Edward — Part A §12 of the
+              review of 2026-08-21, which supersedes B2.1's two controls. The
+              Registrar still decides and the advisor is still reachable: both
+              are what Edward offers next, with the question already written. */}
+          <EdwardAsk mark={EDWARD.mark} onClick={() => onAsk(match)} />
           <button type="button" className="text-button" onClick={() => onRevealCourse(match)}>
             See the course
           </button>

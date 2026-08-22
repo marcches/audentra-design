@@ -105,10 +105,20 @@ export default function EdwardMessage({
         <div className="edward-answer edward-escalation">
           <p className="edward-escalation-lead">Let’s get you to a person.</p>
           <p className="edward-escalation-office">
-            {message.office.name} is the office for this.
+            {/* A sentence starts with a capital even when the office's running
+                name does not ("the Registrar"); a named team takes "doesn't". */}
+            {message.office.name.charAt(0).toUpperCase() + message.office.name.slice(1)} is the
+            office for this.
+            {message.team && message.team !== message.office.name
+              ? ` ${message.team} is who you talk to about it.`
+              : ''}
             {message.posted
               ? ''
-              : ' They don’t have times posted right now, so a callback stands in for a booking.'}
+              : ` ${
+                  message.team && message.team !== message.office.name
+                    ? `${message.team} doesn’t`
+                    : 'They don’t'
+                } have times posted right now, so a callback stands in for a booking.`}
           </p>
           <div className="edward-routes">
             {message.routes.map((route) => (

@@ -1457,10 +1457,6 @@
   color: var(--on-ink-muted);
 }
 
-.anchor-card .counts-review {
-  color: #f2c68d;
-}
-
 .anchor-card .learn-link {
   color: var(--purple-line);
 }

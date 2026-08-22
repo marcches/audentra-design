@@ -45,3 +45,25 @@ evidence panel that offers no verdict.
 - [Codecademy — certification syllabus](https://mobbin.com/screens/de46de43-eeb1-4ec2-9ca0-bd4d85bd8bed)
   — numbered units with *Expand all*; every row identical. The brief's D3 is the opposite: the
   label says the situation and only the takeable rows carry the action.
+
+## The program in the dark slot — 2026-08-22 (Housing changes §9.1, Financials 9.2, B2.1 + §12)
+
+One search, web, deep, for a dark summary card of label–value facts with no progress and no button;
+images examined.
+
+- [Airwallex — card details](https://mobbin.com/screens/1286a7d8-9b16-4755-8969-9ea4ca8cabe0) — a
+  panel of facts as **label above value, one per row, no action**: "Card nickname / Team
+  Subscriptions", "Card type / Company card". We take the fact-list register: the program card is a
+  name and three facts (catalog, published, to graduate), which is what `dl.program-facts` already
+  drew on paper and now draws on ink.
+- [Cursor — plan overview](https://mobbin.com/screens/cf9a5441-7462-4d39-af22-5d52cec1a0ed) — the
+  current plan as a card of facts with a quiet "Current" tag. We take the quietness: the card states
+  what governs the page and asks nothing.
+
+**Rejected:** [Lovable](https://mobbin.com/screens/ad361de1-19e5-4115-b654-876e0d8c06a8),
+[Twenty](https://mobbin.com/screens/c017a665-7d85-4ae7-a659-1dbde26c1882),
+[Posh](https://mobbin.com/screens/1b50d02b-9291-4a4b-a983-9ef3d81e01c8) and
+[Suno](https://mobbin.com/screens/950b4494-c2d1-4890-bb23-74c495030cc3) — KPI tiles with trend
+arrows, donuts and counters on dark: every one of them is a progress signal, and §9.1 says the
+program card holds facts, not progress — 120 credits never renders as a counter, a bar or a fraction.
+The match's single route to a person reuses the inline ask researched for ENR-181 (Workable, Remote).

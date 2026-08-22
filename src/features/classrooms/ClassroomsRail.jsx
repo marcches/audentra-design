@@ -7,50 +7,29 @@ import { program } from './data.js';
  * and earns nothing — rendering the momentum card here would say it does,
  * against the ENR-173 guardrail.
  *
- * After the brief of 2026-08-21 (D10) the anchor card no longer repeats the
- * approved-credit figure, which the white card now leads with; it keeps the
- * one thing the card does not carry — the amount under review — and that is
- * its figure. The sentence under it is the only place on the page, with the
- * match card, where "not counted yet" is said (D11).
+ * After the brief of 2026-08-21 (D10) the anchor card stopped repeating the
+ * approved-credit figure; what it kept was the amount under review, rendered at
+ * display size with a line underneath disclaiming it — the same defect the
+ * Appointments document removed with its "24", on another screen (the Housing
+ * changes of 2026-08-21, §9.1). Since 2026-08-22 that card is gone: the
+ * under-review figure sits in the summary panel, beside the approved total it
+ * qualifies, and **the program takes the dark slot** — the frame everything on
+ * this page is measured against: the degree, the catalog year that governs it,
+ * and the credits the ring counts toward. It holds facts, not progress: the
+ * credits to graduate never render as a counter, a bar or a fraction, and the
+ * card carries no action. No other metric takes the slot — a percentage would
+ * repeat the ring, and a pace figure would be the one claim on a screen whose
+ * premise is that it shows Aster's reading of the record, not the record.
  */
-export default function ClassroomsRail({
-  underReview,
-  unavailable,
-  unknownProgram,
-  onOpenCredit,
-}) {
-  const hasFigure = !unknownProgram && !unavailable && underReview > 0;
-
+export default function ClassroomsRail({ unknownProgram, onOpenCredit }) {
   return (
     <>
       <AnchorCard
-        variant="counts"
-        label="What counts right now"
-        figureClass="counts-figure"
-        figure={
-          hasFigure ? (
-            <>
-              {underReview} <small>credits under review, not counted yet</small>
-            </>
-          ) : undefined
-        }
+        variant="program"
+        label="Your program"
+        figureClass="program-lead"
+        figure={unknownProgram ? 'Not assigned yet' : program.name}
       >
-        <p className={`counts-review${hasFigure ? ' quiet' : ''}`}>
-          <Icon name="info" size={15} />
-          {/* Never claim nothing is under review when nobody could look. */}
-          {unknownProgram
-            ? 'Anything you have already sent Aster is kept and reviewed once your program is assigned'
-            : unavailable
-              ? 'What’s under review couldn’t be checked right now'
-              : hasFigure
-                ? 'Credit the Registrar approves shows in your total; nothing here has been decided'
-                : 'Nothing is under review right now'}
-        </p>
-      </AnchorCard>
-
-      <div className="program-card">
-        <span className="panel-label">Your program</span>
-        <strong>{unknownProgram ? 'Not assigned yet' : program.name}</strong>
         {unknownProgram ? (
           <p className="program-pending">
             Your catalog, your requirements and the credits you need to graduate all arrive with the
@@ -72,7 +51,7 @@ export default function ClassroomsRail({
             </div>
           </dl>
         )}
-      </div>
+      </AnchorCard>
 
       <div className="record-card">
         <span className="record-icon" aria-hidden="true">

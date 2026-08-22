@@ -5,6 +5,7 @@ import AdvisorBar from '../../design-system/patterns/AdvisorBar.jsx';
 import SummaryFigure from '../../design-system/patterns/SummaryFigure.jsx';
 import Card, { CardHead, CardRows } from '../../design-system/primitives/Card.jsx';
 import ClassroomsRail from './ClassroomsRail.jsx';
+import { openEdward } from '../edward/door.js';
 import AcademicDrawer from './AcademicDrawer.jsx';
 import CreditMatchCard from './CreditMatchCard.jsx';
 import InfoModal from '../../design-system/patterns/InfoModal.jsx';
@@ -183,11 +184,23 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
   }
 
   // D15: a question about a match goes to the office that decides it — the
-  // Registrar — never to Admissions, which decides nothing here.
+  // Registrar — never to Admissions, which decides nothing here. Since
+  // 2026-08-22 it starts in Edward (Part A §12 of the review of 2026-08-21):
+  // one control, the question written in her voice and not sent, naming the
+  // match; the Registrar is still the decider (ENR-186 AC 3) and the advisor is
+  // still reachable from it (AC 6) — Edward's escalation offers Academic
+  // Advising's time, or a callback, beside the inquiry to the Registrar.
   function askRegistrar(match) {
-    onToast(
-      `A message to the ${program.officialRecord.office} about ${match.target.courseCode} would open here. Nothing is sent yet.`,
-    );
+    const what = match.evidence.detail.split(' ·')[0];
+    openEdward({
+      question: `Would the ${what} on my ${match.evidence.document} count toward ${match.target.requirementName}, and who decides that?`,
+      context: {
+        label: `My Degree · ${match.target.requirementName}`,
+        intent: 'advisor',
+        office: 'registrar',
+        topic: 'academic',
+      },
+    });
   }
 
   // The panel's two actions reach the person who owns the subject: the course
@@ -236,7 +249,16 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
           totals.pending > 0 ? '*' : ''
         }`}
       >
-        {totals.met} of {totals.total} requirements met · {elective} elective credits remaining
+        {totals.met} of {totals.total} requirements met · {elective} elective credits remaining ·{' '}
+        {/* The under-review figure lives here since 2026-08-22 (the Housing
+            changes of 2026-08-21, §9.1): one is the number, this is its caveat,
+            and they belong in the same place. Never claim nothing is under
+            review when nobody could look. */}
+        {matches === null
+          ? 'what’s under review couldn’t be checked'
+          : underReview > 0
+            ? `${underReview} credits under review, not counted yet`
+            : 'nothing under review right now'}
       </SummaryFigure>
       <AdvisorBar advisor={courseAdvisor} onContact={contactAdvisor} />
     </>
@@ -278,12 +300,7 @@ export default function ClassroomsPage({ destination, state, onToast, onOverlay 
         summary={summary}
         notice={caveat}
         rail={
-          <ClassroomsRail
-            underReview={underReview}
-            unavailable={matches === null}
-            unknownProgram={unknownProgram}
-            onOpenCredit={() => setCreditModal(true)}
-          />
+          <ClassroomsRail unknownProgram={unknownProgram} onOpenCredit={() => setCreditModal(true)} />
         }
       >
         {unknownProgram ? (
