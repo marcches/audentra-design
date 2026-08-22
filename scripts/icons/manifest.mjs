@@ -87,6 +87,19 @@ export const ICONS = {
   // cards and the compare table (B4.3).
   rows: 'rows',
   columns: 'columns',
+  // My Campus Life, the review of 2026-08-21 (C4b): every club gets an emblem —
+  // a duotone glyph in a tile, chosen for what the club is — never a face.
+  film: 'film-slate',
+  game: 'game-controller',
+  megaphone: 'megaphone',
+  run: 'person-simple-run',
+  leaf: 'leaf',
+  piano: 'piano-keys',
+  translate: 'translate',
+  palette: 'palette',
+  code: 'code',
+  heart: 'heart',
+  follow: 'bell-ringing',
 };
 
 export const WEIGHTS = ['regular', 'bold', 'fill', 'duotone'];

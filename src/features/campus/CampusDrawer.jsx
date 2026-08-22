@@ -1,5 +1,9 @@
 import Icon from '../../design-system/Icon.jsx';
+import Button from '../../design-system/primitives/Button.jsx';
 import Drawer from '../../design-system/primitives/Drawer.jsx';
+import EdwardAsk from '../../design-system/patterns/EdwardAsk.jsx';
+import { EDWARD } from '../edward/data.js';
+import { INTEREST_NOTE } from './OrgRow.jsx';
 import {
   longDate,
   registrationAction,
@@ -7,8 +11,21 @@ import {
   shortDate,
 } from './logic.js';
 
-export default function CampusDrawer({ item, kind, past, onClose, onToast }) {
-
+/**
+ * The depth behind a row. For a club, since the review of 2026-08-21 (C4, Part A §12), the way to
+ * the person is the Edward door, and *I'm interested* is here too with the sentence it owes —
+ * the drawer offers what the row offers, read at leisure.
+ */
+export default function CampusDrawer({
+  item,
+  kind,
+  past,
+  interested = false,
+  onInterested = () => {},
+  onContact = () => {},
+  onClose,
+  onToast,
+}) {
 
   const isEvent = kind === 'event';
   const action = isEvent && !past ? registrationAction(item) : null;
@@ -134,20 +151,26 @@ export default function CampusDrawer({ item, kind, past, onClose, onToast }) {
           <span className="panel-label">How to get in touch</span>
           <p>
             {item.contact.name} runs {item.name} and is the person to ask about joining, coming
-            along once, or what a first session is like.
+            along once, or what a first session is like. Ask Edward and he’ll get you to them.
           </p>
-          <button
-            className="primary-button full"
-            onClick={() =>
-              onToast(
-                `An email to ${item.contact.name} would open here. Nothing is sent yet.`
-              )
-            }
-          >
-            Email {item.contact.name} <Icon name="mail" size={17} />
-          </button>
+          <div className="drawer-actions">
+            <Button
+              kind={interested ? 'secondary' : 'primary'}
+              full
+              icon={interested ? 'check' : 'spark'}
+              aria-pressed={interested}
+              onClick={() => onInterested(item)}
+            >
+              {interested ? 'Interested' : 'I’m interested'}
+            </Button>
+            <EdwardAsk
+              label={`Message ${item.contact.name.split(' ')[0]}`}
+              mark={EDWARD.mark}
+              onClick={() => onContact(item)}
+            />
+          </div>
           <small className="prototype-note">
-            Preview: membership is handled by the organization, not by this portal.
+            {INTEREST_NOTE} Membership is handled by the organization, not by this portal.
           </small>
         </div>
       )}

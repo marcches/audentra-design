@@ -28,73 +28,26 @@
 .section-card.required-strip {
   border-color: color-mix(in srgb, var(--crimson) 22%, var(--line));
   container: required-strip / inline-size;
-  padding: 0;
-  overflow: hidden;
 }
 
-/* In the rail it is one of the column's cards, and the column owns the gap. */
-.page-rail .required-strip {
-  margin-bottom: 0;
-}
-
-/* A heading by role, a line by size. It is the section's name, so it stays an
-   `h2`; it is a caveat rather than a title, so it is set at row scale. */
-.required-strip-head {
+/* The head is the section treatment every other card wears — the heading of
+   the only mandatory block on the screen used to be the smallest heading in the
+   portal (C6) — with the mark in the office's colour: these rows come from
+   another office and are not a choice. */
+.required-strip .status-icon.required {
   color: var(--crimson);
   background: var(--crimson-soft);
-  border-bottom: 1px solid color-mix(in srgb, var(--crimson) 16%, var(--line));
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-4);
-  margin: 0;
-  padding: var(--space-4) var(--card-pad);
-  font-size: var(--fs-copy);
-  font-weight: var(--fw-bold);
-  display: flex;
 }
 
-.required-strip-note {
-  color: var(--muted);
-  font-size: var(--fs-meta);
-  font-weight: var(--fw-medium);
-}
-
-/* The count is the note said in one character, for when there is no room for
-   the note. Only one of the two is ever displayed. */
-.required-strip-count {
-  color: var(--crimson);
-  background: color-mix(in srgb, var(--crimson) 13%, var(--surface));
-  border-radius: var(--radius-pill);
-  place-items: center;
-  min-width: 19px;
-  height: 19px;
-  margin-left: auto;
-  font-size: var(--fs-meta);
-  display: none;
-}
-
-.required-strip-mark {
-  align-items: center;
-  display: inline-flex;
-}
-
-.required-strip .card-rows {
-  border-radius: 0;
-  margin: 0;
-}
-
-/* ── The wide layout: the strip is running the width of a one-grid page ── */
+/* ── The row: the date, when, the title, the facts — and what to do (C2) ── */
 
 .required-row {
-  text-align: left;
-  cursor: pointer;
   grid-template-columns: 46px minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-7);
   width: 100%;
   padding-top: var(--space-7);
   padding-bottom: var(--space-8);
-  transition: background .17s;
   display: grid;
 }
 
@@ -105,6 +58,7 @@
 
 .required-row-copy {
   flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-2);
   min-width: 0;
   display: flex;
@@ -146,102 +100,32 @@
   display: inline-flex;
 }
 
-/* The one control on the row, at its trailing edge. It is a label on a target
-   the whole row already is — not a second button competing with it. */
-.required-row-action {
-  color: var(--crimson);
-  background: var(--crimson-soft);
-  border-radius: var(--radius-pill);
-  flex: none;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-6);
-  font-size: var(--fs-meta);
-  font-weight: var(--fw-heavy);
-  white-space: nowrap;
-  transition: background .17s, color .17s;
-  display: inline-flex;
+/* The two things to do about a session, stacked at the row's trailing edge:
+   the registration control (or its label) and the calendar. */
+.required-row-actions {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-3);
 }
 
-/* A flat row in a card answers with its surface, not with a lift: the hairline
-   between two rows moves if one of them rises off the card. */
-.required-row:hover {
-  background: color-mix(in srgb, var(--crimson) 4%, var(--surface));
-}
-
-.required-row:hover .required-row-action {
-  color: var(--on-ink);
-  background: var(--crimson);
-}
-
-.required-row:focus-visible {
-  outline: 2px solid var(--crimson);
-  outline-offset: -2px;
-}
-
-/* ── The narrow layout: the strip is a card in the second grid ──────────────
-   Not the wide row stacked — a different row. The page has two grids and this
-   belongs in the smaller one, where 46px of date tile is 16% of the column and
-   a labelled button is most of a line. So the tile goes (the date is already
-   in the line above the title), the location goes (the drawer holds it, and
-   who requires a session is the fact that makes it an obligation), and the
-   button becomes the chevron the whole row already is.
-
-   A container query, not a media query: the window is wide in both cases. */
-@container required-strip (width < 470px) {
-  .required-strip-head {
-    padding: var(--space-4) var(--space-7);
-  }
-
-  .required-strip-note {
-    display: none;
-  }
-
-  .required-strip-count {
-    display: grid;
-  }
-
-  .required-strip .card-rows > * {
-    padding-left: var(--space-7);
-    padding-right: var(--space-7);
-  }
-
-  .required-strip .required-row {
-    grid-template-columns: minmax(0, 1fr) auto;
+/* Narrow — the strip at 390: the tile goes (the date is in the line above the
+   title) and the actions run under the copy. A container query, because the
+   strip reads its own width. */
+@container required-strip (width < 560px) {
+  .required-row {
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-5);
-    padding-top: var(--space-6);
-    padding-bottom: var(--space-7);
   }
 
-  .required-strip .required-row .date-tile,
-  .required-strip .required-row-where {
+  .required-row .date-tile {
     display: none;
   }
 
-  .required-strip .required-row-when {
-    letter-spacing: var(--ls-caps);
+  .required-row-actions {
+    flex-direction: row;
     flex-wrap: wrap;
-    gap: var(--space-2);
-    font-size: var(--fs-small);
-    font-weight: var(--fw-heavy);
-  }
-
-  .required-strip .required-row-title {
-    font-size: var(--fs-h2);
-    line-height: var(--lh-heading);
-  font-weight: var(--fw-regular);
-}
-
-  /* Label off, arrow on: a 26px disc that reads as "this opens". */
-  .required-strip .required-row-action {
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    padding: 0;
-  }
-
-  .required-strip .required-row-action span {
-    display: none;
+    justify-content: flex-start;
+    align-items: center;
   }
 }
 
@@ -370,7 +254,6 @@
 
 .campus-row {
   text-align: left;
-  cursor: pointer;
   border: 1px solid var(--line);
   background: var(--surface);
   box-shadow: var(--shadow-card);
@@ -381,18 +264,7 @@
   width: 100%;
   min-height: 86px;
   padding: var(--space-7) var(--space-8);
-  transition: all .17s;
   display: grid;
-}
-
-.campus-row:hover {
-  border-color: color-mix(in srgb, var(--purple) 35%, var(--line));
-  transform: translateY(-1px);
-}
-
-.campus-row:focus-visible {
-  outline: 2px solid var(--purple);
-  outline-offset: 2px;
 }
 
 .date-tile {
@@ -890,8 +762,92 @@
 
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .campus-row:hover {
-    transform: none;
+/* ------------------------------------------------------------------ *
+ * The review of 2026-08-21 — rows that act (C4), the list's foot (C3)
+ * ------------------------------------------------------------------ */
+
+/* A row stopped being one button the day it grew inner ones: the title is the
+   way in, and the actions sit at the trailing edge — a control where there is
+   something to do, a label where there is not. */
+.row-title-button {
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
+.row-title-button:hover {
+  color: var(--purple-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.row-title-button:focus-visible {
+  border-radius: var(--radius-xs);
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}
+
+.campus-row-actions {
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  justify-self: end;
+  gap: var(--space-3) var(--space-4);
+  display: flex;
+}
+
+.campus-row-actions .secondary-button,
+.campus-row-actions .primary-button {
+  white-space: nowrap;
+}
+
+.campus-row-actions .text-button {
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  display: inline-flex;
+}
+
+.text-button.follow.on {
+  color: var(--purple-dark);
+}
+
+/* The club's actions run under its copy, not at its edge: the row is tall and
+   the edge is far from what they are about. */
+.org-row .campus-row-actions {
+  justify-content: flex-start;
+  justify-self: start;
+  margin-top: var(--space-4);
+}
+
+/* The way out of the matching list (C3). */
+.list-foot {
+  color: var(--muted);
+  text-align: center;
+  margin: 0;
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-2);
+  font-size: var(--fs-copy);
+  line-height: var(--lh-body);
+}
+
+.list-foot .text-button {
+  padding: 0;
+  font-size: inherit;
+}
+
+@media (width<=620px) {
+  .campus-row-actions,
+  .required-row-actions {
+    flex-direction: row;
+    justify-content: flex-start;
+    justify-self: start;
   }
 }

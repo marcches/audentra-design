@@ -146,3 +146,43 @@ export function registrationAction(event) {
   if (kind === 'email') return `Email ${contact}`;
   return null;
 }
+
+/* ------------------------------------------------------------------ *
+ * The review of 2026-08-21 — rows that act (C2, C4), the match label (C8.3), the door (§12)
+ * ------------------------------------------------------------------ */
+
+/**
+ * The match label is suppressed where the club's own category is the interest that matched it —
+ * "Matches Music" on a music club says nothing (C8.3) — and kept where the match is not obvious.
+ */
+export function matchLabel(item, matched) {
+  return matched && matched !== item.category ? matched : null;
+}
+
+/**
+ * What a row offers about registering (C2, C4): a control where there is something to do — a
+ * booking that links out and says so, an email to the named host — and a label where there is
+ * not: "No RSVP needed" stays a label, and so do "Full" and "Details coming". A past event says it
+ * ended and offers nothing.
+ */
+export function rowRegistration(event, past) {
+  if (past) return { label: 'Ended', control: null };
+  const { kind, label, contact } = event.registration;
+  if (kind === 'external') return { label: null, control: { act: 'external', label, icon: 'external' } };
+  if (kind === 'email') {
+    return { label: null, control: { act: 'email', label: 'Email the host', icon: 'mail', contact } };
+  }
+  return { label, control: null };
+}
+
+/** "the Aster Chamber Choir", "Aster Robotics" — the name as a sentence says it. */
+export function orgInSentence(org) {
+  return /(Club|Society|Choir|Network|Bank|Collective|Orchestra|Exchange|Circle|Radio)$/.test(org.name)
+    ? `the ${org.name}`
+    : org.name;
+}
+
+/** The question the door writes for Edward — Part A §12.4, the club's person named. */
+export function contactQuestion(org) {
+  return `How do I get in touch with ${org.contact.name} about ${orgInSentence(org)}?`;
+}

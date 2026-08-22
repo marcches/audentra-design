@@ -8,6 +8,14 @@ export const CAMPUS_TODAY = '2026-06-15';
 // this page ranks by the same list it shows (UX writing 6.4).
 export { campusInterests as studentInterests } from '../profile/data.js';
 
+/**
+ * The schools. "Academic" is not a category a club or an event belongs to — a robotics club belongs
+ * to the School of Engineering, a debating society to Arts and Sciences — so Student Life publishes
+ * the schools as categories like every other (the review of 2026-08-21, C8.2). Aster's three: read
+ * `docs/domain/aster.md` before adding a fourth.
+ */
+export const schools = ['School of Arts and Sciences', 'School of Business', 'School of Engineering'];
+
 export const campusPublisher = {
   office: 'Aster Student Life',
   coordinator: { name: 'Marcus Bell', role: 'Student Life coordinator' },
@@ -159,7 +167,7 @@ export const campusEvents = [
   {
     id: 'buildnight',
     title: '24-hour build night',
-    category: 'Academic',
+    category: 'School of Engineering',
     interests: ['Academic'],
     date: '2026-09-19',
     time: '6:00 PM–6:00 PM',
@@ -274,7 +282,7 @@ export const campusEvents = [
   {
     id: 'summerreading',
     title: 'Summer reading discussion',
-    category: 'Academic',
+    category: 'School of Arts and Sciences',
     interests: ['Academic'],
     date: '2026-07-29',
     time: '6:00 PM–7:30 PM',
@@ -349,7 +357,7 @@ export const campusOrganisations = [
     name: 'Aster Robotics',
     icon: 'robot',
     initials: 'AR',
-    category: 'Academic',
+    category: 'School of Engineering',
     interests: ['Academic'],
     description:
       'Builds two competition robots a year and runs an open lab night every Thursday. Every discipline welcome.',
@@ -404,18 +412,18 @@ export const campusOrganisations = [
 // publishes this second wave on top of the set above, so the density is something you can look at
 // rather than something the spec claims.
 const denseEvents = [
-  ['debate', 'Debating Society trials', 'Academic', '2026-08-21', '5:00 PM–7:00 PM', 'Alcott House, room 4', 'Debating Society', 'walk-in', ['Academic']],
+  ['debate', 'Debating Society trials', 'School of Arts and Sciences', '2026-08-21', '5:00 PM–7:00 PM', 'Alcott House, room 4', 'Debating Society', 'walk-in', ['Academic']],
   ['yoga', 'Sunrise yoga on the lawn', 'Wellness', '2026-08-23', '7:00 AM–8:00 AM', 'The Quad', 'Sports Center', 'walk-in', ['Wellness']],
   ['filmnight', 'Outdoor film night: Rear Window', 'Social', '2026-08-24', '9:00 PM–11:00 PM', 'Alcott lawn', 'Film Society', 'walk-in', ['Social']],
   ['bikeclinic', 'Free bike repair clinic', 'Wellness', '2026-08-26', '12:00 PM–4:00 PM', 'North Gate', 'Sustainability Office', 'walk-in', ['Wellness']],
   ['orchestra', 'Symphony orchestra reading session', 'Music', '2026-08-28', '6:30 PM–9:00 PM', 'Ferrand Music Building, hall', 'Aster Orchestra', 'email', ['Music']],
   ['beachclean', 'River clean-up morning', 'Volunteering', '2026-08-29', '9:00 AM–12:00 PM', 'Meet at Mill Bridge', 'Sustainability Office', 'external', ['Volunteering']],
   ['boardgames', 'Board game marathon', 'Social', '2026-08-30', '2:00 PM–10:00 PM', 'Student Union, upper hall', 'Games Society', 'walk-in', ['Social']],
-  ['labtour', 'Materials lab open tour', 'Academic', '2026-09-01', '3:00 PM–4:30 PM', 'Kessler Lab', 'School of Engineering', 'external', ['Academic']],
+  ['labtour', 'Materials lab open tour', 'School of Engineering', '2026-09-01', '3:00 PM–4:30 PM', 'Kessler Lab', 'School of Engineering', 'external', ['Academic']],
   ['langcafe', 'Language café: nine tables, nine languages', 'Community', '2026-09-02', '6:00 PM–8:00 PM', 'Student Union café', 'Language Center', 'walk-in', ['Community']],
   ['climbing', 'Beginner climbing session', 'Sports', '2026-09-04', '5:00 PM–7:00 PM', 'Sports Center wall', 'Outdoors Club', 'external', ['Sports']],
   ['choirsocial', 'Choir welcome social', 'Music', '2026-09-06', '8:00 PM–11:00 PM', 'The Cellar, Student Union', 'Aster Chamber Choir', 'walk-in', ['Music']],
-  ['tutoring', 'Math tutoring drop-in opens', 'Academic', '2026-09-07', '1:00 PM–5:00 PM', 'Ferrand Library, floor 1', 'Math Department', 'walk-in', ['Academic']],
+  ['tutoring', 'Math tutoring drop-in opens', 'School of Arts and Sciences', '2026-09-07', '1:00 PM–5:00 PM', 'Ferrand Library, floor 1', 'Math Department', 'walk-in', ['Academic']],
   ['soupkitchen', 'Evening soup kitchen shift', 'Volunteering', '2026-09-09', '5:30 PM–8:30 PM', 'St Brigid’s hall, Mill Street', 'Campus Food Bank', 'email', ['Volunteering']],
   ['photowalk', 'Campus photography walk', 'Arts', '2026-09-10', '4:00 PM–6:00 PM', 'Meet at the library steps', 'Photography Society', 'walk-in', ['Arts']],
   ['startup', 'Student startup pitch night', 'Career', '2026-09-11', '6:00 PM–9:00 PM', 'Kessler Lab, atrium', 'Career Services', 'external', ['Career']],
@@ -431,24 +439,24 @@ const denseEvents = [
   ['ceramics', 'Ceramics taster workshop', 'Arts', '2026-09-25', '2:00 PM–5:00 PM', 'Art block, studio 2', 'Art Society', 'closed', ['Arts']],
   ['nightrun', 'Friday night 5k', 'Sports', '2026-09-26', '7:00 PM–8:30 PM', 'Meet at the Sports Center', 'Running Club', 'walk-in', ['Sports']],
   ['filmfest', 'Student film festival, night one', 'Arts', '2026-09-28', '7:00 PM–10:30 PM', 'Whitfield Hall', 'Film Society', 'external', ['Arts']],
-  ['hackday', 'Accessibility hack day', 'Academic', '2026-09-30', '9:00 AM–6:00 PM', 'Kessler Lab', 'Aster Robotics', 'external', ['Academic']],
+  ['hackday', 'Accessibility hack day', 'School of Engineering', '2026-09-30', '9:00 AM–6:00 PM', 'Kessler Lab', 'Aster Robotics', 'external', ['Academic']],
   ['choirconcert', 'Fall concert: Chamber Choir', 'Music', '2026-10-06', '7:30 PM–9:30 PM', 'Whitfield Hall', 'Aster Chamber Choir', 'external', ['Music']],
   ['volunteerfair', 'Volunteering fair', 'Volunteering', '2026-10-08', '11:00 AM–3:00 PM', 'Student Union, main hall', 'Student Life', 'walk-in', ['Volunteering']],
 ];
 
 const denseOrganisations = [
-  ['film-soc', 'Film Society', 'FS', 'Arts', 'Two screenings a week and a 16mm projector nobody is allowed to touch unattended.', 'Thursdays, 8:00 PM · Whitfield Hall', 'Ana Reis', 'President'],
-  ['games-soc', 'Games Society', 'GS', 'Social', 'Board games, chess ladder and a lending library of about four hundred titles.', 'Mondays, 6:00 PM · Student Union', 'Tom Baptista', 'Secretary'],
-  ['lit-soc', 'Literary Society', 'LS', 'Arts', 'Reading groups, a termly magazine and the poetry nights in the Cellar.', 'Wednesdays, 7:00 PM · Alcott House', 'Iris Nakamura', 'Editor'],
-  ['debate-soc', 'Debating Society', 'DS', 'Academic', 'Weekly debates and a competitive team that travels most weekends.', 'Fridays, 5:00 PM · Alcott House', 'Kofi Mensah', 'Convenor'],
-  ['running', 'Running Club', 'RC', 'Sports', 'Three paces every session, including one that is genuinely a walk with company.', 'Tuesdays and Fridays, 7:00 PM · Sports Center', 'Elena Popa', 'Captain'],
-  ['photo-soc', 'Photography Society', 'PS', 'Arts', 'Darkroom access, monthly walks and equipment you can borrow for a week.', 'Sundays, 2:00 PM · Art block', 'Yusuf Demir', 'Kit officer'],
-  ['sustain', 'Sustainability Collective', 'SC', 'Volunteering', 'Runs the community garden, the river clean-ups and the bike repair clinics.', 'Mondays, 5:30 PM · East campus garden', 'Marta Silva', 'Coordinator'],
-  ['orchestra-org', 'Aster Orchestra', 'AO', 'Music', 'Full orchestra and a jazz band, both open to players at any level.', 'Wednesdays, 7:00 PM · Ferrand Music Building', 'Peter Lindqvist', 'Conductor'],
-  ['lang-club', 'Language Exchange', 'LE', 'Community', 'Nine language tables a week, and volunteers who translate for new arrivals.', 'Wednesdays, 6:00 PM · Student Union café', 'Sofia Marchetti', 'Chair'],
-  ['art-soc', 'Art Society', 'AS', 'Arts', 'Open studio, life drawing and the ceramics kiln in the art block basement.', 'Saturdays, 2:00 PM · Art block', 'Grace Adeyemi', 'Studio lead'],
-  ['coding', 'Aster Coding Circle', 'CC', 'Academic', 'Weekly build sessions and a mentoring scheme that pairs first and third years.', 'Tuesdays, 6:30 PM · Kessler Lab', 'Hassan Karimi', 'Organiser'],
-  ['mind', 'Mind Matters', 'MM', 'Wellness', 'Peer support run with the Counseling Service, plus a quiet room open every afternoon.', 'Thursdays, 4:00 PM · Alcott House', 'Bea Fontaine', 'Peer lead'],
+  ['film-soc', 'Film Society', 'FS', 'film', 'Arts', 'Two screenings a week and a 16mm projector nobody is allowed to touch unattended.', 'Thursdays, 8:00 PM · Whitfield Hall', 'Ana Reis', 'President'],
+  ['games-soc', 'Games Society', 'GS', 'game', 'Social', 'Board games, chess ladder and a lending library of about four hundred titles.', 'Mondays, 6:00 PM · Student Union', 'Tom Baptista', 'Secretary'],
+  ['lit-soc', 'Literary Society', 'LS', 'book', 'Arts', 'Reading groups, a termly magazine and the poetry nights in the Cellar.', 'Wednesdays, 7:00 PM · Alcott House', 'Iris Nakamura', 'Editor'],
+  ['debate-soc', 'Debating Society', 'DS', 'megaphone', 'School of Arts and Sciences', 'Weekly debates and a competitive team that travels most weekends.', 'Fridays, 5:00 PM · Alcott House', 'Kofi Mensah', 'Convenor'],
+  ['running', 'Running Club', 'RC', 'run', 'Sports', 'Three paces every session, including one that is genuinely a walk with company.', 'Tuesdays and Fridays, 7:00 PM · Sports Center', 'Elena Popa', 'Captain'],
+  ['photo-soc', 'Photography Society', 'PS', 'camera', 'Arts', 'Darkroom access, monthly walks and equipment you can borrow for a week.', 'Sundays, 2:00 PM · Art block', 'Yusuf Demir', 'Kit officer'],
+  ['sustain', 'Sustainability Collective', 'SC', 'leaf', 'Volunteering', 'Runs the community garden, the river clean-ups and the bike repair clinics.', 'Mondays, 5:30 PM · East campus garden', 'Marta Silva', 'Coordinator'],
+  ['orchestra-org', 'Aster Orchestra', 'AO', 'piano', 'Music', 'Full orchestra and a jazz band, both open to players at any level.', 'Wednesdays, 7:00 PM · Ferrand Music Building', 'Peter Lindqvist', 'Conductor'],
+  ['lang-club', 'Language Exchange', 'LE', 'translate', 'Community', 'Nine language tables a week, and volunteers who translate for new arrivals.', 'Wednesdays, 6:00 PM · Student Union café', 'Sofia Marchetti', 'Chair'],
+  ['art-soc', 'Art Society', 'AS', 'palette', 'Arts', 'Open studio, life drawing and the ceramics kiln in the art block basement.', 'Saturdays, 2:00 PM · Art block', 'Grace Adeyemi', 'Studio lead'],
+  ['coding', 'Aster Coding Circle', 'CC', 'code', 'School of Engineering', 'Weekly build sessions and a mentoring scheme that pairs first and third years.', 'Tuesdays, 6:30 PM · Kessler Lab', 'Hassan Karimi', 'Organiser'],
+  ['mind', 'Mind Matters', 'MM', 'heart', 'Wellness', 'Peer support run with the Counseling Service, plus a quiet room open every afternoon.', 'Thursdays, 4:00 PM · Alcott House', 'Bea Fontaine', 'Peer lead'],
 ];
 
 const REGISTRATION_TEMPLATES = {
@@ -480,11 +488,12 @@ function expandEvent([id, title, category, date, time, location, host, kind, int
   };
 }
 
-function expandOrganisation([id, name, initials, category, description, meets, contactName, role]) {
+function expandOrganisation([id, name, initials, icon, category, description, meets, contactName, role]) {
   return {
     id,
     name,
     initials,
+    icon,
     category,
     interests: [category],
     description,
@@ -557,6 +566,11 @@ export const fullBoardOrganisations = [
   ...campusOrganisations,
   ...denseOrganisations.map(expandOrganisation),
 ];
+
+/** A club by id, from the fullest board — the Edward door's question names one (C4, §12). */
+export function organisationById(id) {
+  return fullBoardOrganisations.find((item) => item.id === id) ?? null;
+}
 
 /**
  * The sidebar count on `Events` — obligations only, never a count of things to

@@ -1,77 +1,58 @@
 import Icon from '../../design-system/Icon.jsx';
+import Button from '../../design-system/primitives/Button.jsx';
 import GateChip from '../registration/GateChip.jsx';
 import { configFor, isGating } from '../registration/logic.js';
-import { dateTile, weekdayDate } from './logic.js';
+import { dateTile, rowRegistration, weekdayDate } from './logic.js';
 
 /**
- * The obligations on My Campus Life — ENR-189, rebuilt after the Jam of
- * 2026-08-20.
+ * The obligations on My Campus Life — ENR-189, rebuilt after the Jam of 2026-08-20 and again after
+ * the review of 2026-08-21 (C1, C2, C6, C7).
  *
- * It used to be a band with its own icon block, its own heading, its own
- * subtitle and a count badge, and *inside* it one bordered card per session
- * carrying a `REQUIRED` chip, the date, the title, the whole requirement note,
- * two facts and a filled button. One obligation took a quarter of the viewport
- * and said "required" three times before saying anything the student did not
- * already know — a box inside a box, which the design contract forbids.
+ * It sits in the main column **above the tabs, in every viewport**: an obligation must not be able
+ * to hide behind a tab the student did not open, and the rail is where this screen keeps reference
+ * material — a session that blocks class registration is not reference material. The viewport
+ * switch that used to lead the rail with it at 1060px and up is gone; the rail card is not
+ * re-created.
  *
- * What replaced it is a strip that knows how wide it is. The page has two
- * grids, and this belongs in the second one, so the strip has two layouts and
- * picks between them with a container query rather than a media query — the
- * window is wide in both cases, only the column is not.
+ * The head is the section treatment every other card wears — the heading of the only mandatory
+ * block on the screen used to be the smallest heading in the portal — with the mark in the
+ * office's colour and one support line: these rows come from other offices and are not a choice
+ * (rule 3). Each row says what she has to do about it: the registration control the events carry
+ * (or its label, where there is nothing to do yet) and *Add to calendar* — a session that cannot be
+ * missed is the strongest candidate on the screen for a calendar entry. The title opens the drawer,
+ * which holds the requirement note, the requirer and the place.
  *
- *   wide container    a date tile, the session on one line, the way in at the
- *                     trailing edge. Used when the strip runs the width of a
- *                     one-grid page.
- *   narrow container  no tile — the date moves into the line above the title,
- *                     where it costs nothing — the location drops to the drawer
- *                     that already holds it, and the labelled button becomes
- *                     the chevron the whole row already is.
- *
- * The row is the target and the drawer is the depth either way: the requirement
- * note, the requirer, the place and how to register are all written in
- * `CampusDrawer`, so out here a row says only what a student needs in order to
- * decide to open it.
- *
- * [PayPal](https://mobbin.com/screens/14c8559c-723a-4e4e-87ec-a19ee816c28e):
- * the required action is one line with the way in at its edge, not a panel.
- * [Circle](https://mobbin.com/screens/bbb7b785-2793-4264-9123-5a7a24f8191b):
- * date, title, place under it, the control at the trailing edge.
+ * [Lyssna](https://mobbin.com/screens/a0775aa3-ba76-46fd-a1cb-c4cabc9a1dbb): the next session is
+ * its own block above the list, a date tile and the action at the row's edge — taken.
+ * [PayPal](https://mobbin.com/screens/14c8559c-723a-4e4e-87ec-a19ee816c28e): the obligation is a
+ * line plus a way in, never a card that restates itself — kept.
  */
-export default function RequiredStrip({ events, previewState = 'ready', onOpen }) {
-  // ENR-214 AC 1. The note on this session has said the Registrar holds course
-  // registration for it since ENR-189, and nothing outside this page knew. The
-  // strip asks whether the id gates; it never names one.
+export default function RequiredStrip({ events, previewState = 'ready', onOpen, onAct, onCalendar }) {
+  // ENR-214 AC 1. The strip asks whether the id gates; it never names one.
   const gateConfig = configFor(previewState);
+
   return (
     <section className="section-card required-strip" aria-labelledby="required-heading">
-      <h2 className="required-strip-head" id="required-heading">
-        <span className="required-strip-mark" aria-hidden="true">
-          <Icon name="alert" size={14} />
+      <div className="status-heading">
+        <span className="status-icon required" aria-hidden="true">
+          <Icon name="alert" size={20} />
         </span>
-        Required for you
-        {/* The two halves of the same sentence. Which one is shown is a
-            question of how much room the strip has, so the container query
-            below decides — never both at once. */}
-        <span className="required-strip-note">
-          {events.length === 1
-            ? 'One session you have to attend. Everything else on this page is optional.'
-            : `${events.length} sessions you have to attend. Everything else on this page is optional.`}
+        <div>
+          <h2 id="required-heading">Required for you</h2>
+          <p>These come from other offices. They aren’t campus life, and they aren’t optional.</p>
+        </div>
+        <span className="result-count">
+          {events.length} {events.length === 1 ? 'session' : 'sessions'}
         </span>
-        <span className="required-strip-count" aria-hidden="true">
-          {events.length}
-        </span>
-      </h2>
+      </div>
 
       <div className="card-rows">
         {events.map((event) => {
           const tile = dateTile(event.date);
+          const registration = rowRegistration(event, false);
 
           return (
-            <button
-              key={event.id}
-              className="required-row"
-              onClick={(clickEvent) => onOpen(event, clickEvent.currentTarget)}
-            >
+            <div key={event.id} className="required-row">
               <span className="date-tile" aria-hidden="true">
                 <small>{tile.month}</small>
                 <strong>{tile.day}</strong>
@@ -83,7 +64,15 @@ export default function RequiredStrip({ events, previewState = 'ready', onOpen }
                   <i aria-hidden="true">·</i>
                   {event.time}
                 </span>
-                <span className="required-row-title">{event.title}</span>
+                <span className="required-row-title">
+                  <button
+                    type="button"
+                    className="row-title-button"
+                    onClick={(clickEvent) => onOpen(event, clickEvent.currentTarget)}
+                  >
+                    {event.title}
+                  </button>
+                </span>
                 {isGating(event.id, gateConfig) && <GateChip />}
                 <span className="required-row-meta">
                   <span className="required-row-where">
@@ -95,13 +84,23 @@ export default function RequiredStrip({ events, previewState = 'ready', onOpen }
                 </span>
               </span>
 
-              <span className="required-row-action">
-                <span>
-                  {event.registration.kind === 'tba' ? 'What’s required' : 'How to register'}
-                </span>
-                <Icon name="arrow" size={14} />
+              <span className="campus-row-actions required-row-actions">
+                {registration.control ? (
+                  <Button
+                    kind="secondary"
+                    icon={registration.control.icon}
+                    onClick={() => onAct(event, registration.control)}
+                  >
+                    {registration.control.label}
+                  </Button>
+                ) : (
+                  <span className="campus-row-action required">{registration.label}</span>
+                )}
+                <button type="button" className="text-button" onClick={() => onCalendar(event)}>
+                  <Icon name="calendar" size={14} /> Add to calendar
+                </button>
               </span>
-            </button>
+            </div>
           );
         })}
       </div>

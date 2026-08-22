@@ -36,6 +36,8 @@ import { openTimes } from '../appointments/logic.js';
 import { GUIDANCE, PAGE_QUESTIONS } from './data.js';
 import { deadlineLabel, escalation, formatMoney } from '../financials/logic.js';
 import { destinationById } from '../../lib/navigation.js';
+import { organisationById } from '../campus/data.js';
+import { shortDate as campusShortDate } from '../campus/logic.js';
 
 /** The two people an answer can end at. There are no others in the portal. */
 export const PEOPLE = { enrollment: enrollmentAdvisor, aid: financialAidAdvisor };
@@ -428,6 +430,26 @@ const ANSWERS = {
     };
   },
 
+  /**
+   * A club's person — the door on My Campus Life (the review of 2026-08-21, C4 and Part A §12):
+   * "How do I get in touch with Dana Whitfield about the Aster Chamber Choir?" is answered from
+   * what Student Life publishes — the person, their role, how to reach them, when the club meets —
+   * and nothing in it touches her record.
+   */
+  club(record, _taskId, hint = {}) {
+    const org = organisationById(hint.clubId);
+    if (!org) return null;
+    return {
+      body: [
+        `${org.contact.name} is the person for ${org.name} — ${org.contact.role.toLowerCase()}.${org.contact.email ? ` Their email is ${org.contact.email}.` : ''}`,
+        `They meet ${org.meets}.${org.latestUpdate ? ` Their latest note, ${campusShortDate(org.latestUpdate.date)}: ${org.latestUpdate.text}` : ' No updates published yet.'}`,
+        'Student Life publishes this. Writing to them doesn’t change your interests, your progress or your points.',
+      ],
+      source: guidanceSource('Aster Student Life’s club listing'),
+      route: pageRoute('clubs', 'Open the clubs'),
+    };
+  },
+
   advisor() {
     return {
       body: [
@@ -552,7 +574,7 @@ export function answerFor(text, record, hint = {}) {
   }
 
   const build = ANSWERS[intent];
-  const answer = build ? build(record, hint.taskId) : null;
+  const answer = build ? build(record, hint.taskId, hint) : null;
   if (!answer) return noAnswer(personFor(intent));
 
   return { kind: 'answer', intent, route: null, source: null, ...answer };
@@ -581,7 +603,16 @@ const OFFICE_OF_PERSON = { enrollment: 'admissions', aid: 'financial-services' }
 const TYPE_OF_OFFICE = { admissions: 'enrollment', 'financial-services': 'financial-aid' };
 const OFFICE_OF_TYPE = { enrollment: 'admissions', 'financial-aid': 'financial-services' };
 /** The Help topic an inquiry to that office opens on. */
+/**
+ * An office a door can name that is not one of Help's six — Student Life publishes the campus
+ * board and takes a question about a club — so the escalation can name it and the inquiry lands
+ * on Help's "Something else" rather than on an office that does not own the subject.
+ */
+const EXTRA_OFFICES = {
+  'student-life': { id: 'student-life', name: 'Aster Student Life', reply: '2 business days' },
+};
 const HELP_TOPIC_OF_OFFICE = {
+  'student-life': 'other',
   'financial-services': 'money',
   bursar: 'bill',
   admissions: 'other',
@@ -621,7 +652,7 @@ export function runningName(name) {
 export function escalationFor({ intent = null, office = null, topic = null } = {}) {
   const type = topic ? (conversationTypes.find((item) => item.id === topic) ?? null) : null;
   const key = office ?? (type ? (OFFICE_OF_TYPE[type.id] ?? null) : OFFICE_OF_PERSON[personFor(intent)]);
-  const helpOffice = key ? (offices[key] ?? null) : null;
+  const helpOffice = key ? (offices[key] ?? EXTRA_OFFICES[key] ?? null) : null;
   const bookable =
     type ??
     (key && TYPE_OF_OFFICE[key]

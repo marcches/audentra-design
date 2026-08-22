@@ -180,6 +180,7 @@ export default function Edward({
       ? {
           intent: doorContext.intent,
           taskId: doorContext.taskId,
+          clubId: doorContext.clubId,
           office: doorContext.office,
           topic: doorContext.topic,
         }

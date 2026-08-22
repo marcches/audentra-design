@@ -110,3 +110,45 @@ searches, `platform: web`, `mode: deep`.
 - [Luma — events](https://mobbin.com/screens/908a181b-4aa7-49bc-bbad-209781d4cd4b) — a bordered card
   per event nested inside a date group. That is the box-in-box the feedback was about.
 
+
+## The review of 2026-08-21 — rows that act, the emblem, the required block — 2026-08-22
+
+Three searches, web, deep; images examined.
+
+### The event row acts at its edge; following is a light signal
+
+- [Circle — events](https://mobbin.com/screens/bbb7b785-2793-4264-9123-5a7a24f8191b) — date
+  tile, title, time and place, and the control (*Going*) at the trailing edge. **Taken**: the
+  registration control sits where the RSVP label used to only describe.
+- [Nextdoor — events](https://mobbin.com/screens/3d683c37-08d4-41b2-bb44-86342b04b12d) — every
+  card offers *Interested?*, a low-commitment signal that is not a registration. **Taken** for the
+  register of *Follow* on an event and *I'm interested* on a club.
+- [TikTok — LIVE events](https://mobbin.com/screens/7353b6e5-2714-40aa-a7a6-071e1e31899b) — a
+  *Register* per card that reads *Registered* once done. **Taken**: a control's label names the act
+  and its done state.
+- **Rejected**: [Partiful](https://mobbin.com/screens/97fcd777-2cae-4bec-81b5-a03aaebe5436),
+  [Luma](https://mobbin.com/screens/1932af9e-e821-4bd7-b13d-fcb0cb3f2524),
+  [Posh](https://mobbin.com/screens/3fad44f7-7615-425b-accb-68cd6e60007b),
+  [Eventbrite](https://mobbin.com/screens/f5ad607c-4b0e-4f66-95cc-a0deb5c6a515) — photographed
+  cards and organizer dashboards; this board has no imagery and is not the student's to manage.
+
+### The club has an emblem, not a face
+
+- [Reddit — explore communities](https://mobbin.com/screens/327711b9-2ecd-4e22-88bc-0b5400c6af1e)
+  — emblem, name, one line, *Join* at the edge; categories as chips above. **Taken** for the club
+  row's anatomy and for the schools as plain category chips.
+- [Braintrust — spaces](https://mobbin.com/screens/54d07501-2048-4347-a358-075a1d46acde) — the
+  emblem is a glyph in a tinted tile. **Taken**: the duotone glyph tile, never a photograph.
+- **Rejected**: [Nextdoor — groups](https://mobbin.com/screens/2b33c741-7393-4cd4-91b3-15bd9c7b0775)
+  (photo thumbnails of things and people), [Whop](https://mobbin.com/screens/b94a6afb-23e1-4dc9-9798-7dc3dd187651)
+  (a community hero with a banner).
+
+### The obligation is its own block above the list
+
+- [Lyssna — sessions](https://mobbin.com/screens/a0775aa3-ba76-46fd-a1cb-c4cabc9a1dbb) — the next
+  session is a distinct block above the list, a date tile per row and the action at the edge.
+  **Taken** for the required block's place and its row.
+- **Rejected**: [Pipedrive](https://mobbin.com/screens/106f3df4-33db-468e-bb39-a4f649831c9b),
+  [Navan](https://mobbin.com/screens/7cca0d1e-d795-4243-bf2f-c896952612e4),
+  [Salesforce](https://mobbin.com/screens/7e43c0ed-2526-464a-b9dd-3188591d59c3) — calendars and
+  CRM tables.
