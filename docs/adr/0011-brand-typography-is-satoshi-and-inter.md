@@ -1,7 +1,7 @@
 # 0011. Brand typography is Satoshi for headlines and Inter for text; the product keeps Geist; no monospace face
 
 Date: 2026-08-22
-Status: accepted (supersedes ADR 0008)
+Status: accepted (supersedes ADR 0008; amended 2026-08-22, see *Amendment*)
 
 ## Context
 
@@ -20,8 +20,9 @@ another inside the product, with the boundary written down where people look.
 ## Decision
 
 - **Satoshi Bold** for Display, H1, H2, and H3 on every brand surface: covers, brand moments,
-  decks, documents, the site. Never below 20 px (Satoshi Medium for a small heading in a document),
-  never as running text, never inside the product UI.
+  decks, documents, the site. Never below 20 px, never as running text, never inside the product UI.
+- **Satoshi Medium** for a small heading in a document, from 14 px up to but not including 20 px.
+  A document only — not a website, not an interface. It is a heading weight, never running text.
 - **Inter** for everything the brand explains: Lead, Body, Caption, Label, page numbers, and
   values, in Regular, Medium, and Semi Bold.
 - **No monospace typeface anywhere in the brand.** Values and code are Inter Medium with +1%
@@ -39,3 +40,23 @@ another inside the product, with the boundary written down where people look.
 - ADR 0008 is superseded, not deleted: it records why one face looked right for a day and what
   the cost of the split is (a second face to license, load, and explain).
 - The docs/brand glossary's typography entries change accordingly.
+
+## Amendment, 2026-08-22 — two weights, and the boundary
+
+Built for the v3 book, which had to state the weight rule precisely enough to typeset from.
+
+**Satoshi is used in exactly two weights.** Satoshi **Bold** at 20 px and above; Satoshi **Medium**
+from 14 px up to, but not including, 20 px, **and only in a document**. Below 14 px, and for every
+line of running text at any size, the face is Inter.
+
+The scope of Medium is *a small heading in a document* — a subhead in a Word file, a slide's
+kicker, a label above a table. It is not a licence to set body copy in Satoshi. The body of every
+brand surface, this book included, is Inter.
+
+**Satoshi Light, Regular and Black are not used.** The v2 book's Weights page listed Medium as
+unused on one card and authorised it as an exception on the card beside it; that contradiction is
+what this amendment removes. Semi Bold is not a question: the brand uses two Satoshi weights and
+these are they.
+
+The tagline set as type follows this rule and therefore never appears in Satoshi on a surface that
+renders on someone else's machine — see ADR 0013.
