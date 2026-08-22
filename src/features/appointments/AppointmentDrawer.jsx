@@ -4,6 +4,7 @@ import Button from '../../design-system/primitives/Button.jsx';
 import Icon from '../../design-system/Icon.jsx';
 import { longDate } from '../campus/logic.js';
 import { articled, placeOf, relativeDay, stateOf, teamName, timeRange } from './logic.js';
+import { runningName } from '../edward/logic.js';
 
 /**
  * One conversation, in full — what it is, whether it exists, and what the student can still do
@@ -52,8 +53,8 @@ export default function AppointmentDrawer({
     requested: {
       tone: 'quiet',
       icon: 'send',
-      title: `Requested · sent ${appointment.requestedOn}`,
-      body: 'Waiting on the team. Their answer shows up here. Nothing is booked until they do.',
+      title: `Callback requested · sent ${appointment.requestedOn}`,
+      body: `Waiting on ${runningName(type.team)}. You’ll see their reply here. Nothing is booked until they do.`,
     },
     cancelled: {
       tone: 'quiet',
@@ -112,7 +113,7 @@ export default function AppointmentDrawer({
           </dt>
           <dd>
             {requested
-              ? `Not set yet. You asked for: “${appointment.window}”`
+              ? `Not set yet. You’re usually free: “${appointment.window}”`
               : `${longDate(appointment.date)}, ${timeRange(appointment)}`}
           </dd>
         </div>

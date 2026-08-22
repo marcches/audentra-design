@@ -3,7 +3,7 @@ import Icon from '../../design-system/Icon.jsx';
 import { IconButton } from '../../design-system/primitives/Button.jsx';
 import { EDWARD, seededConversations } from './data.js';
 import { answerFor, escalationFor, suggestionsFor } from './logic.js';
-import { onEdwardOpen, stashHandoff } from './door.js';
+import { announceHandoff, onEdwardOpen, stashHandoff } from './door.js';
 import { GROUPS } from '../../lib/navigation.js';
 import { TWO_PANE_QUERY, useIsSheet, useMedia, useOverlay } from '../../lib/overlay.js';
 import EdwardComposer from './EdwardComposer.jsx';
@@ -259,6 +259,8 @@ export default function Edward({
     });
     setOpen(false);
     onRoute({ route: route.route });
+    // Already on that page: no hash changes, no remount — say so.
+    if (window.location.hash === route.route) announceHandoff();
   }
 
   function retry() {

@@ -197,7 +197,9 @@ export function relativeDay(iso, today) {
 export function stateOf(appointment, today) {
   if (appointment.state === 'failed') return { tone: 'failed', label: 'Not booked' };
   if (appointment.state === 'cancelled') return { tone: 'cancelled', label: 'Cancelled' };
-  if (appointment.state === 'requested') return { tone: 'requested', label: 'Requested' };
+  // A callback request, since the review of 2026-08-21 (ADR 0010): the same shape
+  // the time request had, asked for a call rather than a slot.
+  if (appointment.state === 'requested') return { tone: 'requested', label: 'Callback requested' };
   if (appointment.date < today) return { tone: 'done', label: 'Completed' };
   return { tone: 'confirmed', label: 'Confirmed' };
 }

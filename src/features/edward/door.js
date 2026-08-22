@@ -48,6 +48,22 @@ export function stashHandoff(handoff) {
   }
 }
 
+/**
+ * A route that lands on the page she is already on changes no hash, so the page
+ * does not remount to read the stash. The hand-off announces itself instead,
+ * and a page that consumes a kind listens for it as well as reading on mount.
+ */
+const HANDOFF_EVENT = 'edward:handoff';
+
+export function announceHandoff() {
+  window.dispatchEvent(new CustomEvent(HANDOFF_EVENT));
+}
+
+export function onHandoff(handler) {
+  window.addEventListener(HANDOFF_EVENT, handler);
+  return () => window.removeEventListener(HANDOFF_EVENT, handler);
+}
+
 /** Read once and gone. A `kind` other than the stashed one leaves it for the page it is for. */
 export function takeHandoff(kind) {
   try {

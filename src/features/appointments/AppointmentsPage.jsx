@@ -8,7 +8,10 @@ import AppointmentDrawer from './AppointmentDrawer.jsx';
 import AppointmentRow from './AppointmentRow.jsx';
 import AppointmentsRail from './AppointmentsRail.jsx';
 import BookingDrawer from './BookingDrawer.jsx';
+import CallbackDrawer from './CallbackDrawer.jsx';
 import TopicRow from './TopicRow.jsx';
+import { onHandoff, openEdward, takeHandoff } from '../edward/door.js';
+import { offices } from '../help/data.js';
 import {
   bookedAppointments,
   checklistCategories,
@@ -81,13 +84,19 @@ export const APPOINTMENT_PREVIEW_STATES = [
     'Team unreachable',
     'One booking never reached its team, and a new one will not either.',
   ],
-  ['requested', 'A time asked for', 'One request sent to a team, and no answer yet.'],
+  ['requested', 'A callback asked for', 'One callback requested from a team, and no reply yet.'],
   ['loading', 'Loading', 'Before the published times arrive.'],
   ['partial', 'Partial data', 'Your conversations loaded; the published times did not.'],
   ['error', 'Error', 'Nothing on this page could be loaded.'],
 ];
 
 const NO_TIMES = { enrollment: [], 'financial-aid': [], academic: [] };
+
+/** The reply time a callback can promise is the one that team's office publishes (§7.2, §8.3). */
+const OFFICE_OF_TYPE = { enrollment: 'admissions', 'financial-aid': 'financial-services' };
+function replyTimeFor(type) {
+  return offices[OFFICE_OF_TYPE[type.id]]?.reply ?? null;
+}
 
 const GROUPS_STORE = 'aster.appointments.groups';
 const GROUPS_DEFAULT = { conversations: true, record: false };
@@ -118,6 +127,7 @@ export default function AppointmentsPage({
 }) {
   const [appointments, setAppointments] = useState(() => seedFor(previewState));
   const [booking, setBooking] = useState(null);
+  const [callback, setCallback] = useState(null);
   const [open, setOpen] = useState(null);
   const [how, setHow] = useState(false);
   const [groups, setGroups] = useState(readGroups);
@@ -171,11 +181,34 @@ export default function AppointmentsPage({
 
   const conversationsOpen = groups.conversations || band?.kind === 'failed';
 
-  function openBooking(type, node, { tab = 'times', replaceId = null, prefill = null } = {}) {
+  function openBooking(type, node, { replaceId = null, prefill = null } = {}) {
     returnFocus.current = node ?? null;
     setOpen(null);
-    setBooking({ typeId: type.id, tab, replaceId, prefill });
+    setBooking({ typeId: type.id, replaceId, prefill });
   }
+
+  // What Edward's escalation sent her here to do arrives with what she already
+  // told him (Part A §6.4): a booking opens the drawer on that team with the
+  // question written; a callback opens the callback request the same way. Read
+  // once, then gone.
+  useEffect(() => {
+    function consume() {
+      const wantsBooking = takeHandoff('booking');
+      if (wantsBooking?.topic) {
+        const type = typeById(conversationTypes, wantsBooking.topic);
+        if (type) openBooking(type, null, { prefill: { subject: wantsBooking.question ?? '' } });
+        return;
+      }
+      const wantsCallback = takeHandoff('callback');
+      if (wantsCallback?.topic) {
+        const type = typeById(conversationTypes, wantsCallback.topic);
+        if (type) setCallback({ typeId: type.id, prefill: { subject: wantsCallback.question ?? '' } });
+      }
+    }
+    consume();
+    return onHandoff(consume);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function closeBooking() {
     setBooking(null);
@@ -216,14 +249,19 @@ export default function AppointmentsPage({
     }
   }
 
-  function request(record) {
+  /** A callback asked for — ADR 0010. The item waits on the team, visibly, until they reply here. */
+  function requestCallback(record) {
     setAppointments((list) => [record, ...list]);
     const type = typeById(conversationTypes, record.typeId);
     onToast({
       tone: 'success',
       title: 'Sent.',
-      body: `${articled(type.team, true)} has your request. Their answer shows up here.`,
+      body: `${articled(type.team, true)} has your request. You’ll see their reply here.`,
     });
+  }
+
+  function closeCallback() {
+    setCallback(null);
   }
 
   function cancelRequest(appointment) {
@@ -351,7 +389,7 @@ export default function AppointmentsPage({
           note="What it’s about"
           aside={
             <button type="button" className="text-button" onClick={() => setHow(true)}>
-              How booking works
+              How this works
             </button>
           }
         />
@@ -368,7 +406,6 @@ export default function AppointmentsPage({
               band={band && band.typeId === type.id ? band.kind : null}
               notified={notified.includes(type.id)}
               onChoose={(entry, node) => openBooking(entry, node)}
-              onAsk={(entry, node) => openBooking(entry, node, { tab: 'ask' })}
               onNotify={(entry) => setNotified((list) => [...list, entry.id])}
             />
           ))}
@@ -401,23 +438,29 @@ export default function AppointmentsPage({
                 onClick: (event) => openBooking(firstWithTimes, event.currentTarget),
               }}
             >
-              You haven’t taken any of the {availability.total} times Aster’s teams have published.
-              Picking one books it straight away. If none of them fit, asking a team for a different
-              time is the other way, and that one you wait on.
+              You haven’t taken any of the {availability.total} times Aster’s teams have posted.
+              Picking one books it straight away. If none of them fit, ask Edward — he can get you a
+              callback from the team.
             </StateCard>
           ) : (
+            /* The other emptiness (ENR-183's own brief): no team has posted times. The action is
+               the door — Part A §12.3, with §12.4's question — not a request to a team. */
             <StateCard
               icon="clock"
-              title="No team has published times yet"
+              title="No team has posted times yet"
               action={{
-                label: 'Ask a team for a time',
-                icon: 'send',
-                onClick: (event) => openBooking(topics[0], event.currentTarget, { tab: 'ask' }),
+                label: 'Ask Edward',
+                icon: 'arrow',
+                onClick: () =>
+                  openEdward({
+                    question: 'No team has posted times yet. Who should I talk to about my enrollment step?',
+                    context: { label: 'Appointments', intent: 'advisor' },
+                  }),
               }}
             >
-              Nothing is booked because there’s nothing to pick from yet. Each team opens its
-              calendar when it’s ready, and the times show up here on their own. If what you need
-              can’t wait, ask a team for a time and they’ll come back to you.
+              Nothing is booked because there’s nothing to pick from yet. Each team posts its times
+              when it’s ready, and they show up here on their own. If what you need can’t wait, ask
+              Edward and he’ll get you to the right person.
             </StateCard>
           )
         ) : (
@@ -469,14 +512,24 @@ export default function AppointmentsPage({
         <BookingDrawer
           type={bookingType}
           days={daysFor(times, booking.typeId)}
-          initialTab={booking.tab}
           replaceId={booking.replaceId}
           prefill={booking.prefill}
           teamFails={teamFails}
-          today={PORTAL_TODAY}
           onBook={book}
-          onRequest={request}
           onClose={closeBooking}
+        />
+      )}
+
+      {callback && (
+        <CallbackDrawer
+          type={typeById(conversationTypes, callback.typeId)}
+          reply={replyTimeFor(typeById(conversationTypes, callback.typeId))}
+          prefill={callback.prefill}
+          today={PORTAL_TODAY}
+          onRequest={(record) => {
+            requestCallback(record);
+          }}
+          onClose={closeCallback}
         />
       )}
 

@@ -3,6 +3,7 @@ import ActionBand from '../../design-system/patterns/ActionBand.jsx';
 import Button from '../../design-system/primitives/Button.jsx';
 import { dateTile } from '../campus/logic.js';
 import { placeOf, stateOf, teamName, timeRange } from './logic.js';
+import { runningName } from '../edward/logic.js';
 
 /**
  * One conversation, in the list — booked, failed, requested, happened or cancelled.
@@ -107,10 +108,12 @@ export default function AppointmentRow({
           {requested && (
             <>
               <span className="campus-row-meta">
-                <span className="appointment-subject">Asked for: “{appointment.window}”</span>
+                <span className="appointment-subject">Usually free: “{appointment.window}”</span>
               </span>
+              {/* §6.2 of the review of 2026-08-21: the reply arrives here — an email
+                  only says it is waiting (ENR-177) — and no assignee is named. */}
               <span className="appointment-support">
-                Waiting on the team. Their answer shows up here.
+                Waiting on {runningName(type.team)}. You’ll see their reply here.
               </span>
             </>
           )}

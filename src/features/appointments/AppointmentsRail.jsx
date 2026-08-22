@@ -27,11 +27,11 @@ export default function AppointmentsRail({
 }) {
   return (
     <>
-      <AnchorCard variant="booking" label="How booking works">
+      <AnchorCard variant="booking" label="How this works">
         <p>
           {unavailable
-            ? 'The published times couldn’t be loaded. Conversations you’ve already booked aren’t affected.'
-            : 'Each team publishes the times it can offer, and picking one books it on the spot. If none of them work, you can ask that team for a different time and they come back to you here.'}
+            ? 'The posted times couldn’t be loaded. Conversations you’ve already booked aren’t affected.'
+            : 'Each team posts the times it can offer, and picking one books it on the spot. Where a team has nothing posted, Edward can get you a callback from them, and their reply arrives here.'}
         </p>
         <div className="booking-provenance">
           <span>
@@ -43,17 +43,17 @@ export default function AppointmentsRail({
           </span>
         </div>
         <button type="button" className="learn-link" onClick={onOpenHow}>
-          How booking works <Icon name="arrow" size={14} />
+          How this works <Icon name="arrow" size={14} />
         </button>
       </AnchorCard>
 
       {requests.map(({ appointment, type }) => (
         <div className="skipped-card waiting-card" key={appointment.id}>
           <span className="resume-badge">{type.team}</span>
-          <h3>Waiting on a team</h3>
+          <h3>Callback requested</h3>
           <p>
-            You asked for a time on {appointment.requestedOn}. They haven’t answered yet. Nothing is
-            booked until they do.
+            You asked them to call you on {appointment.requestedOn}. They haven’t replied yet;
+            you’ll see it here. Nothing is booked until they do.
           </p>
           <button type="button" onClick={() => onSeeRequest(appointment.id)}>
             See the request <Icon name="arrow" size={16} />

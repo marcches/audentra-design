@@ -2,7 +2,9 @@ import Icon from '../../design-system/Icon.jsx';
 import ActionBand from '../../design-system/patterns/ActionBand.jsx';
 import Button from '../../design-system/primitives/Button.jsx';
 import { shortDate } from '../campus/logic.js';
-import { articled, teamName } from './logic.js';
+import { openEdward } from '../edward/door.js';
+import { runningName } from '../edward/logic.js';
+import { teamName } from './logic.js';
 
 /**
  * One topic a student can book a conversation about — on the checklist's row, since the changes of
@@ -13,12 +15,17 @@ import { articled, teamName } from './logic.js';
  * action — category eyebrow, a title at the head's size and regular weight, one sentence, a line of
  * facts, a button, a quiet link — and a second shape for the same job is what the audit found ten of.
  *
- * What the row offers depends on what the team has published:
+ * What the row offers depends on what the team has posted — and since the review of 2026-08-21
+ * (Part A §3, §12; ADR 0010) the screen no longer asks a team for anything:
  *
- *   times published    `Choose a time`, and asking for another one as the quiet link;
- *   none published     asking is the button, and being told when times open is the link — asking
- *                      resolves now, being told suits someone willing to wait;
- *   times did not load asking is still possible, choosing is not, and the row says which.
+ *   times posted       `Book a time`. Booking from posted times is a resolution, not a route to a
+ *                      person, and it stays direct — the one exception to §12.
+ *   none posted        the absence is stated as a fact about the institution, and the button opens
+ *                      **Edward** with the question already written and not sent; what Edward
+ *                      offers next — a callback from that team, or an inquiry — is his to offer.
+ *                      Being emailed when times go up is the quiet link: a notification, not a
+ *                      route to a person.
+ *   times did not load the row says which, and offers neither.
  *
  * Every row is the same row, whatever it offers. T5 asked for a row with no times to sit a step
  * down in size; Marco struck that on 2026-08-21 — a card whose titles come in two sizes is a
@@ -34,7 +41,6 @@ export default function TopicRow({
   band = null,
   notified = false,
   onChoose,
-  onAsk,
   onNotify,
 }) {
   const count = days.reduce((total, day) => total + day.slots.length, 0);
@@ -42,14 +48,25 @@ export default function TopicRow({
   const hasTimes = !unavailable && count > 0;
   const recommended = Boolean(band);
   const kind = recommended ? 'primary' : 'secondary';
+  const office = runningName(type.team);
+
+  /** The door — Part A §12.2 and §12.4: the question names the team, in her voice, unsent. */
+  function askEdward() {
+    openEdward({
+      question: `${office} hasn’t posted any times. How do I get in touch with them?`,
+      context: { label: `Appointments · ${type.label}`, topic: type.id, intent: 'advisor' },
+    });
+  }
 
   return (
     <article
       className={['task-card', 'topic-row', recommended && 'recommended'].filter(Boolean).join(' ')}
     >
       {band === 'start' && <ActionBand icon="spark" label="Start here" />}
+      {/* A6 as Part A §6.1 amended it: the office as the campus says it, and "posted times",
+          not "opened a calendar" — the band points at the row whose button is the door. */}
       {band === 'closed' && (
-        <ActionBand icon="clock" label={`${articled(type.team, true)} hasn’t opened a calendar yet`} />
+        <ActionBand icon="clock" label={`${office} doesn’t have times posted right now`} />
       )}
 
       <div className="task-card-body">
@@ -65,8 +82,8 @@ export default function TopicRow({
           <p>{type.blurb}</p>
           {!hasTimes && !unavailable && (
             <p className="no-slots">
-              They haven’t opened a calendar yet. You can ask for a time, or wait and we’ll tell you
-              when they open one.
+              {office} hasn’t posted times yet. You can ask them to call you back, or we’ll let you
+              know when times go up.
             </p>
           )}
           <div className="task-facts">
@@ -86,7 +103,7 @@ export default function TopicRow({
               </span>
             ) : (
               <span>
-                <Icon name="calendar" size={15} /> No times published yet
+                <Icon name="calendar" size={15} /> No times posted
               </span>
             )}
           </div>
@@ -94,36 +111,25 @@ export default function TopicRow({
 
         <div className="task-action">
           {hasTimes ? (
+            <Button kind={kind} icon="arrow" onClick={(event) => onChoose(type, event.currentTarget)}>
+              Book a time
+            </Button>
+          ) : unavailable ? null : (
             <>
-              <Button kind={kind} icon="arrow" onClick={(event) => onChoose(type, event.currentTarget)}>
-                Choose a time
-              </Button>
-              <button
-                type="button"
-                className="text-button"
-                onClick={(event) => onAsk(type, event.currentTarget)}
-              >
-                Ask for another time
-              </button>
-            </>
-          ) : (
-            <>
-              <Button kind={kind} icon="arrow" onClick={(event) => onAsk(type, event.currentTarget)}>
-                Ask for a time
+              <Button kind={kind} icon="arrow" onClick={askEdward}>
+                Ask Edward
               </Button>
               {/* The notification is set in place: after the click the link is the sentence, in
-                  the same position (10.2). Times that did not load are not "no times", so the
-                  link is not offered then. */}
-              {!unavailable &&
-                (notified ? (
-                  <span className="notify-set" role="status">
-                    We’ll tell you when this team opens times.
-                  </span>
-                ) : (
-                  <button type="button" className="text-button" onClick={() => onNotify(type)}>
-                    Tell me when times open
-                  </button>
-                ))}
+                  the same position (10.2). */}
+              {notified ? (
+                <span className="notify-set" role="status">
+                  We’ll email you when {office} posts times.
+                </span>
+              ) : (
+                <button type="button" className="text-button" onClick={() => onNotify(type)}>
+                  Email me when times are posted
+                </button>
+              )}
             </>
           )}
         </div>

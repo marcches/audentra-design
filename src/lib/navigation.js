@@ -93,8 +93,10 @@ export const DESTINATIONS = [
       kicker: 'Appointments · Times published by Aster teams',
       title: 'Book time with the people who can help.',
       // One sentence in every state since 2026-08-21 (appointments changes, 8.1):
-      // what is booked lives in the list, not in the band.
-      lede: 'Each team publishes the times it can offer. Pick one, or ask for a time that works better.',
+      // what is booked lives in the list, not in the band. Since 2026-08-22 the
+      // asking left this screen (ADR 0010): a team with nothing posted is Edward's
+      // to route, and the lede says "posted", as a US campus does.
+      lede: 'Each team posts the times it can offer. Pick one — or ask Edward when a team has none.',
     },
     appears: 'Appointments you book with Aster staff appear here.',
     produces: 'Booking opens as each team publishes its availability.',

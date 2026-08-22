@@ -644,18 +644,24 @@ export function escalationFor({ intent = null, office = null, topic = null } = {
       route: '#/help',
       topicId: HELP_TOPIC_OF_OFFICE[key] ?? (bookable?.id === 'academic' ? 'program' : 'other'),
     },
+    // A booking where the team has posted times; a callback where it has a
+    // calendar and nothing on it. An office with no conversation type at all —
+    // Student Life, the Registrar — has no calendar to call from, and the route
+    // that does not exist is not offered (story AC 2).
     posted
       ? { kind: 'booking', label: `Book a time with ${team}`, route: '#/appointments', topic: bookable.id }
-      : {
-          kind: 'callback',
-          label: 'Request a callback',
-          route: '#/appointments',
-          topic: bookable?.id ?? null,
-          // The reply time is the office's published one; a team that is not
-          // one of Help's offices publishes none, and the route says nothing.
-          reply: team === name ? reply : null,
-        },
-  ];
+      : bookable
+        ? {
+            kind: 'callback',
+            label: 'Request a callback',
+            route: '#/appointments',
+            topic: bookable.id,
+            // The reply time is the office's published one; a team that is not
+            // one of Help's offices publishes none, and the route says nothing.
+            reply: team === name ? reply : null,
+          }
+        : null,
+  ].filter(Boolean);
 
   return {
     office: { key, name, fullName, reply },

@@ -57,6 +57,7 @@ export const ICONS = {
   sound: 'speaker-high',
   pen: 'pencil-simple',
   send: 'paper-plane-tilt',
+  phone: 'phone',
   signout: 'sign-out',
   back: 'arrow-left',
   half: 'circle-half',

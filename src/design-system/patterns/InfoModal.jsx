@@ -52,11 +52,12 @@ export default function InfoModal({ variant, onClose }) {
             <span className="modal-kicker">
               <Icon name="calendar" size={16} /> Appointments
             </span>
-            <h2 id="info-title">How booking works</h2>
+            <h2 id="info-title">How this works</h2>
             <p>
-              What you write it’s about decides which team gets it. Each team publishes its own
-              times, and picking one books it on the spot. If none of the published times work, you
-              can ask that team for a different one, and they come back to you here.
+              What you write it’s about decides which team gets it. Each team posts its own times,
+              and picking one books it on the spot. Where a team has no times posted, ask Edward: he
+              can get you a callback from them, or pass your question on, and their reply arrives
+              here.
             </p>
           </>
         ) : variant === 'smart' ? (

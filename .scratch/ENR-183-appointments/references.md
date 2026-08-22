@@ -106,3 +106,20 @@ time, the request that then waits, and actions on a booked conversation.
   [Aboard — reschedule meeting](https://mobbin.com/screens/6354b959-4a80-4153-b535-7ad1a74ede8b) —
   a date and time picker the user types into. That is the register ENR-178 moved away from and ADR
   0005 keeps out: a request is a sentence, never a slot the student writes onto a calendar.
+
+## The callback request — 2026-08-22 (Part A §6.2, ADR 0010)
+
+One search, web, deep, for a request-a-callback form in a side panel; images examined.
+
+- [Deputy — leave request](https://mobbin.com/screens/ba0957bd-3383-4aab-9f98-0fe2a7e2bbe2) — a
+  request in a side panel: a window ("From / To"), a comment, who receives it, one button. We take
+  the shape whole: when she is usually free, what it is about, the office it reaches, `Send request`.
+- [StackAI — Help & More](https://mobbin.com/screens/f7ee5adf-4d19-47c8-94e7-1b0eff97bee2) — two
+  fields and a Submit; nothing else on the panel. We take the economy.
+
+**Rejected:** [Turo](https://mobbin.com/screens/e8f28cb2-31a2-4565-9822-a81469aec389),
+[User Interviews](https://mobbin.com/screens/e6e4ff11-5e88-497e-905e-ad03de19e100),
+[Whop](https://mobbin.com/screens/d31c6b4b-1f39-407e-b893-31daa025c86a),
+[Midday](https://mobbin.com/screens/4e217570-d97b-4af9-8164-f22636fdcfaa) — availability and
+booking *editors*: the office's tool, not the student's. The student never sets a time (ENR-178
+AC 1); she says when she can be reached.

@@ -12,7 +12,13 @@
 // Financials, Ines from My Degree — so a booked conversation is time with a name. A request, by
 // contrast, is with the team, because nobody has been assigned to it yet.
 
-import { enrollmentAdvisor, financialAidAdvisor, initialTasks, lockedTasks } from '../enrollment/data.js';
+import {
+  enrollmentAdvisor,
+  financialAidAdvisor,
+  initialCompleted,
+  initialTasks,
+  lockedTasks,
+} from '../enrollment/data.js';
 import { courseAdvisor } from '../classrooms/data.js';
 
 /**
@@ -75,9 +81,14 @@ export const conversationTypes = [
  * retyped, so the two screens cannot drift (A9: "no grouping is invented for this screen alone").
  * A locked step counts: *Meet your academic advisor* is where academic advising gets its category.
  */
-export const checklistCategories = [...initialTasks, ...lockedTasks]
+export const checklistCategories = [...initialCompleted, ...initialTasks, ...lockedTasks]
   .map((task) => task.category)
   .filter((category, index, all) => category && all.indexOf(category) === index);
+// `initialCompleted` is in the read since 2026-08-22: the offer steps are finished for a deposited
+// student (the US calendar, d14f807), and without them *Your offer* — the category the
+// enrollment-step conversation carries — had left the checklist's order, which silently dropped
+// that conversation from this screen. A finished step is still a step of its part of the
+// enrollment, and the completed rows carry their category for the same reason (ENR-164, C2.3).
 
 /**
  * What each team has published, keyed by conversation type. A day that is not in the list is a day
@@ -236,12 +247,13 @@ export const failedAppointment = {
  * has not given one. The `requested` preview state seeds it so the badge, the row and the rail's
  * waiting card can be looked at without sending one.
  */
+/** A callback asked for and not yet answered — ADR 0010: when she is usually free, and what it is about. */
 export const pendingRequest = {
-  id: 'req-academic',
+  id: 'callback-academic',
   typeId: 'academic',
   state: 'requested',
   date: null,
-  window: 'Any weekday afternoon after my orientation session on Jul 14, ideally a Tuesday or a Wednesday.',
+  window: 'Weekday afternoons after my orientation session on Jul 14, ideally a Tuesday or a Wednesday.',
   subject: 'Which courses I should take first if I might switch to a double major.',
   requestedOn: 'Jun 12',
 };

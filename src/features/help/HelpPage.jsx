@@ -8,7 +8,7 @@ import HelpRail from './HelpRail.jsx';
 import RequestDrawer from './RequestDrawer.jsx';
 import RequestList from './RequestList.jsx';
 import { PORTAL_TODAY } from '../enrollment/data.js';
-import { takeHandoff } from '../edward/door.js';
+import { onHandoff, takeHandoff } from '../edward/door.js';
 import { guideById, helpGuides, helpTopics, requestsFor, topicById } from './data.js';
 import {
   appendReply,
@@ -114,19 +114,24 @@ export default function HelpPage({
   // Part A §6.4 and §8.1 (2026-08-22): the route carries the context, so she
   // does not start over. Read once, then gone.
   useEffect(() => {
-    const handoff = takeHandoff('inquiry');
-    if (!handoff) return;
-    const topic =
-      helpTopics.find((item) => item.id === handoff.topicId) ??
-      helpTopics.find((item) => item.id === 'other');
-    setTopicId(topic.id);
-    setSubject((handoff.question ?? '').slice(0, 80));
-    setMessage(
-      handoff.question
-        ? `${handoff.question}\n\nI asked Edward first${handoff.context ? `, from ${handoff.context}` : ''}, and it didn’t settle it.`
-        : '',
-    );
-    window.setTimeout(focusAsk, 0);
+    function consume() {
+      const handoff = takeHandoff('inquiry');
+      if (!handoff) return;
+      const topic =
+        helpTopics.find((item) => item.id === handoff.topicId) ??
+        helpTopics.find((item) => item.id === 'other');
+      setTopicId(topic.id);
+      setSubject((handoff.question ?? '').slice(0, 80));
+      setMessage(
+        handoff.question
+          ? `${handoff.question}\n\nI asked Edward first${handoff.context ? `, from ${handoff.context}` : ''}, and it didn’t settle it.`
+          : '',
+      );
+      window.setTimeout(focusAsk, 0);
+    }
+    consume();
+    return onHandoff(consume);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function chooseTopic(next) {
