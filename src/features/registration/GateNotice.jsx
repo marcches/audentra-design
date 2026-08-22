@@ -47,12 +47,12 @@ export default function GateNotice({ state, items, unavailable, onRetry, onShow 
         {waiting.length === 1 ? (
           <>
             Your {waiting[0].label.toLowerCase()} is with Aster. Nothing more is needed from you
-            before {registration.label} opens on {when}.
+            before you register for classes at orientation on {when}.
           </>
         ) : (
           <>
             Everything {registration.label} needs is with Aster. Nothing more is needed from you
-            before it opens on {when}.
+            before you register at orientation on {when}.
           </>
         )}
       </Notice>
@@ -71,7 +71,7 @@ export default function GateNotice({ state, items, unavailable, onRetry, onShow 
       action={{ label: `See the ${mine.length === 1 ? 'step' : `${mine.length} steps`}`, onClick: onShow }}
     >
       {mine.length === 1 ? 'One step has' : `${mine.length} steps have`} to be done before{' '}
-      {registration.label} opens on {when}.
+      you register for classes at orientation on {when}.
     </Notice>
   );
 }

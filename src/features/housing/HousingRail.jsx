@@ -84,7 +84,7 @@ export default function HousingRail({ deadlinePassed, assignment, stage }) {
           preference and not a booking.
         </p>
         <p>
-          Your order still matters. They read it first to last, and a residence you never name is
+          Your order still matters. They read it first to last, and a residence hall you never name is
           one you won’t be considered for.
         </p>
 

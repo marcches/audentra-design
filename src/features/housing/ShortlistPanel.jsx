@@ -40,7 +40,7 @@ export default function ShortlistPanel({ shortlist, locked, onMove, onRemove, on
           <Icon name="buildings" size={20} />
         </span>
         <div>
-          <h2 id="shortlist-heading">{locked ? 'The residences you ranked' : 'Rank the residences you would like'}</h2>
+          <h2 id="shortlist-heading">{locked ? 'The residence halls you ranked' : 'Rank the residence halls you would like'}</h2>
           <p>{locked ? 'What you submitted' : 'Second question'}</p>
         </div>
         <span className="result-count" aria-live="polite">

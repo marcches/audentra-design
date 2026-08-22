@@ -32,7 +32,7 @@ export default function ResidenceDrawer({
       variant="residence"
       label={[residence.area, `${residence.walk} min walk`]}
       titleId="residence-drawer-title"
-      closeLabel="Close residence"
+      closeLabel="Close residence hall"
       onClose={onClose}
     >
       <div className="drawer-icon housing">
@@ -64,8 +64,8 @@ export default function ResidenceDrawer({
               Meal plan
               <small>
                 {residence.meals.included
-                  ? 'Required with this residence'
-                  : 'Optional · this residence is self-catered'}
+                  ? 'Required with this residence hall'
+                  : 'Optional · this residence hall has no required meal plan'}
               </small>
             </th>
             <td>{formatMoney(residence.meals.amount)}</td>
@@ -104,7 +104,7 @@ export default function ResidenceDrawer({
             </p>
           )}
           <p className="drawer-foot">
-            Adding a residence tells {housingOffice} what you would like. It does not hold a room.
+            Adding a residence hall tells {housingOffice} what you would like. It does not hold a room.
           </p>
         </div>
       )}

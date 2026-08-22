@@ -83,10 +83,10 @@ export const documentRequirements = [
       {
         id: 'income-1',
         files: [{ name: 'household_income_2025.pdf', size: '2.4 MB' }],
-        sent: 'Aug 12',
+        sent: 'Jun 9',
         decision: {
           outcome: 'changes-requested',
-          on: 'Aug 15',
+          on: 'Jun 12',
           // ENR-158 AC 2 and the épico guardrail: specific, and about this file.
           reason:
             'Pages 3 and 4 got cut off, so Schedule 1, the extra IRS form, couldn’t be read. The income on page 1 doesn’t match your application. Send all pages again, full page this time.',
@@ -108,7 +108,7 @@ export const documentRequirements = [
     step: 'Send your immunization record',
     // What the row says while it is still to send: the consequence, with the
     // gate it holds, not the bare fact that an office is waiting (UX writing 5.3).
-    neededLine: 'Not sent yet. Health Services needs it before you can register for classes.',
+    neededLine: 'Not sent yet. Health Services holds your class registration until they accept it.',
     office: 'health',
     taskId: 'health',
     // ENR-206. The door this requirement is sent from is the Health section, not
@@ -121,7 +121,7 @@ export const documentRequirements = [
     why: 'Health Services has to clear the required vaccines before you can register for classes.',
     accepts: IMMUNIZATION,
     privacy: 'Encrypted, and read only by authorized Health Services staff.',
-    unblocks: 'Class registration opens once your record clears.',
+    unblocks: 'The hold on your class registration lifts once your record clears.',
     submissions: [],
   },
   {
@@ -136,7 +136,7 @@ export const documentRequirements = [
     accepts: PDF_IMAGE,
     privacy: 'Encrypted, and read only by the Office of the Registrar.',
     submissions: [
-      { id: 'transcript-1', files: [{ name: 'final_transcript.pdf', size: '840 KB' }], sent: 'Aug 6' },
+      { id: 'transcript-1', files: [{ name: 'final_transcript.pdf', size: '840 KB' }], sent: 'Jun 12' },
     ],
   },
   {
@@ -151,8 +151,8 @@ export const documentRequirements = [
       {
         id: 'id-1',
         files: [{ name: 'passport.jpg', size: '1.2 MB' }],
-        sent: 'Jul 21',
-        decision: { outcome: 'accepted', on: 'Jul 23' },
+        sent: 'May 12',
+        decision: { outcome: 'accepted', on: 'May 14' },
       },
     ],
   },
@@ -161,32 +161,32 @@ export const documentRequirements = [
     title: 'Proof of address',
     office: 'housing',
     needs: 'A utility bill, bank statement or lease dated within the last three months, showing your name and address.',
-    why: 'Housing uses it to confirm your residency category before assigning a room.',
+    why: 'Residential Life uses it to confirm your home address before assigning a room.',
     accepts: PDF_IMAGE,
-    privacy: 'Encrypted, and read only by authorized Housing and Residential Life staff.',
+    privacy: 'Encrypted, and read only by authorized Residential Life staff.',
     submissions: [
       {
         id: 'address-1',
-        files: [{ name: 'utility_bill_june.pdf', size: '310 KB' }],
-        sent: 'Jul 28',
-        decision: { outcome: 'accepted', on: 'Jul 30' },
+        files: [{ name: 'utility_bill_may.pdf', size: '310 KB' }],
+        sent: 'May 20',
+        decision: { outcome: 'accepted', on: 'May 22' },
       },
     ],
   },
   {
-    id: 'english-proficiency',
-    title: 'English proficiency result',
-    office: 'admissions',
-    needs: 'Your official test result, sent by the testing service or uploaded here.',
-    why: 'It settles the language requirement on your offer.',
+    id: 'dual-enrollment-transcript',
+    title: 'Dual-enrollment transcript',
+    office: 'registrar',
+    needs: 'The official transcript from the college where you took a course during high school, sent by that college.',
+    why: 'The Registrar reads it for credit you may already have. CSCI 140 is on it, and My Degree shows it as a potential match.',
     accepts: PDF_IMAGE,
-    privacy: 'Encrypted, and read only by authorized Admissions staff.',
+    privacy: 'Encrypted, and read only by the Office of the Registrar.',
     submissions: [
       {
-        id: 'english-1',
-        files: [{ name: 'toefl_result.pdf', size: '190 KB' }],
-        sent: 'Jun 14',
-        decision: { outcome: 'accepted', on: 'Jun 17' },
+        id: 'dual-1',
+        files: [{ name: 'bristol_cc_transcript.pdf', size: '210 KB' }],
+        sent: 'May 28',
+        decision: { outcome: 'accepted', on: 'Jun 2' },
       },
     ],
   },
@@ -204,21 +204,21 @@ export const issuedDocuments = [
     id: 'offer-letter',
     title: 'Your offer of admission',
     office: 'admissions',
-    issued: 'Jul 12',
+    issued: 'Mar 20',
     note: 'The conditions on it, and the date they have to be met by.',
   },
   {
     id: 'aid-award',
     title: 'Financial aid award letter',
     office: 'financial-services',
-    issued: 'Aug 3',
+    issued: 'Mar 27',
     note: 'Every source in your package, and what each one is worth.',
   },
   {
     id: 'immunization-requirements',
     title: 'Required immunizations for 2026–27',
     office: 'health',
-    issued: 'Jul 12',
+    issued: 'May 4',
     note: 'What Health Services needs, and what counts as proof of each.',
   },
 ];
@@ -250,8 +250,8 @@ export function documentsFor(state) {
                 {
                   id: 'immunization-1',
                   files: [{ name: 'immunization_record.pdf', size: '1.8 MB' }],
-                  sent: 'Aug 11',
-                  decision: { outcome: 'accepted', on: 'Aug 14' },
+                  sent: 'Jun 10',
+                  decision: { outcome: 'accepted', on: 'Jun 12' },
                 },
               ],
             }
@@ -273,8 +273,8 @@ export function documentsFor(state) {
               { name: 'immunization_page_1.jpg', size: '2.1 MB' },
               { name: 'immunization_page_2.jpg', size: '1.9 MB' },
             ],
-            sent: 'Aug 11',
-            decision: { outcome: 'accepted', on: 'Aug 16' },
+            sent: 'Jun 10',
+            decision: { outcome: 'accepted', on: 'Jun 12' },
           }
         : {
             id: 'immunization-1',
@@ -282,10 +282,10 @@ export function documentsFor(state) {
               { name: 'immunization_page_1.jpg', size: '2.1 MB' },
               { name: 'immunization_page_2.jpg', size: '1.9 MB' },
             ],
-            sent: 'Aug 11',
+            sent: 'Jun 10',
             decision: {
               outcome: 'changes-requested',
-              on: 'Aug 16',
+              on: 'Jun 12',
               // Specific, and about this record: the guardrail of the épico is
               // that a student is never told only that something is wrong.
               reason:

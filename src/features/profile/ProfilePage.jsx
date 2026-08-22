@@ -190,7 +190,7 @@ export default function ProfilePage({
       <strong>Yours to change</strong> you can change here, and the change takes effect at once.
       Everything under <strong>Aster’s record</strong> belongs to the office named beside it. Each of
       those rows shows how to reach them.
-      {blanks > 0 && <em> {blanks} of yours are still blank.</em>}
+      {blanks > 0 && <em> {blanks} of yours {blanks === 1 ? 'is' : 'are'} still blank.</em>}
       {unchecked && (
         <em> Verification couldn’t be checked just now, so no row on this page claims to be verified.</em>
       )}

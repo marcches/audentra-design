@@ -18,9 +18,9 @@
 
 export const program = {
   name: 'BA Computer Science',
-  classOf: 'Class of 2031',
+  classOf: 'Class of 2030',
   catalog: '2026–27',
-  publishedOn: 'Published by Aster on Aug 12',
+  publishedOn: 'Published by Aster on May 4',
   creditsToGraduate: 120,
   /* Credit approved for courses that are not counted toward any requirement
      above lands in the free-elective remainder. The remainder itself is not a
@@ -66,7 +66,7 @@ export const courseAdvisor = {
   // The office, as her two peers name theirs — the department is the topic's
   // (`department` on the Appointments type), not part of the office’s name,
   // and with it the bar's one line wrapped at 1440.
-  office: 'Academic Advising Office',
+  office: 'Academic Advising',
   label: 'Your course advisor',
   intro:
     'Ines advises Computer Science students on which courses satisfy which requirement, and on what a term should look like.',
@@ -406,7 +406,7 @@ export const requirements = [
         credits: 4,
         terms: 'Fall and Spring',
         state: 'locked',
-        prerequisite: '90 credits and adviser approval',
+        prerequisite: '90 credits and advisor approval',
       },
     ],
   },
@@ -483,5 +483,5 @@ export const matchSources = [
 export const unassignedProgram = {
   heading: 'Your program hasn’t been assigned yet',
   body: 'Aster assigns your academic program after your enrollment deposit clears. When it does, your degree requirements appear here: every requirement, what satisfies it, and any credit you already have.',
-  produces: 'Complete ‘Lock in your place’ on My Enrollment',
+  produces: 'Complete ‘Pay your $500 enrollment deposit’ on My Enrollment',
 };

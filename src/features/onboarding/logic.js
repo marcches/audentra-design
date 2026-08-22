@@ -165,9 +165,9 @@ export function grantProblem(draft) {
 
 /** ENR-210 AC 6 in onboarding's half of it: two of three is saved, and it says partial. */
 export function shortlistLine(shortlist) {
-  if (!shortlist.length) return 'No residences ranked yet.';
+  if (!shortlist.length) return 'No residence halls ranked yet.';
   if (shortlist.length === 3) return 'Three ranked. This is a complete shortlist.';
-  return `${shortlist.length} of 3 ranked. A partial shortlist is saved, and Housing Services reads it as partial.`;
+  return `${shortlist.length} of 3 ranked. A partial shortlist is saved, and Residential Life reads it as partial.`;
 }
 
 /**

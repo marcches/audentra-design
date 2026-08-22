@@ -69,7 +69,7 @@ export const DESTINATIONS = [
     // not the name of a section. ENR-164's Jam approved this copy as it is.
     hero: {
       flag: 'Offer accepted',
-      kicker: 'Class of 2031',
+      kicker: 'Class of 2030',
       title: 'You’re in, Maya. Here’s what’s left.',
       lede: 'Your next steps are in the order that keeps things moving. Start with the first one, or pick any task you can do now.',
       motif: 'check',
@@ -220,16 +220,16 @@ export const DESTINATIONS = [
     // No badge, for the reason Health gives above: the housing step is already
     // counted in `openSteps` on My Enrollment, and the same obligation counted
     // twice in one sidebar is a discrepancy the student cannot resolve.
-    lede: 'Where you plan to live, and the residences you would like if that is on campus.',
+    lede: 'Where you plan to live, and the residence halls you would like if that is on campus.',
     // The eyebrow names who publishes the catalogue, because the eight
     // residences on this page are the institution's list and not the portal's.
     hero: {
-      kicker: 'Housing · Published by Housing Services',
+      kicker: 'Housing · Published by Residential Life',
       title: 'Where you’ll live.',
-      lede: 'Two questions: where you’ll live, and which residences you’d like. Housing Services assigns the rooms.',
+      lede: 'Two questions: where you’ll live, and which residence halls you’d like. Residential Life assigns the rooms.',
       motif: 'home',
     },
-    appears: 'Your housing plan appears here, with the residences Housing Services publishes.',
+    appears: 'Your housing plan appears here, with the residence halls Residential Life publishes.',
     produces: 'Both are open to you from the day your offer is accepted.',
     next: 'my-enrollment',
     built: true,

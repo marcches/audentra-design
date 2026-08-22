@@ -309,7 +309,7 @@ export default function OnboardingPage({ requestedStep, previewState, onPreviewS
         brand={{
           mark: <AsterMark size={40} tile />,
           name: 'Aster University',
-          line: 'Class of 2031',
+          line: 'Class of 2030',
         }}
         greeting={finished ? 'You’re all set, Maya.' : 'Let’s get you set up, Maya.'}
         figure={

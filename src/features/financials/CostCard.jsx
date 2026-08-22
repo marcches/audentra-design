@@ -19,7 +19,7 @@ import { formatCredit, formatMoney } from './logic.js';
  * ENR-207 / ENR-211 AC 8 — these two lines are the only place My Financials and Housing can
  * contradict each other. Residences carry their own rates, so this figure is true of one room type
  * and not of the catalogue; saying which one it assumes is what turns a difference into a
- * comparison. The figures do not move here — they move when Housing Services assigns a room, which
+ * comparison. The figures do not move here — they move when Residential Life assigns a room, which
  * is what the balance strip has always said.
  */
 const HOUSING_BASIS = {
@@ -73,7 +73,7 @@ export default function CostCard({ ledger, snapshot, year, children }) {
                 )}
                 {HOUSING_BASIS[item.id] && (
                   <a className="ledger-link" href="#/housing">
-                    Compare residences <Icon name="arrow" size={13} />
+                    Compare residence halls <Icon name="arrow" size={13} />
                   </a>
                 )}
               </td>

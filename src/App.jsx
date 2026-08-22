@@ -751,7 +751,6 @@ export default function App() {
           <OverviewPage
             {...shared}
             documents={financialDocs}
-            depositDays={byId.deposit?.daysLeft}
             onPay={payHandoff}
           />
         );

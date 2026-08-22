@@ -13,7 +13,7 @@ import { registration } from './data.js';
  * painted edge, and the card already has a place where facts about the step are
  * written.
  *
- * It says **blocks**, never **blocked**. *Blocked* belongs to a locked step
+ * It says **holds** (the campus’s word for it — CONTEXT.md, *Hold*), never **blocked**. *Blocked* belongs to a locked step
  * whose prerequisite is unmet (ENR-156), which is a different state with a
  * different answer, and one word for both would teach the student nothing.
  *
@@ -37,7 +37,7 @@ export default function GateChip({ state = 'needed', since = null, detail: withD
   return (
     <span className="gate-chip">
       <Icon name="flag" size={13} />
-      Blocks {registration.label}
+      Holds {registration.label}
       {/* `detail={false}` where a pill beside the chip already says the state —
           Health's record head (H8: "· Needs another try" duplicates CAME BACK). */}
       {withDetail && detail && <span className="gate-detail">· {detail}</span>}

@@ -9,8 +9,8 @@ support for multiple institutions.
 
 ![Preview](docs/preview.png)
 
-> The portal shown is the **Harvard New Student Portal**, the sample institution used during
-> development. Branding, copy, and data are placeholders for future per-tenant configuration.
+> The portal shown is **Aster University**, the fictional US university used as the sample institution
+> (`docs/domain/aster.md`). Branding, copy, and data are placeholders for future per-tenant configuration.
 
 ## Stack
 

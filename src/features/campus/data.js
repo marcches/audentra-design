@@ -2,7 +2,7 @@
 // Campus life editor; the portal only projects it. Nothing here is authored by the student and
 // nothing here writes back to their record.
 
-export const CAMPUS_TODAY = '2026-08-20';
+export const CAMPUS_TODAY = '2026-06-15';
 
 // The student's interests are a fact about her record, so Profile owns them and
 // this page ranks by the same list it shows (UX writing 6.4).
@@ -10,34 +10,35 @@ export { campusInterests as studentInterests } from '../profile/data.js';
 
 export const campusPublisher = {
   office: 'Aster Student Life',
-  coordinator: { name: 'Priya Raman', role: 'Student Life coordinator' },
+  coordinator: { name: 'Marcus Bell', role: 'Student Life coordinator' },
   updated: '2 hours ago',
 };
 
 export const campusEvents = [
   {
     id: 'orientation',
-    title: 'New Student Orientation',
+    title: 'Aster Orientation',
     category: 'Orientation',
     interests: [],
     required: true,
     requiredBy: 'Office of the Registrar',
     requiredNote:
-      'Every new student attends one orientation session. If you miss all of them, the Registrar holds your course registration until you attend a make-up session.',
-    // Before class registration opens on Sep 1, which this session gates (UX writing 6.2).
-    date: '2026-08-27',
+      'Every first-year attends one session: it is where you meet your advisor and register for fall classes. Miss all three and the Registrar holds your registration until the make-up on Aug 24.',
+    // Maya's session, Jul 13–14 (`docs/domain/aster.md` §8). Three sessions run
+    // in July; registration happens on day two of each.
+    date: '2026-07-13',
     time: '9:00 AM–4:00 PM',
-    location: 'Whitfield Hall · Main campus',
+    location: 'Halloran Hall · Main campus',
     format: 'in-person',
-    host: 'Student Life',
-    summary: 'A full day of introductions, campus tours and your first advising conversation.',
+    host: 'New Student Programs',
+    summary: 'Two days in July: your advisor, your placement results, your fall schedule, your ID.',
     about:
-      'You’ll meet your advising group, walk the campus with a current student, and leave with your library card, your ID and a timetable for your first week. Lunch is provided. Sessions run on three dates and you attend one.',
+      'You’ll meet your academic advisor, register for your fall classes, get your student ID and your first look at a residence hall. Residents stay the night; lunch both days is provided. Three sessions run in July and you attend one.',
     registration: {
       kind: 'external',
       label: 'Choose your session',
       detail:
-        'Pick one of the three dates on Aster’s events site. Sessions fill up, so earlier is safer.',
+        'Pick one of the three July dates on Aster’s events site by Jun 26. Sessions fill up, so earlier is safer.',
     },
   },
   {
@@ -71,7 +72,7 @@ export const campusEvents = [
     host: 'Aster Chamber Choir',
     summary: 'Open to every student, no sheet music reading required.',
     about:
-      'Auditions run in ten-minute slots. Prepare one short piece of anything you like; an accompanist is available if you need one. The choir takes about eighteen new voices each autumn.',
+      'Auditions run in ten-minute slots. Prepare one short piece of anything you like; an accompanist is available if you need one. The choir takes about eighteen new voices each fall.',
     registration: {
       kind: 'email',
       label: 'RSVP by email',
@@ -138,17 +139,17 @@ export const campusEvents = [
   },
   {
     id: 'careerfair',
-    title: 'Autumn career fair',
+    title: 'Fall career fair',
     category: 'Career',
     interests: ['Career'],
     date: '2026-09-17',
     time: '11:00 AM–4:00 PM',
     location: 'Sports Center, main hall',
     format: 'in-person',
-    host: 'Careers Service',
+    host: 'Career Services',
     summary: 'Eighty employers, internships and graduate roles.',
     about:
-      'First-year students are welcome and it is the cheapest way to find out what your degree leads to. Bring a printed CV if you have one; the Careers Service reviews CVs at the door from 10:00 AM.',
+      'First-year students are welcome and it is the cheapest way to find out what your degree leads to. Bring a printed résumé if you have one; the Career Services reviews CVs at the door from 10:00 AM.',
     registration: {
       kind: 'external',
       label: 'Register to attend',
@@ -237,18 +238,18 @@ export const campusEvents = [
     title: 'Move-in day walkthrough',
     category: 'Orientation',
     interests: [],
-    date: '2026-08-12',
+    date: '2026-08-05',
     time: '4:00 PM–5:00 PM',
     location: 'Online',
     format: 'online',
-    host: 'Housing Services',
+    host: 'Residential Life',
     summary: 'What arrival day looks like, hour by hour.',
     about:
-      'A recorded walkthrough of arrival day: where to park, what to bring, and what the first night in halls actually looks like.',
+      'A recorded walkthrough of arrival day: where to park, what to bring, and what the first night in your residence hall actually looks like.',
     registration: {
       kind: 'external',
-      label: 'Watch the recording',
-      detail: 'The recording stays on Aster’s events site for the rest of the year.',
+      label: 'Join online',
+      detail: 'Live on Aug 5 and recorded for anyone who misses it. The recording stays on Aster’s events site.',
     },
   },
   {
@@ -256,7 +257,7 @@ export const campusEvents = [
     title: 'International student welcome call',
     category: 'Community',
     interests: ['Community'],
-    date: '2026-08-06',
+    date: '2026-07-15',
     time: '9:00 AM–10:00 AM',
     location: 'Online',
     format: 'online',
@@ -266,8 +267,8 @@ export const campusEvents = [
       'The International Office runs this call twice each summer. Both sessions are recorded and the slides are published afterwards.',
     registration: {
       kind: 'external',
-      label: 'Watch the recording',
-      detail: 'Slides and the recording are on the International Office pages.',
+      label: 'Join the call',
+      detail: 'The link is on the International Office pages. The call is recorded and the slides are published afterwards.',
     },
   },
   {
@@ -286,7 +287,7 @@ export const campusEvents = [
     registration: {
       kind: 'walk-in',
       label: 'Open to all',
-      detail: 'The room was open to anyone with an Aster account.',
+      detail: 'The room is open to anyone with an Aster account.',
     },
   },
 ];
@@ -304,10 +305,10 @@ export const campusOrganisations = [
     about:
       'The choir sings two concert programs a term and rehearses once a week. Roughly a third of the singers arrive having never read sheet music, so rehearsals start with the part-learning rather than assuming it.',
     meets: 'Tuesdays, 7:30 PM · Ferrand Music Building',
-    contact: { name: 'Dana Whitfield', photo: '/people/dana-whitfield.webp', role: 'Faculty adviser', email: 'd.whitfield@aster.edu' },
+    contact: { name: 'Eleanor Pratt', initials: 'EP', role: 'Faculty advisor', email: 'e.pratt@aster.edu' },
     latestUpdate: {
-      text: 'Auditions for the autumn concert close on Sep 12. Slots are going quickly.',
-      date: '2026-08-18',
+      text: 'Auditions for the fall concert close on Sep 12. Slots are going quickly.',
+      date: '2026-06-12',
     },
   },
   {
@@ -318,14 +319,14 @@ export const campusOrganisations = [
     category: 'Volunteering',
     interests: ['Volunteering'],
     description:
-      'Student-run since 2019. Packs and delivers weekly boxes to households in the three neighbourhoods around campus.',
+      'Student-run since 2019. Packs and delivers weekly boxes to households in the three neighborhoods around campus.',
     about:
       'Run entirely by students since 2019, with a staff link in the chaplaincy. Volunteers pack boxes on Saturday mornings and a smaller team drives the deliveries; you can do either, or both, or one Saturday a term.',
     meets: 'Saturdays, 10:00 AM · Student Union, lower level',
     contact: { name: 'Miguel Santos', photo: '/people/miguel-santos.webp', role: 'Student coordinator', email: 'm.santos@aster.edu' },
     latestUpdate: {
       text: 'We are covering 240 households a week and need six more Saturday volunteers.',
-      date: '2026-08-19',
+      date: '2026-06-10',
     },
   },
   {
@@ -355,10 +356,10 @@ export const campusOrganisations = [
     about:
       'Two competition robots a year, an open lab night every Thursday, and a workshop with more tools than most students have used. Historians and biologists are as welcome as engineers.',
     meets: 'Thursdays, 6:00 PM · Kessler Lab',
-    contact: { name: 'Lena Duarte', photo: '/people/lena-duarte.webp', role: 'Faculty adviser', email: 'l.duarte@aster.edu' },
+    contact: { name: 'Lena Duarte', photo: '/people/lena-duarte.webp', role: 'Faculty advisor', email: 'l.duarte@aster.edu' },
     latestUpdate: {
       text: 'Build season starts Sep 21. The open lab nights run all through August.',
-      date: '2026-08-11',
+      date: '2026-06-08',
     },
   },
   {
@@ -376,7 +377,7 @@ export const campusOrganisations = [
     contact: { name: 'Sam Iyer', photo: '/people/sam-iyer.webp', role: 'Trips secretary', email: 's.iyer@aster.edu' },
     latestUpdate: {
       text: 'Three places left on the September ridge hike. Boots can be borrowed from the kit room.',
-      date: '2026-08-17',
+      date: '2026-06-11',
     },
   },
   {
@@ -393,8 +394,8 @@ export const campusOrganisations = [
     meets: 'Mondays, 7:00 PM · Student Union, studio 3',
     contact: { name: 'Noor Haddad', photo: '/people/noor-haddad.webp', role: 'Station manager', email: 'n.haddad@aster.edu' },
     latestUpdate: {
-      text: 'Applications for autumn shows are open until Sep 5. No experience required.',
-      date: '2026-08-15',
+      text: 'Applications for fall shows are open until Sep 5. No experience required.',
+      date: '2026-06-09',
     },
   },
 ];
@@ -411,27 +412,27 @@ const denseEvents = [
   ['beachclean', 'River clean-up morning', 'Volunteering', '2026-08-29', '9:00 AM–12:00 PM', 'Meet at Mill Bridge', 'Sustainability Office', 'external', ['Volunteering']],
   ['boardgames', 'Board game marathon', 'Social', '2026-08-30', '2:00 PM–10:00 PM', 'Student Union, upper hall', 'Games Society', 'walk-in', ['Social']],
   ['labtour', 'Materials lab open tour', 'Academic', '2026-09-01', '3:00 PM–4:30 PM', 'Kessler Lab', 'School of Engineering', 'external', ['Academic']],
-  ['langcafe', 'Language café: nine tables, nine languages', 'Community', '2026-09-02', '6:00 PM–8:00 PM', 'Student Union café', 'Language Centre', 'walk-in', ['Community']],
+  ['langcafe', 'Language café: nine tables, nine languages', 'Community', '2026-09-02', '6:00 PM–8:00 PM', 'Student Union café', 'Language Center', 'walk-in', ['Community']],
   ['climbing', 'Beginner climbing session', 'Sports', '2026-09-04', '5:00 PM–7:00 PM', 'Sports Center wall', 'Outdoors Club', 'external', ['Sports']],
   ['choirsocial', 'Choir welcome social', 'Music', '2026-09-06', '8:00 PM–11:00 PM', 'The Cellar, Student Union', 'Aster Chamber Choir', 'walk-in', ['Music']],
-  ['tutoring', 'Maths tutoring drop-in opens', 'Academic', '2026-09-07', '1:00 PM–5:00 PM', 'Ferrand Library, floor 1', 'Maths Department', 'walk-in', ['Academic']],
+  ['tutoring', 'Math tutoring drop-in opens', 'Academic', '2026-09-07', '1:00 PM–5:00 PM', 'Ferrand Library, floor 1', 'Math Department', 'walk-in', ['Academic']],
   ['soupkitchen', 'Evening soup kitchen shift', 'Volunteering', '2026-09-09', '5:30 PM–8:30 PM', 'St Brigid’s hall, Mill Street', 'Campus Food Bank', 'email', ['Volunteering']],
   ['photowalk', 'Campus photography walk', 'Arts', '2026-09-10', '4:00 PM–6:00 PM', 'Meet at the library steps', 'Photography Society', 'walk-in', ['Arts']],
-  ['startup', 'Student startup pitch night', 'Career', '2026-09-11', '6:00 PM–9:00 PM', 'Kessler Lab, atrium', 'Careers Service', 'external', ['Career']],
-  ['fivea', 'Five-a-side league opens', 'Sports', '2026-09-12', '10:00 AM–4:00 PM', 'North fields', 'Sports Center', 'external', ['Sports']],
+  ['startup', 'Student startup pitch night', 'Career', '2026-09-11', '6:00 PM–9:00 PM', 'Kessler Lab, atrium', 'Career Services', 'external', ['Career']],
+  ['fivea', 'Intramural soccer league opens', 'Sports', '2026-09-12', '10:00 AM–4:00 PM', 'North fields', 'Sports Center', 'external', ['Sports']],
   ['poetry', 'Poetry night: first-years read', 'Arts', '2026-09-14', '7:30 PM–9:30 PM', 'The Cellar, Student Union', 'Literary Society', 'walk-in', ['Arts']],
   ['mentalhealth', 'Talking about a hard first month', 'Wellness', '2026-09-15', '5:00 PM–6:30 PM', 'Alcott House lounge', 'Counseling Service', 'walk-in', ['Wellness']],
   ['radiotraining', 'Radio training: your first show', 'Music', '2026-09-16', '6:00 PM–8:00 PM', 'Student Union, studio 3', 'Aster Student Radio', 'email', ['Music']],
-  ['alumni', 'Alumni evening: five years out', 'Career', '2026-09-18', '6:30 PM–9:00 PM', 'Whitfield Hall', 'Careers Service', 'external', ['Career']],
+  ['alumni', 'Alumni evening: five years out', 'Career', '2026-09-18', '6:30 PM–9:00 PM', 'Whitfield Hall', 'Career Services', 'external', ['Career']],
   ['gardening', 'Community garden planting day', 'Volunteering', '2026-09-20', '10:00 AM–2:00 PM', 'East campus garden', 'Sustainability Office', 'walk-in', ['Volunteering']],
   ['jazzband', 'Jazz band open rehearsal', 'Music', '2026-09-21', '7:00 PM–9:00 PM', 'Ferrand Music Building, room 5', 'Aster Orchestra', 'walk-in', ['Music']],
-  ['careercv', 'CV clinic: twenty-minute slots', 'Career', '2026-09-22', '10:00 AM–4:00 PM', 'Careers Service, Building C', 'Careers Service', 'external', ['Career']],
+  ['careercv', 'Résumé clinic: twenty-minute slots', 'Career', '2026-09-22', '10:00 AM–4:00 PM', 'Career Services, Building C', 'Career Services', 'external', ['Career']],
   ['chess', 'Chess ladder opening night', 'Social', '2026-09-23', '6:00 PM–10:00 PM', 'Student Union, upper hall', 'Games Society', 'walk-in', ['Social']],
   ['ceramics', 'Ceramics taster workshop', 'Arts', '2026-09-25', '2:00 PM–5:00 PM', 'Art block, studio 2', 'Art Society', 'closed', ['Arts']],
   ['nightrun', 'Friday night 5k', 'Sports', '2026-09-26', '7:00 PM–8:30 PM', 'Meet at the Sports Center', 'Running Club', 'walk-in', ['Sports']],
   ['filmfest', 'Student film festival, night one', 'Arts', '2026-09-28', '7:00 PM–10:30 PM', 'Whitfield Hall', 'Film Society', 'external', ['Arts']],
   ['hackday', 'Accessibility hack day', 'Academic', '2026-09-30', '9:00 AM–6:00 PM', 'Kessler Lab', 'Aster Robotics', 'external', ['Academic']],
-  ['choirconcert', 'Autumn concert: Chamber Choir', 'Music', '2026-10-06', '7:30 PM–9:30 PM', 'Whitfield Hall', 'Aster Chamber Choir', 'external', ['Music']],
+  ['choirconcert', 'Fall concert: Chamber Choir', 'Music', '2026-10-06', '7:30 PM–9:30 PM', 'Whitfield Hall', 'Aster Chamber Choir', 'external', ['Music']],
   ['volunteerfair', 'Volunteering fair', 'Volunteering', '2026-10-08', '11:00 AM–3:00 PM', 'Student Union, main hall', 'Student Life', 'walk-in', ['Volunteering']],
 ];
 
@@ -519,26 +520,26 @@ const denseRequired = [
     registration: {
       kind: 'external',
       label: 'Choose your session',
-      detail: 'Four sessions run in September. Book the one that fits your timetable.',
+      detail: 'Four sessions run in September. Book the one that fits your schedule.',
     },
   },
   {
     id: 'firesafety',
-    title: 'Halls fire safety briefing',
+    title: 'Residence hall fire safety briefing',
     category: 'Orientation',
     interests: [],
     required: true,
-    requiredBy: 'Housing Services',
+    requiredBy: 'Residential Life',
     requiredNote:
-      'Required for every student living in halls. Housing cannot issue your room key until you have attended.',
-    date: '2026-09-13',
+      'Required for every resident. Residential Life can’t hand over your room key until you’ve attended.',
+    date: '2026-08-22',
     time: '11:00 AM–11:45 AM',
     location: 'Alcott House common room',
     format: 'in-person',
-    host: 'Housing Services',
+    host: 'Residential Life',
     summary: 'Forty-five minutes, held in your own building.',
     about:
-      'Run separately in each hall during the first week. Your building’s time is confirmed by Housing Services once your room is allocated.',
+      'Run separately in each residence hall on move-in day. Your building’s time is confirmed by Residential Life once your room is assigned.',
     registration: {
       kind: 'tba',
       label: 'Details coming',

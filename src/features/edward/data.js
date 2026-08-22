@@ -130,7 +130,7 @@ export const seededConversations = [
   {
     id: 'seed-transcript',
     title: 'When will my transcript be checked?',
-    when: 'Aug 14',
+    when: 'Jun 13',
     messages: [
       {
         id: 'seed-transcript-q',
@@ -142,7 +142,7 @@ export const seededConversations = [
         id: 'seed-transcript-a',
         role: 'edward',
         body: [
-          'Aster received your final transcript on Aug 6 and it is with the review team now. Reviews usually take two to three business days.',
+          'Aster received your final transcript on Jun 12 and it is with the review team now. Reviews usually take two to three business days.',
           'Nothing is needed from you while it is open. The step moves on its own once the check is recorded.',
         ],
         source: { basis: 'record', label: 'My Enrollment', destination: 'my-enrollment' },
@@ -152,7 +152,7 @@ export const seededConversations = [
   {
     id: 'seed-housing',
     title: 'Can I change my housing answer later?',
-    when: 'Aug 12',
+    when: 'Jun 9',
     messages: [
       {
         id: 'seed-housing-q',
@@ -164,16 +164,16 @@ export const seededConversations = [
         id: 'seed-housing-a',
         role: 'edward',
         body: [
-          'Yes. Your housing answer can be changed any time before the housing deadline. Housing Services only uses it to open the right next steps for you.',
+          'Yes. Your housing answer can be changed any time before the housing deadline. Residential Life only uses it to open the right next steps for you.',
         ],
-        source: { basis: 'guidance', label: 'Housing Services', destination: null },
+        source: { basis: 'guidance', label: 'Residential Life', destination: null },
       },
     ],
   },
   {
     id: 'seed-roommate',
     title: 'Has my friend Priya accepted her offer?',
-    when: 'Aug 11',
+    when: 'Jun 8',
     messages: [
       {
         id: 'seed-roommate-q',

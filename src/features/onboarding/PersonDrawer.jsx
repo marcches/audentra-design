@@ -192,7 +192,7 @@ export default function PersonDrawer({ grant, onSave, onClose }) {
         When it ends
       </p>
       <div className="choice-panel tight" role="radiogroup" aria-labelledby="ends-label">
-        {[DEFAULT_END, { value: 'term', label: 'Dec 31, 2026', note: 'End of this term' }].map(
+        {[DEFAULT_END, { value: 'term', label: 'Dec 18, 2026', note: 'End of the fall term' }].map(
           (option) => (
             <label key={option.label} className={draft.endsOn === option.label ? 'chosen' : ''}>
               <input

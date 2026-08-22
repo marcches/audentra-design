@@ -73,7 +73,7 @@ export function topicsInCategoryOrder(types, categories) {
   return categories.flatMap((category) => types.filter((type) => type.category === category));
 }
 
-/** The office as it reads in full: "Academic Advising Office, Computer Science". */
+/** The office as it reads in full: "Academic Advising, Computer Science". */
 export function teamName(type) {
   return type.department ? `${type.team}, ${type.department}` : type.team;
 }

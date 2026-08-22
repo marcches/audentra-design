@@ -46,12 +46,12 @@ export const PREVIEW_STATES = [
   // `onboarding-answered` is a shortlist that arrived already written, which is
   // the only way to see ENR-210 AC 6 without answering it yourself. The other two
   // are the far side of the response deadline — the card's "effectively two
-  // screens" — and they are states rather than a clock, because Housing Services
+  // screens" — and they are states rather than a clock, because Residential Life
   // assigning is institutional action and this repo does not simulate that on a
   // timer. Same rule `lib/documents.js` follows: checking advances on a clock, a
   // person's decision never does.
-  ['onboarding-answered', 'Answered at onboarding', 'Living on campus, three residences already ranked.'],
-  ['deadline-passed', 'After the housing deadline', 'The submitted shortlist, and Housing Services assigning.'],
+  ['onboarding-answered', 'Answered at onboarding', 'Living on campus, three residence halls already ranked.'],
+  ['deadline-passed', 'After the housing deadline', 'The submitted shortlist, and Residential Life assigning.'],
   ['room-assigned', 'Room assigned', 'A room that isn’t the first preference, and is still valid.'],
   // ENR-163. The five onboarding adds. `empty`, `partial`, `loading` and
   // `error` mean something there too, but they already exist above; these are
@@ -59,7 +59,7 @@ export const PREVIEW_STATES = [
   // link to any of them survives a reload — `readPreviewState` validates
   // against this list and nothing else.
   ['resume-skipped', 'Back after a skip', 'Onboarding resumed with one step set aside.'],
-  ['onboarding-permissions', 'Family permissions', 'Onboarding parked on the family permissions step.'],
+  ['onboarding-permissions', 'Who can see your record', 'Onboarding parked on the record-access step.'],
   ['onboarding-housing', 'Where you will live', 'Onboarding parked on the housing step, shortlist partial.'],
   ['onboarding-complete', 'Onboarding resolved', 'Six steps saved, two set aside, and the flow says so.'],
   ['save-fails', 'A save that fails', 'A step that does not reach Aster, and does not pretend to.'],

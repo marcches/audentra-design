@@ -22,12 +22,12 @@ export const record = {
   // The photo on her record — the one the campus card uses, and the one every
   // place that draws her reads (Jam, 2026-08-21).
   photo: '/people/maya-johnson.webp',
-  studentId: 'AST-2031-04417',
+  studentId: 'AST-2030-04417',
   // AC 6. A record with a version is a record you can talk to an office about.
   version: 4,
-  updated: 'Aug 12, 2026',
+  updated: 'Jun 8, 2026',
   // What a record that has just been opened says instead.
-  opened: 'Aug 20, 2026',
+  opened: 'Jun 15, 2026',
 };
 
 /**
@@ -115,7 +115,7 @@ export const initialGrants = [
     },
     purpose: 'Help me with billing and financial aid while I am away.',
     granted: ['enrollment', 'billing', 'aid'],
-    grantedOn: 'Aug 2, 2026',
+    grantedOn: 'Jun 8, 2026',
     endsOn: 'May 31, 2027',
   },
 ];
@@ -221,7 +221,7 @@ export const fieldGroups = [
         id: 'student-id',
         label: 'Student ID',
         owner: 'registrar',
-        value: 'AST-2031-04417',
+        value: 'AST-2030-04417',
         mono: true,
         note: 'It never changes, and it is safe to quote in an email.',
       },
@@ -263,16 +263,14 @@ export const fieldGroups = [
       },
       {
         id: 'term-address',
-        label: 'Term-time address',
+        label: 'Campus address',
         owner: 'student',
-        value: '1226 University Drive, Apt 4B, Aster, MA 02139',
-        newBlank: 'Not set · Aster is writing to your home address',
-        verify: {
-          state: 'unverified',
-          label: 'Not verified',
-          detail: 'Aster confirms an address against a document before it sends anything that matters there.',
-          action: 'Confirm this address',
-        },
+        // No campus address before Residential Life assigns a room (Jul 20); until
+        // then Aster writes home. The room, once assigned, is what fills this.
+        value: null,
+        blank: 'Not set · Aster writes to your home address until your room is assigned',
+        newBlank: 'Not set · Aster writes to your home address until your room is assigned',
+        verify: null,
       },
       {
         id: 'home-address',
@@ -282,7 +280,7 @@ export const fieldGroups = [
         verify: {
           state: 'verified',
           label: 'Verified',
-          detail: 'Confirmed against your application, Jul 14, 2026.',
+          detail: 'Confirmed against your application, May 6, 2026.',
         },
       },
       {

@@ -33,7 +33,7 @@ export const notifications = [
     title: 'Verify your household income · sent back',
     icon: 'upload',
     office: 'financial-services',
-    when: '2026-08-15',
+    when: '2026-06-12',
     route: '#/profile',
   },
   {
@@ -42,17 +42,17 @@ export const notifications = [
     title: 'Aster received your final transcript',
     icon: 'file',
     office: 'registrar',
-    when: '2026-08-12',
+    when: '2026-06-12',
     route: '#/profile',
   },
   {
     id: 'housing-form-withdrawn',
     category: 'record-changed',
-    title: 'Housing Services replaced the housing preference form with the housing plan question.',
+    title: 'Residential Life replaced the housing preference form with the housing plan question.',
     icon: 'home',
     office: 'housing',
-    when: '2026-08-09',
-    // The `gone` case, and a true one: Housing Services replaced a form that
+    when: '2026-06-05',
+    // The `gone` case, and a true one: Residential Life replaced a form that
     // used to be answered inside the checklist drawer with the plan question in
     // the Housing section. The old form has no page to link to any more.
     gone: true,
@@ -63,7 +63,7 @@ export const notifications = [
     title: 'Your financial aid award letter is ready',
     icon: 'wallet',
     office: 'financial-services',
-    when: '2026-08-03',
+    when: '2026-03-27',
     route: '#/financials/aid',
   },
   {
@@ -72,7 +72,7 @@ export const notifications = [
     title: 'Your proof of address was accepted',
     icon: 'shield',
     office: 'admissions',
-    when: '2026-07-30',
+    when: '2026-05-22',
     route: '#/profile',
   },
 ];

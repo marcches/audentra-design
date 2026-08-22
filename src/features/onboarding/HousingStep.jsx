@@ -82,7 +82,7 @@ export default function HousingStep({ draft, onChange }) {
             kind="card"
             icon="home"
             title="Rank up to three"
-            note="A preference states what you would like. Housing Services assigns the room."
+            note="A preference states what you would like. Residential Life assigns the room."
           />
           <CardRows>
             {residences.map((residence) => {

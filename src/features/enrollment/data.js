@@ -1,10 +1,10 @@
 import { responseDeadline } from '../housing/data.js';
 import { rewards } from '../rewards/data.js';
 
-export const TOTAL_STEPS = 14;
+export const TOTAL_STEPS = 20;
 
-/** Every date in the portal is read against this day. Matches `CAMPUS_TODAY` in campus-data.js. */
-export const PORTAL_TODAY = '2026-08-20';
+/** Every date in the portal is read against this day — Monday, June 15, 2026 (ADR 0007, `docs/domain/aster.md` §2). Matches `CAMPUS_TODAY` in campus/data.js. */
+export const PORTAL_TODAY = '2026-06-15';
 
 /** A deadline this many days out or closer is escalated on screen. ENR-160 AC 6. */
 export const ESCALATION_WINDOW = 14;
@@ -17,150 +17,59 @@ export const ESCALATION_WINDOW = 14;
  */
 const TASKS = [
   {
-    id: 'deposit',
-    category: 'Your offer',
-    title: 'Lock in your place',
+    id: 'orientation-session',
+    category: 'Your degree',
+    title: 'Choose your orientation session',
     description:
-      'Pay your $500 enrollment deposit to confirm you’re joining Aster’s incoming class.',
-    due: 'Nov 16',
-    daysLeft: 88,
-    minutes: 4,
-    action: 'Pay deposit',
-    kind: 'external',
-    priority: 'critical',
-    unlocks: 3,
-    office: 'Financial Aid Office',
-    why: 'This confirms your enrollment and opens housing, advising, and orientation.',
-    destination: {
-      // Aster's own site carries Aster's mark; a third party keeps a monogram.
-      mark: 'aster',
-      name: 'Aster secure payment portal',
-      url: 'payments.aster.edu',
-      note: 'You’ll finish payment on Aster’s website. When it’s received, this checklist will update automatically, usually within a minute.',
-      cta: 'Open Aster payment page',
-      prototypeNote: 'Prototype: this button simulates Aster confirming payment.',
-    },
-    steps: [
-      'Continue to Aster’s secure payment page.',
-      'Pay by card or bank transfer.',
-      'Come back any time. Aster marks this complete automatically.',
-    ],
-  },
-  {
-    id: 'income-verification',
-    category: 'Money and aid',
-    title: 'Verify your household income',
-    description:
-      'The Financial Aid Office needs to confirm the income you reported. Your federal loan stays pending until they do.',
-    due: 'Sep 2',
-    daysLeft: 13,
-    minutes: 6,
-    action: 'Upload documents',
-    // The verb the financials alert uses for the same step (UX writing §2.4).
-    shortAction: 'Verify income',
-    kind: 'upload',
+      'Aster Orientation is two days in July. You meet your academic advisor and register for fall classes there, so pick one of the three sessions by Jun 26.',
+    due: 'Jun 26',
+    daysLeft: 11,
+    minutes: 2,
+    action: 'Choose a session',
+    kind: 'meeting',
     priority: 'critical',
     unlocks: 1,
-    financial: true,
-    office: 'Financial Aid Office',
-    consequence:
-      'Verification is the check that your reported income matches your tax records. Your federal loan stays pending until it’s done.',
-    why: 'Your loan cannot be finalized while verification is open, so its amount stays off your balance until this clears.',
-    upload: {
-      prompt: 'Choose your income documents',
-      hint: 'PDF, JPG, or PNG · Up to 10 MB',
-      fileName: 'household_income_2025.pdf',
-      fileSize: '2.4 MB',
-      privacy: 'Encrypted and shared only with authorized Financial Aid Office staff.',
-    },
+    office: 'Student Life',
+    // The session is booked where Aster Orientation is published — the required
+    // event on My Campus Life — so the step routes there rather than opening a
+    // second door to the same booking (the rule ENR-206 and ENR-207 set).
+    section: '#/events',
+    sectionLine:
+      'This one is booked from your Campus Life section, where Aster Orientation is listed with its three July dates.',
+    sectionFoot: 'Booking there ticks this step off and opens your advising meeting.',
+    why: 'You register for fall classes at your session, and sessions fill up. The make-up in August means registering after everyone else.',
     steps: [
-      'Gather last year’s tax return, or a signed statement of non-filing.',
-      'Upload every page, including schedules.',
-      'The Financial Aid Office reviews it in 3–5 business days and updates your package.',
+      'Pick one of the three sessions: Jul 6–7, Jul 13–14 or Jul 20–21.',
+      'Finish the online modules and your placement tests before you go.',
+      'Day two is advising and registration. You leave with your fall schedule.',
     ],
   },
   {
-    id: 'loan-agreement',
-    category: 'Money and aid',
-    title: 'Sign your federal loan agreement',
+    id: 'placement',
+    category: 'Your degree',
+    title: 'Take your placement tests',
     description:
-      'Sign the Master Promissory Note, the federal form where you promise to repay the loan. Aster can’t release your money without it.',
-    due: 'Sep 30',
-    daysLeft: 41,
-    minutes: 8,
-    action: 'Sign agreement',
+      'A math placement test online, and a language test if you want to continue one. Your advisor uses the results at orientation to place you in the right first courses.',
+    due: 'Jun 26',
+    daysLeft: 11,
+    minutes: 60,
+    action: 'Start the tests',
     kind: 'external',
     priority: 'soon',
-    financial: true,
-    office: 'Financial Aid Office',
-    consequence: 'Aster cannot release your loan money without a signed agreement.',
-    why: 'The agreement is a federal requirement. Signing it early means your loan is ready the moment verification clears.',
+    office: 'Academic Advising, Computer Science',
+    why: 'Results have to reach your advisor before your session. Without them you are placed by your transcript alone, which often means a lower course than you could take.',
     destination: {
-      mark: 'F',
-      name: 'Federal Student Aid',
-      url: 'studentaid.gov',
-      note: 'You’ll sign on the federal student aid website using your FSA ID. When it’s signed, this checklist will update automatically, usually within a day.',
-      cta: 'Open Federal Student Aid',
-      prototypeNote: 'Prototype: this button simulates the federal site confirming your signature.',
+      mark: 'aster',
+      name: 'Aster placement testing',
+      url: 'placement.aster.edu',
+      note: 'You’ll take the tests on Aster’s testing site, signed in with your Aster account. Results go straight to your advisor; this checklist updates when the math test is scored, usually within an hour.',
+      cta: 'Open Aster placement testing',
+      prototypeNote: 'Prototype: this button simulates the testing site reporting a score.',
     },
     steps: [
-      'Sign in with your FSA ID.',
-      'Read the agreement and sign it electronically.',
-      'Come back any time. Aster marks this complete automatically.',
-    ],
-  },
-  {
-    id: 'profile',
-    category: 'About you',
-    title: 'Finish your setup',
-    description:
-      'Add the contact details you didn’t have during setup. You can change them any time.',
-    due: 'Nov 23',
-    daysLeft: 95,
-    minutes: 2,
-    action: 'Add details',
-    kind: 'profile',
-    priority: 'soon',
-    office: 'Admissions Office',
-    why: 'Aster needs a reliable way to reach you with time-sensitive enrollment updates.',
-    steps: [
-      'Confirm your mobile number.',
-      'Add an emergency contact.',
-      'Review your preferred name and mailing address.',
-    ],
-  },
-  {
-    id: 'health',
-    category: 'Health and wellness',
-    title: 'Send your immunization record',
-    description:
-      'Student Health Services needs your immunization record. You can’t register for classes until they have it.',
-    // Before class registration opens on Sep 1: the record gates it, so a
-    // deadline after the gate was the portal contradicting itself (UX writing 6.1).
-    due: 'Aug 28',
-    dueFull: 'Aug 28, 2026',
-    daysLeft: 8,
-    minutes: 5,
-    action: 'Send record',
-    kind: 'upload',
-    // ENR-206 AC 4 of ENR-205. The record used to be uploaded inside this
-    // drawer, which made three doors for one file once My Documents and Health
-    // both existed. The step now routes to the section that owns the door, and
-    // the `upload` panel it used to carry is gone rather than left disabled — a
-    // second field for the same record is a second place a send can fail.
-    section: '#/health',
-    sectionLine:
-      'This one is sent from your Health section, where the record’s review state lives.',
-    // ENR-207 moved this sentence out of the drawer too, so a second step can
-    // route to a second section without the foot still talking about Health.
-    sectionFoot: 'Sending it there ticks this step off and opens class registration.',
-    priority: 'soon',
-    office: 'Student Health Services',
-    why: 'Submitting early leaves time to resolve a missing dose or incomplete record before you register for classes.',
-    steps: [
-      'Ask your doctor for a current immunization record.',
-      'Send it from your Health section, up to eight photos or scans.',
-      'Health Services decides within 5 business days.',
+      'Sign in with your Aster account and choose the math test. It takes about 45 minutes.',
+      'Add a language test if you want to keep studying one. It is optional.',
+      'Come back any time. Aster marks this complete when your math score is in.',
     ],
   },
   {
@@ -182,16 +91,192 @@ const TASKS = [
     // rather than left in place: two doors to one answer is two records of it.
     section: '#/housing',
     sectionLine:
-      'This one is answered in your Housing section, where you can also read the residences Housing Services publishes and rank the ones you would like.',
+      'This one is answered in your Housing section, where you can also read the residence halls Residential Life publishes and rank the ones you would like.',
     sectionFoot: 'Answering there ticks this step off and unlocks your move-in time.',
-    priority: 'normal',
+    priority: 'soon',
     unlocks: 1,
-    office: 'Housing Services',
-    why: 'Your answer opens the right housing or commuter next steps.',
+    office: 'Residential Life',
+    why: 'Your answer opens the right housing or commuter next steps, and Residential Life assigns rooms from Jul 20.',
     steps: [
       'Choose the option that best matches your current plan.',
       'If you’re unsure, select ‘Help me decide.’',
-      'You can change your answer before the housing deadline.',
+      'You can change your answer until Jun 30, the housing deadline.',
+    ],
+  },
+  {
+    id: 'income-verification',
+    category: 'Money and aid',
+    title: 'Verify your household income',
+    description:
+      'The Financial Aid Office selected your FAFSA for verification and needs last year’s tax documents. Your federal loan stays pending until they do.',
+    due: 'Jul 1',
+    daysLeft: 16,
+    minutes: 6,
+    action: 'Upload documents',
+    // The verb the financials alert uses for the same step (UX writing §2.4).
+    shortAction: 'Verify income',
+    kind: 'upload',
+    priority: 'critical',
+    unlocks: 1,
+    financial: true,
+    office: 'Financial Aid Office',
+    consequence:
+      'Verification is the check that your reported income matches your tax records. Your federal loan stays pending until it’s done.',
+    why: 'Your loan cannot be finalized while verification is open, so its amount stays off your balance until this clears.',
+    upload: {
+      prompt: 'Choose your income documents',
+      hint: 'PDF, JPG, or PNG · Up to 10 MB',
+      fileName: 'household_income_2025.pdf',
+      fileSize: '2.4 MB',
+      privacy: 'Encrypted and shared only with authorized Financial Aid Office staff.',
+    },
+    steps: [
+      'Gather your family’s 2025 tax return, or a signed statement of non-filing.',
+      'Upload every page, including schedules.',
+      'The Financial Aid Office reviews it in 3–5 business days and updates your package.',
+    ],
+  },
+  {
+    id: 'health',
+    category: 'Health and wellness',
+    title: 'Send your immunization record',
+    description:
+      'Student Health Services needs your immunization record. Their hold on your class registration lifts once they accept it, and you register at orientation on Jul 14.',
+    // Before registration at orientation on Jul 14: the record holds it, and
+    // Health Services takes up to five business days to decide (US-standard
+    // brief, Q10; `docs/domain/aster.md` §9).
+    due: 'Jul 1',
+    dueFull: 'Jul 1, 2026',
+    daysLeft: 16,
+    minutes: 5,
+    action: 'Send record',
+    kind: 'upload',
+    // ENR-206 AC 4 of ENR-205. The record used to be uploaded inside this
+    // drawer, which made three doors for one file once My Documents and Health
+    // both existed. The step now routes to the section that owns the door, and
+    // the `upload` panel it used to carry is gone rather than left disabled — a
+    // second field for the same record is a second place a send can fail.
+    section: '#/health',
+    sectionLine:
+      'This one is sent from your Health section, where the record’s review state lives.',
+    // ENR-207 moved this sentence out of the drawer too, so a second step can
+    // route to a second section without the foot still talking about Health.
+    sectionFoot: 'Sending it there ticks this step off; the hold lifts when Health Services accepts the record.',
+    priority: 'critical',
+    office: 'Student Health Services',
+    why: 'Health Services takes up to 5 business days. Sending it now leaves time to fix a missing dose before you register at orientation.',
+    steps: [
+      'Ask your doctor for a current immunization record.',
+      'Send it from your Health section, up to eight photos or scans.',
+      'Health Services decides within 5 business days.',
+    ],
+  },
+  {
+    id: 'profile',
+    category: 'About you',
+    title: 'Finish your setup',
+    description:
+      'Add the contact details you didn’t have during setup. You can change them any time.',
+    due: 'Jul 31',
+    daysLeft: 46,
+    minutes: 2,
+    action: 'Add details',
+    kind: 'profile',
+    priority: 'normal',
+    office: 'Admissions Office',
+    why: 'Aster needs a reliable way to reach you with time-sensitive enrollment updates.',
+    steps: [
+      'Confirm your mobile number.',
+      'Add an emergency contact.',
+      'Review your preferred name and mailing address.',
+    ],
+  },
+  {
+    id: 'entrance-counseling',
+    category: 'Money and aid',
+    title: 'Complete loan entrance counseling',
+    description:
+      'A one-time course on the federal student aid website about what borrowing means: interest, repayment, what you owe and when. Your first federal loan can’t be paid out until it’s done.',
+    due: 'Aug 1',
+    daysLeft: 47,
+    minutes: 25,
+    action: 'Start counseling',
+    kind: 'external',
+    priority: 'soon',
+    financial: true,
+    office: 'Financial Aid Office',
+    consequence: 'A first federal loan cannot be paid out until entrance counseling is complete.',
+    why: 'It is the second federal requirement for a first loan, with the promissory note, and it is the one students leave to the last week.',
+    destination: {
+      mark: 'F',
+      name: 'Federal Student Aid',
+      url: 'studentaid.gov',
+      note: 'You’ll complete it on the federal student aid website using your FSA ID. Aster is told when it’s done, and this checklist updates within a day.',
+      cta: 'Open Federal Student Aid',
+      prototypeNote: 'Prototype: this button simulates the federal site reporting completion.',
+    },
+    steps: [
+      'Sign in with your FSA ID and choose Entrance Counseling.',
+      'Name Aster University as your school so the result reaches the Financial Aid Office.',
+      'It takes about 25 minutes. Come back any time; Aster marks this complete automatically.',
+    ],
+  },
+  {
+    id: 'loan-agreement',
+    category: 'Money and aid',
+    title: 'Sign your Master Promissory Note',
+    description:
+      'The Master Promissory Note is the contract for your federal loan: your promise to repay it. Aster can’t pay the loan out without it.',
+    due: 'Aug 1',
+    daysLeft: 47,
+    minutes: 8,
+    action: 'Sign the note',
+    kind: 'external',
+    priority: 'soon',
+    financial: true,
+    office: 'Financial Aid Office',
+    consequence: 'Aster cannot pay out your loan without a signed Master Promissory Note.',
+    why: 'It is a federal requirement for a first loan. Signing it early means your loan is ready the moment verification clears.',
+    destination: {
+      mark: 'F',
+      name: 'Federal Student Aid',
+      url: 'studentaid.gov',
+      note: 'You’ll sign on the federal student aid website using your FSA ID. When it’s signed, this checklist updates automatically, usually within a day.',
+      cta: 'Open Federal Student Aid',
+      prototypeNote: 'Prototype: this button simulates the federal site confirming your signature.',
+    },
+    steps: [
+      'Sign in with your FSA ID.',
+      'Read the note and sign it electronically.',
+      'Come back any time. Aster marks this complete automatically.',
+    ],
+  },
+  {
+    id: 'insurance',
+    category: 'Health and wellness',
+    title: 'Enroll in or waive the student health plan',
+    description:
+      'Massachusetts requires every student to have health insurance. You’re enrolled in Aster’s plan, and its premium is on your fall bill, unless you waive it with comparable coverage by Aug 1, 11:59 p.m. ET.',
+    due: 'Aug 1',
+    daysLeft: 47,
+    minutes: 6,
+    action: 'Enroll or waive',
+    kind: 'external',
+    priority: 'normal',
+    office: 'Student Health Services',
+    why: 'The plan’s premium stays on your bill until you waive it. A waiver by the deadline takes it off before the bill is due.',
+    destination: {
+      mark: 'aster',
+      name: 'Aster student health plan',
+      url: 'healthplan.aster.edu',
+      note: 'You’ll enroll or waive on Aster’s health plan site. A waiver needs your family’s insurance card. When it’s confirmed, this checklist updates, usually within 2 business days.',
+      cta: 'Open Aster student health plan',
+      prototypeNote: 'Prototype: this button simulates the health plan site confirming your choice.',
+    },
+    steps: [
+      'Have your family’s insurance card ready if you plan to waive.',
+      'Enroll in Aster’s plan, or enter the policy details to waive it.',
+      'Aster confirms within 2 business days and your fall bill updates.',
     ],
   },
 ];
@@ -205,14 +290,22 @@ export const initialTasks = TASKS.map(withValues);
 
 export const lockedTasks = [
   {
-    title: 'Choose your move-in time',
-    kind: 'housing',
-    description: 'Your arrival window will appear after your housing plan is confirmed.',
-    prerequisite: 'Complete ‘Choose your housing plan’ first',
-    due: 'Jan 12',
+    title: 'Pay your fall bill',
+    category: 'Money and aid',
+    kind: 'external',
+    description: 'The Bursar issues your fall bill on Jul 24: what’s due after your aid, with the payment plan as an option.',
+    prerequisite: 'Waiting for the Bursar to issue the bill',
+    due: 'Aug 12',
   },
   {
-    title: 'Meet your academic adviser',
+    title: 'Choose your move-in time',
+    kind: 'housing',
+    description: 'Your arrival window appears after Residential Life assigns your room on Jul 20.',
+    prerequisite: 'Complete ‘Choose your housing plan’ first',
+    due: 'Aug 7',
+  },
+  {
+    title: 'Meet your academic advisor',
     // Appointments groups its conversations by the checklist's categories (A9 of
     // the appointments changes, 2026-08-21), and academic advising is a
     // conversation, so the step that names it carries the category it sits in.
@@ -220,9 +313,9 @@ export const lockedTasks = [
     // one place the category is decided.
     category: 'Your degree',
     kind: 'meeting',
-    description: 'Available advisers appear after Aster assigns your academic program.',
-    prerequisite: 'Waiting for program assignment',
-    due: 'Date coming soon',
+    description: 'You meet your advisor at your orientation session and register for fall classes there.',
+    prerequisite: 'Complete ‘Choose your orientation session’ first',
+    due: 'At orientation',
   },
 ];
 
@@ -231,21 +324,26 @@ export const lockedTasks = [
  * time**, and nothing ever re-reads `rewards-data.js` to recompute it. That is
  * why a change to what a requirement is worth cannot reach a point she has
  * already earned: history does not read the configuration.
+ *
+ * The dates follow `docs/domain/aster.md` §2 and §4: the offer accepted and the
+ * deposit paid by May 1, the account on May 4, and setup walked on Jun 8.
  */
 export const initialCompleted = [
-  { title: 'Accept your offer', kind: 'decision', date: 'Aug 7', points: 150 },
-  { title: 'Confirm your identity', kind: 'identity', date: 'Aug 7', points: 100 },
-  { title: 'Choose your preferred name', kind: 'profile', date: 'Aug 7', points: 78 },
-  { title: 'Set communication preferences', kind: 'preferences', date: 'Aug 7', points: 60 },
-  { title: 'Review your admission details', kind: 'review', date: 'Aug 7', points: 40 },
+  { title: 'Accept your offer', kind: 'decision', date: 'Apr 30', points: 150 },
+  { title: 'Pay your $500 enrollment deposit', kind: 'external', date: 'May 1', points: 100 },
+  { title: 'Set up your Aster account', kind: 'profile', date: 'May 4', points: 40 },
+  { title: 'Confirm your identity', kind: 'identity', date: 'Jun 8', points: 100 },
+  { title: 'Choose your preferred name', kind: 'profile', date: 'Jun 8', points: 78 },
+  { title: 'Set communication preferences', kind: 'preferences', date: 'Jun 8', points: 60 },
+  { title: 'Review your admission details', kind: 'review', date: 'Jun 8', points: 40 },
 ];
 
 export const initialReviewing = [
   {
     title: 'Final transcript check',
     kind: 'review',
-    description: 'Aster received your transcript and is reviewing it now.',
-    submitted: 'Submitted Aug 6',
+    description: 'Aster received your final transcript and is reviewing it now.',
+    submitted: 'Submitted Jun 12',
     eta: 'Usually 2–3 business days',
     points: rewards.reviewing['final-transcript'],
   },
@@ -387,13 +485,21 @@ export const financialStates = {
         blockedNote: 'waiting on your income verification',
       },
     ],
-    payments: [],
+    payments: [{ id: 'deposit', date: 'May 1', label: 'Enrollment deposit', amount: 500, status: 'received' }],
+    // The fall bill is issued Jul 24 and due Aug 12; the spring bill in January.
+    // Four installments a term (`docs/domain/aster.md` §6). While the loan is
+    // pending the year is $28,660 after grants and the deposit; it cannot split
+    // evenly, so fall carries the extra dollar on each row.
     schedule: [
-      { id: 'deposit', date: 'Nov 16', label: 'Enrollment deposit', amount: 500, status: 'due', taskId: 'deposit' },
-      { id: 'i1', date: 'Jan 5', label: 'Installment 1', amount: 7165, status: 'scheduled' },
-      { id: 'i2', date: 'Feb 5', label: 'Installment 2', amount: 7165, status: 'scheduled' },
-      { id: 'i3', date: 'Mar 5', label: 'Installment 3', amount: 7165, status: 'scheduled' },
-      { id: 'i4', date: 'Apr 5', label: 'Installment 4', amount: 7165, status: 'scheduled' },
+      { id: 'deposit', date: 'May 1', label: 'Enrollment deposit', amount: 500, status: 'received' },
+      { id: 'f1', date: 'Aug 12', label: 'Fall installment 1', amount: 3583, status: 'scheduled' },
+      { id: 'f2', date: 'Sep 12', label: 'Fall installment 2', amount: 3583, status: 'scheduled' },
+      { id: 'f3', date: 'Oct 12', label: 'Fall installment 3', amount: 3583, status: 'scheduled' },
+      { id: 'f4', date: 'Nov 12', label: 'Fall installment 4', amount: 3583, status: 'scheduled' },
+      { id: 's1', date: 'Jan 12', label: 'Spring installment 1', amount: 3582, status: 'scheduled' },
+      { id: 's2', date: 'Feb 12', label: 'Spring installment 2', amount: 3582, status: 'scheduled' },
+      { id: 's3', date: 'Mar 12', label: 'Spring installment 3', amount: 3582, status: 'scheduled' },
+      { id: 's4', date: 'Apr 12', label: 'Spring installment 4', amount: 3582, status: 'scheduled' },
     ],
     academic: academicNotStarted,
   },
@@ -412,22 +518,27 @@ export const financialStates = {
         status: 'accepted',
       },
     ],
-    payments: [{ id: 'deposit', date: 'Aug 7', label: 'Enrollment deposit', amount: 500, status: 'received' }],
+    payments: [{ id: 'deposit', date: 'May 1', label: 'Enrollment deposit', amount: 500, status: 'received' }],
+    // With the loan accepted the year is $25,160 after aid and the deposit: eight equal rows.
     schedule: [
-      { id: 'deposit', date: 'Aug 7', label: 'Enrollment deposit', amount: 500, status: 'received' },
-      { id: 'i1', date: 'Jan 5', label: 'Installment 1', amount: 6290, status: 'due' },
-      { id: 'i2', date: 'Feb 5', label: 'Installment 2', amount: 6290, status: 'scheduled' },
-      { id: 'i3', date: 'Mar 5', label: 'Installment 3', amount: 6290, status: 'scheduled' },
-      { id: 'i4', date: 'Apr 5', label: 'Installment 4', amount: 6290, status: 'scheduled' },
+      { id: 'deposit', date: 'May 1', label: 'Enrollment deposit', amount: 500, status: 'received' },
+      { id: 'f1', date: 'Aug 12', label: 'Fall installment 1', amount: 3145, status: 'due' },
+      { id: 'f2', date: 'Sep 12', label: 'Fall installment 2', amount: 3145, status: 'scheduled' },
+      { id: 'f3', date: 'Oct 12', label: 'Fall installment 3', amount: 3145, status: 'scheduled' },
+      { id: 'f4', date: 'Nov 12', label: 'Fall installment 4', amount: 3145, status: 'scheduled' },
+      { id: 's1', date: 'Jan 12', label: 'Spring installment 1', amount: 3145, status: 'scheduled' },
+      { id: 's2', date: 'Feb 12', label: 'Spring installment 2', amount: 3145, status: 'scheduled' },
+      { id: 's3', date: 'Mar 12', label: 'Spring installment 3', amount: 3145, status: 'scheduled' },
+      { id: 's4', date: 'Apr 12', label: 'Spring installment 4', amount: 3145, status: 'scheduled' },
     ],
     academic: academicStarted,
   },
 };
 
 export const paymentPlan = {
-  name: '4-month plan',
+  name: 'payment plan',
   term: 'plan',
-  detail: 'Interest-free · set up Aug 7',
+  detail: 'Four installments a term · $50 setup fee · chosen May 1',
 };
 
 /**
@@ -468,8 +579,8 @@ export const financialTerms = {
     body: 'Aster has not finished confirming every figure. Estimates can change after verification, after your housing choice, and after your aid package is final.',
   },
   plan: {
-    title: '4-month plan',
-    body: 'Instead of one bill, what Aster charges you is split into four equal monthly payments at no extra cost. The total does not change.',
+    title: 'Payment plan',
+    body: 'Instead of paying each term’s bill at once, what Aster bills you is split into four monthly installments a term: August to November, then January to April. There is a $50 setup fee for the year, and the total does not otherwise change.',
   },
   schedule: {
     title: 'How installments are worked out',

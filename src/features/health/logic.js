@@ -56,7 +56,7 @@ export function recordStanding({ requirement, task, gating = false, unavailable 
     pill: { label: info.label, tone: info.tone, pulse: state === 'checking' },
     consequence: hers
       ? gating
-        ? `Blocks ${registration.label}`
+        ? `Holds ${registration.label}`
         : null
       : (info.consequence ?? null),
     line: hers

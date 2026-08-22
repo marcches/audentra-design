@@ -129,7 +129,7 @@ Out of scope: layout, components, voice (settled 2026-08-21). Spec to be written
 - [x] `CONTEXT.md` intro says the context is a US university; **Hold** defined; round-2 terms applied.
 - [x] Spec template carries **Domain**; `domain.md` lists both docs.
 - [x] `npm run build` clean; committed to main and pushed.
-- [x] The data card's spec exists and is ready to pick up.
+- [x] The data card's spec exists — and landed the same day (its own spec reports what changed).
 
 ## 6. Round 2 — against `docs/domain/us-enrollment.md` (landed 2026-08-22, 108 sources)
 

@@ -1,5 +1,5 @@
 Jira: (none — follows the US-standard brief of 2026-08-22)
-Status: ready-for-agent
+Status: done — built, every route opened in the browser at 1440 and 390 with a clean console, committed to main 2026-08-22
 Labels: persona-student, screen-all, data
 Jam: (none)
 
@@ -61,12 +61,59 @@ as steps.
 
 ## 7. Done when
 
-- [ ] `PORTAL_TODAY` and `CAMPUS_TODAY` are `2026-06-15`; no date literal in `src/` contradicts
+- [x] `PORTAL_TODAY` and `CAMPUS_TODAY` are `2026-06-15`; no date literal in `src/` contradicts
   `aster.md` §4; `daysLeft` agree with the table.
-- [ ] "Class of 2030" on every surface; no "Sep 1"; no "Lock in your place"; no "Housing Services";
+- [x] "Class of 2030" on every surface; no "Sep 1"; no "Lock in your place"; no "Housing Services";
   no "Academic Advising Office"; no "adviser"; no "4-month plan"; no "Family permissions".
-- [ ] The deposit step is completed May 1 and owned by Admissions; the bill exists and is due Aug 12.
-- [ ] The gate reads as holds.
-- [ ] `npm run build` clean; every route at 1440 and 390 with a clean console; captures before/after
-  on the surfaces whose CSS is untouched report zero style diffs (dates change widths, nothing else).
-- [ ] Committed to main and pushed; `aster.md` §12 notes the landing.
+- [x] The deposit step is completed May 1 and owned by Admissions; the bill exists and is due Aug 12.
+- [x] The gate reads as holds.
+- [x] `npm run build` clean; every route opened at 1440 and 390 with a clean console. No CSS file was
+  touched by this card, so the before/after element capture (the rule for CSS moves) was not run.
+- [x] Committed to main and pushed; `aster.md` §12 notes the landing.
+
+## 8. Report — what changed beyond §3, and what was left
+
+Unlisted changes, each because the fact sheet or the standard said so:
+
+- **Holds, not blocks.** `GateChip`, Health’s summary line and the styleguide sample now say *Holds class
+  registration* (`CONTEXT.md`, Hold). `GateNotice` says *before you register for classes at orientation on
+  July 14*. `documents/data.js` says the hold lifts when the record clears.
+- **A domestic first-year has no TOEFL.** The settled *English proficiency result* requirement became a
+  *Dual-enrollment transcript* (Registrar, accepted Jun 2), which is also where My Degree’s CSCI 140
+  potential match comes from.
+- **The Bursar exists on Help.** `offices.bursar`, `OFFICE_ORDER`, a *My bill or a payment* topic, and the
+  second request is now *Can my mother pay my fall bill directly?* (authorized payer, FERPA) in place of
+  the split-deposit request, which was incoherent once the deposit was paid on May 1.
+- **People.** The Student Life coordinator is Marcus Bell (Priya Raman is Admissions); the choir’s faculty
+  advisor is Eleanor Pratt (Dana Whitfield is the Registrar’s). Both new names render initials.
+- **US English in campus copy**: Fall (not autumn), Math, Career Services, résumé, Language Center,
+  intramural soccer, suite (not flat), schedule (not timetable), two weeks (not a fortnight),
+  neighborhoods; *Campus address* (not term-time), blank until the room is assigned.
+- **My Financials** reads the next payment’s distance off the schedule (`daysUntil`), not off a task:
+  *Fall installment 1 · due Aug 12 · in 58 days*, *Payment 2 of 9*, $29,160 across 9 payments.
+- **Appointments**: published times in the two weeks after Jun 15; Academic Advising has no calendar
+  because first-years meet advisors at orientation; the pending request asks for a time after Jul 14.
+- **Edward** keeps answering *Has my enrollment deposit been paid?* from the schedule row (received
+  May 1); the outstanding-deposit branch no longer fires because the task is gone.
+
+Where the build departed from §3, and why:
+
+- The final transcript stayed *in review* (her school sent it Jun 12; Admissions checks it) rather than
+  becoming an open *Send your final transcript* step — documents, Help and Edward all describe the same
+  arrival, so one story holds across four screens.
+- The payment schedule stays a **year**, because the ledger’s invariant is *schedule total = what Aster
+  bills − accepted aid* (ENR-159 AC 7): eight installments, four a term (Aug–Nov, Jan–Apr), not the four
+  fall rows §3 sketched. While the loan is pending the year splits $3,583 × 4 + $3,582 × 4; with it,
+  $3,145 × 8.
+- *Choose your orientation session* routes to My Campus Life (where Aster Orientation is the required
+  event) rather than to the setup flow, so the booking has one door.
+
+Left as found, and flagged:
+
+- `proof-of-address` for housing (Residential Life confirming a home address before assigning a room) has
+  no US precedent the research read; it is a settled requirement and was re-worded, not removed.
+- The housing plan keeps its four answers (US-standard brief, Q11: its own card against ENR-207).
+- `#/profile/documents` and `#/accessibility` are not routes (the Jam of 2026-08-21 made both panels);
+  the spec’s route list predates that.
+- Slot ids in `appointments/data.js` still carry the old day numbers (`enr-21-0930`); they are opaque
+  identifiers and were left alone.

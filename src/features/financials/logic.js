@@ -1,4 +1,4 @@
-import { ESCALATION_WINDOW, additionalAid, costOfAttendance } from '../enrollment/data.js';
+import { ESCALATION_WINDOW, PORTAL_TODAY, additionalAid, costOfAttendance } from '../enrollment/data.js';
 
 const WHOLE = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -17,6 +17,19 @@ export function formatCredit(amount) {
 
 function total(items) {
   return items.reduce((sum, item) => sum + (item.amount ?? 0), 0);
+}
+
+/**
+ * Days from today to a schedule date written the way the schedule writes it ('Aug 12').
+ * The year is today’s, or the next one when the date has already passed — the spring
+ * installments. Read against `PORTAL_TODAY` like every other day in the portal.
+ */
+export function daysUntil(shortDate, today = PORTAL_TODAY) {
+  const [y, m, d] = today.split('-').map(Number);
+  const from = new Date(y, m - 1, d);
+  let to = new Date(`${shortDate}, ${y}`);
+  if (to < from) to = new Date(`${shortDate}, ${y + 1}`);
+  return Math.round((to - from) / (24 * 60 * 60 * 1000));
 }
 
 /**

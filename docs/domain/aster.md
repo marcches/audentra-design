@@ -6,8 +6,9 @@ and owns, when each thing is due, and what things cost. **Every date, name, amou
 the US campus's form (`docs/domain/us-enrollment.md`) — and only then use it. Started 2026-08-22
 (US-standard brief, `.scratch/brief-2026-08-22-us-standard/`), from ADR 0006 (the US standard binds
 by default) and ADR 0007 (what Aster is, and when today is). The words themselves are `CONTEXT.md`'s
-business; this file holds facts, not definitions. Until the data card lands
-(`.scratch/brief-2026-08-22-us-calendar/`), `src/` still carries the old calendar; this file wins.
+business; this file holds facts, not definitions. The data card landed the same day
+(`.scratch/brief-2026-08-22-us-calendar/`): `src/` reads from this file, and where the two differ this
+file wins and the code is the defect.
 
 ## 1. The institution
 
@@ -197,3 +198,8 @@ conventions on top of it, from `docs/domain/us-enrollment.md` §6:
 
 - 2026-08-22 — written from the US-standard brief, rounds 1 and 2; supersedes the dates the features
   carried (deposit Nov 16, housing Dec 15, move-in Jan 12, registration Sep 1, Class of 2031).
+- 2026-08-22, later — the data card landed: `PORTAL_TODAY` and `CAMPUS_TODAY` are 2026-06-15; the
+  checklist is 9 open, 3 locked, 1 in review, 7 completed (20); Residential Life, the Office of the
+  Bursar and Academic Advising are named; the gate reads as holds before orientation on Jul 14;
+  Aster Orientation runs in July; the bill and the payment plan exist; the TOEFL result on a
+  domestic first-year’s file became a dual-enrollment transcript; `README.md` names Aster.

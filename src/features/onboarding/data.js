@@ -23,8 +23,8 @@ import { planOptions, residences, responseDeadline } from '../housing/data.js';
  * `responseDeadline` out of housing. Profile now re-exports from here.
  */
 
-/** The day onboarding is read against. `PORTAL_TODAY` is Aug 20; she started earlier. */
-export const ONBOARDING_TODAY = 'Aug 20';
+/** The day onboarding is read against. `PORTAL_TODAY` is Jun 15; she walked setup on Jun 8. */
+export const ONBOARDING_TODAY = 'Jun 15';
 
 export const advisor = {
   name: 'Priya Raman',
@@ -76,9 +76,9 @@ export const STEPS = [
   {
     id: 'permissions',
     icon: 'users',
-    name: 'Family permissions',
+    name: 'Who can see your record',
     question: 'Who can talk to Aster about you?',
-    lede: 'Right now, that is just you. This is where you change it, or decide not to.',
+    lede: 'Right now, that is just you: your record is yours by law (FERPA). This is where you change it, or decide not to.',
     required: true,
     minutes: 4,
   },
@@ -114,14 +114,14 @@ export const STEPS = [
     icon: 'calendar',
     name: 'Choose your orientation session',
     question: 'Which orientation will you come to?',
-    lede: 'Two days, run twice. Pick the one that works. The seats are held as you choose.',
+    lede: 'Two days in July, run three times. Pick the one that works. The seats are held as you choose.',
     required: true,
     minutes: 2,
-    // ENR-151 AC 3. Residents and commuters are given different sessions, so
-    // this genuinely cannot be answered before the plan is recorded. The reason
-    // is true, which is the only kind of reason worth printing.
+    // ENR-151 AC 3. Residents stay the night at their session and commuters do
+    // not, so the session genuinely cannot be arranged before the plan is
+    // recorded. The reason is true, which is the only kind worth printing.
     after: 'housing',
-    lockReason: 'Opens once your housing plan is recorded',
+    lockReason: 'Opens once your housing plan is recorded: residents stay the night, commuters go home',
   },
 ];
 
@@ -191,33 +191,34 @@ export const PRONOUNS = [
 export const DEFAULT_END = { value: '2027-05-31', label: 'May 31, 2027', note: 'End of the academic year' };
 
 /**
- * Step 8. Two dates, run twice, and each one says who it is for — which is the
- * reason the step cannot open before the plan is known.
+ * Step 8. Aster Orientation: three two-day sessions in July, open to everyone;
+ * residents stay the night, which is the reason the step cannot open before the
+ * plan is known (`docs/domain/aster.md` §8).
  */
 export const ORIENTATION_SESSIONS = [
   {
-    id: 'residents-aug',
-    label: 'Move-in weekend',
-    when: 'Saturday Aug 29 – Sunday Aug 30',
-    where: 'Halloran Hall, then your residence',
-    forPlans: ['on-campus'],
-    hint: 'Starts the morning you move in. Your room key is handed over at the desk.',
-  },
-  {
-    id: 'commuters-aug',
-    label: 'Commuter day',
-    when: 'Thursday, Aug 27, 9:00 AM–4:00 PM',
-    where: 'Halloran Hall',
-    forPlans: ['commuting', 'own-housing', 'undecided'],
-    hint: 'One day, with parking held for you. Lunch is included.',
-  },
-  {
-    id: 'late-aug',
-    label: 'Late orientation',
-    when: 'Monday, Aug 31, 9:00 AM–4:00 PM',
+    id: 'jul-6',
+    label: 'Session 1',
+    when: 'Monday, Jul 6 – Tuesday, Jul 7, 9:00 AM–4:00 PM',
     where: 'Halloran Hall',
     forPlans: ['on-campus', 'commuting', 'own-housing', 'undecided'],
-    hint: 'For anyone who can’t make the first two. Covers the same ground.',
+    hint: 'Advising and registration on day two. Residents stay the night in Kestrel House; commuters go home.',
+  },
+  {
+    id: 'jul-13',
+    label: 'Session 2',
+    when: 'Monday, Jul 13 – Tuesday, Jul 14, 9:00 AM–4:00 PM',
+    where: 'Halloran Hall',
+    forPlans: ['on-campus', 'commuting', 'own-housing', 'undecided'],
+    hint: 'The same two days. The session with the most seats left.',
+  },
+  {
+    id: 'jul-20',
+    label: 'Session 3',
+    when: 'Monday, Jul 20 – Tuesday, Jul 21, 9:00 AM–4:00 PM',
+    where: 'Halloran Hall',
+    forPlans: ['on-campus', 'commuting', 'own-housing', 'undecided'],
+    hint: 'The last before the make-up on Aug 24, which registers after everyone else.',
   },
 ];
 
@@ -243,19 +244,19 @@ export { planOptions, residences, responseDeadline };
 const EMERGENCY = {
   name: 'Renata Oliveira',
   relation: 'Mother',
-  phone: '+55 11 98812-4460',
+  phone: '+1 (508) 555-0171',
 };
 
 /** The record as the application left it: what step 1 and 2 open with. */
 const APPLICATION = {
   legalName: 'Amelia Maya Johnson',
   birthDate: 'Mar 14, 2008',
-  studentId: 'AST-2031-04417',
+  studentId: 'AST-2030-04417',
   preferredName: 'Maya',
   pronouns: 'she',
   email: 'maya.johnson@gmail.com',
   mobile: '+1 (617) 555-0142',
-  address: '84 Fern Hollow Road, Newton, MA 02459',
+  address: '84 Rosewood Lane, Fall River, MA 02720',
   channel: 'email',
 };
 
@@ -305,7 +306,7 @@ export function recordFor(previewState) {
         ...BLANK,
         saved: ['details', 'contact', 'emergency', 'permissions', 'housing'],
         skipped: ['health'],
-        savedOn: 'Aug 12',
+        savedOn: 'Jun 8',
         grants: [RENATA_GRANT],
         plan: 'commuting',
       };
@@ -314,7 +315,7 @@ export function recordFor(previewState) {
       return {
         ...BLANK,
         saved: ['details', 'contact', 'emergency'],
-        savedOn: 'Aug 12',
+        savedOn: 'Jun 8',
         grants: [RENATA_GRANT],
       };
 
@@ -322,7 +323,7 @@ export function recordFor(previewState) {
       return {
         ...BLANK,
         saved: ['details', 'contact', 'emergency', 'permissions'],
-        savedOn: 'Aug 12',
+        savedOn: 'Jun 8',
         grants: [RENATA_GRANT],
         plan: 'on-campus',
         shortlist: ['alcott', 'brackenridge'],
@@ -333,11 +334,11 @@ export function recordFor(previewState) {
         ...BLANK,
         saved: ['details', 'contact', 'emergency', 'permissions', 'housing', 'orientation'],
         skipped: ['health', 'photo'],
-        savedOn: 'Aug 12',
+        savedOn: 'Jun 8',
         grants: [RENATA_GRANT],
         plan: 'on-campus',
         shortlist: ['alcott', 'brackenridge', 'coleridge'],
-        session: 'residents-aug',
+        session: 'jul-13',
       };
 
     case 'partial':
@@ -347,7 +348,7 @@ export function recordFor(previewState) {
 
     default:
       // `ready`, and every state the frame owns. Two saved, the third in hand.
-      return { ...BLANK, saved: ['details', 'contact'], savedOn: 'Aug 12' };
+      return { ...BLANK, saved: ['details', 'contact'], savedOn: 'Jun 8' };
   }
 }
 
@@ -362,7 +363,7 @@ export const ONBOARDING_PREVIEW_STATES = [
   ],
   [
     'onboarding-permissions',
-    'Family permissions',
+    'Who can see your record',
     'Step 4, with one person already authorized for three categories.',
   ],
   [

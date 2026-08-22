@@ -5,6 +5,7 @@ import CostCard from './CostCard.jsx';
 import DocumentList from './DocumentList.jsx';
 import NextPaymentCard from './NextPaymentCard.jsx';
 import AidOpportunityCard from './AidOpportunityCard.jsx';
+import { daysUntil } from './logic.js';
 
 /**
  * My Financials · Overview — ENR-166, serving ENR-159 and ENR-160.
@@ -26,13 +27,15 @@ export default function OverviewPage({
   urgent,
   unavailable,
   isEmpty,
-  depositDays,
   onOpenTask,
   onPay,
   onContact,
   onRetry,
 }) {
   const frame = { destination, ledger, year, urgent, isEmpty, onOpenTask, onContact };
+  // The next payment is whatever the schedule says it is — the fall installment on
+  // Aug 12 today — and its distance is read off the schedule, not off a task.
+  const dueInDays = ledger.nextPayment ? daysUntil(ledger.nextPayment.date) : null;
 
   if (isEmpty) {
     return (
@@ -50,7 +53,7 @@ export default function OverviewPage({
       {...frame}
       rail={
         <>
-          <NextPaymentCard ledger={ledger} dueInDays={depositDays} onPay={onPay} />
+          <NextPaymentCard ledger={ledger} dueInDays={dueInDays} onPay={onPay} />
           <AidOpportunityCard total={ledger.additionalTotal} />
         </>
       }

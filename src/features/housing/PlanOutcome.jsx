@@ -22,7 +22,7 @@ export default function PlanOutcome({ variant, onToast }) {
         </span>
         <h2 id="next-heading">A second question opens if you live on campus</h2>
         <p>
-          Students living on campus rank three residences from the catalog {housingOffice}{' '}
+          Students living on campus rank three residence halls from the catalog {housingOffice}{' '}
           publishes. It only applies if you live on campus.
         </p>
         <p className="outcome-meta">
@@ -40,12 +40,12 @@ export default function PlanOutcome({ variant, onToast }) {
         </span>
         <h2 id="commute-heading">You are commuting, so there is nothing to rank</h2>
         <p>
-          Ranking residences is only for students living in Aster housing. Your answer is complete
+          Ranking residence halls is only for students living in Aster housing. Your answer is complete
           and no housing step is left open on your checklist.
         </p>
         <p>
           Before term starts, {housingOffice} sends commuters the parking permit form, the shuttle
-          timetable and the list of buildings with day lockers.
+          schedule and the list of buildings with day lockers.
         </p>
         <p className="outcome-meta">
           <Icon name="clock" size={14} /> Changed your mind? Choose a different plan above, any time
@@ -90,7 +90,7 @@ export default function PlanOutcome({ variant, onToast }) {
         will help you decide.
       </p>
       <p>
-        The residences are below so you can read them while you decide. You cannot rank them yet:
+        The residence halls are below so you can read them while you decide. You cannot rank them yet:
         ranking opens once you answer that you are living on campus.
       </p>
       <div className="outcome-actions">

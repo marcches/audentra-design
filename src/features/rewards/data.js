@@ -27,12 +27,15 @@ export const rewards = {
    * so. Keyed by task id; a task with no entry is worth nothing and says so.
    */
   values: {
-    deposit: { points: 100, tomorrow: 99 },
     'income-verification': { points: 95, tomorrow: 94 },
     'loan-agreement': { points: 80, tomorrow: 79 },
     profile: { points: 72, tomorrow: 71 },
     health: { points: 83, tomorrow: 82 },
     housing: { points: 68, tomorrow: 67 },
+    'orientation-session': { points: 90, tomorrow: 89 },
+    placement: { points: 60, tomorrow: 59 },
+    'entrance-counseling': { points: 70, tomorrow: 69 },
+    insurance: { points: 55, tomorrow: 54 },
   },
 
   /** What a requirement already in review was worth when it was submitted. */
@@ -49,7 +52,7 @@ export const rewards = {
    */
   catalogue: [
     { id: 'late-fee', label: 'One late fee waived', cost: 800, office: 'financial-services' },
-    { id: 'early-move-in', label: 'Early residence move-in', cost: 1300, office: 'housing' },
+    { id: 'early-move-in', label: 'Early move-in', cost: 1300, office: 'housing' },
     { id: 'store-voucher', label: 'Campus store voucher', cost: 2000, office: 'registrar' },
     { id: 'regalia', label: 'Graduation regalia hire', cost: 3000, office: 'registrar' },
   ],

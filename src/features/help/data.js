@@ -39,14 +39,22 @@ export const offices = {
   'financial-services': {
     id: 'financial-services',
     name: 'Financial Aid Office',
-    decides: 'Your aid package, your bill, and every payment on it.',
+    decides: 'Your aid package, verification, and your federal loan paperwork.',
     hours: '9:00 AM–4:00 PM, Monday to Friday',
     location: 'Building A, ground floor',
     reply: '3 business days',
   },
+  bursar: {
+    id: 'bursar',
+    name: 'Office of the Bursar',
+    decides: 'Your bill, its due dates, the payment plan, refunds, and the 1098-T.',
+    hours: '9:00 AM–4:00 PM, Monday to Friday',
+    location: 'Building A, first floor',
+    reply: '2 business days',
+  },
   housing: {
     id: 'housing',
-    name: 'Housing Services',
+    name: 'Residential Life',
     decides: 'Where you live, your room assignment, and your meal plan.',
     hours: '10:00 AM–4:00 PM, Monday to Thursday',
     location: 'Halloway House',
@@ -89,7 +97,7 @@ export const offices = {
 };
 
 /** The order the rail lists them in: the two a first-year meets first, then the rest. */
-export const OFFICE_ORDER = ['admissions', 'financial-services', 'housing', 'health', 'registrar'];
+export const OFFICE_ORDER = ['admissions', 'financial-services', 'bursar', 'housing', 'health', 'registrar'];
 
 /**
  * The figure on the rail's anchor card. Most offices answer inside this; the
@@ -106,7 +114,8 @@ export const TYPICAL_REPLY = '2 business days';
  * before a person has to.
  */
 export const helpTopics = [
-  { id: 'money', label: 'Money, aid or a payment', office: 'financial-services', guide: 'aid-terms' },
+  { id: 'money', label: 'Financial aid or verification', office: 'financial-services', guide: 'aid-terms' },
+  { id: 'bill', label: 'My bill or a payment', office: 'bursar', guide: null },
   { id: 'documents', label: 'A document I sent or need to send', office: 'admissions', guide: 'verification' },
   { id: 'deadline', label: 'A deadline or a step I can’t finish', office: 'admissions', guide: 'deadlines' },
   { id: 'housing', label: 'Housing and where I’ll live', office: 'housing', guide: 'housing-answer' },
@@ -124,15 +133,15 @@ export const helpTopics = [
  * find Aster saying no, in Aster's own words.
  */
 export const helpGuides = [
-  { id: 'points', ...GUIDANCE.points, office: 'admissions', updated: '2026-08-04' },
-  { id: 'aid-terms', ...GUIDANCE.aidTerms, office: 'financial-services', updated: '2026-07-28' },
-  { id: 'verification', ...GUIDANCE.verificationPolicy, office: 'financial-services', updated: '2026-08-11' },
-  { id: 'progress', ...GUIDANCE.progress, office: 'registrar', updated: '2026-06-30' },
+  { id: 'points', ...GUIDANCE.points, office: 'admissions', updated: '2026-05-04' },
+  { id: 'aid-terms', ...GUIDANCE.aidTerms, office: 'financial-services', updated: '2026-04-28' },
+  { id: 'verification', ...GUIDANCE.verificationPolicy, office: 'financial-services', updated: '2026-06-01' },
+  { id: 'progress', ...GUIDANCE.progress, office: 'registrar', updated: '2026-04-30' },
   {
     id: 'replies',
     topic: 'How Aster replies to you',
     office: 'admissions',
-    updated: '2026-08-05',
+    updated: '2026-05-05',
     body: [
       'Every answer to a request lands on this page, and stays here. That is the record. Nothing you are told about your enrollment lives only in an inbox.',
       'Aster does send email, but only to say that something has arrived here. Those messages come from an address that nobody reads, so replying to one reaches no person and starts nothing.',
@@ -142,7 +151,7 @@ export const helpGuides = [
     id: 'deadlines',
     topic: 'If you are going to miss a deadline',
     office: 'admissions',
-    updated: '2026-07-19',
+    updated: '2026-05-19',
     body: [
       'Tell the office that owns the step before the date, not after. A step that is late is a conversation; a step that is late and silent is a decision somebody else has to make without you.',
       'Nothing is decided against you for asking. Deadlines move for documented reasons more often than students expect, and the office holding the step is the only one that can move it.',
@@ -152,9 +161,9 @@ export const helpGuides = [
     id: 'housing-answer',
     topic: 'Changing your housing answer',
     office: 'housing',
-    updated: '2026-08-08',
+    updated: '2026-06-08',
     body: [
-      'Your housing answer can be changed at any point before the housing deadline. Housing Services only uses it to open the right next steps for you, so changing it changes what your checklist asks of you.',
+      'Your housing answer can be changed at any point before the housing deadline. Residential Life only uses it to open the right next steps for you, so changing it changes what your checklist asks of you.',
       'After the deadline it becomes a room assignment. You change a room assignment by request, not by editing an answer.',
     ],
   },
@@ -184,79 +193,79 @@ const transcript = {
   topic: 'documents',
   office: 'admissions',
   state: 'answered',
-  opened: '2026-08-14',
-  updated: '2026-08-16',
+  opened: '2026-06-12',
+  updated: '2026-06-15',
   unread: true,
   thread: [
     {
       id: 'transcript-1',
       kind: 'message',
       from: 'student',
-      when: '2026-08-14',
+      when: '2026-06-12',
       body: [
-        'Aster received my final transcript on Aug 6, but my checklist still shows the step as waiting. I want to know whether something is missing before the deadline.',
+        'Aster received my final transcript on Jun 12, but my checklist still shows the step as waiting. I want to know whether something is missing before the deadline.',
       ],
     },
-    { id: 'transcript-2', kind: 'event', when: '2026-08-14', text: 'Received by the Admissions Office' },
+    { id: 'transcript-2', kind: 'event', when: '2026-06-12', text: 'Received by the Admissions Office' },
     {
       id: 'transcript-3',
       kind: 'message',
       from: 'office',
-      when: '2026-08-16',
+      when: '2026-06-15',
       body: [
-        'Nothing is missing. Your transcript arrived on Aug 6 and it is with the review team; the checklist step clears itself once the check is recorded, which usually takes two to three business days from arrival.',
-        'You do not need to send anything again. If the step is still open on Aug 21, reply here and we will look at it directly.',
+        'Nothing is missing. Your transcript arrived on Jun 12 and it is with the review team; the checklist step clears itself once the check is recorded, which usually takes two to three business days from arrival.',
+        'You do not need to send anything again. If the step is still open on Jun 19, reply here and we will look at it directly.',
       ],
     },
   ],
 };
 
-const depositSplit = {
-  id: 'req-deposit-split',
-  subject: 'Can I pay the enrollment deposit in two parts?',
-  topic: 'money',
-  office: 'financial-services',
+const billPayer = {
+  id: 'req-bill-payer',
+  subject: 'Can my mother pay my fall bill directly?',
+  topic: 'bill',
+  office: 'bursar',
   state: 'working',
-  opened: '2026-08-18',
-  updated: '2026-08-19',
+  opened: '2026-06-11',
+  updated: '2026-06-12',
   unread: false,
   thread: [
     {
-      id: 'deposit-1',
+      id: 'payer-1',
       kind: 'message',
       from: 'student',
-      when: '2026-08-18',
+      when: '2026-06-11',
       body: [
-        'I can pay half of the $500 deposit now and the rest at the start of October. Is that something Aster allows, or does it have to be one payment?',
+        'My mother will be paying most of my fall bill. Can she pay Aster directly and see the bill herself, or does everything have to go through me?',
       ],
     },
-    { id: 'deposit-2', kind: 'event', when: '2026-08-18', text: 'Received by the Financial Aid Office' },
-    { id: 'deposit-3', kind: 'event', when: '2026-08-19', text: 'The Financial Aid Office is working on this' },
+    { id: 'payer-2', kind: 'event', when: '2026-06-11', text: 'Received by the Office of the Bursar' },
+    { id: 'payer-3', kind: 'event', when: '2026-06-12', text: 'The Office of the Bursar is working on this' },
   ],
 };
 
 /** The same request, one move further on: the office has asked her something back. */
-const depositSplitAsked = {
-  ...depositSplit,
+const billPayerAsked = {
+  ...billPayer,
   state: 'needs-you',
-  updated: '2026-08-20',
+  updated: '2026-06-15',
   unread: true,
   thread: [
-    ...depositSplit.thread,
+    ...billPayer.thread,
     {
-      id: 'deposit-4',
+      id: 'payer-4',
       kind: 'message',
       from: 'office',
-      when: '2026-08-20',
+      when: '2026-06-15',
       body: [
-        'A split deposit is possible, and it is approved case by case rather than automatically. Before we can put it to the committee we need one thing from you: the date you expect the second payment, and whether it is tied to a specific source of funds.',
+        'Yes. You can name her as an authorized payer: she gets her own sign-in to the bill, can pay it directly, and sees nothing else unless you release it. That is your call under FERPA, not ours. Before we set it up we need one thing from you: the email address she wants to use.',
         'Reply here with that and the request keeps moving. Nothing is late while this is open.',
       ],
     },
   ],
 };
 
-const baseRequests = [transcript, depositSplit];
+const baseRequests = [transcript, billPayer];
 
 /**
  * The board this page opens on. `empty` is a student who has never raised
@@ -265,6 +274,6 @@ const baseRequests = [transcript, depositSplit];
  */
 export function requestsFor(previewState) {
   if (previewState === 'empty') return [];
-  if (previewState === 'needs-you') return [depositSplitAsked, transcript];
+  if (previewState === 'needs-you') return [billPayerAsked, transcript];
   return baseRequests;
 }

@@ -42,14 +42,14 @@ import {
  */
 export const HOUSING_PREVIEW_STATES = [
   ['ready', 'No plan yet', 'The first question unanswered, and the second one not yet asked.'],
-  ['onboarding-answered', 'Answered at onboarding', 'Living on campus, three residences already ranked.'],
-  ['deadline-passed', 'After the deadline', 'The submitted shortlist, and Housing Services assigning.'],
+  ['onboarding-answered', 'Answered at onboarding', 'Living on campus, three residence halls already ranked.'],
+  ['deadline-passed', 'After the deadline', 'The submitted shortlist, and Residential Life assigning.'],
   ['room-assigned', 'Room assigned', 'A room that isn’t the first preference, and is still valid.'],
   ['send-fails', 'A change that failed', 'A plan the server rejected, showing the last saved answer.'],
   ['loading', 'Loading', 'Before the published catalog arrives.'],
-  ['partial', 'Partial data', 'Your plan loaded; the residence catalog did not.'],
-  ['error', 'Error', 'Nothing Housing Services publishes could be loaded.'],
-  ['empty', 'Nothing published', 'Before Housing Services publishes any residence.'],
+  ['partial', 'Partial data', 'Your plan loaded; the residence hall catalog did not.'],
+  ['error', 'Error', 'Nothing Residential Life publishes could be loaded.'],
+  ['empty', 'Nothing published', 'Before Residential Life publishes any residence hall.'],
 ];
 
 export default function HousingPage({
@@ -159,7 +159,7 @@ export default function HousingPage({
   const hero = {
     lede: deadlinePassed
       ? `${housingOffice} is assigning rooms now, from the answers submitted before ${responseDeadline.label}. This page shows what you submitted.`
-      : `Two questions: where you’ll live, and which residences you’d like if that’s on campus. You can change both until ${responseDeadline.full}.`,
+      : `Two questions: where you’ll live, and which residence halls you’d like if that’s on campus. You can change both until ${responseDeadline.full}.`,
   };
 
   return (
@@ -220,12 +220,12 @@ export default function HousingPage({
               <Icon name="buildings" size={20} />
             </span>
             <div>
-              <h2 id="none-heading">You ranked no residences</h2>
+              <h2 id="none-heading">You ranked no residence halls</h2>
               <p>What you submitted</p>
             </div>
           </div>
           <p className="panel-lede">
-            You told Aster you would live on campus and did not name any residence before{' '}
+            You told Aster you would live on campus and did not name any residence hall before{' '}
             {responseDeadline.label}. You are still in the assignment list. {housingOffice} places
             students who named nothing alongside everyone else, from what is free.
           </p>

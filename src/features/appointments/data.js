@@ -52,28 +52,28 @@ export const conversationTypes = [
     minutes: 30,
     place: 'Building A, ground floor',
     videoNote: 'A link reaches your Aster address the morning of the conversation.',
-    publishes: 'The Financial Aid Office opens its calendar a fortnight ahead.',
+    publishes: 'The Financial Aid Office opens its calendar two weeks ahead.',
   },
   {
     id: 'academic',
     category: 'Your degree',
     label: 'Academic advising',
     blurb: 'Which courses satisfy which requirement, and what your first term should hold.',
-    team: 'Academic Advising Office',
+    team: 'Academic Advising',
     department: 'Computer Science',
     person: courseAdvisor,
     minutes: 45,
     place: 'Ferrand Building, second floor',
     videoNote: 'A link reaches your Aster address the morning of the conversation.',
     // The reason this team has published nothing. Without it the empty picker would be a shrug.
-    publishes: 'Course advisors publish their times once course registration opens on September 1.',
+    publishes: 'Academic advisors meet first-years at orientation in July and publish times for the fall once classes begin.',
   },
 ];
 
 /**
  * The checklist's categories, in the checklist's order — read off the steps themselves rather than
  * retyped, so the two screens cannot drift (A9: "no grouping is invented for this screen alone").
- * A locked step counts: *Meet your academic adviser* is where academic advising gets its category.
+ * A locked step counts: *Meet your academic advisor* is where academic advising gets its category.
  */
 export const checklistCategories = [...initialTasks, ...lockedTasks]
   .map((task) => task.category)
@@ -90,7 +90,7 @@ export const checklistCategories = [...initialTasks, ...lockedTasks]
 export const publishedTimes = {
   enrollment: [
     {
-      date: '2026-08-21',
+      date: '2026-06-16',
       slots: [
         { id: 'enr-21-0930', time: '9:30 AM', end: '10:00 AM', format: 'in-person' },
         { id: 'enr-21-1000', time: '10:00 AM', end: '10:30 AM', format: 'in-person' },
@@ -101,14 +101,14 @@ export const publishedTimes = {
     },
     {
       // Mornings only. The picker prints "No availability" under Afternoon rather than hiding it.
-      date: '2026-08-24',
+      date: '2026-06-19',
       slots: [
         { id: 'enr-24-0900', time: '9:00 AM', end: '9:30 AM', format: 'in-person' },
         { id: 'enr-24-0930', time: '9:30 AM', end: '10:00 AM', format: 'video' },
       ],
     },
     {
-      date: '2026-08-26',
+      date: '2026-06-23',
       slots: [
         { id: 'enr-26-1030', time: '10:30 AM', end: '11:00 AM', format: 'in-person' },
         { id: 'enr-26-1100', time: '11:00 AM', end: '11:30 AM', format: 'in-person' },
@@ -118,7 +118,7 @@ export const publishedTimes = {
     },
     {
       // Afternoons only — the mirror case.
-      date: '2026-08-28',
+      date: '2026-06-25',
       slots: [
         { id: 'enr-28-1500', time: '3:00 PM', end: '3:30 PM', format: 'in-person' },
         { id: 'enr-28-1530', time: '3:30 PM', end: '4:00 PM', format: 'in-person' },
@@ -128,7 +128,7 @@ export const publishedTimes = {
   ],
   'financial-aid': [
     {
-      date: '2026-08-25',
+      date: '2026-06-17',
       slots: [
         { id: 'aid-25-1100', time: '11:00 AM', end: '11:30 AM', format: 'video' },
         { id: 'aid-25-1130', time: '11:30 AM', end: '12:00 PM', format: 'in-person' },
@@ -137,7 +137,7 @@ export const publishedTimes = {
       ],
     },
     {
-      date: '2026-08-27',
+      date: '2026-06-22',
       slots: [
         { id: 'aid-27-0900', time: '9:00 AM', end: '9:30 AM', format: 'in-person' },
         { id: 'aid-27-0930', time: '9:30 AM', end: '10:00 AM', format: 'in-person' },
@@ -145,7 +145,7 @@ export const publishedTimes = {
       ],
     },
     {
-      date: '2026-09-02',
+      date: '2026-06-29',
       slots: [
         { id: 'aid-02-1400', time: '2:00 PM', end: '2:30 PM', format: 'video' },
         { id: 'aid-02-1430', time: '2:30 PM', end: '3:00 PM', format: 'in-person' },
@@ -168,48 +168,48 @@ export const bookedAppointments = [
   {
     id: 'appt-transcript',
     typeId: 'enrollment',
-    date: '2026-08-27',
+    date: '2026-06-18',
     time: '10:30 AM',
     end: '11:00 AM',
     format: 'in-person',
     state: 'confirmed',
     subject: 'Whether the transcript I uploaded is the one Admissions needs.',
-    bookedOn: 'Aug 18',
+    bookedOn: 'Jun 10',
   },
   {
     id: 'appt-loan',
     typeId: 'financial-aid',
-    date: '2026-09-01',
+    date: '2026-06-24',
     time: '3:30 PM',
     end: '4:00 PM',
     format: 'video',
     state: 'confirmed',
     subject: 'What happens to my first payment if the federal loan is still pending.',
-    bookedOn: 'Aug 19',
+    bookedOn: 'Jun 11',
   },
   {
     id: 'appt-checklist',
     typeId: 'enrollment',
-    date: '2026-08-11',
+    date: '2026-06-05',
     time: '9:00 AM',
     end: '9:30 AM',
     format: 'in-person',
     state: 'confirmed',
     subject: 'How the order of the checklist is decided.',
-    bookedOn: 'Aug 6',
+    bookedOn: 'Jun 1',
   },
   {
     id: 'appt-housing',
     typeId: 'enrollment',
-    date: '2026-08-14',
+    date: '2026-06-12',
     time: '2:00 PM',
     end: '2:30 PM',
     format: 'video',
     state: 'cancelled',
     cancelledBy: 'you',
-    cancelledOn: 'Aug 13',
+    cancelledOn: 'Jun 11',
     subject: 'Whether I can change my housing preference after the deposit.',
-    bookedOn: 'Aug 10',
+    bookedOn: 'Jun 8',
   },
 ];
 
@@ -221,7 +221,7 @@ export const bookedAppointments = [
 export const failedAppointment = {
   id: 'appt-aid-failed',
   typeId: 'financial-aid',
-  date: '2026-08-25',
+  date: '2026-06-17',
   time: '11:00 AM',
   end: '11:30 AM',
   format: 'video',
@@ -241,9 +241,9 @@ export const pendingRequest = {
   typeId: 'academic',
   state: 'requested',
   date: null,
-  window: 'Any weekday afternoon after Sep 1, ideally a Tuesday or a Wednesday.',
+  window: 'Any weekday afternoon after my orientation session on Jul 14, ideally a Tuesday or a Wednesday.',
   subject: 'Which courses I should take first if I might switch to a double major.',
-  requestedOn: 'Aug 19',
+  requestedOn: 'Jun 12',
 };
 
 /** Who stands behind the times on this page, for the rail's permanent card. */

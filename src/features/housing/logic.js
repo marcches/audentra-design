@@ -17,7 +17,7 @@ import { planOptions, residences, standardMeals, standardRate } from './data.js'
 export const SHORTLIST_MAX = 3;
 
 /** The three stages the section moves through. The tracker renders these in order. */
-export const STAGES = ['Preferences submitted', 'Housing Services assigning', 'Room assigned'];
+export const STAGES = ['Preferences submitted', 'Residential Life assigning', 'Room assigned'];
 
 export function planById(id) {
   return planOptions.find((option) => option.id === id) ?? null;
@@ -70,16 +70,16 @@ export function housingOutstanding({ plan, shortlist, deadlinePassed }) {
 
 /** What that one checklist item is asking for right now. */
 export function checklistAsk({ plan, shortlist, deadlinePassed }) {
-  if (deadlinePassed) return 'Housing Services is assigning rooms.';
+  if (deadlinePassed) return 'Residential Life is assigning rooms.';
   if (!planIsAnswered(plan)) return 'Tell Aster where you plan to live.';
   if (!opensShortlist(plan)) return 'Answered.';
   const state = shortlistState(shortlist);
-  if (state === 'complete') return 'Answered, with three residences ranked.';
+  if (state === 'complete') return 'Answered, with three residence halls ranked.';
   if (state === 'partial') {
     const left = SHORTLIST_MAX - shortlist.length;
     return `Rank ${left} more ${left === 1 ? 'residence' : 'residences'}.`;
   }
-  return 'Rank the residences you would like.';
+  return 'Rank the residence halls you would like.';
 }
 
 /** Confirming a plan is what unlocks the move-in step — ENR-210 AC 7. */
@@ -136,7 +136,7 @@ export function reconciliation(residence) {
       `housing. It is self-catered, so the ${formatMoney(standardMeals)} on the meals line stops ` +
       `being something Aster bills you and becomes money you spend yourself; the full meal plan is ` +
       `available at the same price, which would bring the year to ${formatMoney(room + residence.meals.amount)}. ` +
-      'Either way, that estimate only changes once Housing Services assigns your room.'
+      'Either way, that estimate only changes once Residential Life assigns your room.'
     );
   }
 
@@ -152,7 +152,7 @@ export function reconciliation(residence) {
 
   return (
     `${formatMoney(total)} for room and meals, ${against(total, standard)} My Financials is ` +
-    'using for the two together. That estimate only changes once Housing Services assigns your room.'
+    'using for the two together. That estimate only changes once Residential Life assigns your room.'
   );
 }
 

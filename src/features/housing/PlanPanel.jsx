@@ -40,8 +40,8 @@ export default function PlanPanel({ plan, source, locked, onChoose }) {
             <strong>{chosen ? chosen.label : 'No plan was recorded'}</strong>
             <small>
               {chosen
-                ? `Recorded before ${responseDeadline.label}. Housing Services is working from this.`
-                : `The deadline passed on ${responseDeadline.label} without an answer. This page updates when Housing Services decides.`}
+                ? `Recorded before ${responseDeadline.label}. Residential Life is working from this.`
+                : `The deadline passed on ${responseDeadline.label} without an answer. This page updates when Residential Life decides.`}
             </small>
           </span>
         </p>

@@ -3,7 +3,7 @@
  *
  * Two things live here and they are not the same kind of thing.
  *
- * The **catalogue** is institution-published content, like campus life: Housing Services publishes
+ * The **catalogue** is institution-published content, like campus life: Residential Life publishes
  * residences, the portal projects them, and nothing the student does writes back to a residence.
  * How many exist is the institution's business — eight here, three or forty elsewhere — so nothing
  * in the interface may assume a number.
@@ -17,11 +17,11 @@
  * literal in two places that happened to agree.
  */
 
-/** The date after which the plan and the shortlist stop being editable and Housing Services assigns. */
+/** The date after which the plan and the shortlist stop being editable and Residential Life assigns. */
 export const responseDeadline = {
-  label: 'Dec 15',
-  full: 'Dec 15, 2026',
-  daysLeft: 117,
+  label: 'Jun 30',
+  full: 'Jun 30, 2026',
+  daysLeft: 15,
 };
 
 /**
@@ -32,7 +32,7 @@ export const responseDeadline = {
 export const standardRate = 12400;
 export const standardMeals = 6300;
 
-export const housingOffice = 'Housing Services';
+export const housingOffice = 'Residential Life';
 
 /**
  * The four answers. Three of them are complete; `undecided` is the absence of an answer said out
@@ -45,16 +45,16 @@ export const planOptions = [
   {
     id: 'on-campus',
     label: 'Living on campus',
-    hint: 'Rank the residences you would like. Housing Services assigns your room.',
+    hint: 'Rank the residence halls you would like. Residential Life assigns your room.',
     consequence:
-      'Your move-in time opens once this is confirmed, and you can rank residences below until ' +
+      'Your move-in time opens once this is confirmed, and you can rank residence halls below until ' +
       `${responseDeadline.label}.`,
     complete: true,
   },
   {
     id: 'commuting',
     label: 'Commuting',
-    hint: 'You will live at home and travel in. No residence to rank.',
+    hint: 'You will live at home and travel in. No residence hall to rank.',
     consequence:
       'Your move-in time opens once this is confirmed. Commuter parking and transit information ' +
       'appears on this page before term starts.',
@@ -72,9 +72,9 @@ export const planOptions = [
   {
     id: 'undecided',
     label: 'I need help deciding',
-    hint: 'Housing Services will help you decide. Your plan stays open.',
+    hint: 'Residential Life will help you decide. Your plan stays open.',
     consequence:
-      'Nothing is recorded as your plan yet. Housing Services will help you decide, and you can ' +
+      'Nothing is recorded as your plan yet. Residential Life will help you decide, and you can ' +
       `still answer any time before ${responseDeadline.label}.`,
     complete: false,
   },
@@ -144,15 +144,15 @@ export const residences = [
     area: 'South campus',
     walk: 9,
     rooms: [
-      { label: 'Room in a six-person flat', rate: 12900 },
-      { label: 'Room in a four-person flat', rate: 13600 },
+      { label: 'Room in a six-person suite', rate: 12900 },
+      { label: 'Room in a four-person suite', rate: 13600 },
     ],
     meals: { included: false, amount: standardMeals },
     summary: 'Self-catered flats with a shared kitchen, for people who would rather cook.',
     about:
       'Flats of four or six with a full kitchen and a living room. No meal plan is included in the ' +
       'rate. You can add one, or you can shop and cook, which most people here do.',
-    features: ['Full kitchen in every flat', 'Living room per flat', 'Laundry in the courtyard'],
+    features: ['Full kitchen in every suite', 'Living room per suite', 'Laundry in the courtyard'],
   },
   {
     id: 'elmsworth',
@@ -216,7 +216,7 @@ export const residences = [
     summary: 'Designed step-free throughout, with wider doors and adjustable furniture.',
     about:
       'Every room, corridor and shared space is step-free, and rooms can be fitted out on request ' +
-      'before you arrive. Open to any student; ask Housing Services about a specific adjustment.',
+      'before you arrive. Open to any student; ask Residential Life about a specific adjustment.',
     features: ['Step-free throughout', 'Adjustable-height furniture', 'Accessible laundry'],
   },
 ];
@@ -233,15 +233,15 @@ const RANKED = ['coyne', 'alcott', 'dunmore'];
 const ASSIGNMENT = {
   residenceId: 'alcott',
   room: 'Room 214, shared double',
-  moveIn: 'Jan 12',
-  assignedBy: 'Nadia Aslam, Housing Services',
-  assignedOn: 'December 18, 2026',
+  moveIn: 'Aug 22',
+  assignedBy: 'Nadia Aslam, Residential Life',
+  assignedOn: 'July 20, 2026',
 };
 
 /**
  * One shape per preview state. `catalogue: null` is the partial case — the plan loaded and the
  * published catalogue did not, which is a different thing from a catalogue that is empty because
- * Housing Services has not published one.
+ * Residential Life has not published one.
  */
 export function housingFor(previewState) {
   switch (previewState) {
@@ -284,7 +284,7 @@ export function housingFor(previewState) {
         deadlinePassed: false,
         assignment: null,
         failure:
-          'Housing Services did not accept the change. Their record still says you are commuting, ' +
+          'Residential Life did not accept the change. Their record still says you are commuting, ' +
           'and that is what is shown above.',
       };
     case 'partial':

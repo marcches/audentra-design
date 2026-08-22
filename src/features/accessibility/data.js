@@ -74,7 +74,7 @@ export const ACCOMMODATION_ANSWERS = [
 export function answerFor(state) {
   if (state === 'empty' || state === 'send-fails') return null;
   if (state === 'health-returned' || state === 'health-settled') {
-    return { value: 'yes', on: 'Aug 12', where: 'onboarding' };
+    return { value: 'yes', on: 'Jun 8', where: 'onboarding' };
   }
-  return { value: 'no', on: 'Aug 12', where: 'onboarding' };
+  return { value: 'no', on: 'Jun 8', where: 'onboarding' };
 }

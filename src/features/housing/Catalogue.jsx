@@ -8,7 +8,7 @@ import { SHORTLIST_MAX, rateFrom } from './logic.js';
  * The published catalogue.
  *
  * `catalogue === null` and `catalogue.length === 0` are two different failures and must not render
- * the same way. Null is *partial data*: Housing Services published a catalogue and this portal could
+ * the same way. Null is *partial data*: Residential Life published a catalogue and this portal could
  * not read it, so the plan question above still works and nothing already answered is affected.
  * Empty is an institution that has published nothing yet, which is not a failure at all.
  *
@@ -41,14 +41,14 @@ export default function Catalogue({
         <StateCard
           variant="error"
           icon="alert"
-          title="The residence catalog couldn’t be loaded"
+          title="The residence hall catalog couldn’t be loaded"
           action={{
             label: 'Try again',
             icon: 'refresh',
             onClick: () => onToast(`Retrying would reload the catalog from ${housingOffice}.`),
           }}
         >
-          Your housing plan above loaded normally and is unaffected. Only the list of residences is
+          Your housing plan above loaded normally and is unaffected. Only the list of residence halls is
           missing. Nothing you have already answered or ranked has been lost.
         </StateCard>
       </section>
@@ -67,8 +67,8 @@ export default function Catalogue({
             <p>Published by {housingOffice}</p>
           </div>
         </div>
-        <StateCard icon="home" title="No residences published yet">
-          {housingOffice} publishes the residences open to your year here, each with its rooms, its
+        <StateCard icon="home" title="No residence halls published yet">
+          {housingOffice} publishes the residence halls open to your year here, each with its rooms, its
           rate and its meal plan. They appear on this page as soon as they are published. You don’t
           need to do anything, and your plan above is answerable either way.
         </StateCard>
@@ -91,7 +91,7 @@ export default function Catalogue({
           <h2 id="catalogue-heading">Residences</h2>
           <p>Published by {housingOffice}</p>
         </div>
-        <div className="sort-group" aria-label="Order the residences">
+        <div className="sort-group" aria-label="Order the residence halls">
           <button
             className={sort === 'rate' ? 'selected' : ''}
             aria-pressed={sort === 'rate'}
@@ -111,7 +111,7 @@ export default function Catalogue({
 
       {readOnly && (
         <p className="panel-lede">
-          You can read every residence here while you decide. Ranking opens once you answer that you
+          You can read every residence hall here while you decide. Ranking opens once you answer that you
           are living on campus.
         </p>
       )}

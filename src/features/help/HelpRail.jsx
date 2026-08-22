@@ -35,7 +35,7 @@ export default function HelpRail({ onToast }) {
       <div className="provenance-card office-card">
         <span className="panel-label">Who decides what</span>
         <p>
-          A question is answered by the office that owns the decision. These are the five that own
+          A question is answered by the office that owns the decision. These are the offices that own
           the steps in your checklist.
         </p>
 

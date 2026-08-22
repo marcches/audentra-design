@@ -839,7 +839,7 @@ export default function Styleguide({ onToast }) {
                   figure={
                     <>
                       <StatusPill tone="act">Not sent</StatusPill>
-                      <span className="figure-consequence">Blocks class registration</span>
+                      <span className="figure-consequence">Holds class registration</span>
                     </>
                   }
                 >
@@ -1328,7 +1328,7 @@ export default function Styleguide({ onToast }) {
               </div>
               <div className="summary-alert">
                 <Notice tone="soon" icon="flag" action={{ label: 'See the 2 steps', onClick: () => {} }}>
-                  2 steps have to be done before class registration opens on September 1.
+                  2 steps have to be done before you register for classes at orientation on July 14.
                 </Notice>
               </div>
             </section>
@@ -1365,10 +1365,10 @@ export default function Styleguide({ onToast }) {
               title="Verify your household income · due in 3 days"
               action={{ label: 'Open it', onClick: () => {} }}
             >
-              Your aid is held until this clears, and the term bill is issued on 1 September.
+              Your aid is held until this clears, and the fall bill is issued on July 24.
             </Notice>
             <Notice tone="soon" icon="flag" action={{ label: 'See the 2 steps', onClick: () => {} }}>
-              2 steps have to be done before class registration opens on September 1.
+              2 steps have to be done before you register for classes at orientation on July 14.
             </Notice>
             <Notice tone="working" icon="clock" title="Aster is checking your transcript">
               You can close this page or go somewhere else. It keeps going.
