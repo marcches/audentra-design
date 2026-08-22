@@ -79,8 +79,14 @@ does not exist.
 
 **Acceptance criteria:**
 
-- [ ] A computed-style sweep over every route at 1440 and 390 finds 15px only on the sidebar brand
-      line and 13.5px only on navigation rows and tab labels.
+- [ ] A computed-style sweep over every route at 1440 finds 15px only on the brand line (the
+      sidebar's and the onboarding rail's), and 13.5px on no figure, title, value, name or price —
+      it keeps navigation rows, tab labels, the band's lede and a strong lead-in inside running copy,
+      which is what the reference screen itself does (measured 2026-08-22: the reference carries
+      13.5px on the nav, the lede and the ring, and 15px on the brand and the advisor's name — the
+      advisor's name moves to `--fs-h2`). Under 620px a row title may step down to 15px. The
+      styleguide's own chrome (`#/styleguide` headings) is documentation, not product, and is outside
+      the sweep.
 - [ ] Across the portal exactly two figure treatments exist; no card has two lead figures; no lead
       figure is smaller than another number in the same card; `--fs-figure` is not referenced.
 - [ ] `StatusPill` renders four visually distinct state colours, and no status anywhere is purple.
@@ -105,3 +111,39 @@ started · in progress / waiting on the institution · done · needs you) are th
 any label, and keep the words the checklist already uses.
 
 **Blocked by:** nothing. Blocks every screen card in `ledger.md` §6.
+
+## Done — 2026-08-22
+
+Built in the triage session, straight from this brief (Marco: "implementa agora direto"). What
+landed, and the proof:
+
+- **Status colour.** A blue ramp and its six role aliases in `tokens.css`; `StatusPill` tones `wait`
+  and `progress` take blue-ink on blue-tint (the pulse is `currentColor` — it was a raw hex);
+  My Degree's `requirement-status.in-progress` stops being purple. `act` stays amber, `done` green,
+  `stop` crimson, `quiet` grey. The styleguide's pill note states the four meanings. Category chips,
+  selection chips and the student's own *planned* marker keep purple: they are not states of the
+  institution's process.
+- **Hero gap.** `--hero-gap` is `--space-10` (22px), from 30. One token; `PageSkeleton` followed
+  because it reads the same token.
+- **Figure rule.** `--fs-figure` (27px) is gone; `--fs-title` (27px) names what the only remaining
+  users were — a drawer's or a modal's title, and the h1 under 620px. The panel's money figure, the
+  rewards balance, My Degree's counts figure and the ring's percentage are `--fs-display` bold; the
+  next-payment figure in the financials anchor card is the dark card's lead, `--fs-h2` bold.
+- **Type roles.** Re-documented in `tokens.css` and the styleguide's type table (15px = the brand
+  line; 13.5px = navigation, tab labels, the band's lede, a lead-in — never a figure, a title, a
+  value or a price; `--fs-h2` carries section (semi), row/value (regular) and lead (bold)). 45 rules
+  re-mapped by an anchored script (`scratchpad/remap-1a.json`, every anchor reported): the advisor's
+  name, row titles on Campus Life, Housing, Profile, Financials' aid rows, the skipped-card and
+  how-panel titles, Housing's callout and prices, Profile's values (400 student-owned / 600
+  institution-owned), the org tile's initials, the two small chips that carried a state at
+  `--fs-micro`, the documents panel's headings, the onboarding rail's greeting. Responsive steps
+  inside media queries and the styleguide's own chrome were left alone by design.
+- **Proof.** Baseline captured twice (16,428 elements × 2 widths × 13 routes; the only flake is the
+  styleguide's icon boxes and the Profile route's `y` on one run), then after: 10,700 changed —
+  9,696 pure y-shifts from the gap, 982 style diffs that are exactly font-size / weight / leading /
+  tracking on the re-mapped selectors plus the hero margins, 22 "other" that are the pill and pulse
+  colours. No property changed that this brief did not name. `npm run build` passes.
+- **Left for the cards that own them** (the 13.5px census at 1440 after the change): `.group-heading`
+  on Events (ENR-189 C3 removes it), the cost table's amounts on Financials (ENR-166 F13), and the
+  four lead-ins inside running copy (`pay-cta`, `edward-title`, `ask-route`, `document-body`) which
+  the rule allows.

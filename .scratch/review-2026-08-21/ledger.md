@@ -40,7 +40,7 @@ nobody re-derives it.
 | "section title, 17px weight 600" | `--fs-h2` + `--fw-semi` |
 | "row title, 17px weight 400", "`--fs-h`" | `--fs-h2` + `--fw-regular` — **the documents' `--fs-h` is `--fs-h2`**; there is no `--fs-h` token |
 | "the brand size, 15px" | `--fs-h3` (15px) — used in 28 rules across 11 stylesheets today, so "15px only on the brand line" is a portal-wide sweep |
-| "the navigation step, 13.5px" | `--fs-h4` |
+| "the navigation step, 13.5px" | `--fs-h4` — navigation rows, tab labels, the band's lede and a strong lead-in inside running copy; never a figure, a title, a value or a price (the operative clause — the reference itself carries 13.5px on its lede and, until 2026-08-22, on its ring) |
 | "card figure, 21px weight 700" | `--fs-display` + `--fw-bold` |
 | "dark card lead, 17px weight 700" | `--fs-h2` + `--fw-bold` |
 | "`--fs-figure`, 27px" | exists; used by financials (next-payment, balance ≤820), classrooms, rewards, patterns — to be retired per 9.0 |

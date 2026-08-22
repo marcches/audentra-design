@@ -116,8 +116,8 @@
 .field-value {
   letter-spacing: var(--ls-snug);
   margin: 0;
-  font-size: var(--fs-h3);
-  font-weight: var(--fw-bold);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
   line-height: var(--lh-heading);
 }
 
@@ -126,7 +126,7 @@
 .field-row.owned .field-value {
   color: var(--ink-2);
   letter-spacing: var(--ls-snug);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
   font-weight: var(--fw-semi);
 }
 
@@ -231,8 +231,9 @@
 
 .grant-who strong {
   letter-spacing: var(--ls-tight);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
   display: block;
+  font-weight: var(--fw-regular);
 }
 
 .grant-who p {

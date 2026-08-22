@@ -84,6 +84,17 @@
   --crimson-200: #eed3d8;
   --crimson-50: #f9e9ec;
 
+  /* Blue — added 2026-08-22 for the one thing the palette could not say: *in
+     progress, or waiting on the institution*. Until then amber did that job as
+     well as "needs you", so a reviewing step and an overdue one wore the same
+     colour (review of 2026-08-21, C3). Same six stops as green. */
+  --blue-700: #1f4b7c;
+  --blue-500: #2a63a9;
+  --blue-200: #c4d9f2;
+  --blue-100: #dce9f8;
+  --blue-50: #e9f1fb;
+  --blue-25: #f3f8fd;
+
   /* Teal — the one hue in the product that the design system never named, and
      the audit's clearest example of what an unnamed decision becomes. It exists
      for exactly one thing: `.task-type-icon.form`, the tile on a task that is a
@@ -171,6 +182,13 @@
   --crimson-ink: var(--crimson-700);  /* was #7a3a46 ×4, #7a2634, #9b3040      */
   --crimson-line: var(--crimson-200); /* was #eed3d8 ×3, #eec6cd, #f0d4da      */
   --crimson-soft: var(--crimson-50);
+
+  --blue: var(--blue-500);            /* in progress, or Aster holds it         */
+  --blue-ink: var(--blue-700);
+  --blue-line: var(--blue-200);
+  --blue-tint: var(--blue-100);
+  --blue-soft: var(--blue-50);
+  --blue-wash: var(--blue-25);
 
   /* Off-system, and named so it stops being invisible. See the palette note. */
   --teal: var(--teal-500);
@@ -298,7 +316,7 @@
 
      `--safe-bottom` is the lower-right corner Edward owns on every page —
      ENR-175 AC 7. No page may put a primary action inside it. */
-  --hero-gap: 30px;
+  --hero-gap: var(--space-10);       /* 22px — the region step. 30px until the review of 2026-08-21 (C4): "wide enough to park my Volkswagen" */
   --hero-tuck: 20px;
   --band-outdent: 22px;
   --panel-pad: 23px;
@@ -351,20 +369,28 @@
      and fourteen leadings were what "each section designed on its own" looked
      like.
 
-     Sizes carry a role, not a number. Pick by what the text IS:
+     Sizes carry a role, not a number. Pick by what the text IS — and since the
+     review of 2026-08-21 the roles are the reference screen's, measured:
        hero     the page's one h1
-       figure   a rail's headline number
-       display  a panel figure, and the heading that names a page section
-       h2       the heading that names a card
-       h3       the title of a row or a task
-       h4       a strong lead-in inside a row
-       body     running copy in a drawer or a panel
+       title    the title of a drawer or a modal; the h1 under 620px
+       display  the one lead figure of a card or a panel, always bold — the
+                only size a figure is ever set at (9.0); 27px is not a step
+       h2       a section title (semi); a row, a block or a value (regular);
+                a dark card's lead line and the advisor's name (bold) — a row
+                title is never heavier than the section above it
+       h3       the brand line, and where a row title steps down under 620px;
+                nowhere else — not a title, not a value, not a name
+       h4       navigation rows and tab labels; the band's lede; a strong
+                lead-in inside running copy — never a figure, a title, a value
+                or a price
+       body     running copy in a drawer or a panel; a price or an amount
+                inside a row; the copy of a rail card
        copy     running copy in a card
        meta     the line under a heading, and the label on a control
-       small    facts, timestamps, states
-       micro    the smallest thing that is still a word */
+       small    facts, timestamps, states — a status is never smaller
+       micro    footnotes and footer links; the smallest thing that is still a word */
   --fs-hero: clamp(25px, 2.5vw, 34px);
-  --fs-figure: 27px;
+  --fs-title: 27px;
   --fs-display: 21px;
   --fs-h2: 17px;
   --fs-h3: 15px;

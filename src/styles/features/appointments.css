@@ -375,7 +375,7 @@
 }
 
 .booking-chosen strong {
-  font-size: var(--fs-h4);
+  font-size: var(--fs-h2);
 }
 
 .booking-chosen > span:last-child {

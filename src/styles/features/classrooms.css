@@ -190,8 +190,8 @@
 }
 
 .requirement-status.in-progress {
-  color: var(--purple-dark);
-  background: var(--purple-soft);
+  color: var(--blue-ink);
+  background: var(--blue-tint);
 }
 
 .requirement-status.not-started {
@@ -665,7 +665,8 @@
 
 .match-empty h3 {
   margin: var(--space-6) 0 var(--space-3);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
 }
 
 .match-empty>p {
@@ -720,7 +721,7 @@
   flex-direction: column;
   gap: var(--space-1);
   margin-top: var(--space-4);
-  font-size: var(--fs-figure);
+  font-size: var(--fs-display);
   display: flex;
 }
 
@@ -763,7 +764,7 @@
 
 .program-card strong {
   margin-top: var(--space-4);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
   display: block;
 }
 
@@ -876,7 +877,7 @@
 }
 
 .evidence-panel p strong, .match-target-panel p strong {
-  font-size: var(--fs-h4);
+  font-size: var(--fs-body);
 }
 
 .evidence-panel p.evidence-when {

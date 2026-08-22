@@ -126,8 +126,8 @@
 
 .required-row-title {
   color: var(--ink);
-  font-size: var(--fs-h3);
-  font-weight: var(--fw-bold);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
   line-height: var(--lh-heading);
 }
 
@@ -227,9 +227,10 @@
   }
 
   .required-strip .required-row-title {
-    font-size: var(--fs-h4);
+    font-size: var(--fs-h2);
     line-height: var(--lh-heading);
-  }
+  font-weight: var(--fw-regular);
+}
 
   /* Label off, arrow on: a 26px disc that reads as "this opens". */
   .required-strip .required-row-action {
@@ -260,7 +261,7 @@
 
 .required-chip.small {
   padding: var(--space-1) var(--space-3);
-  font-size: var(--fs-micro);
+  font-size: var(--fs-small);
 }
 
 /* ── Events / Clubs: two routes, one screen ── */
@@ -460,8 +461,8 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-4);
-  font-size: var(--fs-h3);
-  font-weight: var(--fw-bold);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
   line-height: var(--lh-heading);
   display: flex;
 }
@@ -532,7 +533,7 @@
   place-items: center;
   width: 46px;
   height: 46px;
-  font-size: var(--fs-h4);
+  font-size: var(--fs-h2);
   font-weight: var(--fw-heavy);
   display: grid;
 }
@@ -634,7 +635,7 @@
 
 .interests-header strong {
   letter-spacing: var(--ls-tight);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-body);
 }
 
 .interest-chips {
@@ -816,7 +817,8 @@
 .about-panel h3 {
   letter-spacing: var(--ls-tight);
   margin: 0 0 var(--space-4);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
 }
 
 .about-panel p {

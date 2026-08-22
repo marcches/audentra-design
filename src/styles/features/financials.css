@@ -42,7 +42,7 @@
 }
 
 .estimate-chip.small {
-  font-size: var(--fs-micro);
+  font-size: var(--fs-small);
   padding: var(--space-1) var(--space-3);
 }
 
@@ -641,7 +641,7 @@
   letter-spacing: var(--ls-tight);
   margin: var(--space-3) 0 var(--space-1);
   font-family: var(--font-geist-mono);
-  font-size: var(--fs-figure);
+  font-size: var(--fs-h2);
   font-weight: var(--fw-bold);
   display: block;
 }
@@ -715,8 +715,9 @@
 .aid-opportunity-card h3 {
   letter-spacing: var(--ls-snug);
   margin: var(--space-7) 0 var(--space-3);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
   line-height: var(--lh-heading);
+  font-weight: var(--fw-regular);
 }
 
 .aid-opportunity-card > p {
@@ -777,8 +778,9 @@
 .aid-row-main strong {
   align-items: center;
   gap: var(--space-1);
-  font-size: var(--fs-h4);
+  font-size: var(--fs-h2);
   display: flex;
+  font-weight: var(--fw-regular);
 }
 
 .aid-source {
@@ -801,7 +803,7 @@
   text-align: right;
   white-space: nowrap;
   font-family: var(--font-geist-mono);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
   font-variant-numeric: tabular-nums;
   font-weight: var(--fw-semi);
 }
@@ -850,7 +852,7 @@
 
 .aid-total strong {
   font-family: var(--font-geist-mono);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
   font-variant-numeric: tabular-nums;
 }
 
@@ -930,7 +932,7 @@
 
 @media (width<=820px) {
   .balance-figure {
-    font-size: var(--fs-figure);
+    font-size: var(--fs-display);
   }
   .doc-task {
     grid-template-columns: 30px minmax(0, 1fr);

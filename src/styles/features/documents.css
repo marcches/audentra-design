@@ -212,8 +212,9 @@
   align-items: center;
   gap: var(--space-4);
   margin: 0 0 var(--space-4);
-  font-size: var(--fs-h4);
+  font-size: var(--fs-h2);
   display: flex;
+  font-weight: var(--fw-regular);
 }
 
 .reject-reason {
@@ -271,7 +272,8 @@
 .document-history h3 {
   color: var(--ink);
   margin: 0 0 var(--space-4);
-  font-size: var(--fs-h4);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
 }
 
 .document-brief p {
@@ -466,7 +468,8 @@
 
 .extract-head h3 {
   margin: 0 0 var(--space-3);
-  font-size: var(--fs-h4);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
 }
 
 .extract-note {

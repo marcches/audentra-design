@@ -544,8 +544,8 @@
 
 .progress-ring span {
   z-index: 1;
-  font-size: var(--fs-h4);
-  font-weight: var(--fw-heavy);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-bold);
   position: relative;
 }
 
@@ -570,20 +570,13 @@
 .progress-summary strong {
   letter-spacing: var(--ls-tight);
   align-items: center;
-  min-height: calc(var(--fs-figure) * var(--lh-tight));
+  min-height: calc(var(--fs-display) * var(--lh-tight));
   margin-top: var(--space-1);
   font-size: var(--fs-display);
   font-weight: var(--fw-bold);
   line-height: var(--lh-tight);
   display: flex;
 }
-
-.summary-figure.money .summary-figure-copy strong {
-  letter-spacing: var(--ls-tight);
-  font-size: var(--fs-figure);
-  line-height: var(--lh-tight);
-}
-
 .summary-figure-copy p,
 .progress-summary p {
   color: var(--muted);
@@ -622,7 +615,7 @@
 .advisor-bar-copy strong {
   letter-spacing: var(--ls-snug);
   margin-top: var(--space-1);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
   line-height: 1.3;
 }
 
@@ -1331,7 +1324,7 @@
 }
 
 .pulse {
-  background: #c47b25;
+  background: currentColor;
   border-radius: var(--radius-round);
   width: 6px;
   height: 6px;
@@ -1395,8 +1388,9 @@
 .skipped-card h3 {
   letter-spacing: var(--ls-snug);
   margin: var(--space-7) 0 var(--space-3);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
   line-height: var(--lh-heading);
+  font-weight: var(--fw-regular);
 }
 
 .skipped-card p {
@@ -1598,7 +1592,7 @@ footer a {
 .drawer-content h2 {
   letter-spacing: var(--ls-hero);
   margin: var(--space-8) 0 var(--space-4);
-  font-size: var(--fs-figure);
+  font-size: var(--fs-title);
 }
 
 .drawer-description {
@@ -1796,7 +1790,8 @@ footer a {
 
 .how-panel h3 {
   margin: 0 0 var(--space-8);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
 }
 
 .how-panel ol {
@@ -1934,7 +1929,7 @@ footer a {
   letter-spacing: var(--ls-hero);
   max-width: 410px;
   margin: var(--space-8) 0 var(--space-4);
-  font-size: var(--fs-figure);
+  font-size: var(--fs-title);
   line-height: var(--lh-tight);
 }
 
@@ -2359,7 +2354,7 @@ footer a {
   }
   .page-hero h1 {
     max-width: 315px;
-    font-size: var(--fs-figure);
+    font-size: var(--fs-title);
   }
   .hero-lede {
     max-width: 315px;
@@ -3032,7 +3027,7 @@ footer a {
   text-wrap: pretty;
   margin: 0 0 var(--space-5);
   padding: 0 var(--space-5);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
   font-weight: var(--fw-semi);
   line-height: var(--lh-heading);
 }
@@ -4172,6 +4167,12 @@ a.pop-row:focus-visible {
 .status-pill.done {
   color: var(--green-ink);
   background: var(--green-tint);
+}
+
+.status-pill.wait,
+.status-pill.progress {
+  color: var(--blue-ink);
+  background: var(--blue-tint);
 }
 
 .status-pill.stop {

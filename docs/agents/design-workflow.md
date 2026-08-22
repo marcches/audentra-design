@@ -213,7 +213,7 @@ requirements met" — is what made the portal read as decorated rather than buil
 | Band eyebrow (Geist **Mono**, tracked .13em) | 10.5px |
 | Band headline | `clamp(25px, 2.5vw, 34px)` |
 | Band lede (`text-wrap: pretty`) | 13.5px |
-| **The section's figure** | 21px, or 34px when it is money |
+| **The section's figure** | 21px — money too, since the review of 2026-08-21 (9.0: two figure treatments in the product, the panel's at `--fs-display` and the dark card's lead at `--fs-h2` bold; 27px is not a figure step) |
 
 ### How a section's content is built
 

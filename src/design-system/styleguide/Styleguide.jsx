@@ -210,18 +210,22 @@ const LAYER = [
   ['z-toast', 'the one thing allowed over a modal'],
 ];
 
+// The roles are the reference screen's, measured (review of 2026-08-21, §9 and
+// 9.0): two figure treatments in the whole product, one size for titles with
+// weight telling section from row, and 15px and 13.5px kept to the jobs only
+// they do.
 const TYPE = [
   ['fs-hero', 'the page’s one h1'],
-  ['fs-figure', 'a rail’s headline number'],
-  ['fs-display', 'a panel figure, and the heading that names a page section'],
-  ['fs-h2', 'the heading that names a card'],
-  ['fs-h3', 'the title of a row or a task'],
-  ['fs-h4', 'a strong lead-in inside a row'],
-  ['fs-body', 'running copy in a drawer or a panel'],
+  ['fs-title', 'the title of a drawer or a modal; the h1 under 620px'],
+  ['fs-display', 'the one lead figure of a card or a panel, bold — the only size a figure is set at; 27px is not a step'],
+  ['fs-h2', 'a section title (semi); a row, a block or a value (regular); a dark card’s lead line and the advisor’s name (bold)'],
+  ['fs-h3', 'the brand line, and where a row title steps down under 620px — never a title, a value or a name'],
+  ['fs-h4', 'navigation rows and tab labels; the band’s lede; a strong lead-in inside running copy — never a figure, a title, a value or a price'],
+  ['fs-body', 'running copy in a drawer or a panel; a price or an amount inside a row; a rail card’s copy'],
   ['fs-copy', 'running copy in a card'],
   ['fs-meta', 'the line under a heading, and the label on a control'],
-  ['fs-small', 'facts, timestamps, states'],
-  ['fs-micro', 'the smallest thing that is still a word'],
+  ['fs-small', 'facts, timestamps, states — a status is never smaller'],
+  ['fs-micro', 'footnotes and footer links; the smallest thing that is still a word'],
 ];
 
 const ADVISOR = {
@@ -401,7 +405,7 @@ export default function Styleguide({ onToast }) {
         <Section
           id="sg-type"
           title="Type"
-          rule="Sizes carry a role, not a number. Pick by what the text is. The greeting must never be larger than the figure it introduces. Weight, tracking and leading are chosen the same way — and there is no sixth of any of them."
+          rule="Sizes carry a role, not a number. Pick by what the text is. The greeting must never be larger than the figure it introduces. Weight, tracking and leading are chosen the same way — and there is no sixth of any of them. Since the review of 2026-08-21 there are two figure treatments in the whole product — a card's or a panel's lead figure at display, bold; a dark card's lead line at h2, bold — one lead figure per card, and it is the largest number in it; 15px is the brand line and 13.5px is navigation, the band's lede and a lead-in, never a figure, a title, a value or a price."
         >
           <ul className="sg-type">
             {TYPE.map(([token, note]) => (
@@ -784,7 +788,7 @@ export default function Styleguide({ onToast }) {
           </Block>
           <Block
             title="The status pill"
-            note="The state of a thing in one word, uppercase, and never a control. One pill for the whole product since the evening of 2026-08-21 — the record's head on Health, the reviewing step on My Enrollment and the answer's door row all say a state with it. The tone is the colour contract's; quiet paints nothing, which is the one tone an optional question may wear. The consequence, when there is one, is the line after it, in that order."
+            note="The state of a thing in one word, uppercase, and never a control. One pill for the whole product since the evening of 2026-08-21 — the record's head on Health, the reviewing step on My Enrollment and the answer's door row all say a state with it. Four meanings, four colours, the same on every screen since the review of 2026-08-21 (C3): quiet is not started and paints nothing; wait and progress are blue — in progress, or Aster holds it; act is amber — the student has to; done is green; stop is crimson — it came back. Purple is the brand and never a state. The consequence, when there is one, is the line after it, in that order."
           >
             <div className="sg-pills">
               <StatusPill tone="act">Not sent</StatusPill>
