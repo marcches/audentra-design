@@ -74,8 +74,8 @@ row: x = (i % 6) · 2080, y = ⌊i / 6⌋ · 1320, i = the page index from 0.
 | 04 Gradient | 7 | done | 37 divider (on the gradient) `83:790` · 38 The construction `83:802` · 39 Where it lives `83:855` · 40 The deep form `84:871` · 41 With type and the White master `84:927` · 42 With photography `84:964` (photo placeholder until chapter 07) · 43 Misuse `84:1002` |
 | 05 Typography | 9 | done (rebuilt for ADR 0011) | 44 divider `85:910` · 45 Satoshi and Inter `90:910` · 46 Hierarchy scale `85:947` (relabelled) · 47 Weights `90:933` · 48 Values and code `90:976` · 49 Web stack and fallbacks `90:1018` · 50 Numerals and details `87:910` · 51 Type on canvases `87:939` · 52 Misuse `90:1042` |
 | 06 Voice | 7 | done | 53 divider `93:910` · 54 How we sound `93:922` · 55 Tone guidance `93:946` · 56 Language guidelines `93:969` · 57 Writing guidelines `94:913` · 58 Before and after `94:950` · 59 Rules for product copy `94:996` (content migrated verbatim from v1 frames 12–18) |
-| 07 Imagery | 8 | pending | |
-| 08 Iconography | 6 | pending | |
+| 07 Imagery | 8 | done | 60 divider `97:914` · 61 Direction `97:927` · 62 Subjects and casting `97:944` · 63 Light, colour, crop `98:913` · 64 Treatment `98:933` · 65 Illustration: Spot `98:994` · 66 Texture: none, and why `99:923` · 67 Sourcing and rights `99:1112`. Photos: seven Unsplash frames on the Assets page, section `97:913` (imageHashes: boxes b531d353…, backpack 2c2b99c5…, walking 7afd50fe…, study 3375eb54…, uw 5d0f0a00…, plaza 3ff9daf6…, signing bfd734a8…); provenance docs/brand/photography/SOURCES.md |
+| 08 Iconography | 6 | done | 68 divider `100:913` · 69 Phosphor, vendored `100:924` (44 glyphs from icon-paths.js) · 70 Four weights, one job each `100:1148` · 71 Sizes with type `101:916` · 72 Tiles and heads `101:963` · 73 Misuse `101:1011`. Page 42 placeholder replaced with the study photo. |
 | 09 Motion | 5 | pending | |
 | 10 Layout and composition | 6 | pending | |
 | 11 Co-branding | 8 | pending | |
